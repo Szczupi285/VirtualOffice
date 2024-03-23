@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.ApplicationUser;
+using VirtualOffice.Domain.Exceptions.Subscription;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
-namespace VirtualOffice.Domain.ValueObjects.Organization
+namespace VirtualOffice.Domain.ValueObjects.Subscription
 {
     public record SubscriptionId
     {
@@ -16,7 +17,7 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
         {
             if (value == Guid.Empty)
             {
-                throw new NotImplementedException();
+                throw new EmptySubscriptionIdException();
             }
 
             Value = value;
