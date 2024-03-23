@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design.Serialization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.ValueObjects;
+﻿using VirtualOffice.Domain.ValueObjects;
 
 namespace VirtualOffice.Domain.Entities
 {
     public class ApplicationUser
     {
-        public Guid Id { get; private set; }
+        public ApplicationUserId Id { get; private set; }
 
         private ApplicationUserName _name;
 
