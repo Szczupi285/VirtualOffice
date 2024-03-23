@@ -1,4 +1,4 @@
-﻿using VirtualOffice.Domain.ValueObjects.Organization;
+﻿using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Domain.Entities
 {
@@ -6,11 +6,11 @@ namespace VirtualOffice.Domain.Entities
     {
         public SubscriptionId Id { get; private set; }
 
-        // private OrganizationSubscriptionStartDate _subStartDate;
+        // private SubscriptionStartDate _subStartDate;
 
-        // private OrganizationSubscriptionEndDate _subEndDate;
+        // private SubscriptionEndDate _subEndDate;
 
-        // private OrganizationSubscriptionType _licenseType
+        // private SubscriptionType _licenseType
 
         internal Subscription()
         {

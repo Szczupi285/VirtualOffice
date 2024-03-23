@@ -2,7 +2,7 @@
 
 namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
-    public record ApplicationUserName
+    public sealed record ApplicationUserName
     {
         public string Value { get; }
 

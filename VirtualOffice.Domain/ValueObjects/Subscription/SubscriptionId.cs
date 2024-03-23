@@ -9,7 +9,7 @@ using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.Subscription
 {
-    public record SubscriptionId
+    public sealed record SubscriptionId
     {
         public Guid Value { get; }
 
