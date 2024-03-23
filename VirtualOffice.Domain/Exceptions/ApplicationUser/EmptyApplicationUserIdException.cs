@@ -1,6 +1,6 @@
 ﻿using VirtualOffice.Shared.Abstractions.Exceptions;
 
-namespace VirtualOffice.Domain.Exceptions
+namespace VirtualOffice.Domain.Exceptions.ApplicationUser
 {
     public class EmptyApplicationUserIdException : VirtualOfficeException
     {

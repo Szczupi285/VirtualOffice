@@ -1,8 +1,8 @@
-﻿using VirtualOffice.Domain.Exceptions;
+﻿using VirtualOffice.Domain.Exceptions.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
-    public class ApplicationUserId
+    public record ApplicationUserId
     {
         public Guid Value { get; }
 

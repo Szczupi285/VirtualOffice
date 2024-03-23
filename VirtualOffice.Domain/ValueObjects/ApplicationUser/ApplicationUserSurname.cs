@@ -1,4 +1,4 @@
-﻿using VirtualOffice.Domain.Exceptions;
+﻿using VirtualOffice.Domain.Exceptions.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
