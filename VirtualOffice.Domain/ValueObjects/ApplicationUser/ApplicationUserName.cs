@@ -1,6 +1,6 @@
 ﻿using VirtualOffice.Domain.Exceptions;
 
-namespace VirtualOffice.Domain.ValueObjects
+namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
     public record ApplicationUserName
     {
@@ -9,7 +9,7 @@ namespace VirtualOffice.Domain.ValueObjects
         public ApplicationUserName(string value)
         {
 
-            if (string.IsNullOrWhiteSpace(value)) 
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new EmptyApplicationUserNameException();
             }

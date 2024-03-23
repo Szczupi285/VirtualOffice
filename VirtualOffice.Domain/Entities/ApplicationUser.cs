@@ -1,4 +1,4 @@
-﻿using VirtualOffice.Domain.ValueObjects;
+﻿using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.Entities
 {

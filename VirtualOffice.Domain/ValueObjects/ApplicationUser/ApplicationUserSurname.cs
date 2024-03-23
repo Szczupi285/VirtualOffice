@@ -1,6 +1,6 @@
 ﻿using VirtualOffice.Domain.Exceptions;
 
-namespace VirtualOffice.Domain.ValueObjects
+namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
     public record ApplicationUserSurname
     {
