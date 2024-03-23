@@ -15,7 +15,7 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
         public SubscriptionStartDate(DateTime value)
         {
             if (value < DateTime.Now)
-                throw new SubscriptionStartDateCannotBePast(value);
+                throw new SubscriptionStartDateCannotBePastException(value);
 
             Value = value;  
         }
