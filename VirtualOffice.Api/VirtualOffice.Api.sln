@@ -5,6 +5,18 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Api", "VirtualOffice.Api.csproj", "{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Application", "..\VirtualOffice.Application\VirtualOffice.Application.csproj", "{F4905820-82AB-463D-9FE0-B1C408254ADA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Domain", "..\VirtualOffice.Domain\VirtualOffice.Domain.csproj", "{92D49AC8-284C-493E-BEEE-B9B415160E2E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Infrastructure", "..\VirtualOffice.Infrastructure\VirtualOffice.Infrastructure.csproj", "{708E32FE-F784-4DFF-BE44-2C5AA18FDC4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4C6131B9-6011-4930-AAB9-50503F76D559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Shared", "..\VirtualOffice.Shared\VirtualOffice.Shared.csproj", "{5ADBC388-1233-4CD3-8171-3C1B234F73FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Shared.Abstractions", "..\VirtualOffice.Shared.Abstractions\VirtualOffice.Shared.Abstractions.csproj", "{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +27,33 @@ Global
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{708E32FE-F784-4DFF-BE44-2C5AA18FDC4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{708E32FE-F784-4DFF-BE44-2C5AA18FDC4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{708E32FE-F784-4DFF-BE44-2C5AA18FDC4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{708E32FE-F784-4DFF-BE44-2C5AA18FDC4A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ADBC388-1233-4CD3-8171-3C1B234F73FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ADBC388-1233-4CD3-8171-3C1B234F73FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ADBC388-1233-4CD3-8171-3C1B234F73FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ADBC388-1233-4CD3-8171-3C1B234F73FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5ADBC388-1233-4CD3-8171-3C1B234F73FD} = {4C6131B9-6011-4930-AAB9-50503F76D559}
+		{A626EA5D-8F2C-4516-B9FB-9D66BF038CE2} = {4C6131B9-6011-4930-AAB9-50503F76D559}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB888D37-C3BB-4B7B-B6FE-A7347B8EEFFE}

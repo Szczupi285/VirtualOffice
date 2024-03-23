@@ -6,8 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\VirtualOffice.Application\VirtualOffice.Application.csproj" />
-  </ItemGroup>
-
 </Project>
