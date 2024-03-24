@@ -21,7 +21,7 @@ namespace VirtualOffice.Domain.ValueObjects.Office
             else if (value.Length > 50)
                 throw new InvalidOfficeNameException(value);
 
-            Value = value;
+            Value = value.Trim();
         }
 
         public static implicit operator string(OfficeName name)

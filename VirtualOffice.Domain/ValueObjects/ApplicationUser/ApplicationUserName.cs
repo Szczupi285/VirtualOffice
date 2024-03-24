@@ -13,7 +13,8 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
                 throw new EmptyApplicationUserNameException();
             else if (value.Length > 50)
                 throw new InvalidApplicationUserNameException(value);
-            Value = value;
+
+            Value = value.Trim();
         }
 
         public static implicit operator string(ApplicationUserName name)

@@ -19,7 +19,7 @@ namespace VirtualOffice.Domain.ValueObjects.Office
             else if(value is null)
                 throw new OfficeDescriptionIsNullException();
 
-            Value = value;
+            Value = value.Trim();
         }
 
         public static implicit operator string(OfficeDescription name)
