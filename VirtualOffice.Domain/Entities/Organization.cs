@@ -12,21 +12,19 @@ namespace VirtualOffice.Domain.Entities
 
     public class Organization
     {
-
-   
         public OrganizationId Id { get; private set; }
 
         private OrganizationName _name;
 
         private OrganizationUserLimit _userLimit;
 
-       private OrganizationUsedSlots _UsedSlots;
+        private OrganizationUsedSlots _UsedSlots;
 
         private Subscription subscription;
 
-        private List<ApplicationUser> _organizationUsers;
+        private ICollection<ApplicationUser> _organizationUsers;
 
-        // private bool _isUnlimited 
+        private bool _isUnlimited;
 
         internal Organization()
         {
