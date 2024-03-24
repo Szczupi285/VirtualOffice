@@ -10,9 +10,9 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
         {
 
             if (string.IsNullOrWhiteSpace(value))
-            {
                 throw new EmptyOrganizationNameException();
-            }
+            else if (value.Length > 100)
+                 throw new InvalidOrganizationNameException(value);
 
             Value = value;
         }
