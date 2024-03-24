@@ -20,7 +20,11 @@ namespace VirtualOffice.Domain.Entities
 
         // private OrganizationUserLimit _userLimit;
 
-        // private List<ApplicationUser> _organizationUsers
+        // private OrganizationUsedSlots _UsedSlots;
+
+        private Subscription subscription;
+
+        private List<ApplicationUser> _organizationUsers;
 
         // private bool _isUnlimited 
 
