@@ -10,9 +10,9 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
         {
 
             if (string.IsNullOrWhiteSpace(value))
-            {
                 throw new EmptyApplicationUserSurnameException();
-            }
+            else if (value.Length > 50)
+                throw new InvalidApplicationUserSurnameException(value);
 
             Value = value;
         }
