@@ -16,11 +16,11 @@ namespace VirtualOffice.Domain.Entities
    
         public OrganizationId Id { get; private set; }
 
-         private OrganizationName _name;
+        private OrganizationName _name;
 
-        // private OrganizationUserLimit _userLimit;
+        private OrganizationUserLimit _userLimit;
 
-        // private OrganizationUsedSlots _UsedSlots;
+       private OrganizationUsedSlots _UsedSlots;
 
         private Subscription subscription;
 

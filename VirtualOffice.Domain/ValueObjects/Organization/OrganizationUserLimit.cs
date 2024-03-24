@@ -18,5 +18,11 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
 
             Value = value;
         }
+
+        public static implicit operator ushort(OrganizationUserLimit userLimit)
+            => userLimit.Value;
+
+        public static implicit operator OrganizationUserLimit(ushort userLimit)
+            => new(userLimit);
     }
 }
