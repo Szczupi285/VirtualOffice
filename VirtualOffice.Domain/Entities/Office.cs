@@ -6,7 +6,7 @@ namespace VirtualOffice.Domain.Entities
     {
         public OfficeId Id { get; private set; }
 
-        // private OfficeName _officeName;
+         private OfficeName _officeName;
 
         // private Description _description;
 
