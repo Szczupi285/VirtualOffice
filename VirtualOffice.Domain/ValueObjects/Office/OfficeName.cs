@@ -17,9 +17,9 @@ namespace VirtualOffice.Domain.ValueObjects.Office
         {
 
             if (string.IsNullOrWhiteSpace(value))
-            {
                 throw new EmptyOfficeNameException();
-            }
+            else if (value.Length > 50)
+                throw new InvalidOfficeNameException(value);
 
             Value = value;
         }

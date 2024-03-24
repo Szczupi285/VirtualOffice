@@ -15,7 +15,7 @@ namespace VirtualOffice.Domain.ValueObjects.Office
         {
 
             if (value.Length > 200)
-                throw new EmptyOfficeNameException();
+                throw new InvalidOfficeDescriptionException(value);
             else if(value is null)
                 throw new OfficeDescriptionIsNullException();
 
