@@ -16,9 +16,7 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
         public SubscriptionId(Guid value)
         {
             if (value == Guid.Empty)
-            {
                 throw new EmptySubscriptionIdException();
-            }
 
             Value = value;
         }

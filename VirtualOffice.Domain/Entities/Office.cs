@@ -1,4 +1,5 @@
-﻿using VirtualOffice.Domain.ValueObjects.Office;
+﻿using System.ComponentModel.DataAnnotations;
+using VirtualOffice.Domain.ValueObjects.Office;
 
 namespace VirtualOffice.Domain.Entities
 {
@@ -6,9 +7,9 @@ namespace VirtualOffice.Domain.Entities
     {
         public OfficeId Id { get; private set; }
 
-         private OfficeName _officeName;
+        private OfficeName _officeName;
 
-        // private Description _description;
+        private OfficeDescription _description;
 
         // private ActivityLog _activityLog;
 

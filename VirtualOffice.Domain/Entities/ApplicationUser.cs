@@ -12,7 +12,7 @@ namespace VirtualOffice.Domain.Entities
 
          private Organization _organization; 
 
-        // private ICollection<string> Offices;
+         private ICollection<Office> _offices;
 
         // private Permissions _permissions;
 

@@ -9,9 +9,7 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
         public ApplicationUserId(Guid value)
         {
             if (value == Guid.Empty)
-            {
                 throw new EmptyApplicationUserNameException();
-            }
 
             Value = value;
         }

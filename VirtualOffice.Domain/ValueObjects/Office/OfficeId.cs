@@ -9,16 +9,14 @@ using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.ValueObjects.Office
 {
-    public sealed record OfficeId
+    public sealed record OfficeId 
     {
         public Guid Value { get; }
 
         public OfficeId(Guid value)
         {
             if (value == Guid.Empty)
-            {
                 throw new EmptyOfficeIdException();
-            }
 
             Value = value;
         }

@@ -9,9 +9,7 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
         public OrganizationId(Guid value)
         {
             if (value == Guid.Empty)
-            {
                 throw new EmptyOrganizationIdException();
-            }
 
             Value = value;
         }
