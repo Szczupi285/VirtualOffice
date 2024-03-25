@@ -21,4 +21,4 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
             => new(id);
     }
 }
-}
+

@@ -29,4 +29,4 @@ namespace VirtualOffice.Domain.ValueObjects.Office
             => new(name);
     }
 }
-}
+
