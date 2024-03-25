@@ -11,7 +11,7 @@ namespace VirtualOffice.Domain.Exceptions.ApplicationUser
     {
         string Value;
         public InvalidApplicationUserNameException(string value) 
-            : base($"User Name: {value} is more than 50 characters long")
+            : base($"ApplicationUser name: {value} does not only contain letters or dots. There must be at least 1 letter and first character cannot be dot")
         {
             Value = value;
         }

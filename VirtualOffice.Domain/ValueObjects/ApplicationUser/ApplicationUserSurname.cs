@@ -11,7 +11,10 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 
             if (string.IsNullOrWhiteSpace(value))
                 throw new EmptyApplicationUserSurnameException();
-            else if (value.Length > 50)
+            else if (value.Length > 35)
+                throw new TooLongApplicationUserSurnameException(value);
+            // We don't allow abbreviations in surname as we do in name
+            else if (!value.All(char.IsLetter))
                 throw new InvalidApplicationUserSurnameException(value);
 
             Value = value.Trim();

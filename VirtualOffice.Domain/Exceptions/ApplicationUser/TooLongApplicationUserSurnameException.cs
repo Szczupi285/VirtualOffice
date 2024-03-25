@@ -7,10 +7,11 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.ApplicationUser
 {
-    public class InvalidApplicationUserSurnameException : VirtualOfficeException
+    public class TooLongApplicationUserSurnameException : VirtualOfficeException
     {
         string Value;
-        public InvalidApplicationUserSurnameException(string value) : base($"ApplicationUser Surname: {value} does not only contain letters")
+        public TooLongApplicationUserSurnameException(string value) 
+            : base($"User surname: {value} is more than 35 characters long")
         {
             Value = value;
         }

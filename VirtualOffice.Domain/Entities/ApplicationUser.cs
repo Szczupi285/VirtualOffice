@@ -10,9 +10,9 @@ namespace VirtualOffice.Domain.Entities
 
         private ApplicationUserSurname _surname;
 
-         private Organization _organization; 
+        private Organization _organization; 
 
-         private ICollection<Office> _offices;
+        private ICollection<Office> _offices;
 
         // private Permissions _permissions;
 
