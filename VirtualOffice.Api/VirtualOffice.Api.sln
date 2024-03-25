@@ -5,17 +5,17 @@ VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Api", "VirtualOffice.Api.csproj", "{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Application", "..\VirtualOffice.Application\VirtualOffice.Application.csproj", "{F4905820-82AB-463D-9FE0-B1C408254ADA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Application", "..\VirtualOffice.Application\VirtualOffice.Application.csproj", "{1408345C-8D24-4D45-8E4B-E5A7E987553D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Domain", "..\VirtualOffice.Domain\VirtualOffice.Domain.csproj", "{92D49AC8-284C-493E-BEEE-B9B415160E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Domain", "..\VirtualOffice.Domain\VirtualOffice.Domain.csproj", "{590AF959-117C-4F0C-8B32-FF2BDEA41F3E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{4C6131B9-6011-4930-AAB9-50503F76D559}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Infrastructure", "..\VirtualOffice.Infrastructure\VirtualOffice.Infrastructure.csproj", "{E4868BE9-3EA2-4782-B867-2B385D98F734}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Infrastructure", "..\VirtualOffice.Infrastructure\VirtualOffice.Infrastructure.csproj", "{8AB3D9D7-03F0-4EE9-B91D-19F7665663FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Shared", "..\VirtualOffice.Shared\VirtualOffice.Shared.csproj", "{0112DC22-3A16-4B75-A426-E4D4C4F61A32}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Shared", "..\VirtualOffice.Shared\VirtualOffice.Shared.csproj", "{659DCC8A-B38E-4948-A864-DC06BA6920A4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VirtualOffice.Shared.Abstractions", "..\VirtualOffice.Shared.Abstractions\VirtualOffice.Shared.Abstractions.csproj", "{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VirtualOffice.Shared.Abstractions", "..\VirtualOffice.Shared.Abstractions\VirtualOffice.Shared.Abstractions.csproj", "{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DD5EF096-1ACA-44FE-9FB1-33E21D8C7FF7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,33 +27,33 @@ Global
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{800E97EB-3A96-469B-AB0D-8B2FA8D2F3F8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4905820-82AB-463D-9FE0-B1C408254ADA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{92D49AC8-284C-493E-BEEE-B9B415160E2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AB3D9D7-03F0-4EE9-B91D-19F7665663FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AB3D9D7-03F0-4EE9-B91D-19F7665663FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AB3D9D7-03F0-4EE9-B91D-19F7665663FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AB3D9D7-03F0-4EE9-B91D-19F7665663FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{659DCC8A-B38E-4948-A864-DC06BA6920A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{659DCC8A-B38E-4948-A864-DC06BA6920A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{659DCC8A-B38E-4948-A864-DC06BA6920A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{659DCC8A-B38E-4948-A864-DC06BA6920A4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1408345C-8D24-4D45-8E4B-E5A7E987553D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1408345C-8D24-4D45-8E4B-E5A7E987553D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1408345C-8D24-4D45-8E4B-E5A7E987553D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1408345C-8D24-4D45-8E4B-E5A7E987553D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{590AF959-117C-4F0C-8B32-FF2BDEA41F3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{590AF959-117C-4F0C-8B32-FF2BDEA41F3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{590AF959-117C-4F0C-8B32-FF2BDEA41F3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{590AF959-117C-4F0C-8B32-FF2BDEA41F3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4868BE9-3EA2-4782-B867-2B385D98F734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4868BE9-3EA2-4782-B867-2B385D98F734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4868BE9-3EA2-4782-B867-2B385D98F734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4868BE9-3EA2-4782-B867-2B385D98F734}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0112DC22-3A16-4B75-A426-E4D4C4F61A32}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0112DC22-3A16-4B75-A426-E4D4C4F61A32}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0112DC22-3A16-4B75-A426-E4D4C4F61A32}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0112DC22-3A16-4B75-A426-E4D4C4F61A32}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{659DCC8A-B38E-4948-A864-DC06BA6920A4} = {4C6131B9-6011-4930-AAB9-50503F76D559}
-		{6C6B468E-FFF3-4ABE-9A38-A87DBCD88E9A} = {4C6131B9-6011-4930-AAB9-50503F76D559}
+		{0112DC22-3A16-4B75-A426-E4D4C4F61A32} = {DD5EF096-1ACA-44FE-9FB1-33E21D8C7FF7}
+		{F6851FF8-3FC7-497F-82D8-7E805C9FC7F9} = {DD5EF096-1ACA-44FE-9FB1-33E21D8C7FF7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {FB888D37-C3BB-4B7B-B6FE-A7347B8EEFFE}
