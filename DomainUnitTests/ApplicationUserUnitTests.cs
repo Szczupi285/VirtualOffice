@@ -59,7 +59,7 @@ namespace DomainUnitTests
         [Fact]
         public void EmptyApplicationUserName_ShouldReturnEmptyApplicationUserNameException()
         {
-            Assert.Throws<EmptyApplicationUserNameException>(() 
+            Assert.Throws<EmptyApplicationUserNameException>(()
                 => new ApplicationUserName(""));
         }
 
@@ -69,7 +69,7 @@ namespace DomainUnitTests
             Assert.Throws<EmptyApplicationUserNameException>(()
                 => new ApplicationUserName(null));
         }
-       
+
 
         [Theory]
         [InlineData("Thisusernameislongerthan30chara")]
@@ -100,13 +100,13 @@ namespace DomainUnitTests
         [Fact]
         public void WithTrailingWhitespacesApplicationUserName_StringShouldMatch()
         {
-            ApplicationUserName value = " Thisusernameisvalid";
+            ApplicationUserName value = "Thisusernameisvalid ";
             Assert.Equal("Thisusernameisvalid", value);
         }
         [Fact]
         public void WithTrailingAndLeadingWhitespacesApplicationUserName_StringShouldMatch()
         {
-            
+
             ApplicationUserName value = " Thisusernameisvalid ";
             Assert.Equal("Thisusernameisvalid", value);
         }
