@@ -5,6 +5,35 @@ namespace DomainUnitTests
 {
     public class ApplicationUserUnitTests
     {
+        #region ApplicationUserId
+
+        [Fact]
+        public void EmptyApplicationUserId_ShouldReturnEmptyApplicationUserIdException()
+        {
+            Assert.Throws<EmptyApplicationUserIdException>(()
+                => new ApplicationUserId(Guid.Empty));
+        }
+        [Fact]
+        public void ValidApplicationUserId_StringsShouldMatch()
+        {
+            var guid = Guid.NewGuid();
+
+            ApplicationUserId id = guid;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidApplicationUserId_ValidConversion()
+        {
+
+            ApplicationUserId id = new ApplicationUserId(Guid.NewGuid());
+
+            Guid guid = id;
+
+            Assert.Equal(id.Value, guid);
+        }
+        #endregion
+
         #region ApplicationUserName
         [Fact]
         public void EmptyApplicationUserName_ShouldReturnEmptyApplicationUserNameException()
@@ -88,6 +117,8 @@ namespace DomainUnitTests
 
 
         #endregion
+
+        
     }
 
 }
