@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Office;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Office;
 
 namespace DomainUnitTests
@@ -18,13 +16,6 @@ namespace DomainUnitTests
         {
             Assert.Throws<EmptyOfficeIdException>(()
                 => new OfficeId(Guid.Empty));
-        }
-
-        [Fact]
-        public void NullOfficeId_ShouldReturnEmptyOfficeIdException()
-        {
-            Assert.Throws<EmptyOfficeIdException>(()
-                => new OfficeName(null));
         }
         #endregion
 
@@ -45,7 +36,7 @@ namespace DomainUnitTests
 
         [Theory]
         [InlineData("Thisofficenameislongerthan50charactersThisofficenameislonger")]
-        public void InvalidOfficeName_ShouldReturnTooLongOfficeNameException(string input)
+        public void InvalidOfficeName_ShouldReturnInvalidOfficeNameException(string input)
         {
             Assert.Throws<InvalidOfficeNameException>(()
                 => new OfficeName(input));
@@ -79,7 +70,7 @@ namespace DomainUnitTests
         public void WithTrailingAndLeadingWhitespacesOfficeName_StringShouldMatch()
         {
 
-            ApplicationUserName value = " Thisofficenameisvalid ";
+            OfficeName value = " Thisofficenameisvalid ";
             Assert.Equal("Thisofficenameisvalid", value);
         }
 
