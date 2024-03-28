@@ -14,7 +14,9 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
 
         public SubscriptionStartDate(DateTime value)
         {
-            if (value < DateTime.Now)
+            // since assigning value to SubscriptionStartDate is not fully instant we decrease minutes 
+            // so it won't return exception if we try assing datetime.Now
+            if (value < DateTime.Now.AddMinutes(-1))
                 throw new SubscriptionStartDateCannotBePastException(value);
 
             Value = value;  
@@ -23,7 +25,7 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
         public static implicit operator DateTime(SubscriptionStartDate startDate)
             => startDate.Value;
 
-        public static implicit operator SubscriptionStartDate(string startDate)
+        public static implicit operator SubscriptionStartDate(DateTime startDate)
             => new(startDate);
     }
 }
