@@ -13,11 +13,11 @@ namespace VirtualOffice.Domain.ValueObjects.Office
 
         public OfficeDescription(string value)
         {
-
-            if (value.Length > 200)
-                throw new InvalidOfficeDescriptionException(value);
-            else if(value is null)
+            if (value is null)
                 throw new OfficeDescriptionIsNullException();
+            else if (value.Length > 200)
+                throw new InvalidOfficeDescriptionException(value);
+            
 
             Value = value.Trim();
         }
