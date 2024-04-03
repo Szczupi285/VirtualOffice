@@ -9,7 +9,7 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    internal abstract record AbstractRecordName
+    public abstract record AbstractRecordName
     {
         public string Value { get; }
 
@@ -24,10 +24,10 @@ namespace VirtualOffice.Domain.Abstractions
             Value = value.Trim();
         }
 
+
         public static implicit operator string(AbstractRecordName name)
             => name.Value;
 
-        public static implicit operator AbstractRecordName(string name)
-            => name;
+        
     }
 }
