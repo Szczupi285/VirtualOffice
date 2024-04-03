@@ -24,10 +24,10 @@ namespace VirtualOffice.Domain.Abstractions
             Value = value.Trim();
         }
 
-
+        
         public static implicit operator string(AbstractRecordName name)
             => name.Value;
+        // since we can't create new instances in abstract class we have to make implicit conversion in derived record
 
-        
     }
 }

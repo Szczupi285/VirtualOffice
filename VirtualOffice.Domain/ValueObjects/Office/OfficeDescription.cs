@@ -13,7 +13,7 @@ namespace VirtualOffice.Domain.ValueObjects.Office
         public OfficeDescription(string value) : base(value, 200, new OfficeDescriptionIsNullException(), new InvalidOfficeDescriptionException(value))
         {
         }
-        // since we can't create new instances in abstract class we have to make implicit conversion here
+        
         public static implicit operator OfficeDescription(string name)
             => new(name);
     }
