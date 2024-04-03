@@ -7,6 +7,7 @@ using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace DomainUnitTests
 {
@@ -19,6 +20,27 @@ namespace DomainUnitTests
             Assert.Throws<EmptyOrganizationIdException>(()
                 => new OrganizationId(Guid.Empty));
         }
+
+        [Fact]
+        public void ValidOrganizationId_ValidGuidToOrganizationIdConversion_ShouldEqual()
+        {
+            var guid = Guid.NewGuid();
+
+            OrganizationId id = guid;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidOrganizationId_ValidOrganizationIdToGuidConversion_ShouldEqual()
+        {
+
+            OrganizationId id = new OrganizationId(Guid.NewGuid());
+
+            Guid guid = id;
+
+            Assert.Equal(id.Value, guid);
+        }
+
         #endregion
 
         #region OrganizationName

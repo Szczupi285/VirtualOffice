@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.Office;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace DomainUnitTests
 {
@@ -16,6 +17,26 @@ namespace DomainUnitTests
         {
             Assert.Throws<EmptyOfficeIdException>(()
                 => new OfficeId(Guid.Empty));
+        }
+
+        [Fact]
+        public void ValidOfficeId_ValidGuidToOfficeIdConversion_ShouldEqual()
+        {
+            var guid = Guid.NewGuid();
+
+            OfficeId id = guid;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidOfficeId_ValidOfficeIdToGuidConversion_ShouldEqual()
+        {
+
+            OfficeId id = new OfficeId(Guid.NewGuid());
+
+            Guid guid = id;
+
+            Assert.Equal(id.Value, guid);
         }
         #endregion
 
