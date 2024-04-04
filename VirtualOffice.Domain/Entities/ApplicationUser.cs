@@ -12,8 +12,6 @@ namespace VirtualOffice.Domain.Entities
 
         private Organization _organization; 
 
-        private ICollection<Office> _offices;
-
         // private Permissions _permissions;
 
         // private Settings _settings;

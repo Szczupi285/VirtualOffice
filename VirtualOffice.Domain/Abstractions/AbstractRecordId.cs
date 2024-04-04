@@ -23,6 +23,7 @@ namespace VirtualOffice.Domain.Abstractions
 
         public static implicit operator Guid(AbstractRecordId id)
             => id.Value;
+        // since we can't create new instances in abstract class we have to make implicit conversion in derived record
 
     }
 }

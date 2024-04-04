@@ -18,11 +18,16 @@ namespace VirtualOffice.Domain.Entities
 
         private OrganizationUserLimit _userLimit;
 
-        private OrganizationUsedSlots _UsedSlots;
+        private OrganizationUsedSlots _usedSlots;
+
+        private ICollection<Office> _offices;
+
+        // consider this relation since office already contains 
+        // users list, but we would have to check distinct users every time
+        // we add user to office. Since one user may be a member of many offices
+        private ICollection<ApplicationUser> _organizationUsers;
 
         private Subscription subscription;
-
-        private ICollection<ApplicationUser> _organizationUsers;
 
         private bool _isUnlimited;
 
