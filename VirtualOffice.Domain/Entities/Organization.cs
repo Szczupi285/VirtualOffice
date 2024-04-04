@@ -17,6 +17,7 @@ namespace VirtualOffice.Domain.Entities
 
         public OrganizationName _name { get; private set; }
 
+        //rethink
         public OrganizationUserLimit _userLimit { get => (ushort)_subscription._subType; }
 
         public OrganizationUsedSlots _usedSlots { get; private set; }
@@ -47,7 +48,7 @@ namespace VirtualOffice.Domain.Entities
          
         public void AddUser(ApplicationUser user)
         {
-            var aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
+            bool aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
 
             if (aleadyExists)
                 throw new UserIsAlreadyMemberOfThisOrganizationException(user.Id);
@@ -57,10 +58,34 @@ namespace VirtualOffice.Domain.Entities
             _organizationUsers.Add(user);
             _usedSlots++;
         }
+        public void AddRangeUsers(ICollection<ApplicationUser> users)
+        {
+            foreach (ApplicationUser user in users)
+            {
+                AddUser(user);
+            }
+        }
+
+        public void RemoveUser(ApplicationUser user) 
+        { 
+            bool aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
+
+            if (aleadyExists)
+                _organizationUsers.Remove(user);
+            else
+                throw new UserIsNotAMemberOfThisOrganization(user.Id);
+        }
+        public void RemoveRangeMembers(ICollection<ApplicationUser> users)
+        {
+            foreach (ApplicationUser user in users)
+            {
+                RemoveUser(user);
+            }
+        }
 
 
 
-        
+
 
     }
 }

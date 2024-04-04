@@ -29,7 +29,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void AddMember(ApplicationUser user) 
         {
-            var alreadyExists = _members.Any(i => i.Id == user.Id);
+            bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
             {
@@ -40,7 +40,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void AddRangeMembers(ICollection<ApplicationUser> users)
         {
-            foreach (var user in users) 
+            foreach (ApplicationUser user in users) 
             { 
                 AddMember(user);
             }
@@ -48,7 +48,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void RemoveMember(ApplicationUser user) 
         {
-            var alreadyExists = _members.Any(i => i.Id == user.Id);
+            bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
             {
@@ -59,7 +59,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void RemoveRangeMembers(ICollection<ApplicationUser> users)
         {
-            foreach(var user in users)
+            foreach(ApplicationUser user in users)
             {
                 RemoveMember(user);
             }
