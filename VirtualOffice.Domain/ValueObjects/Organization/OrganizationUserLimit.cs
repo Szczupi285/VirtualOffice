@@ -15,6 +15,8 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
         {
             if (value is 0 or > 1000)
                 throw new InvalidOrganizationUserLimitException(value);
+            else if (value < 0)
+                throw new OrganizationSubTypeIsUnlimitedDontRefeerToLimit();
 
             Value = value;
         }

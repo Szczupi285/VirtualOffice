@@ -9,9 +9,9 @@ namespace VirtualOffice.Domain.Entities
 
         private SubscriptionStartDate _subStartDate;
 
-         private SubscriptionEndDate _subEndDate;
+        private SubscriptionEndDate _subEndDate;
 
-        private SubscriptionTypeEnum _subType;
+        public SubscriptionTypeEnum _subType { get; private set; }
 
         internal Subscription()
         {

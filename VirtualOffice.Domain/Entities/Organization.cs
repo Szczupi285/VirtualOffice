@@ -4,36 +4,63 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
 {
 
-    public class Organization
+    public class Organization 
     {
         public OrganizationId Id { get; private set; }
 
-        private OrganizationName _name;
+        public OrganizationName _name { get; private set; }
 
-        private OrganizationUserLimit _userLimit;
+        public OrganizationUserLimit _userLimit { get => (ushort)_subscription._subType; }
 
-        private OrganizationUsedSlots _usedSlots;
+        public OrganizationUsedSlots _usedSlots { get; private set; }
 
-        private ICollection<Office> _offices;
+        public ICollection<Office> _offices { get; private set; }
 
         // consider this relation since office already contains 
         // users list, but we would have to check distinct users every time
         // we add user to office. Since one user may be a member of many offices
-        private ICollection<ApplicationUser> _organizationUsers;
+        public ICollection<ApplicationUser> _organizationUsers { get; private set; }
 
-        private Subscription subscription;
+        public Subscription _subscription { get; private set; }
 
         private bool _isUnlimited;
 
-        internal Organization()
+        internal Organization(OrganizationId id, OrganizationName name, OrganizationUsedSlots usedSlots,
+             ICollection<Office> offices, ICollection<ApplicationUser> organizationUsers
+            ,Subscription subscription, bool isUnlimited)
         {
+            Id = id;
+            _name = name;
+            _usedSlots = usedSlots;
+            _offices = offices;
+            _organizationUsers = organizationUsers;
+            _subscription = subscription;
+            _isUnlimited = isUnlimited;
         }
+         
+        public void AddUser(ApplicationUser user)
+        {
+            var aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
+
+            if (aleadyExists)
+                throw new UserIsAlreadyMemberOfThisOrganizationException(user.Id);
+            else if (!_isUnlimited && _usedSlots >= _userLimit)
+                throw new OrganizationNotEnoughSlotsException();
+            
+            _organizationUsers.Add(user);
+            _usedSlots++;
+        }
+
+
+
+        
 
     }
 }
