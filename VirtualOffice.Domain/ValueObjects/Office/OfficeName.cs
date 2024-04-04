@@ -3,29 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.ValueObjects.Office
 {
-    public sealed record OfficeName
+    public sealed record OfficeName : AbstractRecordName
     {
-        public string Value { get; }
-
-        public OfficeName(string value)
+        public OfficeName(string value) : base(value, 50, new EmptyOfficeNameException(), new InvalidOfficeNameException(value))
         {
-
-            if (string.IsNullOrWhiteSpace(value))
-                throw new EmptyOfficeNameException();
-            else if (value.Length > 50)
-                throw new InvalidOfficeNameException(value);
-
-            Value = value.Trim();
         }
-
-        public static implicit operator string(OfficeName name)
-            => name.Value;
 
         public static implicit operator OfficeName(string name)
             => new(name);

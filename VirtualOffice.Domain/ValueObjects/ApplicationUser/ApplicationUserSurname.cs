@@ -13,8 +13,6 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
                 throw new InvalidApplicationUserSurnameException(value);
         }
 
-         
-
         public static implicit operator ApplicationUserSurname(string surname)
             => new(surname);
 
