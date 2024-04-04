@@ -3,29 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.ValueObjects.Office
 {
-    public sealed record OfficeId 
+    public sealed record OfficeId : AbstractRecordId
     {
-        public Guid Value { get; }
-
-        public OfficeId(Guid value)
+        public OfficeId(Guid value) : base(value, new EmptyOfficeIdException())
         {
-            if (value == Guid.Empty)
-                throw new EmptyOfficeIdException();
-
-            Value = value;
         }
-
-        public static implicit operator Guid(OfficeId id)
-            => id.Value;
 
         public static implicit operator OfficeId(Guid id)
             => new(id);
-
     }
 }
