@@ -13,13 +13,13 @@ namespace VirtualOffice.Domain.Abstractions
     {
         public string Value { get; }
 
-        public AbstractRecordName(string value, int Length, params VirtualOfficeException[] VirtOfficeEx)
+        public AbstractRecordName(string value, int Length, params VirtualOfficeException[] virtOfficeEx)
         {
 
             if (string.IsNullOrWhiteSpace(value))
-                throw VirtOfficeEx[0];
+                throw virtOfficeEx[0];
             else if (value.Length > Length)
-                throw VirtOfficeEx[1];
+                throw virtOfficeEx[1];
 
             Value = value.Trim();
         }

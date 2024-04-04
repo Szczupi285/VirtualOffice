@@ -1,21 +1,13 @@
-﻿using VirtualOffice.Domain.Exceptions.ApplicationUser;
+﻿using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.Exceptions.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
-    public sealed record ApplicationUserId
+    public sealed record ApplicationUserId : AbstractRecordId
     {
-        public Guid Value { get; }
-
-        public ApplicationUserId(Guid value)
+        public ApplicationUserId(Guid value) : base(value, new EmptyApplicationUserIdException())
         {
-            if (value == Guid.Empty)
-                throw new EmptyApplicationUserIdException();
-
-            Value = value;
         }
-
-        public static implicit operator Guid(ApplicationUserId id)
-            => id.Value;
 
         public static implicit operator ApplicationUserId(Guid id)
             => new(id);
