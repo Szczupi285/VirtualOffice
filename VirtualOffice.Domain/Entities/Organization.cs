@@ -78,12 +78,17 @@ namespace VirtualOffice.Domain.Entities
 
         public void RemoveUser(ApplicationUser user) 
         { 
-            bool aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
+            bool alreadyExists = _organizationUsers.Any(u => u.Id == user.Id);
 
-            if (aleadyExists)
+            
+            if (alreadyExists && _organizationUsers.Count <= 1)
+                throw new CantRemoveOnlyUserException(user);
+            else if (alreadyExists)
                 _organizationUsers.Remove(user);
             else
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
+
+
         }
         public void RemoveRangeUsers(ICollection<ApplicationUser> users)
         {

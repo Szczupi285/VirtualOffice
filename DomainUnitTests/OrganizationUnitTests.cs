@@ -15,6 +15,7 @@ namespace DomainUnitTests
 {
     public class OrganizationUnitTests
     {
+
         #region OrganizationId
         [Fact]
         public void EmptyOrganizationId_ShouldReturnEmptyOrganizationIdException()
@@ -444,6 +445,99 @@ namespace DomainUnitTests
                 Assert.Contains(user, org._organizationUsers);
             }
         }
+        #endregion
+
+        #region Removing users
+
+        [Fact]
+        public void RemoveUser_ShouldNotContainUser()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
+
+            org.RemoveUser(user);
+
+            Assert.DoesNotContain(user, org._organizationUsers);
+        }
+
+        [Fact]
+        public void RemoveUser_OnlyUser_ShouldReturnCantRemoveOnlyUserException()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { user }, subscription);
+
+            Assert.Throws<CantRemoveOnlyUserException>(() => org.RemoveUser(user));
+        }
+
+        [Fact]
+        public void RemoveUser_NotAMember_ShouldReturnUserIsNotAMemberOfThisOrganization()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => org.RemoveUser(user));
+        }
+
+        [Fact]
+        public void RemoveRangeUsers_ShouldNotContainUsers()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+
+            Guid guidu1 = Guid.NewGuid();
+            Guid guidu2 = Guid.NewGuid();
+            Guid guidu3 = Guid.NewGuid();
+            Guid guidu4 = Guid.NewGuid();
+
+            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
+            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
+
+            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            {
+               user1,
+               user2,
+               user3,
+               user4,
+            };
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> 
+            { 
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                user1,
+                user2,
+                user3,
+                user4,
+            }, subscription);
+
+          
+
+            org.RemoveRangeUsers(usersToRemove);
+
+            foreach (var user in usersToRemove)
+            {
+                Assert.DoesNotContain(user, org._organizationUsers);
+            }
+        }
+
         #endregion
     }
 }
