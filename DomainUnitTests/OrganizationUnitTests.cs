@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Office;
@@ -79,6 +81,63 @@ namespace DomainUnitTests
             Assert.Throws<InvalidOrganizationUserLimitException>(()
                 => new OrganizationUserLimit(input));
         }
+        [Fact]
+        public void ValidOrganizationUserLimitUnlimited_ShouldBeNull()
+        {
+            OrganizationUserLimit value = null!;
+            Assert.Null(value);
+        }
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypeUnlimited()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+
+            Assert.Null(org._userLimit);
+        }
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypeTrial()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Trial);
+            Guid guid2 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+
+            Assert.True(3 == org._userLimit);
+        }
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypeBasic()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Basic);
+            Guid guid2 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+
+            Assert.True(30 == org._userLimit);
+        }
+
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypeEnterprise()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Enterprise);
+            Guid guid2 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+
+            Assert.True(100 == org._userLimit);
+        }
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypePremium()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Premium);
+            Guid guid2 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+
+            Assert.True(500 == org._userLimit);
+        }
 
         [Theory]
         [InlineData(1)]
@@ -94,7 +153,7 @@ namespace DomainUnitTests
         #region OrganizationUsedSlots
         [Theory]
         [InlineData(0)]
-        public void InvalidOrganizationUsedSlots_ShouldReturnInvalidOrganizationUsedSlotsException(uint input)
+        public void InvalidOrganizationUsedSlots_ShouldReturnInvalidOrganizationUsedSlotsException(ushort input)
         {
             Assert.Throws<InvalidOrganizationUsedSlotsException>(()
                 => new OrganizationUsedSlots(input));
@@ -103,11 +162,16 @@ namespace DomainUnitTests
         [Theory]
         [InlineData(1)]
         [InlineData(1000)]
-        public void ValidOrganizationUsedSlots_NumberShouldMatch(uint input)
+        public void ValidOrganizationUsedSlots_NumberShouldMatch(ushort input)
         {
             OrganizationUserLimit value = (OrganizationUserLimit)input;
             Assert.Equal(input, value.Value);
         }
+        #endregion
+
+        #region _isUnlimited
+
+       
         #endregion
     }
 }

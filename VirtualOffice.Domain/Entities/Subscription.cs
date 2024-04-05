@@ -13,9 +13,13 @@ namespace VirtualOffice.Domain.Entities
 
         public SubscriptionTypeEnum _subType { get; private set; }
 
-        internal Subscription()
+        internal Subscription(SubscriptionId id, SubscriptionStartDate startDate, 
+            SubscriptionEndDate endDate, SubscriptionTypeEnum type)
         {
-
+            Id = id;
+            _subStartDate = startDate;
+            _subEndDate = endDate;
+            _subType = type;
         }
     }
 }

@@ -11,20 +11,17 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
     {
         public ushort? Value { get; }
 
-        public OrganizationUserLimit(ushort value)
+        public OrganizationUserLimit(ushort? value)
         {
             if (value is 0 or > 1000)
                 throw new InvalidOrganizationUserLimitException(value);
-            else if (value < 0)
-                Value = null;
-            else
-                Value = value;
+            Value = value;
         }
 
         public static implicit operator ushort?(OrganizationUserLimit userLimit)
             => userLimit.Value;
 
-        public static implicit operator OrganizationUserLimit(ushort userLimit)
+        public static implicit operator OrganizationUserLimit(ushort? userLimit)
             => new(userLimit);
     }
 }

@@ -11,9 +11,18 @@ namespace VirtualOffice.Domain.Entities
         public OrganizationName _name { get; private set; }
 
         //rethink
-        public OrganizationUserLimit _userLimit { get => (ushort)_subscription._subType; }
+        public OrganizationUserLimit _userLimit {
+            get
+            {
+                if(_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
+                {
+                    return null!;
+                }
+                return (ushort?)_subscription._subType;
+            }
+        }  
 
-        public OrganizationUsedSlots _usedSlots { get; private set; }
+        public OrganizationUsedSlots _usedSlots { get => (uint)_organizationUsers.Count(); } 
 
         public ICollection<Office> _offices { get; private set; }
 
@@ -34,13 +43,12 @@ namespace VirtualOffice.Domain.Entities
             }
         }
 
-        internal Organization(OrganizationId id, OrganizationName name, OrganizationUsedSlots usedSlots,
+        internal Organization(OrganizationId id, OrganizationName name,
              ICollection<Office> offices, ICollection<ApplicationUser> organizationUsers
             ,Subscription subscription)
         {
             Id = id;
             _name = name;
-            _usedSlots = usedSlots;
             _offices = offices;
             _organizationUsers = organizationUsers;
             _subscription = subscription;
@@ -56,7 +64,6 @@ namespace VirtualOffice.Domain.Entities
                 throw new OrganizationNotEnoughSlotsException();
             
             _organizationUsers.Add(user);
-            _usedSlots++;
         }
         public void AddRangeUsers(ICollection<ApplicationUser> users)
         {
