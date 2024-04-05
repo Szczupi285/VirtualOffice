@@ -364,5 +364,86 @@ namespace DomainUnitTests
 
 
         #endregion
+
+        #region Adding users
+        [Fact]
+        public void AddUser_ShouldContainUser()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+
+            org.AddUser(user);
+
+            Assert.Contains(user, org._organizationUsers);
+        }
+        
+        [Fact]
+        public void AddUser_WhenUserAlreadyAdded_ShouldThrowException()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+
+            org.AddUser(user);
+
+            Assert.Throws<UserIsAlreadyMemberOfThisOrganizationException>(() => org.AddUser(user));
+        }
+
+        [Fact]
+        public void AddUser_WhenNotEnoughtSlots_ShouldThrowException()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Trial);
+            Guid guid2 = Guid.NewGuid();
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+
+            org.AddUser(user);
+            org.AddUser(user1);
+
+            Assert.Throws<OrganizationNotEnoughSlotsException>(() => org.AddUser(user2));
+        }
+        [Fact]
+        public void AddRangeUsers_ShouldContainUsers()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            {
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+            };
+
+            org.AddRangeUsers(usersToAdd);
+
+            foreach (var user in usersToAdd)
+            {
+                Assert.Contains(user, org._organizationUsers);
+            }
+        }
+        #endregion
     }
 }
