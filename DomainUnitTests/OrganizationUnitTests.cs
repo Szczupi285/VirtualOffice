@@ -93,9 +93,25 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
             Guid guid2 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.Null(org._userLimit);
+        }
+        
+        // since user with sub type none should't be able to use application at all we're throwing exception for userLimit 0 which is equal to no subscribtion
+        [Fact]
+        public void OrganiazationUserLimitGetSubTypeNone_ShouldThrowInvalidOrganizationUserLimitException()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+
+            Assert.Throws<InvalidOrganizationUserLimitException>(()
+                => 0 == org._userLimit);
         }
         [Fact]
         public void OrganiazationUserLimitGetSubTypeTrial()
@@ -103,7 +119,8 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Trial);
             Guid guid2 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(3 == org._userLimit);
         }
@@ -113,7 +130,8 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Basic);
             Guid guid2 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(30 == org._userLimit);
         }
@@ -124,7 +142,8 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Enterprise);
             Guid guid2 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(100 == org._userLimit);
         }
@@ -134,7 +153,8 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Premium);
             Guid guid2 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { }, subscription);
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(500 == org._userLimit);
         }
@@ -171,7 +191,178 @@ namespace DomainUnitTests
 
         #region _isUnlimited
 
-       
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypeUnlimited_ShouldReturnTrue()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+
+            Assert.True(org.IsUnlimited());
+        }
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypeNone_ShouldReturnFalse()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.None);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.False(org.IsUnlimited());
+        }
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypeTrial_ShouldReturnFalse()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Trial);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.False(org.IsUnlimited());
+        }
+
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypeBasic_ShouldReturnFalse()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Basic);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.False(org.IsUnlimited());
+        }
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypeEntreprise_ShouldReturnFalse()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Enterprise);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.False(org.IsUnlimited());
+        }
+        [Fact]
+        public void OrganiazationIsUnlimited_SubTypePremium_ShouldReturnFalse()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Premium);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+
+            Assert.False(org.IsUnlimited());
+        }
+
+
+        #endregion
+
+        #region _usedSlots
+        [Fact]
+        public void AddUser_UsedSlotsShouldIncrement_ShouldReturnTrue()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            uint usersPreAdd = org._usedSlots;
+            org.AddUser(new ApplicationUser(Guid.NewGuid(), "Name", "surname"));
+
+            Assert.True(usersPreAdd == org._usedSlots - 1);
+        }
+
+        [Fact]
+        public void AddRangeUsers_UsedSlotsShouldIncrement_ShouldReturnTrue()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            uint usersPreAdd = org._usedSlots;
+            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            {
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+            };
+            org.AddRangeUsers(usersToAdd);
+
+            Assert.True(usersPreAdd == org._usedSlots - 4);
+        }
+
+
+        [Fact]
+        public void RemoveUser_UsedSlotsShouldDecrement_ShouldReturnTrue()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
+            new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+
+            uint usersPreRem = org._usedSlots;
+            org.RemoveUser(org._organizationUsers.First(u => u.Id.Equals(guid3)));
+
+            Assert.True(usersPreRem == org._usedSlots + 1);
+        }
+
+        [Fact]
+        public void RemoveRangeUsers_UsedSlotsShouldDecrement_ShouldReturnTrue()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Subscription subscription = new Subscription(guid1, DateTime.Now, DateTime.Now.AddDays(31), SubscriptionTypeEnum.Unlimited);
+            Guid guid2 = Guid.NewGuid();
+            Guid guidu1 = Guid.NewGuid();
+            Guid guidu2 = Guid.NewGuid();
+            Guid guidu3 = Guid.NewGuid();
+            Guid guidu4 = Guid.NewGuid();
+            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
+            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
+
+            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            {
+                user1,
+                user2, 
+                user3,
+                user4,
+            };
+
+            Organization org = new Organization(guid2, "Organization", new List<Office> { },
+            new List<ApplicationUser>()
+            {
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                user1,
+                user2,
+                user3,
+                user4,
+            }, 
+            subscription);
+
+            uint usersPreRem = org._usedSlots;
+            org.RemoveRangeUsers(usersToRemove);
+
+            Assert.True(usersPreRem == org._usedSlots + 4);
+        }
+
+
         #endregion
     }
 }

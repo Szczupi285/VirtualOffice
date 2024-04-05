@@ -10,7 +10,6 @@ namespace VirtualOffice.Domain.Entities
 
         public OrganizationName _name { get; private set; }
 
-        //rethink
         public OrganizationUserLimit _userLimit {
             get
             {
@@ -47,11 +46,15 @@ namespace VirtualOffice.Domain.Entities
              ICollection<Office> offices, ICollection<ApplicationUser> organizationUsers
             ,Subscription subscription)
         {
+            if(organizationUsers.Count == 0 )
+                throw new OrganizationUsersCollectionCannotBeEmptyException();
+
             Id = id;
             _name = name;
             _offices = offices;
             _organizationUsers = organizationUsers;
             _subscription = subscription;
+
         }
          
         public void AddUser(ApplicationUser user)
@@ -82,13 +85,14 @@ namespace VirtualOffice.Domain.Entities
             else
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
         }
-        public void RemoveRangeMembers(ICollection<ApplicationUser> users)
+        public void RemoveRangeUsers(ICollection<ApplicationUser> users)
         {
             foreach (ApplicationUser user in users)
             {
                 RemoveUser(user);
             }
         }
+        internal bool IsUnlimited() => _isUnlimited;
 
 
 
