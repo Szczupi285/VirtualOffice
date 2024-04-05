@@ -14,16 +14,14 @@ namespace VirtualOffice.Domain.Entities
 
         // private ActivityLog _activityLog;
 
-        private Organization _organization;
+        internal ICollection<ApplicationUser> _members;
 
-        private ICollection<ApplicationUser> _members;
-
-        private Office(OfficeId id, OfficeName name, OfficeDescription description, Organization organization, ICollection<ApplicationUser> members) 
+        internal Office(OfficeId id, OfficeName name, OfficeDescription description, ICollection<ApplicationUser> members) 
         { 
             Id= id;
             _officeName = name;
             _description = description;
-            _organization = organization;
+           
             _members = members;
         }   
 

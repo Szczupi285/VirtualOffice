@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Subscription;
@@ -11,6 +13,13 @@ namespace DomainUnitTests
 {
     public class OfficeUnitTests
     {
+        Office _office;
+
+        public OfficeUnitTests()
+        {
+            _office = new Office(Guid.NewGuid(), "Office", "Description", new List<ApplicationUser> { });
+        }
+
         #region OfficeId
         [Fact]
         public void EmptyOfficeId_ShouldReturnEmptyOfficeIdException()
@@ -127,6 +136,51 @@ namespace DomainUnitTests
             OfficeDescription value = input;
             Assert.Equal(input, value);
         }
+        #endregion
+
+        #region Adding Members
+
+        [Fact]
+        public void AddMember_ShouldContainMember()
+        {
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            _office.AddMember(member);
+            
+            Assert.Contains(member, _office._members);
+        }
+
+        [Fact]
+        public void AddMember_AlreadyMember_ShouldThrowUserIsAlreadyMemberOfThisOfficeException()
+        {
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            _office.AddMember(member);
+
+            Assert.Throws<UserIsAlreadyMemberOfThisOfficeException>(() => _office.AddMember(member));
+        }
+        [Fact]
+        public void AddRangeMembers_ShouldContainMembers()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
+
+            List<ApplicationUser> memberList = new List<ApplicationUser>
+            {
+                user1,
+                user2,
+                user3,
+            };
+            _office.AddRangeMembers(memberList);
+
+            foreach(ApplicationUser member in memberList)
+            {
+                Assert.Contains(member, _office._members);
+            }
+        }
+
         #endregion
 
     }
