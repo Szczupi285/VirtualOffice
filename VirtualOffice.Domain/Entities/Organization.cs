@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using VirtualOffice.Domain.Exceptions.Organization;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+﻿using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
@@ -31,11 +24,19 @@ namespace VirtualOffice.Domain.Entities
 
         public Subscription _subscription { get; private set; }
 
-        private bool _isUnlimited;
+        private bool _isUnlimited 
+        {
+            get
+            {
+                if(_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
+                    return true;
+                return false;
+            }
+        }
 
         internal Organization(OrganizationId id, OrganizationName name, OrganizationUsedSlots usedSlots,
              ICollection<Office> offices, ICollection<ApplicationUser> organizationUsers
-            ,Subscription subscription, bool isUnlimited)
+            ,Subscription subscription)
         {
             Id = id;
             _name = name;
@@ -43,7 +44,6 @@ namespace VirtualOffice.Domain.Entities
             _offices = offices;
             _organizationUsers = organizationUsers;
             _subscription = subscription;
-            _isUnlimited = isUnlimited;
         }
          
         public void AddUser(ApplicationUser user)
