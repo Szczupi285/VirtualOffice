@@ -183,5 +183,93 @@ namespace DomainUnitTests
 
         #endregion
 
+        #region Removing Members
+
+        [Fact]
+        public void RemoveMember_ShouldNotContainMember()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
+
+            List<ApplicationUser> memberList = new List<ApplicationUser>
+            {
+                user1,
+                user2,
+                user3,
+            };
+            _office.AddRangeMembers(memberList);
+
+            _office.RemoveMember(user1);
+
+            Assert.DoesNotContain(user1, _office._members);
+        }
+
+        [Fact]
+        public void RemoveMember_UserNotFound_ShouldThrowUserIsNotMemberOfThisOfficeException()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
+
+            List<ApplicationUser> memberList = new List<ApplicationUser>
+            {
+                user1,
+                user2,
+                user3,
+            };
+            _office.AddRangeMembers(memberList);
+
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+
+            Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
+        }
+        [Fact]
+        public void RemoveMember_EmptyCollectionOfMembers_ShouldThrowUserIsNotMemberOfThisOfficeException()
+        {
+
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+
+            Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
+        }
+
+        [Fact]
+        public void RemoveRangeMembers_ShouldNotContainMembers()
+        {
+            Guid guid1 = Guid.NewGuid();
+            Guid guid2 = Guid.NewGuid();
+            Guid guid3 = Guid.NewGuid();
+            Guid guid4 = Guid.NewGuid();
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
+            ApplicationUser user4 = new ApplicationUser(guid4, "name", "surname");
+
+            List<ApplicationUser> memberList = new List<ApplicationUser>
+            {
+                user1,
+                user2,
+                user3,
+                user4
+            };
+
+            _office.AddRangeMembers(memberList);
+
+
+            _office.RemoveRangeMembers(memberList);
+            foreach (ApplicationUser member in memberList)
+            {
+                Assert.DoesNotContain(member, _office._members);
+            }
+        }
+
+        #endregion
+
     }
 }

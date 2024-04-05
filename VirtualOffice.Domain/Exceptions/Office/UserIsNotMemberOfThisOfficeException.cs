@@ -7,10 +7,10 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Office
 {
-    public class UserIsNotMemberOfThisOffice : VirtualOfficeException
+    public class UserIsNotMemberOfThisOfficeException : VirtualOfficeException
     {
         Guid Value;
-        public UserIsNotMemberOfThisOffice(Guid value) : base($"User with Id: {value} is not a member of this office")
+        public UserIsNotMemberOfThisOfficeException(Guid value) : base($"User with Id: {value} is not a member of this office")
         {
             Value = value;
         }

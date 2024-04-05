@@ -13,8 +13,9 @@ namespace VirtualOffice.Domain.Entities
         public OfficeDescription _description { get; private set; }
 
         // private ActivityLog _activityLog;
-
-        internal ICollection<ApplicationUser> _members;
+        
+        // unlike in Organization situation, Office might not have any members/users assigned to it
+        internal ICollection<ApplicationUser> _members { get; private set; }
 
         internal Office(OfficeId id, OfficeName name, OfficeDescription description, ICollection<ApplicationUser> members) 
         { 
@@ -52,7 +53,8 @@ namespace VirtualOffice.Domain.Entities
             {
                 _members.Remove(user);
             }
-            throw new UserIsAlreadyMemberOfThisOfficeException(user.Id);
+            else
+                throw new UserIsNotMemberOfThisOfficeException(user.Id);
         }
 
         public void RemoveRangeMembers(ICollection<ApplicationUser> users)
