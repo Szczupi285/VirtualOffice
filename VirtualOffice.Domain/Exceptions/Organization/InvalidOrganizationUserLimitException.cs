@@ -15,6 +15,5 @@ namespace VirtualOffice.Domain.Exceptions.Organization
             _value = value;
         }
 
-
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata.Ecma335;
 using VirtualOffice.Domain.Exceptions.Office;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Office;
 
 namespace VirtualOffice.Domain.Entities
@@ -64,6 +66,14 @@ namespace VirtualOffice.Domain.Entities
                 RemoveMember(user);
             }
         }
+
+        public ApplicationUser GetMemberById(ApplicationUserId id)
+            => _members.First(u => u.Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
+
+        public ApplicationUser GetMemberBySurname(ApplicationUserSurname surname)
+            => _members.First(u => u._surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
+
+        public ICollection<ApplicationUser> GetAllMembers() => _members;
 
     }
     

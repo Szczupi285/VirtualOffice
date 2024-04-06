@@ -6,11 +6,9 @@ namespace VirtualOffice.Domain.Entities
     {
         public ApplicationUserId Id { get; private set; }
 
-        private ApplicationUserName _name;
+        public ApplicationUserName _name { get; private set; }
 
-        private ApplicationUserSurname _surname;
-
-        private Organization? _organization; 
+        public ApplicationUserSurname _surname { get; private set; }
 
         // private Permissions _permissions;
 
