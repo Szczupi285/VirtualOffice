@@ -271,5 +271,62 @@ namespace DomainUnitTests
 
         #endregion
 
+        #region Get Members
+        [Fact]
+        public void GetMemberById_MemberFound_ShouldReturnUser()
+        {
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            _office.AddMember(member);
+
+            ApplicationUser foundMember = _office.GetMemberById(member.Id);
+
+            Assert.Equal(member, foundMember);
+        }
+        [Fact]
+        public void GetMemberById_MemberNotFound_ShouldThrowOfficeMemberNotFoundException()
+        {
+            Assert.Throws<OfficeMemberNotFoundException>(()
+                => _office.GetMemberById(Guid.NewGuid()));
+        }
+
+        [Fact]
+        public void GetMemberBySurname_MemberFound_ShouldReturnUser()
+        {
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            _office.AddMember(member);
+
+            ApplicationUser foundMember = _office.GetMemberBySurname(member._surname);
+
+            Assert.Equal(member, foundMember);
+        }
+        [Fact]
+        public void GetMemberBySurname_MemberNotFound_ShouldThrowOfficeMemberNotFoundException()
+        {
+            Assert.Throws<OfficeMemberNotFoundException>(()
+                => _office.GetMemberBySurname(("NotAMemberSurname")));
+        }
+        [Fact]
+        public void GetAllMembers_ShouldReturnAllMembers()
+        {
+            List<ApplicationUser> users = new List<ApplicationUser>
+            {
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
+            };
+
+            _office.AddRangeMembers(users);
+
+            ICollection<ApplicationUser> members = _office.GetAllMembers();
+
+            foreach(var  member in members)
+            {
+                Assert.Contains(member, users);
+            }
+            
+        }
+
+        #endregion
+
     }
 }

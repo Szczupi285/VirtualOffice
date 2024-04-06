@@ -68,10 +68,10 @@ namespace VirtualOffice.Domain.Entities
         }
 
         public ApplicationUser GetMemberById(ApplicationUserId id)
-            => _members.First(u => u.Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
+            => _members.FirstOrDefault(u => u.Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
 
         public ApplicationUser GetMemberBySurname(ApplicationUserSurname surname)
-            => _members.First(u => u._surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
+            => _members.FirstOrDefault(u => u._surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
 
         public ICollection<ApplicationUser> GetAllMembers() => _members;
 
