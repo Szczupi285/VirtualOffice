@@ -201,6 +201,65 @@ namespace DomainUnitTests
             Assert.Equal(startDate, dt);
         }
 
+        [Fact]
+        public void SubscriptionStartDate_LessThanOperator_CompareLessThan_ReturnsTrue()
+        {
+            // Arrange
+            SubscriptionStartDate StartDate1 = new SubscriptionStartDate(DateTime.Now.AddDays(32));
+            SubscriptionStartDate StartDate2 = new SubscriptionStartDate(DateTime.Now.AddDays(45));
+
+            // Act & Assert
+            Assert.True(StartDate1 < StartDate2);
+        }
+
+        [Fact]
+        public void SubscriptionStartDate_GreaterThanOperator_CompareGreaterThan_ReturnsTrue()
+        {
+            // Arrange
+            SubscriptionStartDate StartDate1 = new SubscriptionStartDate(DateTime.Now.AddDays(45));
+            SubscriptionStartDate StartDate2 = new SubscriptionStartDate(DateTime.Now.AddDays(32));
+
+            // Act & Assert
+            Assert.True(StartDate1 > StartDate2);
+        }
+
+        [Fact]
+        public void SubscriptionStartDate_LessThanOrEqualOperator_CompareLessThanOrEqualTo_ReturnsTrue()
+        {
+            // Arrange
+            SubscriptionStartDate StartDate1 = new SubscriptionStartDate(DateTime.Now.AddDays(32));
+            SubscriptionStartDate StartDate2 = new SubscriptionStartDate(DateTime.Now.AddDays(45));
+
+            // Act & Assert
+            Assert.True(StartDate1 <= StartDate2);
+        }
+
+        [Fact]
+        public void SubscriptionStartDate_GreaterThanOrEqualOperator_CompareGreaterThanOrEqualTo_ReturnsTrue()
+        {
+            // Arrange
+            SubscriptionStartDate StartDate1 = new SubscriptionStartDate(DateTime.Now.AddDays(45));
+            SubscriptionStartDate StartDate2 = new SubscriptionStartDate(DateTime.Now.AddDays(32));
+
+            // Act & Assert
+            Assert.True(StartDate1 >= StartDate2);
+        }
+
+        [Fact]
+        public void SubscriptionStartDate_CompareTo_Equal_ReturnsZero()
+        {
+            // Arrange
+            DateTime date = DateTime.Now.AddDays(32);
+            SubscriptionStartDate StartDate1 = new SubscriptionStartDate(date);
+            SubscriptionStartDate StartDate2 = new SubscriptionStartDate(date);
+
+            // Act
+            int result = StartDate1.CompareTo(StartDate2);
+
+            // Assert
+            Assert.Equal(0, result);
+        }
+
         #endregion
     }
 }

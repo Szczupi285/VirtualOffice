@@ -12,6 +12,6 @@ namespace DomainUnitTests
 {
     public class SubscriptionServiceUnitTests
     {
-
+      
     }
 }
