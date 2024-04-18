@@ -32,6 +32,7 @@ namespace VirtualOffice.Domain.Entities
 
         public Subscription _subscription { get; private set; }
 
+
         private bool _isUnlimited 
         {
             get
@@ -98,10 +99,6 @@ namespace VirtualOffice.Domain.Entities
             }
         }
         internal bool IsUnlimited() => _isUnlimited;
-
-
-
-
 
     }
 }
