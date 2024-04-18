@@ -18,7 +18,7 @@ namespace VirtualOffice.Domain.Services
 
         private void AddSubscription(Subscription subscription)
         {
-
+            
         }
 
         private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
