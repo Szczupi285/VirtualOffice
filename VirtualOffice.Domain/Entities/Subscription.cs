@@ -7,15 +7,26 @@ namespace VirtualOffice.Domain.Entities
     {
         public SubscriptionId Id { get; private set; }
 
-        private SubscriptionStartDate _subStartDate;
+        internal SubscriptionStartDate _subStartDate;
 
-         private SubscriptionEndDate _subEndDate;
+        internal SubscriptionEndDate _subEndDate;
 
-        private SubscriptionTypeEnum _subType;
+        public SubscriptionTypeEnum _subType { get; private set; }
 
-        internal Subscription()
+        public SubscriptionFee _subscriptionFee { get; private set; }
+
+        public bool _isPayed { get; private set; } = false;
+
+
+        internal Subscription(SubscriptionId id, SubscriptionStartDate startDate, 
+            SubscriptionEndDate endDate, SubscriptionTypeEnum type, decimal subscriptionFee, bool isPayed)
         {
-
+            Id = id;
+            _subStartDate = startDate;
+            _subEndDate = endDate;
+            _subType = type;
+            _subscriptionFee = subscriptionFee;
+            _isPayed = isPayed;
         }
     }
 }

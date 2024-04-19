@@ -8,7 +8,7 @@ using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.Subscription
 {
-    public sealed record SubscriptionStartDate
+    public sealed record SubscriptionStartDate : IComparable<SubscriptionStartDate>
     {
         public DateTime Value { get; }
 
@@ -27,5 +27,34 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
 
         public static implicit operator SubscriptionStartDate(DateTime startDate)
             => new(startDate);
+
+        public int CompareTo(SubscriptionStartDate? other)
+        {
+            if (this is null || other is null)
+                throw new ArgumentNullException();
+
+            if(this.Value > other.Value) return 1;
+            if(this.Value < other.Value) return -1;
+            return 0;
+        }
+        public static bool operator <(SubscriptionStartDate left, SubscriptionStartDate right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
+        public static bool operator >(SubscriptionStartDate left, SubscriptionStartDate right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+        public static bool operator <=(SubscriptionStartDate left, SubscriptionStartDate right)
+        {
+            return left.CompareTo(right) <= 0;
+        }
+
+        public static bool operator >=(SubscriptionStartDate left, SubscriptionStartDate right)
+        {
+            return left.CompareTo(right) >= 0;
+        }
+
     }
 }

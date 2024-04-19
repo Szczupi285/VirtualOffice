@@ -7,13 +7,10 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Organization
 {
-    public class InvalidOrganizationUserLimitException : VirtualOfficeException
+    public class OrganizationUsersCollectionCannotBeEmptyException : VirtualOfficeException
     {
-        public ushort? _value;
-        public InvalidOrganizationUserLimitException(ushort? value) : base($"Value: '{value}' is not in the range 1-1000")
+        public OrganizationUsersCollectionCannotBeEmptyException() : base($"Organization Users Collection cannot be empty")
         {
-            _value = value;
         }
-
     }
 }

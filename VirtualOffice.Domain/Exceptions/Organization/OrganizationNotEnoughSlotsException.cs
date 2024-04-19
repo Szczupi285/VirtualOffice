@@ -7,13 +7,10 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Organization
 {
-    public class InvalidOrganizationUserLimitException : VirtualOfficeException
+    public class OrganizationNotEnoughSlotsException : VirtualOfficeException
     {
-        public ushort? _value;
-        public InvalidOrganizationUserLimitException(ushort? value) : base($"Value: '{value}' is not in the range 1-1000")
+        public OrganizationNotEnoughSlotsException() : base($"Current Subscription does not support that many slots")
         {
-            _value = value;
         }
-
     }
 }

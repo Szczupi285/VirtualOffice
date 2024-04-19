@@ -9,25 +9,25 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    internal abstract record AbstractRecordName
+    public abstract record AbstractRecordName
     {
         public string Value { get; }
 
-        public AbstractRecordName(string value, int Length, params VirtualOfficeException[] VirtOfficeEx)
+        public AbstractRecordName(string value, int Length, params VirtualOfficeException[] virtOfficeEx)
         {
 
             if (string.IsNullOrWhiteSpace(value))
-                throw VirtOfficeEx[0];
+                throw virtOfficeEx[0];
             else if (value.Length > Length)
-                throw VirtOfficeEx[1];
+                throw virtOfficeEx[1];
 
             Value = value.Trim();
         }
 
+        
         public static implicit operator string(AbstractRecordName name)
             => name.Value;
+        // since we can't create new instances in abstract class we have to make implicit conversion in derived record
 
-        public static implicit operator AbstractRecordName(string name)
-            => name;
     }
 }

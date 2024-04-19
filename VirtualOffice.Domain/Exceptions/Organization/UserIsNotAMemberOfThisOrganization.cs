@@ -7,13 +7,12 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Organization
 {
-    public class InvalidOrganizationUserLimitException : VirtualOfficeException
+    public class UserIsNotAMemberOfThisOrganization : VirtualOfficeException
     {
-        public ushort? _value;
-        public InvalidOrganizationUserLimitException(ushort? value) : base($"Value: '{value}' is not in the range 1-1000")
+        Guid Value;
+        public UserIsNotAMemberOfThisOrganization(Guid value) : base($"User with Id: {value} is not a member of this organization")
         {
-            _value = value;
+            Value = value;
         }
-
     }
 }

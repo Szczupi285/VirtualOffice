@@ -8,11 +8,11 @@ namespace VirtualOffice.Domain.Consts
 {
     public enum SubscriptionTypeEnum
     {
-        None,
-        Trial,
-        Basic,
-        Enterprise,
-        Premium,
-        Unlimited
+        None = 0,
+        Trial = 3,
+        Basic = 30,
+        Enterprise = 100,
+        Premium = 500,
+        Unlimited = -1,
     }
 }

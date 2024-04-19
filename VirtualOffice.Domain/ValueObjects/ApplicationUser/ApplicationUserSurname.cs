@@ -1,27 +1,17 @@
-﻿using VirtualOffice.Domain.Exceptions.ApplicationUser;
+﻿using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.Exceptions.ApplicationUser;
 
 namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
-    public sealed record ApplicationUserSurname
+    public sealed record ApplicationUserSurname : AbstractRecordName
     {
-        public string Value { get; }
 
-        public ApplicationUserSurname(string value)
+        public ApplicationUserSurname(string value) : base(value, 35, new EmptyApplicationUserSurnameException(), new TooLongApplicationUserSurnameException(value))
         {
-
-            if (string.IsNullOrWhiteSpace(value))
-                throw new EmptyApplicationUserSurnameException();
-            else if (value.Length > 35)
-                throw new TooLongApplicationUserSurnameException(value);
             // We don't allow abbreviations in surname as we do in name
-            else if (!value.All(char.IsLetter))
+            if (!value.All(char.IsLetter))
                 throw new InvalidApplicationUserSurnameException(value);
-
-            Value = value.Trim();
         }
-
-        public static implicit operator string(ApplicationUserSurname surname)
-            => surname.Value;
 
         public static implicit operator ApplicationUserSurname(string surname)
             => new(surname);
