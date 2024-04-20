@@ -12,7 +12,7 @@ namespace VirtualOffice.Domain.ValueObjects.Notes
 {
     public sealed record NoteContent : AbstractRecordName
     {
-        public NoteContent(string value) : base(value, 1000, new EmptyNoteContentException(), new TooLongNoteContentException(value))
+        public NoteContent(string value) : base(value, 1000, new EmptyNoteContentException(), new TooLongNoteContentException(value, 1000))
         {
         }
 

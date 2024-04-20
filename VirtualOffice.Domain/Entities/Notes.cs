@@ -11,8 +11,15 @@ namespace VirtualOffice.Domain.Entities
     {
         public NoteId Id { get; private set; }
 
-        //public NoteTitle _title { get; private set; }
+        public NoteTitle _title { get; private set; }
 
         public NoteContent _content { get; private set; }
+
+        public Notes(NoteId id, NoteTitle title, NoteContent content)
+        {
+            Id = id;
+            _title = title;
+            _content = content;
+        }
     }
 }
