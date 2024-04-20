@@ -13,6 +13,6 @@ namespace VirtualOffice.Domain.Entities
 
         //public NoteTitle _title { get; private set; }
 
-        //public NoteContent _content { get; private set; }
+        public NoteContent _content { get; private set; }
     }
 }
