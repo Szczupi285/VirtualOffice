@@ -66,19 +66,63 @@ namespace DomainUnitTests
             Assert.Equal(test, title);
         }
         [Fact]
-        public void NullNoteTitle_ShouldThrowEmptyNotTitleException()
+        public void NullNoteTitle_ShouldThrowEmptyNoteTitleException()
         {
             Assert.Throws <EmptyNoteTitleException> (() => new NoteTitle(null));
         }
         [Fact]
-        public void EmptyNoteTitle_ShouldThrowEmptyNotTitleException()
+        public void EmptyNoteTitle_ShouldThrowEmptyNoteTitleException()
         {
             Assert.Throws<EmptyNoteTitleException>(() => new NoteTitle(""));
         }
         #endregion
 
         #region noteContent
+        [Fact]
+        public void ValidNoteContent_ValidNoteContentToStringConversionShouldEqual()
+        {
+            NoteContent title = "example";
+            string test = title;
 
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidNoteContent_StringToValidNoteContentConversionShouldEqual()
+        {
+            string test = "example";
+            NoteContent title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullNoteContent_ShouldThrowEmptyNoteContentException()
+        {
+            Assert.Throws<EmptyNoteContentException>(() => new NoteContent(null));
+        }
+        [Fact]
+        public void EmptyNoteContent_ShouldThrowEmptyNoteContentException()
+        {
+            Assert.Throws<EmptyNoteContentException>(() => new NoteContent(""));
+        }
+        [Fact]
+        public void TooLongNoteContent_ShouldThrowTooLongNoteContentException()
+        {
+            string invalidString = new string('a', 1001);
+            Assert.Throws<TooLongNoteContentException>(
+                () => new NoteContent(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersNoteContent_ShouldThrowTooLongNoteContentException()
+        {
+            string validString = new string('a', 1000);
+            new NoteContent(validString);
+        }
+        [Fact]
+        public void MinCharactersNoteContent_ShouldThrowTooLongNoteContentException()
+        {
+            string validString = new string('a', 1);
+            new NoteContent(validString);
+
+        }
         #endregion
     }
 }
