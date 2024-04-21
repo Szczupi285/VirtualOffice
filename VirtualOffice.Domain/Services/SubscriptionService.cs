@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.Exceptions.SubscriptionService;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Domain.Services
 {
-    internal class SubscriptionService
+    public class SubscriptionService
     {
-        ICollection<Subscription> _Subscriptions;
+        private ICollection<Subscription> _Subscriptions { get; set; }
 
-        internal SubscriptionService(ICollection<Subscription> subscriptions)
+        public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
         }
 
-        private void AddSubscription(Subscription subscription)
-        {
+        private void AddSubscription(Subscription subscription) => _Subscriptions.Add(subscription);
             
-        }
 
         private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
         {
@@ -37,21 +38,36 @@ namespace VirtualOffice.Domain.Services
             return true;
         }
 
-        public void AddSubscriptionRange(ICollection<Subscription> subscription)
-        {
+        public Subscription GetSubscriptionById(SubscriptionId id) 
+            => _Subscriptions.FirstOrDefault(s => s.Id == id) ?? throw new SubscriptionNotFoundException(id);
 
-        }
-        private void UpgradeSubscriptionType(Subscription subscription)
+        public void AddSubscriptionRange(ICollection<Subscription> subscriptions)
         {
-
+            foreach(Subscription sub in subscriptions)
+            {
+                AddSubscription(sub);
+            }
         }
-        public void UpgradeSubscriptionTypeRange(ICollection<Subscription> subscription)
+        private void UpgradeSubscriptionType(SubscriptionId id, SubscriptionTypeEnum subType) 
         {
+            Subscription subscription = _Subscriptions.FirstOrDefault(s => s.Id == id) ?? throw new SubscriptionNotFoundException(id);
+            if (subscription._subType == SubscriptionTypeEnum.Unlimited || subscription._subType >= subType)
+                throw new SubscriptionTypeCannotBeChangedToLowerTier(subscription._subType, subType);
 
+            subscription.UpdateSubType(subType);
         }
-        public Subscription GetCurrentSubscription(ICollection<Subscription> subscriptions)
+        public void UpgradeSubscriptionTypeRange(ICollection<SubscriptionId> Ids, SubscriptionTypeEnum subscriptionType)
+        {
+            foreach(SubscriptionId id in Ids)
+            {
+                UpgradeSubscriptionType(id, subscriptionType);
+            }
+        }
+        // consider what to return
+        public Subscription GetCurrentSubscription()
         {
             throw new NotImplementedException();
+            //_Subscriptions.FirstOrDefault(s => DateTime.Now > s._subStartDate.Value && DateTime.Now < s._subEndDate.Value);
         }
         private bool PayForSubscription(Subscription subscription) 
         {

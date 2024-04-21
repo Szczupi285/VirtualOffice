@@ -28,5 +28,7 @@ namespace VirtualOffice.Domain.Entities
             _subscriptionFee = subscriptionFee;
             _isPayed = isPayed;
         }
+
+        public void UpdateSubType(SubscriptionTypeEnum subType) => _subType = subType;
     }
 }
