@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.ValueObjects.Notes;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
 {
