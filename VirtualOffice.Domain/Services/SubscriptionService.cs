@@ -7,11 +7,11 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Domain.Services
 {
-    internal class SubscriptionService
+    public class SubscriptionService
     {
-        ICollection<Subscription> _Subscriptions;
+        private ICollection<Subscription> _Subscriptions { get; set; }
 
-        internal SubscriptionService(ICollection<Subscription> subscriptions)
+        public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
         }
