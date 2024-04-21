@@ -40,7 +40,8 @@ namespace VirtualOffice.Domain.Services
             Note note = _Notes.FirstOrDefault(n => n.Id == id) ?? throw new NoteNotFoundException(id);
             note.EditTitle(title);
         }
-        public Note GetNoteById(NoteId id) => _Notes.FirstOrDefault(n => n.Id == id) ?? throw new NoteNotFoundException(id);
+        public Note GetNoteById(NoteId id) 
+            => _Notes.FirstOrDefault(n => n.Id == id) ?? throw new NoteNotFoundException(id);
 
 
 
