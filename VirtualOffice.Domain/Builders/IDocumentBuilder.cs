@@ -10,11 +10,11 @@ namespace VirtualOffice.Domain.Builders
 {
     public interface IDocumentBuilder
     {
-        IDocumentBuilder SetId(Guid id);
-        IDocumentBuilder SetTitle(string title);
-        IDocumentBuilder SetContent(string content);
-        IDocumentBuilder SetPreviousVersion(ICollection<AbstractDocument> previousVersion);
-        IDocumentBuilder SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths);
+        void SetId(Guid id);
+        void SetTitle(string title);
+        void SetContent(string content);
+        void SetPreviousVersion(ICollection<AbstractDocument> previousVersion);
+        void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths);
 
     }
 }

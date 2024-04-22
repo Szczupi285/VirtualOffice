@@ -12,43 +12,52 @@ namespace VirtualOffice.Domain.Builders
 {
     public class PublicDocumentBuilder : IDocumentBuilder
     {
-        public IDocumentBuilder SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
+        private PublicDocument _document = new PublicDocument();
+
+        public PublicDocumentBuilder()
         {
-            throw new NotImplementedException();
+            this.Reset();
         }
 
-        public IDocumentBuilder SetContent(string content)
+        public void Reset() => this._document = new PublicDocument();
+
+        public void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
         {
-            throw new NotImplementedException();
+            this._document.AddAttachment(attachmentFilePaths);
         }
 
-        public IDocumentBuilder SetId(Guid id)
+        public void SetContent(string content)
         {
-            throw new NotImplementedException();
+            this._document.AddContent(content);
         }
 
-        public IDocumentBuilder SetPreviousVersion(ICollection<AbstractDocument> previousVersion)
+        public void SetId(Guid id)
         {
-            throw new NotImplementedException();
+            this._document.AddId(id);
         }
 
-        public IDocumentBuilder SetTitle(string title)
+        public void SetPreviousVersion(ICollection<AbstractDocument> previousVersion)
         {
-            throw new NotImplementedException();
+            this._document.AddPreviousVersion(previousVersion);
         }
 
-        public IDocumentBuilder SetCreationDetails(ApplicationUserId id)
+        public void SetTitle(string title)
         {
-            throw new NotImplementedException();
+            this._document.AddTitle(title);
         }
 
-        public IDocumentBuilder SetEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)
+        public void SetCreationDetails(ApplicationUserId id)
         {
-            throw new NotImplementedException();
+            this._document.AddCreationDate(id);
         }
-        public IDocumentBuilder SetEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite)
+
+        public void SetEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)
         {
-            throw new NotImplementedException();
+            this._document.AddEligibleForRead(eligibleForRead);
+        }
+        public void SetEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite)
+        {
+            this._document.AddEligibleForWrite(eligibleForWrite);
         }
     }
 }

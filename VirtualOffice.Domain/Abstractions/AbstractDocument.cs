@@ -19,6 +19,15 @@ namespace VirtualOffice.Domain.Abstractions
 
         public ICollection<DocumentFilePath>? _attachmentFilePaths { get; private protected set; }
 
+        public void AddId(Guid id) => Id = id;
+
+        public void AddTitle(string title) => _title = title;
+
+        public void AddContent(string content) => _content = content;
+
+        public void AddPreviousVersion(ICollection<AbstractDocument> previousVersion) => _previousVersions = previousVersion;
+
+        public void AddAttachment(ICollection<DocumentFilePath> attachmentFilePaths) => _attachmentFilePaths = attachmentFilePaths; 
 
 
 

@@ -4,40 +4,49 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders
 {
     public class PrivateDocumentBuilder : IDocumentBuilder
     {
-        public IDocumentBuilder SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
+        private PrivateDocument _document = new PrivateDocument();
+
+        public PrivateDocumentBuilder()
         {
-            throw new NotImplementedException();
+            this.Reset();
+        }
+        public void Reset() => this._document = new PrivateDocument();
+
+        public void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
+        {
+            this._document.AddAttachment(attachmentFilePaths);
         }
 
-        public IDocumentBuilder SetContent(string content)
+        public void SetContent(string content)
         {
-            throw new NotImplementedException();
+            this._document.AddContent(content);
         }
 
-        public IDocumentBuilder SetId(Guid id)
+        public void SetId(Guid id)
         {
-            throw new NotImplementedException();
+            this._document.AddId(id);
         }
 
-        public IDocumentBuilder SetPreviousVersion(ICollection<AbstractDocument> previousVersion)
+        public void SetPreviousVersion(ICollection<AbstractDocument> previousVersion)
         {
-            throw new NotImplementedException();
+            this._document.AddPreviousVersion(previousVersion);
         }
 
-        public IDocumentBuilder SetTitle(string title)
+        public void SetTitle(string title)
         {
-            throw new NotImplementedException();
+            this._document.AddTitle(title);
         }
 
-        public PrivateDocumentBuilder SetCreationDate(DateTime creationDate)
+        public void SetCreationDate(DateTime creationDate)
         {
-            throw new NotImplementedException();
+            this._document.AddCreationDate(creationDate);
         }
     }
 }

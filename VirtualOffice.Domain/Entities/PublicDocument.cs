@@ -17,5 +17,12 @@ namespace VirtualOffice.Domain.Entities
 
         public ICollection<ApplicationUserId> _eligibleForWrite {  get; private set; }
 
+
+
+        public void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = (DateTime.Now, applicationUserId);
+        public void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead) => _eligibleForRead = eligibleForRead;
+        public void AddEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite) => _eligibleForWrite = eligibleForWrite;
+
+
     }
 }
