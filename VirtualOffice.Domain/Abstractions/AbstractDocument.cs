@@ -10,14 +10,18 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractDocument
     {
-        public DocumentId Id { get; private set; }
-        public DocumentTitle _title { get; private set; }
+        public DocumentId Id { get; private protected set; }
+        public DocumentTitle _title { get; private protected set; }
 
-        public DocumentContent _content { get; private set; }
+        public DocumentContent _content { get; private protected set; }
 
-        public ICollection<AbstractDocument> _previousVersions { get; private set; }
+        public ICollection<AbstractDocument>? _previousVersions { get; private protected set; }
 
-        public ICollection<DocumentFilePath> _attachmentFilePaths { get; private set; }
+        public ICollection<DocumentFilePath>? _attachmentFilePaths { get; private protected set; }
 
+
+
+
+        
     }
 }

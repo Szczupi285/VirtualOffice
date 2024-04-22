@@ -15,5 +15,7 @@ namespace VirtualOffice.Domain.Entities
         public ICollection<ApplicationUser> _eligibleForRead {  get; private set; }
 
         public ICollection<ApplicationUser> _eligibleForWrite {  get; private set; }
+
+        
     }
 }
