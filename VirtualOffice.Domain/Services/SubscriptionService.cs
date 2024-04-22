@@ -64,6 +64,7 @@ namespace VirtualOffice.Domain.Services
             }
         }
         // consider what to return
+        // return none when higher tiers are not avalible
         public Subscription GetCurrentSubscription()
         {
             throw new NotImplementedException();

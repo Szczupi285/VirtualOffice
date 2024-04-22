@@ -10,9 +10,8 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractDocument
     {
+        public DocumentId Id { get; private set; }
         public DocumentTitle _title { get; private set; }
-
-        public DateTime _creationDate { get; private set; } = DateTime.Now;
 
         public DocumentContent _content { get; private set; }
 
@@ -20,6 +19,5 @@ namespace VirtualOffice.Domain.Abstractions
 
         public ICollection<DocumentFilePath> _attachmentFilePaths { get; private set; }
 
-        public ICollection<ApplicationUser> _eligibleForRead {  get; private set; }
     }
 }
