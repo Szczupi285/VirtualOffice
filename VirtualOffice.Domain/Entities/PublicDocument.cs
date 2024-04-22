@@ -5,17 +5,17 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Entities
 {
     public class PublicDocument : AbstractDocument
     {
-        public ValueTuple<DateTime, ApplicationUserId> _creationDateAndBy { get; private set; }
+        public ValueTuple<DateTime, ApplicationUserId> _creationDetails { get; private set; }
 
-        public ICollection<ApplicationUser> _eligibleForRead {  get; private set; }
+        public ICollection<ApplicationUserId> _eligibleForRead {  get; private set; }
 
-        public ICollection<ApplicationUser> _eligibleForWrite {  get; private set; }
+        public ICollection<ApplicationUserId> _eligibleForWrite {  get; private set; }
 
-        
     }
 }
