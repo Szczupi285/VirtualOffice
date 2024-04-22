@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
@@ -10,7 +11,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders
 {
-    public class PublicDocumentBuilder : IDocumentBuilder
+    internal class PublicDocumentBuilder : IDocumentBuilder
     {
         private PublicDocument _document = new PublicDocument();
 
@@ -58,6 +59,15 @@ namespace VirtualOffice.Domain.Builders
         public void SetEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite)
         {
             this._document.AddEligibleForWrite(eligibleForWrite);
+        }
+
+        public PublicDocument GetDocument()
+        {
+            PublicDocument document = _document;
+
+            this.Reset();
+
+            return document;    
         }
     }
 }

@@ -9,7 +9,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders
 {
-    public class PrivateDocumentBuilder : IDocumentBuilder
+    internal class PrivateDocumentBuilder : IDocumentBuilder
     {
         private PrivateDocument _document = new PrivateDocument();
 
@@ -47,6 +47,14 @@ namespace VirtualOffice.Domain.Builders
         public void SetCreationDate(DateTime creationDate)
         {
             this._document.AddCreationDate(creationDate);
+        }
+
+        public PrivateDocument GetDocument()
+        {
+            PrivateDocument document = _document;
+            this.Reset();
+
+            return document;
         }
     }
 }
