@@ -29,7 +29,16 @@ namespace VirtualOffice.Domain.Builders.Document
             Reset();
         }
 
-        public void Reset() => _document = new PublicDocument();
+        public void Reset()
+        {
+            _document = new PublicDocument();
+            IsIdSet = false;
+            IsContentSet = false;
+            IsTitleSet = false;
+            IsCreationDetailsSet = false;
+            IsEligibleForReadSet = false;
+            IsEligibleForWriteSet = false;
+        }
 
         public void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
         {

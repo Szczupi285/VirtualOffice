@@ -12,9 +12,6 @@ namespace VirtualOffice.Domain.Entities
     {
         public DateTime _creationDate { get; private set; } = DateTime.Now;
 
-
-        public void AddCreationDate(DateTime creationDate) => _creationDate = creationDate;
-
     }
     
 }
