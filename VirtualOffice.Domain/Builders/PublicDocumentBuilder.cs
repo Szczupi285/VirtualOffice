@@ -37,7 +37,7 @@ namespace VirtualOffice.Domain.Builders
             this._document.AddId(id);
         }
 
-        public void SetPreviousVersion(ICollection<AbstractDocument> previousVersion)
+        public void SetPreviousVersion(AbstractDocument previousVersion)
         {
             this._document.AddPreviousVersion(previousVersion);
         }
