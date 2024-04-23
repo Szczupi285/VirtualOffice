@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Builders;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.Factories;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Document;
 
@@ -13,7 +15,7 @@ namespace DomainUnitTests
 {
     public class PublicDocumentbuilderUnitTests
     {
-        PublicDocumentBuilder builder = new PublicDocumentBuilder();
+        PrivateDocument document = new PrivateDocument();
         Guid id = Guid.NewGuid();
         string content = "Sample content";
         string title = "Sample title";
@@ -22,7 +24,7 @@ namespace DomainUnitTests
         List<AbstractDocument> previousVersion = new List<AbstractDocument> { new PublicDocument() };
         List<ApplicationUserId> eligibleForRead = new List<ApplicationUserId> { Guid.NewGuid()};
         List<ApplicationUserId> eligibleForWrite = new List<ApplicationUserId> { Guid.NewGuid() };
-      
-        
+
+       
     }
 }
