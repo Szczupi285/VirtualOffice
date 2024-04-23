@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.ValueObjects.Document;
 
-namespace VirtualOffice.Domain.Builders
+namespace VirtualOffice.Domain.Builders.Document
 {
     public interface IDocumentBuilder
     {

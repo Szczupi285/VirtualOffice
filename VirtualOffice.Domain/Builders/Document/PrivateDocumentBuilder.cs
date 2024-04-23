@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.Document;
 
-namespace VirtualOffice.Domain.Builders
+namespace VirtualOffice.Domain.Builders.Document
 {
     internal class PrivateDocumentBuilder : IDocumentBuilder
     {
@@ -15,44 +15,44 @@ namespace VirtualOffice.Domain.Builders
 
         public PrivateDocumentBuilder()
         {
-            this.Reset();
+            Reset();
         }
-        public void Reset() => this._document = new PrivateDocument();
+        public void Reset() => _document = new PrivateDocument();
 
         public void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
         {
-            this._document.AddAttachment(attachmentFilePaths);
+            _document.AddAttachment(attachmentFilePaths);
         }
 
         public void SetContent(string content)
         {
-            this._document.AddContent(content);
+            _document.AddContent(content);
         }
 
         public void SetId(Guid id)
         {
-            this._document.AddId(id);
+            _document.AddId(id);
         }
 
         public void SetPreviousVersion(AbstractDocument previousVersion)
         {
-            this._document.AddPreviousVersion(previousVersion);
+            _document.AddPreviousVersion(previousVersion);
         }
 
         public void SetTitle(string title)
         {
-            this._document.AddTitle(title);
+            _document.AddTitle(title);
         }
 
         public void SetCreationDate(DateTime creationDate)
         {
-            this._document.AddCreationDate(creationDate);
+            _document.AddCreationDate(creationDate);
         }
 
         public PrivateDocument GetDocument()
         {
             PrivateDocument document = _document;
-            this.Reset();
+            Reset();
 
             return document;
         }
