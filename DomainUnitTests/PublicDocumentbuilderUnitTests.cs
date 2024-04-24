@@ -13,7 +13,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace DomainUnitTests
 {
-    public class PublicDocumentbuilderUnitTests
+    public class PublicDocumentBuilderUnitTests
     {
         PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
         Guid id = Guid.NewGuid();
