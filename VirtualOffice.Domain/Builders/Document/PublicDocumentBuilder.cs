@@ -107,7 +107,7 @@ namespace VirtualOffice.Domain.Builders.Document
         /// <exception cref="InvalidPublicDocumentBuild">
         /// Thrown when the build process fails due to missing or incomplete property values.
         /// </exception>
-        public PublicDocument Build()
+        public PublicDocument GetDocument()
         {
             if(IsIdSet && IsTitleSet && IsContentSet
                 && IsCreationDetailsSet && IsEligibleForReadSet

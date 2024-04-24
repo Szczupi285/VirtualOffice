@@ -20,10 +20,10 @@ namespace VirtualOffice.Domain.Entities
 
 
 
-        public void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = (DateTime.Now, applicationUserId);
-        public void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)
+        internal void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = (DateTime.Now, applicationUserId);
+        internal void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)
             => _eligibleForRead = eligibleForRead.Count >= 1 ? eligibleForRead : throw new InvalidEligibleForReadException();
-        public void AddEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite) => _eligibleForWrite = eligibleForWrite.Count >= 1 ? eligibleForWrite : throw new InvalidEligibleForWriteException();
+        internal void AddEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite) => _eligibleForWrite = eligibleForWrite.Count >= 1 ? eligibleForWrite : throw new InvalidEligibleForWriteException();
 
 
     }

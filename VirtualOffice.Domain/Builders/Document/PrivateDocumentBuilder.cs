@@ -73,7 +73,7 @@ namespace VirtualOffice.Domain.Builders.Document
         /// <exception cref="InvalidPrivateDocumentBuild">
         /// Thrown when the build process fails due to missing or incomplete property values.
         /// </exception>
-        public PrivateDocument Build()
+        public PrivateDocument GetDocument()
         {
             if (IsIdSet && IsTitleSet && IsContentSet)
             {
