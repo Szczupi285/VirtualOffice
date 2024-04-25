@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,21 @@ namespace DomainUnitTests
         }
         #endregion
         #region DocumentCreationDate
+        [Fact]
+        public void DocumentCreationDate_PastDateWhileConstructing_ShouldThrowDocumentCreationDateCannotBeEitherPastOrFutureException()
+        {
+            Assert.Throws<DocumentCreationDateCannotBeEitherPastOrFutureException>(() => new DocumentCreationDate(DateTime.UtcNow.AddHours(-1)));
+        }
+        [Fact]
+        public void DocumentCreationDate_FutureDateWhileConstructing_ShouldThrowDocumentCreationDateCannotBeEitherPastOrFutureException()
+        {
+            Assert.Throws<DocumentCreationDateCannotBeEitherPastOrFutureException>(() => new DocumentCreationDate(DateTime.UtcNow.AddHours(1)));
+        }
+        [Fact]
+        public void ValidDocumentCreationDate_ShouldNotThrowException()
+        {
+            DocumentCreationDate DCD = DateTime.UtcNow;
+        }
         #endregion
     }
 }
