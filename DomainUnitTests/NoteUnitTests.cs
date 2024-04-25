@@ -111,13 +111,13 @@ namespace DomainUnitTests
                 () => new NoteContent(invalidString));
         }
         [Fact]
-        public void MaxCharactersNoteContent_ShouldThrowTooLongNoteContentException()
+        public void MaxCharactersNoteContent_ShouldNotThrowException()
         {
             string validString = new string('a', 1000);
             new NoteContent(validString);
         }
         [Fact]
-        public void MinCharactersNoteContent_ShouldThrowTooLongNoteContentException()
+        public void MinCharactersNoteContent_ShouldNotThrowException()
         {
             string validString = new string('a', 1);
             new NoteContent(validString);

@@ -12,7 +12,7 @@ namespace VirtualOffice.Domain.ValueObjects.Document
 {
     public sealed record DocumentContent : AbstractRecordName
     {
-        public DocumentContent(string value) : base(value, 100000, new EmptyDocumentContentException())
+        public DocumentContent(string value) : base(value, 100000, new EmptyDocumentContentException(), new TooLongDocumentContentException(value, 100000))
         {
         }
 
