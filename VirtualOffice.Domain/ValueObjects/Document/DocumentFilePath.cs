@@ -4,21 +4,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Exceptions.Document;
 
 namespace VirtualOffice.Domain.ValueObjects.Document
 {
-    public sealed record DocumentFilePath
+    public sealed record DocumentFilePath : AbstractRecordName
     {
-        public string Value { get; }
-        public DocumentFilePath(string value)
+        public DocumentFilePath(string value) : base(value, 260, new EmptyDocumentFilePathException(value), new TooLongDocumentFilePathException(value, 260))
         {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                throw new EmptyDocumentFilePathException(value);
-            }
-
-            Value = value;
         }
 
         public static implicit operator DocumentFilePath(string content)
