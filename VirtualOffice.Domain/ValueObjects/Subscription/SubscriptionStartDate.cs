@@ -15,8 +15,8 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
         public SubscriptionStartDate(DateTime value)
         {
             // since assigning value to SubscriptionStartDate is not fully instant we decrease minutes 
-            // so it won't return exception if we try assing datetime.Now
-            if (value < DateTime.Now.AddMinutes(-1))
+            // so it won't return exception if we try assing datetime.UtcNow
+            if (value < DateTime.UtcNow.AddMinutes(-1))
                 throw new SubscriptionStartDateCannotBePastException(value);
 
             Value = value;  

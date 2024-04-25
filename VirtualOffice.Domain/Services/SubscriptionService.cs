@@ -68,7 +68,7 @@ namespace VirtualOffice.Domain.Services
         public Subscription GetCurrentSubscription()
         {
             throw new NotImplementedException();
-            //_Subscriptions.FirstOrDefault(s => DateTime.Now > s._subStartDate.Value && DateTime.Now < s._subEndDate.Value);
+            //_Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
         }
         private bool PayForSubscription(Subscription subscription) 
         {

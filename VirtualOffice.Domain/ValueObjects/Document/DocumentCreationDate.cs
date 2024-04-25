@@ -14,7 +14,7 @@ namespace VirtualOffice.Domain.ValueObjects.Document
 
         public DocumentCreationDate(DateTime value)
         {
-            if (value > DateTime.Now.AddMinutes(-1) && value < DateTime.Now.AddMinutes(1))
+            if (value > DateTime.UtcNow.AddMinutes(-1) && value < DateTime.UtcNow.AddMinutes(1))
                 Value = value;
 
             throw new DocumentCreationDateCannotBeEitherPastOrFutureException(value);            
