@@ -12,7 +12,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class PublicDocument : AbstractDocument
     {
-        public ValueTuple<DateTime, ApplicationUserId> _creationDetails { get; private set; }
+        public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
 
         public ICollection<ApplicationUserId> _eligibleForRead {  get; private set; }
 

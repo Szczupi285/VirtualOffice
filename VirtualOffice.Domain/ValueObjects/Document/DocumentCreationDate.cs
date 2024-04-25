@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.Document;
 using VirtualOffice.Domain.Exceptions.Subscription;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Domain.ValueObjects.Document
 {
@@ -16,8 +17,15 @@ namespace VirtualOffice.Domain.ValueObjects.Document
         {
             if (value > DateTime.UtcNow.AddMinutes(-1) && value < DateTime.UtcNow.AddMinutes(1))
                 Value = value;
-
-            throw new DocumentCreationDateCannotBeEitherPastOrFutureException(value);            
+            else
+                throw new DocumentCreationDateCannotBeEitherPastOrFutureException(value);
         }
+
+
+        public static implicit operator DateTime(DocumentCreationDate startDate)
+            => startDate.Value;
+
+        public static implicit operator DocumentCreationDate(DateTime startDate)
+            => new(startDate);
     }
 }

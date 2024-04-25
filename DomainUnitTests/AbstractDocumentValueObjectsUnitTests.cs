@@ -58,5 +58,7 @@ namespace DomainUnitTests
             new DocumentContent(validString);
         }
         #endregion
+        #region DocumentCreationDate
+        #endregion
     }
 }
