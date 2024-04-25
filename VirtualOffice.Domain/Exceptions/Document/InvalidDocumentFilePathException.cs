@@ -7,10 +7,10 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Document
 {
-    public class NotAValidDocumentFilePathException : VirtualOfficeException
+    public class InvalidDocumentFilePathException : VirtualOfficeException
     {
         string Value;
-        public NotAValidDocumentFilePathException(string value) : base($"File path :{value} is not a valid windows server File Path")
+        public InvalidDocumentFilePathException(string value) : base($"File path : {value} is not a valid windows server File Path")
         {
             Value = value;
         }

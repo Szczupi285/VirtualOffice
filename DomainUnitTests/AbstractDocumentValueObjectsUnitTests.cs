@@ -77,7 +77,83 @@ namespace DomainUnitTests
         }
         #endregion
         #region DocumentFilePath
-       
+        [Fact]
+        public void ValidDocumentFilePath_ValidDocumentFilePathToStringConversionShouldEqual()
+        {
+            DocumentFilePath filePath = @"C:\";
+            string test = filePath;
+
+            Assert.Equal(test, filePath);
+        }
+        [Fact]
+        public void ValidDocumentFilePath_StringToValidDocumentFilePathConversionShouldEqual()
+        {
+            string test = @"C:\";
+            DocumentFilePath filePath = test;
+            Assert.Equal(test, filePath);
+        }
+        [Fact]
+        public void NullDocumentFilePath_ShouldThrowEmptyDocumentFilePathException()
+        {
+            Assert.Throws<EmptyDocumentFilePathException>(() => new DocumentFilePath(null));
+        }
+        [Fact]
+        public void EmptyDocumentFilePath_ShouldThrowEmptyDocumentFilePathException()
+        {
+            Assert.Throws<EmptyDocumentFilePathException>(() => new DocumentFilePath(""));
+        }
+        [Fact]
+        public void TooLongDocumentFilePath_ShouldThrowTooLongFilePathException()
+        {
+            // 261 characters
+            // this pattern match regex but exceeds max characters count
+            string invalidString = @"C:\Users\Username\Documents\" + new string('a', 233);
+            Assert.Throws<TooLongDocumentFilePathException>(
+                () => new DocumentFilePath(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersDocumentFilePath_ShouldNotThrowException()
+        {
+            // 260 characters
+            string validString = @"C:\Users\Username\Documents\" + new string('a', 232);
+            new DocumentFilePath(validString);
+        }
+        [Fact]
+        public void InvalidFilePath_Case1_ShouldThrowInvalidFilePathException()
+        {
+            string invalidString = @"fsa:\Users\Username\Documents\";
+            Assert.Throws<InvalidDocumentFilePathException>(
+                () => new DocumentFilePath(invalidString));
+        }
+        [Fact]
+        public void InvalidFilePath_Case2_ShouldThrowInvalidFilePathException()
+        {
+            string invalidString = @"C:/Users/Username/Documents";
+            Assert.Throws<InvalidDocumentFilePathException>(
+                 () => new DocumentFilePath(invalidString));
+        }
+        [Fact]
+        public void InvalidFilePath_Case3_ShouldThrowInvalidFilePathException()
+        {
+            string invalidString = @"C\Users\Username\Documents\";
+            Assert.Throws<InvalidDocumentFilePathException>(
+                () => new DocumentFilePath(invalidString));
+        }
+        [Fact]
+        public void InvalidFilePath_Case5_ShouldThrowInvalidFilePathException()
+        {
+            string invalidString = @"C:*\Users\Username\Documents\";
+            Assert.Throws<InvalidDocumentFilePathException>(
+                 () => new DocumentFilePath(invalidString));
+        }
+        [Fact]
+        public void InvalidFilePath_Case6_ShouldThrowInvalidFilePathException()
+        {
+            string invalidString = @"C:";
+            Assert.Throws<InvalidDocumentFilePathException>(
+                 () => new DocumentFilePath(invalidString));
+        }
+
         #endregion
     }
 }

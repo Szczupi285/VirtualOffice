@@ -22,7 +22,7 @@ namespace DomainUnitTests
         ApplicationUserId creationUserId = Guid.NewGuid();
         List<ApplicationUserId> eligibleForRead = new List<ApplicationUserId> { Guid.NewGuid()};
         List<ApplicationUserId> eligibleForWrite = new List<ApplicationUserId> { Guid.NewGuid() };
-        List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath("path/to/file") };
+        List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath(@"C:\") };
         AbstractDocument previousVersion = new PublicDocument();
 
         [Fact]

@@ -12,13 +12,14 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace DomainUnitTests
 {
+    
     public class PrivateDocumentBuilderUnitTests
     {
         PrivateDocumentBuilder documentBuilder = new PrivateDocumentBuilder();
         Guid id = Guid.NewGuid();
         string content = "Sample content";
         string title = "Sample title";
-        List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath("path/to/file") };
+        List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath(@"C:\") };
         AbstractDocument previousVersion = new PrivateDocument();
 
         [Fact]

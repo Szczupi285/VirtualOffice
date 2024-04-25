@@ -12,12 +12,12 @@ namespace VirtualOffice.Domain.ValueObjects.Document
 {
     public sealed record DocumentFilePath : AbstractRecordName
     {
-        // TODO: other validation to check if filepath is valid
         public DocumentFilePath(string value) : base(value, 260, new EmptyDocumentFilePathException(value), new TooLongDocumentFilePathException(value, 260))
         {
-            Regex regex = new Regex(@"/^[a-zA-Z]:\\(?:\w+\\?)*$/");
+            Regex regex = new Regex(@"^(?<ParentPath>(?:[a-zA-Z]\:|\\\\[\w\s\.]+\\[\w\s\.$]+)\\(?:[\w\s\.]+\\)*)(?<BaseName>[\w\s\.]*?)$");
             if (!regex.IsMatch(value))
                 throw new InvalidDocumentFilePathException(value);
+            
         }
 
         public static implicit operator DocumentFilePath(string content)
