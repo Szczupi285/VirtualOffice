@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.Document;
+using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.Document;
 using VirtualOffice.Domain.ValueObjects.Note;
 using Xunit;
@@ -156,20 +157,35 @@ namespace DomainUnitTests
 
         #endregion
 
-        #region DocumentId
-        [Fact]
-        public void ValidDocumentId_ValidDocumentIdToStringConversionShouldEqual()
-        {
-            DocumentId id = Guid.NewGuid();
-            string testId = id.ToString();
-
-            Assert.Equal(testId, id.ToString());
-        }
-               
+        #region DocumentId                      
         [Fact]
         public void EmptyDocumentId_ShouldThrowEmptyDocumentIdException()
         {
             Assert.Throws<EmptyDocumentIdException>(() => new DocumentId(Guid.Empty));
+        }
+        //---
+
+        [Fact]
+        public void ValidDocumentId_ValidGuidToDocumentIdConversion_ShouldEqual()
+        {
+            var guid = Guid.NewGuid();
+            DocumentId id = guid;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidDocumentId_ValidDocumentIdToGuidConversionShouldEqual()
+        {
+            DocumentId id = new DocumentId(Guid.NewGuid());
+            Guid guid = id;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidDocumentId_GuidToValidDocumentIdConversionShouldEqual()
+        {
+            DocumentId id = new DocumentId(Guid.NewGuid());
+            Guid guid = id;
         }
         #endregion
 
