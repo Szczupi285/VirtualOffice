@@ -7,10 +7,10 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.Document
 {
-    public class InvalidDocumentTitleException : VirtualOfficeException
+    public class TooLongDocumentTitleException : VirtualOfficeException
     {
         string Value;
-        public InvalidDocumentTitleException(string value) : base($"Title: {value} is more than 50 characters long")
+        public TooLongDocumentTitleException(string value) : base($"Title: {value} is more than 50 characters long")
         {
             Value = value; 
         }

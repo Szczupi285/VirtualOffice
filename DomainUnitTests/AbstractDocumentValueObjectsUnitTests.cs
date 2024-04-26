@@ -155,5 +155,69 @@ namespace DomainUnitTests
         }
 
         #endregion
+
+        #region DocumentId
+        [Fact]
+        public void ValidDocumentId_ValidDocumentIdToStringConversionShouldEqual()
+        {
+            DocumentId id = Guid.NewGuid();
+            string testId = id.ToString();
+
+            Assert.Equal(testId, id.ToString());
+        }
+               
+        [Fact]
+        public void EmptyDocumentId_ShouldThrowEmptyDocumentIdException()
+        {
+            Assert.Throws<EmptyDocumentIdException>(() => new DocumentId(Guid.Empty));
+        }
+        #endregion
+
+        #region DocumentTitle
+        [Fact]
+        public void ValidDocumentTitle_ValidDocumentTitleToStringConversionShouldEqual()
+        {
+            DocumentTitle title = "example title";
+            string test = title;
+
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidDocumentTitle_StringToValidDocumentTitleConversionShouldEqual()
+        {
+            string test = "example title";
+            DocumentTitle title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullDocumentTitle_ShouldThrowEmptyDocumentTitleException()
+        {
+            Assert.Throws<EmptyDocumentTitleException>(() => new DocumentTitle(null));
+        }
+        [Fact]
+        public void EmptyDocumentTitle_ShouldThrowEmptyDocumentTitleException()
+        {
+            Assert.Throws<EmptyDocumentTitleException>(() => new DocumentTitle(""));
+        }
+        [Fact]
+        public void TooLongDocumentTitle_ShouldThrowTooLongDocumentTitleException()
+        {
+            string invalidString = new string('a', 51);
+            Assert.Throws<TooLongDocumentTitleException>(
+                () => new DocumentTitle(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersDocumentTitle_ShouldNotThrowException()
+        {
+            string validString = new string('a', 50);
+            new DocumentTitle(validString);
+        }
+        [Fact]
+        public void MinCharactersDocumentTitle_ShouldNotThrowException()
+        {
+            string validString = new string('a', 1);
+            new DocumentTitle(validString);
+        }
+        #endregion
     }
 }
