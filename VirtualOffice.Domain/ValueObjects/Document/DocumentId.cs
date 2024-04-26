@@ -18,5 +18,10 @@ namespace VirtualOffice.Domain.ValueObjects.Document
 
         public static implicit operator DocumentId(Guid id)
             => new(id);
+
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
     }
 }

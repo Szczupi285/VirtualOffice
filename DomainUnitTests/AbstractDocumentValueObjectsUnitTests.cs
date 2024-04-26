@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.Document;
+using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.Document;
 using VirtualOffice.Domain.ValueObjects.Note;
 using Xunit;
@@ -154,6 +155,85 @@ namespace DomainUnitTests
                  () => new DocumentFilePath(invalidString));
         }
 
+        #endregion
+
+        #region DocumentId                      
+        [Fact]
+        public void EmptyDocumentId_ShouldThrowEmptyDocumentIdException()
+        {
+            Assert.Throws<EmptyDocumentIdException>(() => new DocumentId(Guid.Empty));
+        }
+        //---
+
+        [Fact]
+        public void ValidDocumentId_ValidGuidToDocumentIdConversion_ShouldEqual()
+        {
+            var guid = Guid.NewGuid();
+            DocumentId id = guid;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidDocumentId_ValidDocumentIdToGuidConversionShouldEqual()
+        {
+            DocumentId id = new DocumentId(Guid.NewGuid());
+            Guid guid = id;
+
+            Assert.Equal(id.Value, guid);
+        }
+        [Fact]
+        public void ValidDocumentId_GuidToValidDocumentIdConversionShouldEqual()
+        {
+            DocumentId id = new DocumentId(Guid.NewGuid());
+            Guid guid = id;
+        }
+        #endregion
+
+        #region DocumentTitle
+        [Fact]
+        public void ValidDocumentTitle_ValidDocumentTitleToStringConversionShouldEqual()
+        {
+            DocumentTitle title = "example title";
+            string test = title;
+
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidDocumentTitle_StringToValidDocumentTitleConversionShouldEqual()
+        {
+            string test = "example title";
+            DocumentTitle title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullDocumentTitle_ShouldThrowEmptyDocumentTitleException()
+        {
+            Assert.Throws<EmptyDocumentTitleException>(() => new DocumentTitle(null));
+        }
+        [Fact]
+        public void EmptyDocumentTitle_ShouldThrowEmptyDocumentTitleException()
+        {
+            Assert.Throws<EmptyDocumentTitleException>(() => new DocumentTitle(""));
+        }
+        [Fact]
+        public void TooLongDocumentTitle_ShouldThrowTooLongDocumentTitleException()
+        {
+            string invalidString = new string('a', 51);
+            Assert.Throws<TooLongDocumentTitleException>(
+                () => new DocumentTitle(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersDocumentTitle_ShouldNotThrowException()
+        {
+            string validString = new string('a', 50);
+            new DocumentTitle(validString);
+        }
+        [Fact]
+        public void MinCharactersDocumentTitle_ShouldNotThrowException()
+        {
+            string validString = new string('a', 1);
+            new DocumentTitle(validString);
+        }
         #endregion
     }
 }
