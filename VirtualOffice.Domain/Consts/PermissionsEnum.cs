@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Domain.Consts
 {
+    [Flags]
     public enum PermissionsEnum
     {
         None = 0,
