@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
 
 namespace VirtualOffice.Domain.Builders.Permission
 {
     internal interface IPermisionBuilder
     {
-        void SetCanAddEmptyeeTask();
+        void SetCanAddEmployeeTask();
         void SetCanAddToOffice();
         void SetCanCreateOffice();
         void SetCanAddToOrganization();
@@ -26,6 +27,8 @@ namespace VirtualOffice.Domain.Builders.Permission
         void SetCanDeletePublicDocuments();
         void SetCanShareDocumentsToWholeOffice();
         void SetCanShareDocumentsToWholeOrganization();
+
+        PermissionsEnum GetPermissions();
 
 
 
