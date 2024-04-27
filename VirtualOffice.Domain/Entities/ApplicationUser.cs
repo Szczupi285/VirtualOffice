@@ -10,17 +10,18 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUserSurname _surname { get; private set; }
 
-        // private Permissions _permissions;
+        private Permissions _permissions;
 
         // private Settings _settings;
 
         // private Roles _roles;
 
-        internal ApplicationUser(Guid id, string name, string surname) 
+        internal ApplicationUser(Guid id, string name, string surname, Permissions permissions) 
         {
             Id = id;
             _name = name;
             _surname = surname;
+            _permissions = permissions;
         }
 
     }
