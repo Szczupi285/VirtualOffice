@@ -8,7 +8,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders.Document
 {
-    public interface IDocumentBuilder
+    internal interface IDocumentBuilder
     {
         void SetId(Guid id);
         void SetTitle(string title);
