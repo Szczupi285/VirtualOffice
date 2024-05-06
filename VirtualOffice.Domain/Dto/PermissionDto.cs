@@ -17,14 +17,23 @@ namespace VirtualOffice.Domain.Dto
             List<PermissionsEnum> allPermissions = new List<PermissionsEnum>();
             PermissionsEnum PerEnum = permissionService.GetAllPermissions();
 
-            foreach (PermissionsEnum permission in Enum.GetValues(typeof(PermissionsEnum)))
+            if((int)PerEnum > 0)
             {
-                if (permissionService.HasPermission(permission))
+                foreach (PermissionsEnum permission in Enum.GetValues(typeof(PermissionsEnum)))
                 {
-                    allPermissions.Add(permission);
+                    if (permissionService.HasPermission(permission) && permission != PermissionsEnum.None)
+                    {
+                        allPermissions.Add(permission);
+                    }
                 }
+                _Permissions = new List<string>(allPermissions.Select(p => p.ToString()));
             }
-            _Permissions = new List<string>(allPermissions.Select(p => p.ToString()));
+            else
+            {
+                _Permissions = new List<string>() {"None"};
+            }
+
+
         }
     }
 }
