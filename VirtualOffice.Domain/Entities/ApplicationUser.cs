@@ -11,7 +11,6 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUserSurname _surname { get; private set; }
 
-        public ApplicationUserEmail _email { get; private set; }
 
         private PermissionsEnum _permissions;
 
@@ -25,7 +24,6 @@ namespace VirtualOffice.Domain.Entities
             Id = id;
             _name = name;
             _surname = surname;
-            _email = email;
             _permissions = PermissionsEnum.None;
         }
 
@@ -34,7 +32,6 @@ namespace VirtualOffice.Domain.Entities
             Id = id;
             _name = name;
             _surname = surname;
-            _email = email;
             _permissions = permissions;
         }
 
