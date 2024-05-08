@@ -13,11 +13,12 @@ namespace VirtualOffice.Domain.Entities
 
         private PermissionsEnum _permissions;
 
+
         // private Settings _settings;
 
         // private Roles _roles;
 
-        internal ApplicationUser(Guid id, string name, string surname)
+        internal ApplicationUser(Guid id, string name, string surname, string email)
         {
             Id = id;
             _name = name;
@@ -25,7 +26,7 @@ namespace VirtualOffice.Domain.Entities
             _permissions = PermissionsEnum.None;
         }
 
-        internal ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions) 
+        internal ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions, string email) 
         {
             Id = id;
             _name = name;

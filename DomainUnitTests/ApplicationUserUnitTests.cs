@@ -243,6 +243,7 @@ namespace DomainUnitTests
         }
 
         #endregion
-    } 
+
+    }
 
 }

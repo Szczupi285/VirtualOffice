@@ -95,7 +95,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.Null(org._userLimit);
         }
@@ -108,7 +108,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100,true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
 
             Assert.Throws<InvalidOrganizationUserLimitException>(()
@@ -121,7 +121,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Trial, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.True(3 == org._userLimit);
         }
@@ -132,7 +132,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Basic, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.True(30 == org._userLimit);
         }
@@ -144,7 +144,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Enterprise, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.True(100 == org._userLimit);
         }
@@ -155,7 +155,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Premium, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.True(500 == org._userLimit);
         }
@@ -199,7 +199,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
 
             Assert.True(org.IsUnlimited());
@@ -211,7 +211,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.None, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -222,7 +222,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Trial, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -234,7 +234,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Basic, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -245,7 +245,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Enterprise, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -256,7 +256,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Premium, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -273,10 +273,10 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
-            org.AddUser(new ApplicationUser(Guid.NewGuid(), "Name", "surname"));
+            org.AddUser(new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"));
 
             Assert.True(usersPreAdd == org._usedSlots - 1);
         }
@@ -289,15 +289,15 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
 
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
             List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
             {
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
             };
             org.AddRangeUsers(usersToAdd);
 
@@ -314,8 +314,8 @@ namespace DomainUnitTests
             Guid guid3 = Guid.NewGuid();
             
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
-            new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com"),
+            new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
             uint usersPreRem = org._usedSlots;
             org.RemoveUser(org._organizationUsers.First(u => u.Id.Equals(guid3)));
@@ -333,10 +333,10 @@ namespace DomainUnitTests
             Guid guidu2 = Guid.NewGuid();
             Guid guidu3 = Guid.NewGuid();
             Guid guidu4 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname");
-            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname");
-            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
-            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
+            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname", "example@gmail.com");
+            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname", "example@gmail.com");
+            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname", "example@gmail.com");
+            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname", "example@gmail.com");
 
             List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
             {
@@ -349,7 +349,7 @@ namespace DomainUnitTests
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
             new List<ApplicationUser>()
             {
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
                 user1,
                 user2,
                 user3,
@@ -375,9 +375,9 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
 
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
 
             org.AddUser(user);
 
@@ -392,9 +392,9 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
 
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
 
             org.AddUser(user);
 
@@ -409,11 +409,11 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
 
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
+            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
 
             org.AddUser(user);
             org.AddUser(user1);
@@ -428,14 +428,14 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
 
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com") }, subscription);
 
             List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
             {
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
             };
 
             org.AddRangeUsers(usersToAdd);
@@ -456,9 +456,9 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com"), user, }, subscription);
 
             org.RemoveUser(user);
 
@@ -472,7 +472,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
             new List<ApplicationUser> { user }, subscription);
 
@@ -486,9 +486,9 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, DateTime.UtcNow.AddDays(31), SubscriptionTypeEnum.Unlimited, 100, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson", "example@gmail.com");
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname", "example@gmail.com") }, subscription);
 
             Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => org.RemoveUser(user));
         }
@@ -505,10 +505,10 @@ namespace DomainUnitTests
             Guid guidu3 = Guid.NewGuid();
             Guid guidu4 = Guid.NewGuid();
 
-            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname");
-            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname");
-            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
-            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
+            ApplicationUser user1 = new ApplicationUser(guidu1, "Name", "surname", "example@gmail.com");
+            ApplicationUser user2 = new ApplicationUser(guidu2, "Name", "surname", "example@gmail.com");
+            ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname", "example@gmail.com");
+            ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname", "example@gmail.com");
 
             List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
             {
@@ -521,7 +521,7 @@ namespace DomainUnitTests
             Organization org = new Organization(guid2, "Organization", new List<Office> { },
             new List<ApplicationUser> 
             { 
-                new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "Name", "surname", "example@gmail.com"),
                 user1,
                 user2,
                 user3,
