@@ -67,8 +67,8 @@ namespace VirtualOffice.Domain.Services
         // return none when higher tiers are not avalible
         public Subscription GetCurrentSubscription()
         {
-            throw new NotImplementedException();
-            //_Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
+            Subscription currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value) ?? throw new CurrentSubscriptionNotFoundException();
+            return currentSubscription;
         }
         private bool PayForSubscription(Subscription subscription) 
         {
