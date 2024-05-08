@@ -13,12 +13,19 @@ namespace VirtualOffice.Domain.Services
     public class SubscriptionService
     {
         private ICollection<Subscription> _Subscriptions { get; set; }
+        public int SubscriptionsCount => _Subscriptions.Count;
         public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
         }
 
-        private void AddSubscription(Subscription subscription) => _Subscriptions.Add(subscription);
+        public void AddSubscription(Subscription subscription)
+        {
+            if(!DoesSubInThatPeriodAlreadyExists(subscription))
+                _Subscriptions.Add(subscription);
+            else
+                throw new SubscriptionDatesOverlapException(subscription._subStartDate, subscription._subEndDate);
+        }
             
 
         private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)

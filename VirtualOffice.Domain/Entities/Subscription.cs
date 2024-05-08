@@ -13,7 +13,7 @@ namespace VirtualOffice.Domain.Entities
 
         public SubscriptionTypeEnum _subType { get; private set; }
 
-        public SubscriptionFee _subscriptionFee { get; private set; }
+        public SubscriptionFee _subscriptionFee { get; private set; } // must be decimal due to taxes
 
         public bool _isPayed { get; private set; } = false;
 
