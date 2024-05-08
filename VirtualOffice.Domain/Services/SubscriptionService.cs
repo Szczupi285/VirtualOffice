@@ -13,7 +13,6 @@ namespace VirtualOffice.Domain.Services
     public class SubscriptionService
     {
         private ICollection<Subscription> _Subscriptions { get; set; }
-
         public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
@@ -70,18 +69,24 @@ namespace VirtualOffice.Domain.Services
             Subscription currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value) ?? throw new CurrentSubscriptionNotFoundException();
             return currentSubscription;
         }
-        private bool PayForSubscription(Subscription subscription) 
+        private void PayForSubscription(Subscription subscription) 
         {
-            throw new NotImplementedException();
+            Subscription sub = GetCurrentSubscription();
+            sub.Pay();
         }
-        public bool PayForSubscriptionRange(ICollection<Subscription> subscriptions)
+        public void PayForSubscriptionRange(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            foreach (Subscription subscription in subscriptions)
+            {
+                subscription.Pay(); // should we check whether it is not executed on past subscriptions?
+            }
         }
         private decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            Subscription sub = GetCurrentSubscription();
+            return sub._subscriptionFee * subscriptions.Count();
         }
+
 
 
 
