@@ -18,12 +18,11 @@ namespace VirtualOffice.Domain.Entities
         public bool _isPayed { get; private set; } = false;
 
 
-        internal Subscription(SubscriptionId id, SubscriptionStartDate startDate, 
-            SubscriptionEndDate endDate, SubscriptionTypeEnum type, decimal subscriptionFee, bool isPayed)
+        internal Subscription(SubscriptionId id, SubscriptionStartDate startDate, SubscriptionTypeEnum type, decimal subscriptionFee, bool isPayed)
         {
             Id = id;
             _subStartDate = startDate;
-            _subEndDate = endDate;
+            _subEndDate = startDate.Value.AddDays(30);
             _subType = type;
             _subscriptionFee = subscriptionFee;
             _isPayed = isPayed;

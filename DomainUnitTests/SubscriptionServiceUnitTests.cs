@@ -26,7 +26,7 @@ namespace DomainUnitTests
             SubscriptionFee fee = new SubscriptionFee(0);
             bool isPayed = false;
 
-            Subscription subscription = new Subscription(id, startDate, endDate, type, fee, isPayed);
+            Subscription subscription = new Subscription(id, startDate, type, fee, isPayed);
             ICollection<Subscription> subscriptions = new List<Subscription>();
             subscriptions.Add(subscription);
             _subscriptionService = new SubscriptionService(subscriptions);
@@ -42,7 +42,7 @@ namespace DomainUnitTests
             SubscriptionFee fee = new SubscriptionFee(0);
             bool isPayed = false;
 
-            Subscription Subscription = new Subscription(id, startDate, endDate, type, fee, isPayed);
+            Subscription Subscription = new Subscription(id, startDate, type, fee, isPayed);
             
             Assert.Throws<SubscriptionDatesOverlapException>(() => _subscriptionService.AddSubscription(Subscription));
         }
@@ -57,7 +57,7 @@ namespace DomainUnitTests
             SubscriptionFee fee = new SubscriptionFee(0);
             bool isPayed = false;
 
-            Subscription Subscription = new Subscription(id, startDate, endDate, type, fee, isPayed);
+            Subscription Subscription = new Subscription(id, startDate, type, fee, isPayed);
 
             _subscriptionService.AddSubscription(Subscription);
 
