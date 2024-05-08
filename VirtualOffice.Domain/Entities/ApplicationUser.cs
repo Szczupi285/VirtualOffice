@@ -11,7 +11,6 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUserSurname _surname { get; private set; }
 
-
         private PermissionsEnum _permissions;
 
 
