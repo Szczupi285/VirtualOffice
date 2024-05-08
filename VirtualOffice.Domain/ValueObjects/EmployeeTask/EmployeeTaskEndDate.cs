@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    internal class EmployeeTaskEndDate
+    public sealed record EmployeeTaskEndDate
     {
     }
 }
