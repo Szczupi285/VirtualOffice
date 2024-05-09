@@ -41,7 +41,7 @@ namespace VirtualOffice.Domain.Entities
         }
 
         public void SetTitle(string title) => _Title = title;
-        public void SetDescription(string description) => _Description = _Description;
+        public void SetDescription(string description) => _Description = description;
         public void SetPriority(EmployeeTaskPriorityEnum priority) => _Priority = priority;
         public void SetStatus(EmployeeTaskStatusEnum Status) => _TaskStatus = Status;
 

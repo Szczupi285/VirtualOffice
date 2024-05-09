@@ -8,13 +8,23 @@ using VirtualOffice.Domain.Exceptions.EmployeeTask;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public sealed record EmployeeTaskDescription : AbstractRecordName
+    public sealed record EmployeeTaskDescription
     {
-        public EmployeeTaskDescription(string value) : base(value, 1500, new EmptyEmployeeTaskDescriptionException(), new TooLongEmployeeTaskDescriptionException(value, 1500))
+        string Value { get; }
+        public EmployeeTaskDescription(string value)
         {
+            if (value is null)
+                value = "";
+            else if (value.Length > 1500)
+                throw new TooLongEmployeeTaskDescriptionException(value, 1500);
+
+            Value = value;
         }
 
         public static implicit operator EmployeeTaskDescription(string content)
             => new(content);
+
+        public static implicit operator string(EmployeeTaskDescription content)
+            => content.Value;
     }
 }
