@@ -15,6 +15,8 @@ namespace DomainUnitTests
     {
         private EmployeeTask _EmployeeTask { get; set; }
         private ApplicationUser _ApplicationUser { get; set; }
+        private ApplicationUser _ApplicationUser2 { get; set; }
+        private ApplicationUser _ApplicationUser3 { get; set; }
 
         public EmployeeTaskUnitTests()
         {
@@ -23,6 +25,8 @@ namespace DomainUnitTests
             ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo" , "SurnameTwo");
             ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree" , "SurnameThree");
             _ApplicationUser = user1;
+            _ApplicationUser2 = user2;
+            _ApplicationUser3 = user3;
 
             List<ApplicationUser> users = new List<ApplicationUser>();
 
@@ -338,6 +342,46 @@ namespace DomainUnitTests
                 _EmployeeTask._AssignedEmployees.Contains(user6));
         }
 
+        [Fact]
+        public void RemoveEmployee_EmployeeIsAlreadyAssigned_ShouldRemoveEmployee()
+        {
+            Assert.True(_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser));
+            _EmployeeTask.RemoveEmployee(_ApplicationUser);
+            Assert.False(_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser));
+        }
+        [Fact]
+        public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThisTaskException()
+        {
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
+            Assert.Throws<UserIsNotAssignedToThisTaskException>(() => _EmployeeTask.RemoveEmployee(user4));
+        }
+        [Fact]
+        public void RemoveEmployeesRange_UsersAssignedPreviously_ListShouldNotContainUsers()
+        {
+            Assert.True(_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser) &&
+                _EmployeeTask._AssignedEmployees.Contains(_ApplicationUser2) &&
+                _EmployeeTask._AssignedEmployees.Contains(_ApplicationUser3));
+
+            List<ApplicationUser> usersList = new List<ApplicationUser>() { _ApplicationUser, _ApplicationUser2, _ApplicationUser3 };
+            _EmployeeTask.RemoveEmployeesRange(usersList);
+
+            Assert.True(!_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser) &&
+                !_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser2) &&
+                !_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser3));
+        }
+
+        [Fact]
+        public void InvalidUpdateEndDate_EndDateIsBeforeStartDate_ShouldThrowEmployeeTaskEndDateCannotBeBeforeStartDate()
+        {
+            Assert.Throws<EmployeeTaskEndDateCannotBeBeforeStartDate>(() => _EmployeeTask.UpdateEndDate(_EmployeeTask._StartDate.Value.AddSeconds(-1)));
+        }
+        [Fact]
+        public void ValidUpdateEndDate_EndDateShouldBeEqualToUpdatedDate()
+        {
+            DateTime dateToUpdate = _EmployeeTask._StartDate.Value.AddSeconds(1);
+            _EmployeeTask.UpdateEndDate(dateToUpdate);
+            Assert.Equal(dateToUpdate, _EmployeeTask._EndDate);
+        }
 
         #endregion
     }
