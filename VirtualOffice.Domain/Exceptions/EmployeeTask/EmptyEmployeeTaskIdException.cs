@@ -7,9 +7,9 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.EmployeeTask
 {
-    public class EmptyEmployeeTaskId : VirtualOfficeException
+    public class EmptyEmployeeTaskIdException : VirtualOfficeException
     {
-        public EmptyEmployeeTaskId() 
+        public EmptyEmployeeTaskIdException() 
             : base("EmployeeTask Id cannot be empty")
         {
         }

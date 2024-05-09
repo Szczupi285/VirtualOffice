@@ -143,7 +143,7 @@ namespace DomainUnitTests
         [Fact]
         public void AddMember_ShouldContainMember()
         {
-            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
             
             Assert.Contains(member, _office._members);
@@ -152,7 +152,7 @@ namespace DomainUnitTests
         [Fact]
         public void AddMember_AlreadyMember_ShouldThrowUserIsAlreadyMemberOfThisOfficeException()
         {
-            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
 
             Assert.Throws<UserIsAlreadyMemberOfThisOfficeException>(() => _office.AddMember(member));
@@ -163,9 +163,9 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname", "example@gmail.com");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname", "example@gmail.com");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname", "example@gmail.com");
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
             List<ApplicationUser> memberList = new List<ApplicationUser>
             {
@@ -191,9 +191,9 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname", "example@gmail.com");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname", "example@gmail.com");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname", "example@gmail.com");
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
             List<ApplicationUser> memberList = new List<ApplicationUser>
             {
@@ -214,9 +214,9 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname", "example@gmail.com");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname", "example@gmail.com");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname", "example@gmail.com");
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
             List<ApplicationUser> memberList = new List<ApplicationUser>
             {
@@ -226,7 +226,7 @@ namespace DomainUnitTests
             };
             _office.AddRangeMembers(memberList);
 
-            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
 
             Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
         }
@@ -234,7 +234,7 @@ namespace DomainUnitTests
         public void RemoveMember_EmptyCollectionOfMembers_ShouldThrowUserIsNotMemberOfThisOfficeException()
         {
 
-            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
 
             Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
         }
@@ -246,10 +246,10 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             Guid guid4 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname", "example@gmail.com");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname", "example@gmail.com");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname", "example@gmail.com");
-            ApplicationUser user4 = new ApplicationUser(guid4, "name", "surname", "example@gmail.com");
+            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
+            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
+            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
+            ApplicationUser user4 = new ApplicationUser(guid4, "name", "surname");
 
             List<ApplicationUser> memberList = new List<ApplicationUser>
             {
@@ -275,7 +275,7 @@ namespace DomainUnitTests
         [Fact]
         public void GetMemberById_MemberFound_ShouldReturnUser()
         {
-            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
 
             ApplicationUser foundMember = _office.GetMemberById(member.Id);
@@ -292,7 +292,7 @@ namespace DomainUnitTests
         [Fact]
         public void GetMemberBySurname_MemberFound_ShouldReturnUser()
         {
-            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com");
+            ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
 
             ApplicationUser foundMember = _office.GetMemberBySurname(member._surname);
@@ -310,9 +310,9 @@ namespace DomainUnitTests
         {
             List<ApplicationUser> users = new List<ApplicationUser>
             {
-                new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com"),
-                new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com"),
-                new ApplicationUser(Guid.NewGuid(), "name", "surname", "example@gmail.com"),
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
+                new ApplicationUser(Guid.NewGuid(), "name", "surname"),
             };
 
             _office.AddRangeMembers(users);
