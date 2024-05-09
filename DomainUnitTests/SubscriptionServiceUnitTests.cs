@@ -147,5 +147,23 @@ namespace DomainUnitTests
             Assert.True(subscription._isPayed);
         }
 
+        [Fact]
+        public void GetPaymentAmmount_AmountShouldMatch()
+        {
+            SubscriptionStartDate start1 = new SubscriptionStartDate(DateTime.UtcNow);
+            SubscriptionStartDate start2 = new SubscriptionStartDate(start1.Value.AddDays(31));
+
+            Subscription subscription1 = new Subscription(id, start1, SubscriptionTypeEnum.Basic, isPayed); // for 100
+            Subscription subscription2 = new Subscription(id, start2, SubscriptionTypeEnum.Enterprise, isPayed); // for 200
+
+            ICollection<Subscription> subscriptions = new List<Subscription>();
+            subscriptions.Add(subscription1);
+            subscriptions.Add(subscription2);
+
+            Assert.Equal(2, subscriptions.Count);
+            Assert.Equal(300, _subscriptionService.GetPaymentAmmount(subscriptions));
+        }
+
+
     }
 }

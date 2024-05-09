@@ -13,8 +13,10 @@ namespace VirtualOffice.Domain.Services
     
     public class SubscriptionService
     {
+        //private  { get; set; }
         private ICollection<Subscription> _Subscriptions { get; set; }
         public int SubscriptionsCount => _Subscriptions.Count;
+        
         public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
@@ -88,10 +90,28 @@ namespace VirtualOffice.Domain.Services
                 subscription.Pay(); 
             }
         }
-        private decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
+        internal decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
         {
-            Subscription sub = GetCurrentSubscription();
-            return sub._subscriptionFee * subscriptions.Count();
+            ICollection<Subscription> subs = GetActiveSubscriptions(subscriptions);
+            decimal amount = 0;
+            foreach(Subscription sub in subs)
+            {
+                amount += sub._subscriptionFee;
+            }
+            return amount;
+        }
+
+        private ICollection<Subscription> GetActiveSubscriptions(ICollection<Subscription> subscriptions)
+        {
+            ICollection<Subscription> ActiveSubscriptions = new List<Subscription>();
+
+            Subscription currentSubscription = GetCurrentSubscription();
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub._subStartDate >= currentSubscription._subStartDate)
+                    ActiveSubscriptions.Add(sub);
+            }
+            return ActiveSubscriptions;
         }
 
 
