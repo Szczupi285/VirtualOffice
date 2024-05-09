@@ -41,8 +41,6 @@ namespace VirtualOffice.Domain.Services
                     return true;                
             }
             return flag;
-
-            // subscription.end < existed.start || subscription.start > existed.end => false
         }
 
         public Subscription GetSubscriptionById(SubscriptionId id) 
@@ -70,23 +68,24 @@ namespace VirtualOffice.Domain.Services
                 UpgradeSubscriptionType(id, subscriptionType);
             }
         }
+
         // consider what to return
-        // return none when higher tiers are not avalible
+        // return type none when higher tiers are not avalible
         public Subscription GetCurrentSubscription()
         {
             Subscription currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value) ?? throw new CurrentSubscriptionNotFoundException();
             return currentSubscription;
         }
-        private void PayForSubscription(Subscription subscription) 
+        private void UpdateSubscriptionPaymentStatus(Subscription subscription) 
         {
             Subscription sub = GetCurrentSubscription();
             sub.Pay();
         }
-        public void PayForSubscriptionRange(ICollection<Subscription> subscriptions)
+        public void UpdateSubscriptionPaymentStatusRange(ICollection<Subscription> subscriptions)
         {
             foreach (Subscription subscription in subscriptions)
             {
-                subscription.Pay(); // should we check whether it is not executed on past subscriptions?
+                subscription.Pay(); 
             }
         }
         private decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
