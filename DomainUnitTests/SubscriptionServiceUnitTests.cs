@@ -17,17 +17,15 @@ namespace DomainUnitTests
 
         static SubscriptionId id = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);
-        static SubscriptionTypeEnum type = SubscriptionTypeEnum.None;
-        static SubscriptionFee fee = new SubscriptionFee(0);
+        static SubscriptionTypeEnum type = SubscriptionTypeEnum.None;        
         static bool isPayed = false;
-        Subscription subscription = new Subscription(id, startDate, type, fee, isPayed);
+        Subscription subscription = new Subscription(id, startDate, type, isPayed);
 
         static SubscriptionId id2 = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate2 = new SubscriptionStartDate(DateTime.UtcNow.AddDays(35));
-        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.None;
-        static SubscriptionFee fee2 = new SubscriptionFee(0);
+        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.None;        
         static bool isPayed2 = false;
-        Subscription subscription2 = new Subscription(id2, startDate2, type2, fee2, isPayed2);
+        Subscription subscription2 = new Subscription(id2, startDate2, type2, isPayed2);
 
         public SubscriptionServiceUnitTests()
         {          
@@ -46,7 +44,7 @@ namespace DomainUnitTests
         [Fact]
         public void AddSubscription_ShouldAddSubscription()
         {
-            Subscription sub = new Subscription(id2, startDate2.Value.AddDays(31), type2, fee2, isPayed2);
+            Subscription sub = new Subscription(id2, startDate2.Value.AddDays(31), type2, isPayed2);
             _subscriptionService.AddSubscription(sub);
 
             Assert.Equal(3, _subscriptionService.SubscriptionsCount);
@@ -68,7 +66,7 @@ namespace DomainUnitTests
         [Fact]
         public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue3()
         {
-            Subscription sub = new Subscription(id, startDate.Value.AddDays(1), type, fee, isPayed);
+            Subscription sub = new Subscription(id, startDate.Value.AddDays(1), type, isPayed);
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub));
         }
 
@@ -76,14 +74,14 @@ namespace DomainUnitTests
         public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue4()
         {
 
-            Subscription sub2 = new Subscription(id, startDate.Value.AddDays(31), type, fee, isPayed);
+            Subscription sub2 = new Subscription(id, startDate.Value.AddDays(31), type, isPayed);
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub2));
         }
 
         [Fact]
         public void DoesSubInThatPeriodAlreadyExists_ShouldReturnFalse()
         {
-            Subscription sub = new Subscription(id, startDate2.Value.AddDays(31), type, fee, isPayed);
+            Subscription sub = new Subscription(id, startDate2.Value.AddDays(31), type, isPayed);
             Assert.False(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub));
         }
 
@@ -106,8 +104,8 @@ namespace DomainUnitTests
             SubscriptionStartDate start1 = new SubscriptionStartDate(startDate2.Value.AddDays(31));
             SubscriptionStartDate start2 = new SubscriptionStartDate(start1.Value.AddDays(31));
            
-            Subscription subscription1 = new Subscription(id, start1, type, fee, isPayed);
-            Subscription subscription2 = new Subscription(id, start2, type, fee, isPayed);
+            Subscription subscription1 = new Subscription(id, start1, type, isPayed);
+            Subscription subscription2 = new Subscription(id, start2, type, isPayed);
 
             ICollection<Subscription> subscriptions = new List<Subscription>();
             subscriptions.Add(subscription1);
