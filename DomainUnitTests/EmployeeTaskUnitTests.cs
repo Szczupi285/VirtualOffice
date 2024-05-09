@@ -14,6 +14,7 @@ namespace DomainUnitTests
     public class EmployeeTaskUnitTests
     {
         private EmployeeTask _EmployeeTask { get; set; }
+        private ApplicationUser _ApplicationUser { get; set; }
 
         public EmployeeTaskUnitTests()
         {
@@ -21,6 +22,7 @@ namespace DomainUnitTests
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne" , "SurnameOne");
             ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo" , "SurnameTwo");
             ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree" , "SurnameThree");
+            _ApplicationUser = user1;
 
             List<ApplicationUser> users = new List<ApplicationUser>();
 
@@ -311,9 +313,32 @@ namespace DomainUnitTests
             _EmployeeTask.SetStatus(EmployeeTaskStatusEnum.InProgress);
             Assert.Equal(EmployeeTaskStatusEnum.InProgress, _EmployeeTask._TaskStatus);
         }
+        [Fact]
+        public void AddEmployee_EmployeeIsAlreadyAssigned_ShouldThrowUserIsAlreadyAssignedToThisTaskException()
+        {
+            Assert.Throws<UserIsAlreadyAssignedToThisTaskException>(() => _EmployeeTask.AddEmployee(_ApplicationUser));
+        }
+        [Fact]
+        public void AddEmployee_UserNotAssignedPreviously_ListShouldContainUser()
+        {
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
+            _EmployeeTask.AddEmployee(user4);
+            Assert.True(_EmployeeTask._AssignedEmployees.Contains(user4));
+        }
+        [Fact]
+        public void AddEmployeesRange_UserNotAssignedPreviously_ListShouldContainUsers()
+        {
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
+            ApplicationUser user5 = new ApplicationUser(Guid.NewGuid(), "NameFive", "SurnameFive");
+            ApplicationUser user6 = new ApplicationUser(Guid.NewGuid(), "NameSix", "SurnameSix");
+            List<ApplicationUser> usersList = new List<ApplicationUser>() {user4, user5, user6 };
+            _EmployeeTask.AddEmployeesRange(usersList);
+            Assert.True(_EmployeeTask._AssignedEmployees.Contains(user4) &&
+                _EmployeeTask._AssignedEmployees.Contains(user5) &&
+                _EmployeeTask._AssignedEmployees.Contains(user6));
+        }
 
 
-        
         #endregion
     }
 }
