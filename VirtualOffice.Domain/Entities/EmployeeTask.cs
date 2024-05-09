@@ -17,28 +17,33 @@ namespace VirtualOffice.Domain.Entities
         public EmployeeTaskDescription _Description {get; private set;}
         public ICollection<ApplicationUser> _AssignedEmployees { get; private set; }
         public EmployeeTaskPriorityEnum _Priority {get; private set;}
-        public EmployeeTaskStatusEnum _TaskStatus{ get; private set; }
+        public EmployeeTaskStatusEnum _TaskStatus{ get; private set; } = EmployeeTaskStatusEnum.NotStarted;
+
+        // start date is not set to default Utc.Now because it will be avalible to create tasks that are supposed to be started in the future
         public EmployeeTaskStartDate _StartDate {get; private set;}
         public EmployeeTaskEndDate _EndDate {get; private set;}
 
 
         public EmployeeTask(EmployeeTaskId id, EmployeeTaskTitle title, EmployeeTaskDescription description,
             ICollection<ApplicationUser> assignedEmployees, EmployeeTaskPriorityEnum priority,
-           EmployeeTaskStatusEnum taskStatus, EmployeeTaskStartDate startDate,
-            EmployeeTaskEndDate endDate)
+           EmployeeTaskStartDate startDate, EmployeeTaskEndDate endDate)
         {
+            if (startDate.Value >= endDate.Value)
+                throw new EmployeeTaskEndDateCannotBeBeforeStartDate(endDate, startDate);
+
             Id = id;
             _Title = title;
             _Description = description;
             _AssignedEmployees = assignedEmployees;
             _Priority = priority;
-            _TaskStatus = taskStatus;
             _StartDate = startDate;
             _EndDate = endDate;
         }
 
         public void SetTitle(string title) => _Title = title;
         public void SetDescription(string description) => _Description = _Description;
+        public void SetPriority(EmployeeTaskPriorityEnum priority) => _Priority = priority;
+        public void SetStatus(EmployeeTaskStatusEnum Status) => _TaskStatus = Status;
 
         public void AddEmployee(ApplicationUser user) 
         {
@@ -66,6 +71,16 @@ namespace VirtualOffice.Domain.Entities
             foreach(var user in users)
                 RemoveEmployee(user);
         }
+
+        public void UpdateEndDate(DateTime endDate)
+        {
+            if(endDate <= _StartDate)
+                throw new EmployeeTaskEndDateCannotBeBeforeStartDate(endDate, _StartDate);
+
+            _EndDate = endDate;
+        }
+
+
 
     }
 }

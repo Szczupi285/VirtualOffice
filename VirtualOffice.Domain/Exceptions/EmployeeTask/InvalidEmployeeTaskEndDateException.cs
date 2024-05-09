@@ -7,11 +7,12 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.EmployeeTask
 {
-    public class EmptyEmployeeTaskId : VirtualOfficeException
+    public class InvalidEmployeeTaskEndDateException : VirtualOfficeException
     {
-        public EmptyEmployeeTaskId() 
-            : base("EmployeeTask Id cannot be empty")
+        DateTime Value;
+        public InvalidEmployeeTaskEndDateException(DateTime value) : base($"EmployeeTask EndDate cannot be in the past")
         {
+            Value = value;
         }
     }
 }
