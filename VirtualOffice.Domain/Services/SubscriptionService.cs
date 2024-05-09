@@ -13,13 +13,19 @@ namespace VirtualOffice.Domain.Services
     public class SubscriptionService
     {
         private ICollection<Subscription> _Subscriptions { get; set; }
-
+        public int SubscriptionsCount => _Subscriptions.Count;
         public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
         }
 
-        private void AddSubscription(Subscription subscription) => _Subscriptions.Add(subscription);
+        public void AddSubscription(Subscription subscription)
+        {
+            if(!DoesSubInThatPeriodAlreadyExists(subscription))
+                _Subscriptions.Add(subscription);
+            else
+                throw new SubscriptionDatesOverlapException(subscription._subStartDate, subscription._subEndDate);
+        }
             
 
         private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
@@ -67,21 +73,27 @@ namespace VirtualOffice.Domain.Services
         // return none when higher tiers are not avalible
         public Subscription GetCurrentSubscription()
         {
-            throw new NotImplementedException();
-            //_Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
+            Subscription currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value) ?? throw new CurrentSubscriptionNotFoundException();
+            return currentSubscription;
         }
-        private bool PayForSubscription(Subscription subscription) 
+        private void PayForSubscription(Subscription subscription) 
         {
-            throw new NotImplementedException();
+            Subscription sub = GetCurrentSubscription();
+            sub.Pay();
         }
-        public bool PayForSubscriptionRange(ICollection<Subscription> subscriptions)
+        public void PayForSubscriptionRange(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            foreach (Subscription subscription in subscriptions)
+            {
+                subscription.Pay(); // should we check whether it is not executed on past subscriptions?
+            }
         }
         private decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            Subscription sub = GetCurrentSubscription();
+            return sub._subscriptionFee * subscriptions.Count();
         }
+
 
 
 

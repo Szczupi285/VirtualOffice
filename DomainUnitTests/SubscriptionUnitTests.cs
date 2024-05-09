@@ -48,12 +48,12 @@ namespace DomainUnitTests
         [InlineData("1440")]
         [InlineData("10080")]
         [InlineData("43800")]
-        public void SubscriptionEndDateLessThan31daysFromNow_ShouldReturnSubscriptionEndDateInvalidException(string value)
+        public void SubscriptionEndDateLessThan30daysFromNow_ShouldReturnSubscriptionEndDateInvalidException(string value)
         {
             Assert.Throws<SubscriptionEndDateInvalidException>(()
                 => new SubscriptionEndDate
                 (
-                    DateTime.UtcNow.AddDays(31).AddMinutes(-Convert.ToInt32(value))
+                    DateTime.UtcNow.AddDays(30).AddMinutes(-Convert.ToInt32(value))
                 ));
         }
         [Fact]
