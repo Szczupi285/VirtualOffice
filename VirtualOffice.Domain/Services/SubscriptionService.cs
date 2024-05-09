@@ -10,6 +10,7 @@ using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Domain.Services
 {
+    
     public class SubscriptionService
     {
         private ICollection<Subscription> _Subscriptions { get; set; }
@@ -28,20 +29,20 @@ namespace VirtualOffice.Domain.Services
         }
             
 
-        private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
+        internal bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
         {
+            bool flag = true;
             foreach(Subscription sub in _Subscriptions)
             {
-                if((subscription._subStartDate < sub._subStartDate &&
-                    subscription._subEndDate.Value < sub._subStartDate.Value) ||
-                    (subscription._subStartDate.Value > sub._subEndDate.Value &&
-                    subscription._subEndDate > sub._subEndDate)
-                    )
-                {
-                    return false;
-                }
+                if (subscription._subEndDate.Value < sub._subStartDate.Value ||
+                    subscription._subStartDate.Value > sub._subEndDate.Value)
+                    flag = false;
+                else
+                    return true;                
             }
-            return true;
+            return flag;
+
+            // subscription.end < existed.start || subscription.start > existed.end => false
         }
 
         public Subscription GetSubscriptionById(SubscriptionId id) 
