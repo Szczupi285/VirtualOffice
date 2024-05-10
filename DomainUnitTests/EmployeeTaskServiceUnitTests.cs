@@ -98,5 +98,25 @@ namespace DomainUnitTests
         {
             Assert.False(service.DeleteTask(_Task3));
         }
+
+        [Fact]
+        public void GetTaskById_ReturnsTaskIfExists()
+        {
+            var taskIdToFind = _Task1.Id;
+
+            var resultTask = service.GetTaskById(taskIdToFind);
+
+            Assert.Equal(_Task1, resultTask);
+        }
+
+        [Fact]
+        public void GetTaskById_ReturnsNullForNonExistentId()
+        {
+            var nonExistentId = new EmployeeTaskId(Guid.NewGuid());
+
+            var resultTask = service.GetTaskById(nonExistentId);
+
+            Assert.Null(resultTask);
+        }
     }
 }
