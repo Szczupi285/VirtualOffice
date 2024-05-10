@@ -176,7 +176,7 @@ namespace VirtualOffice.Domain.Services
         public ImmutableSortedSet<EmployeeTask> GetCurrentTasks(ApplicationUser user)
         {
             return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
-            && task._StartDate < DateTime.UtcNow
+            && task._StartDate < _DateTimeProvider.UtcNow()
             && task._TaskStatus != EmployeeTaskStatusEnum.Done)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
@@ -199,7 +199,7 @@ namespace VirtualOffice.Domain.Services
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksPlannedForFuture(ApplicationUser user)
         {
             return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
-            && task._StartDate > DateTime.UtcNow)
+            && task._StartDate > _DateTimeProvider.UtcNow())
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }

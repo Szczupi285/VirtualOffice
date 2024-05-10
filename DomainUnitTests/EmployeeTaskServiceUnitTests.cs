@@ -306,6 +306,155 @@ namespace DomainUnitTests
             Assert.Contains(_Task2, resultTasks);
             Assert.DoesNotContain(_Task1, resultTasks);
         }
+        [Fact]
+        public void GetOverdueTasks_ReturnsExpectedTasksForBothUsers()
+        {
+
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(8));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+
+            var resultTasks = service.GetOverdueTasks(_ApplicationUser1);
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_ReturnsExpectedTasksForUser()
+        {
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_ReturnsEmptySetForNotFoundTasks()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.Done);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.Done);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Empty(resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_ReturnsEmptySetForNotFoundExpiredTasks()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(8));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.Done);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.Done);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Empty(resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_NotStarted_ExpiredTasks_ShouldContainTasks()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(8));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1,resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_NotStarted_NotExpiredTasks_ShouldContainTasks()
+        {
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_TasksInProgress_ExpiredTasks_ShouldContainTasks()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(8));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+
+        [Fact]
+        public void GetCurrentTasks_TasksInProgress_NotExpiredTasks_ShouldContainTasks()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetCurrentTasks_TasksAwaitingReview_ExpiredTasks_ShouldContainTasks()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(8));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+
+        [Fact]
+        public void GetCurrentTasks_TasksAwaitingReview_NotExpiredTasks_ShouldContainTasks()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+
+        [Fact]
+        public void GetEmployeeTasksPlannedForFuture_ShouldContainTasks()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddYears(-1));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            var resultTasks = service.GetEmployeeTasksPlannedForFuture(_ApplicationUser1);
+
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+
+        [Fact]
+        public void GetEmployeeTasksPlannedForFuture_ShouldNotContainTasks()
+        {
+            var resultTasks = service.GetEmployeeTasksPlannedForFuture(_ApplicationUser1);
+
+            Assert.DoesNotContain(_Task1, resultTasks);
+            Assert.DoesNotContain(_Task2, resultTasks);
+        }
 
 
 
