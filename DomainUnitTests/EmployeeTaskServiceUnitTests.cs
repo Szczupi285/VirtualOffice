@@ -150,7 +150,10 @@ namespace DomainUnitTests
         {
             var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser1);
 
-            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && !resultTasks.Contains(_Task3) && !resultTasks.Contains(_Task4));
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+            Assert.DoesNotContain(_Task3, resultTasks);
+            Assert.DoesNotContain(_Task4, resultTasks);
         }
 
         [Fact]
@@ -165,7 +168,9 @@ namespace DomainUnitTests
         public void GetAllEmployeeTasksForUsersGroup_ReturnsExpectedTasksForUsers()
         {
             var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser1, _ApplicationUser3 });
-            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && resultTasks.Contains(_Task3));
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+            Assert.Contains(_Task3, resultTasks);
         }
         [Fact]
         public void GetAllEmployeeTasksForUsersGroup_ReturnsEmptySetForNonAssignedUser()
@@ -185,7 +190,69 @@ namespace DomainUnitTests
         {
             var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(1));
             Assert.Empty(resultTasks);
-
         }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsOneTaskWithTaskStatusNotStarted()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.NotStarted);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsOneTaskWithTaskStatusInProgress()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.InProgress);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsOneTaskWithTaskStatusAwaitingReview()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.AwaitingReview);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsOneTaskWithTaskStatusDone()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.Done);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.Done);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsTasksWithTaskStatusNotStarted()
+        {
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.NotStarted);
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsTasksWithTaskStatusInProgress()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.InProgress);
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsTasksWithTaskStatusAwaitingReview()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.AwaitingReview);
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsTasksWithTaskStatusDone()
+        {
+            _Task1.UpdateStatus(EmployeeTaskStatusEnum.Done);
+            _Task2.UpdateStatus(EmployeeTaskStatusEnum.Done);
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.Done);
+            Assert.Contains(_Task1, resultTasks);
+            Assert.Contains(_Task2, resultTasks);
+        }
+
     }
 }
