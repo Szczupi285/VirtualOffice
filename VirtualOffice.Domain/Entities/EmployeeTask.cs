@@ -21,6 +21,7 @@ namespace VirtualOffice.Domain.Entities
 
         // start date is not set to default Utc.Now because it will be avalible to create tasks that are supposed to be started in the future
         public EmployeeTaskStartDate _StartDate {get; private set;}
+
         public EmployeeTaskEndDate _EndDate {get; private set;}
 
 

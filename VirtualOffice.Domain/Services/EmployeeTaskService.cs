@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Services
 {
@@ -14,9 +15,17 @@ namespace VirtualOffice.Domain.Services
     {
         public HashSet<EmployeeTask> _EmployeeTasks {get; private set;}
 
+        private readonly IDateTimeProvider _DateTimeProvider;
+
         public EmployeeTaskService(HashSet<EmployeeTask> employeeTasks)
         {
-            _EmployeeTasks = employeeTasks.ToHashSet();
+            _EmployeeTasks = employeeTasks;
+            _DateTimeProvider = new DateTimeProvider();
+        }
+        internal EmployeeTaskService(HashSet<EmployeeTask> employeeTasks, IDateTimeProvider dateTimeProvider)
+        {
+            _EmployeeTasks = employeeTasks;
+            _DateTimeProvider = dateTimeProvider;
         }
 
         public bool AssignTask(EmployeeTask task) => _EmployeeTasks.Add(task);   
@@ -145,7 +154,7 @@ namespace VirtualOffice.Domain.Services
         public ImmutableSortedSet<EmployeeTask> GetOverdueTasks(ApplicationUser user)
         {
             return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
-            && task._EndDate < DateTime.UtcNow
+            && task._EndDate < _DateTimeProvider.UtcNow()
             && task._TaskStatus != EmployeeTaskStatusEnum.Done)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
@@ -195,7 +204,6 @@ namespace VirtualOffice.Domain.Services
                 .ToImmutableSortedSet();
         }
 
-       
 
 
 

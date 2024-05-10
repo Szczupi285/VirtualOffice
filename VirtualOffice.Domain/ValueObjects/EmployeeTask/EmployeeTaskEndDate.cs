@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Exceptions.EmployeeTask;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public sealed record EmployeeTaskEndDate
+    public record EmployeeTaskEndDate
     {
         public DateTime Value { get; }
 

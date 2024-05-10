@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Moq;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Services;
 using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Shared;
+
 
 namespace DomainUnitTests
 {
@@ -79,8 +76,8 @@ namespace DomainUnitTests
             // Instance 4
             Guid task4Guid = Guid.NewGuid();
             var task4Id = new EmployeeTaskId(task3Guid);
-            var task4Title = new EmployeeTaskTitle("Task 3");
-            var task4Description = new EmployeeTaskDescription("Description for Task 3");
+            var task4Title = new EmployeeTaskTitle("Task 4");
+            var task4Description = new EmployeeTaskDescription("Description for Task 4");
             var assignedEmployees4 = new List<ApplicationUser>();
             var priority4 = EmployeeTaskPriorityEnum.Low;
             var startDate4 = new EmployeeTaskStartDate(DateTime.UtcNow);
@@ -282,7 +279,34 @@ namespace DomainUnitTests
             var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.Low);
             Assert.Contains(_Task1, resultTasks);
         }
-        
+        [Fact]
+        public void GetEmployeeTasksByPriority_ReturnsEmptySetForNotFoundTasks()
+        {
+            var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.Low);
+            Assert.Empty(resultTasks);
+        }
+
+        [Fact]
+        public void GetOverdueTasks_ReturnsEmptySetForNotFoundTasks()
+        {
+            var resultTasks = service.GetOverdueTasks(_ApplicationUser1);
+            Assert.Empty(resultTasks);
+        }
+        [Fact]
+        public void GetOverdueTasks_ReturnsExpectedTasksForUsers()
+        {
+
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(6));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+
+            var resultTasks = service.GetOverdueTasks(_ApplicationUser1);
+            Assert.Contains(_Task2, resultTasks);
+            Assert.DoesNotContain(_Task1, resultTasks);
+        }
+
 
 
     }
