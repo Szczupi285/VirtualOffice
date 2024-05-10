@@ -312,9 +312,9 @@ namespace DomainUnitTests
             Assert.Equal(EmployeeTaskPriorityEnum.Urgent, _EmployeeTask._Priority);
         }
         [Fact]
-        public void EmployeeTask_SetStatus_ProperlySetted()
+        public void EmployeeTask_UpdateStatus_ProperlySetted()
         {
-            _EmployeeTask.SetStatus(EmployeeTaskStatusEnum.InProgress);
+            _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
             Assert.Equal(EmployeeTaskStatusEnum.InProgress, _EmployeeTask._TaskStatus);
         }
         [Fact]

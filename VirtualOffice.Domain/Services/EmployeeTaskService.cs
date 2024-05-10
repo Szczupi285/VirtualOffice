@@ -12,16 +12,16 @@ namespace VirtualOffice.Domain.Services
 {
     public class EmployeeTaskService
     {
-        private HashSet<EmployeeTask> _EmployeeTasks {get; set;}
+        public HashSet<EmployeeTask> _EmployeeTasks {get; private set;}
 
         public EmployeeTaskService(HashSet<EmployeeTask> employeeTasks)
         {
             _EmployeeTasks = employeeTasks.ToHashSet();
         }
 
-        public void AssignTask(EmployeeTask task) => _EmployeeTasks.Add(task);   
+        public bool AssignTask(EmployeeTask task) => _EmployeeTasks.Add(task);   
 
-        public void DeleteTask(EmployeeTask task) => _EmployeeTasks.Remove(task);
+        public bool DeleteTask(EmployeeTask task) => _EmployeeTasks.Remove(task);
 
 
 

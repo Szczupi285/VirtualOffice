@@ -13,7 +13,7 @@ namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 
         public EmployeeTaskEndDate(DateTime value)
         {
-            if (value < DateTime.UtcNow)
+            if (value <= DateTime.UtcNow)
                 throw new InvalidEmployeeTaskEndDateException(value);
             Value = value;
         }
