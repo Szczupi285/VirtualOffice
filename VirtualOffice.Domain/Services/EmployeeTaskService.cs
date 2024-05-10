@@ -23,10 +23,20 @@ namespace VirtualOffice.Domain.Services
 
         public void DeleteTask(EmployeeTask task) => _EmployeeTasks.Remove(task);
 
+
+
         /// <summary>
         /// Retrieves an EmployeeTask by id. Id EmployeeTask is not found, returns null.
         /// </summary>
         public EmployeeTask? GetTaskById(EmployeeTaskId id) => _EmployeeTasks.FirstOrDefault(x => x.Id == id);
+
+
+        public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasksRange(ApplicationUser user)
+        {
+            return _EmployeeTasks.Where(task => task._AssignedEmployees == user)
+                .OrderByDescending(task => task._Priority)
+                .ToImmutableSortedSet();
+        }
 
 
         /// <summary>
@@ -47,6 +57,27 @@ namespace VirtualOffice.Domain.Services
             return _EmployeeTasks.Where(task => task._AssignedEmployees == user)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
+        }
+
+        /// <summary>
+        /// Retrieves an immutable sorted set of employee tasks assigned to the specified users.
+        /// </summary>
+        /// <param name="users">The set of users for whom to retrieve the tasks.</param>
+        /// <returns>
+        /// An immutable sorted set of employee tasks assigned to the specified users,
+        /// sorted by priority in descending order.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to any of the specified users.
+        /// It then sorts these tasks based on their priority before converting them into an immutable sorted set.
+        /// </remarks>
+        /// <returns>An immutable sorted set of employee tasks assigned to the specified users.</returns>
+        public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasksForUsers(HashSet<ApplicationUser> users)
+        {
+
+            return _EmployeeTasks.Where(task => users.Any(user => task._AssignedEmployees.Contains(user)))
+             .OrderByDescending(task => task._Priority)
+             .ToImmutableSortedSet();
         }
 
         /// <summary>
@@ -128,7 +159,52 @@ namespace VirtualOffice.Domain.Services
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
+        /// <summary>
+        /// Retrieves an immutable sorted set of current employee tasks assigned to the specified user.
+        /// </summary>
+        /// <param name="user">The user for whom to retrieve the current tasks.</param>
+        /// <returns>
+        /// An immutable sorted set of current employee tasks assigned to the specified user,
+        /// sorted by priority in descending order.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to the specified user
+        /// and having a start date earlier than the current UTC time, and the task status is not 'Done'.
+        /// It then sorts these tasks based on their priority before converting them into an immutable sorted set.
+        /// </remarks>
+        /// <returns>An immutable sorted set of current employee tasks assigned to the specified user.</returns>
+        public ImmutableSortedSet<EmployeeTask> GetCurrentTasks(ApplicationUser user)
+        {
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            && task._StartDate < DateTime.UtcNow
+            && task._TaskStatus != EmployeeTaskStatusEnum.Done)
+                .OrderByDescending(task => task._Priority)
+                .ToImmutableSortedSet();
+        }
 
+        /// <summary>
+        /// Retrieves an immutable sorted set of employee tasks planned for the future and assigned to the specified user.
+        /// </summary>
+        /// <param name="user">The user for whom to retrieve the future tasks.</param>
+        /// <returns>
+        /// An immutable sorted set of employee tasks planned for the future and assigned to the specified user,
+        /// sorted by priority in descending order.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to the specified user
+        /// and having a start date later than the current UTC time.
+        /// It then sorts these tasks based on their priority before converting them into an immutable sorted set.
+        /// </remarks>
+        /// <returns>An immutable sorted set of employee tasks planned for the future and assigned to the specified user.</returns>
+        public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksPlannedForFuture(ApplicationUser user)
+        {
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            && task._StartDate > DateTime.UtcNow)
+                .OrderByDescending(task => task._Priority)
+                .ToImmutableSortedSet();
+        }
+
+       
 
 
 
