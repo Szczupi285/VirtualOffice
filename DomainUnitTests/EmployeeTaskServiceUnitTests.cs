@@ -18,15 +18,27 @@ namespace DomainUnitTests
         private EmployeeTask _Task2 { get; set; }
         private EmployeeTask _Task3 { get; set; }
 
+        private ApplicationUser _ApplicationUser1 { get; set; }
+        private ApplicationUser _ApplicationUser2 { get; set; }
+        private ApplicationUser _ApplicationUser3 { get; set; }
+
         public EmployeeTaskServiceUnitTests()
         {
+
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
+            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo", "SurnameTwo");
+            ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree", "SurnameThree");
+            _ApplicationUser1 = user1;
+            _ApplicationUser2 = user2;
+            _ApplicationUser3 = user3;
+            List<ApplicationUser> applicationUsers = new List<ApplicationUser>() {user1, user2 };
 
             // Intance 1
             Guid task1Guid = Guid.NewGuid();
             var task1Id = new EmployeeTaskId(task1Guid);
             var task1Title = new EmployeeTaskTitle("Task 1");
             var task1Description = new EmployeeTaskDescription("Description for Task 1");
-            var assignedEmployees1 = new List<ApplicationUser>();
+            var assignedEmployees1 = applicationUsers;
             var priority1 = EmployeeTaskPriorityEnum.High;
             var startDate1 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate1 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(7));
@@ -38,7 +50,7 @@ namespace DomainUnitTests
             var task2Id = new EmployeeTaskId(task2Guid);
             var task2Title = new EmployeeTaskTitle("Task 2");
             var task2Description = new EmployeeTaskDescription("Description for Task 2");
-            var assignedEmployees2 = new List<ApplicationUser>();
+            var assignedEmployees2 = applicationUsers;
             var priority2 = EmployeeTaskPriorityEnum.Medium;
             var startDate2 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate2 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(5));
@@ -50,7 +62,7 @@ namespace DomainUnitTests
             var task3Id = new EmployeeTaskId(task3Guid);
             var task3Title = new EmployeeTaskTitle("Task 3");
             var task3Description = new EmployeeTaskDescription("Description for Task 3");
-            var assignedEmployees3 = new List<ApplicationUser>();
+            var assignedEmployees3 = applicationUsers;
             var priority3 = EmployeeTaskPriorityEnum.Low;
             var startDate3 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate3 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
@@ -102,9 +114,7 @@ namespace DomainUnitTests
         [Fact]
         public void GetTaskById_ReturnsTaskIfExists()
         {
-            var taskIdToFind = _Task1.Id;
-
-            var resultTask = service.GetTaskById(taskIdToFind);
+            var resultTask = service.GetTaskById(_Task1.Id);
 
             Assert.Equal(_Task1, resultTask);
         }
@@ -112,11 +122,11 @@ namespace DomainUnitTests
         [Fact]
         public void GetTaskById_ReturnsNullForNonExistentId()
         {
-            var nonExistentId = new EmployeeTaskId(Guid.NewGuid());
-
-            var resultTask = service.GetTaskById(nonExistentId);
+            var resultTask = service.GetTaskById(Guid.NewGuid());
 
             Assert.Null(resultTask);
         }
+
+       
     }
 }
