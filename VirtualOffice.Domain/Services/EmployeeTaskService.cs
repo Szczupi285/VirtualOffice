@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.EmployeeTask;
 
 namespace VirtualOffice.Domain.Services
 {
@@ -21,6 +22,11 @@ namespace VirtualOffice.Domain.Services
         public void AssignTask(EmployeeTask task) => _EmployeeTasks.Add(task);   
 
         public void DeleteTask(EmployeeTask task) => _EmployeeTasks.Remove(task);
+
+        /// <summary>
+        /// Retrieves an EmployeeTask by id. Id EmployeeTask is not found, returns null.
+        /// </summary>
+        public EmployeeTask? GetTaskById(EmployeeTaskId id) => _EmployeeTasks.FirstOrDefault(x => x.Id == id);
 
 
         /// <summary>
@@ -98,9 +104,30 @@ namespace VirtualOffice.Domain.Services
         /// </remarks>
         public HashSet<EmployeeTask> GetEmployeeTasksByPriority(ApplicationUser user, EmployeeTaskPriorityEnum priority)
             => _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._Priority == priority).ToHashSet();
-            
 
 
+        /// <summary>
+        /// Retrieves an immutable sorted set of overdue employee tasks assigned to the specified user.
+        /// </summary>
+        /// <param name="user">The user for whom to retrieve the overdue tasks.</param>
+        /// <returns>
+        /// An immutable sorted set of overdue employee tasks assigned to the specified user,
+        /// sorted by priority in descending order.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to the specified user
+        /// and having an end date earlier than the current UTC time, and the task status is not 'Done'. 
+        /// It then sorts these tasks based on their priority before converting them into an immutable sorted set.
+        /// </remarks>
+        /// <returns>An immutable sorted set of overdue employee tasks assigned to the specified user.</returns>
+        public ImmutableSortedSet<EmployeeTask> GetOverdueTasks(ApplicationUser user)
+        {
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            && task._EndDate < DateTime.UtcNow
+            && task._TaskStatus != EmployeeTaskStatusEnum.Done)
+                .OrderByDescending(task => task._Priority)
+                .ToImmutableSortedSet();
+        }
 
 
 
