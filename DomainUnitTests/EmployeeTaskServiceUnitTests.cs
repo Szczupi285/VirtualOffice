@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -127,6 +128,20 @@ namespace DomainUnitTests
             Assert.Null(resultTask);
         }
 
-       
+        [Fact]
+        public void GetAllEmployeeTasks_ReturnsExpectedTasksForUser()
+        {
+            var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser1);
+
+            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && !resultTasks.Contains(_Task3));
+        }
+
+        [Fact]
+        public void GetAllEmployeeTasks_ReturnsEmptySetForNonAssignedUser()
+        {
+            var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser3);
+
+            Assert.Empty(resultTasks);
+        }
     }
 }

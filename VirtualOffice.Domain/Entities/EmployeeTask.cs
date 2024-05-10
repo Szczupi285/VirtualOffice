@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.EmployeeTask;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class EmployeeTask
+    public class EmployeeTask : IComparable<EmployeeTask>
     {
         public EmployeeTaskId Id { get; private set; }
         public EmployeeTaskTitle _Title {get; private set;}
@@ -80,7 +80,11 @@ namespace VirtualOffice.Domain.Entities
             _EndDate = endDate;
         }
 
-
-
+        public int CompareTo(EmployeeTask? other)
+        {
+            if(other == null)
+                throw new ArgumentNullException();
+            return _Priority.CompareTo(other._Priority);
+        }
     }
 }

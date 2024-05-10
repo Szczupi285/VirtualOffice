@@ -45,7 +45,7 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of employee tasks assigned to the specified user, sorted by priority.</returns>
         public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasks(ApplicationUser user)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees == user)
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user))
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
