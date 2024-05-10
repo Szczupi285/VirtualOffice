@@ -254,5 +254,36 @@ namespace DomainUnitTests
             Assert.Contains(_Task2, resultTasks);
         }
 
+        [Fact]
+        public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityUrgent()
+        {
+            _Task1.SetPriority(EmployeeTaskPriorityEnum.Urgent);
+            var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.Urgent);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityHigh()
+        {
+            // task 1 is set to high in constructor
+            var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.High);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityMedium()
+        {
+            // task 2 is set to medium in constructor
+            var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.Medium);
+            Assert.Contains(_Task2, resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityLow()
+        {
+            _Task1.SetPriority(EmployeeTaskPriorityEnum.Low);
+            var resultTasks = service.GetEmployeeTasksByPriority(_ApplicationUser1, EmployeeTaskPriorityEnum.Low);
+            Assert.Contains(_Task1, resultTasks);
+        }
+        
+
+
     }
 }
