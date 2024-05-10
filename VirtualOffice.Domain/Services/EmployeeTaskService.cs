@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Domain.Services
@@ -45,11 +46,11 @@ namespace VirtualOffice.Domain.Services
         /// <summary>
         /// Retrieves an immutable sorted set of employee tasks assigned to the specified user until the given date.
         /// </summary>
-        /// <param name="user">The ApplicationUser object representing the user.</param>
+        /// <param name="user">The user for whom to retrieve the employee tasks.</param>
         /// <param name="endDate">The cutoff date until which tasks should be retrieved.</param>
         /// /// <remarks>
         /// This method filters the collection of employee tasks to include only those assigned to the specified user,
-        /// then sorts these tasks based on their priority before converting them into an immutable sorted set.
+        /// then sorts these tasks based on their priority and endDate before converting them into an immutable sorted set.
         /// </remarks>
         /// <returns>
         /// An ImmutableSortedSet of EmployeeTask objects representing the tasks assigned to the user
@@ -62,8 +63,47 @@ namespace VirtualOffice.Domain.Services
                 .ToImmutableSortedSet();
         }
 
+        /// <summary>
+        /// Retrieves an immutable sorted set of employee tasks assigned to the specified user, sorted by priority and status.
+        /// </summary>
+        /// <param name="user">The user for whom to retrieve the employee tasks.</param>
+        /// <param name="status">The status of the tasks to retrieve.</param>
+        /// <returns>
+        /// An immutable sorted set of employee tasks assigned to the specified user,
+        /// sorted by status and priority in descending order.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to the specified user
+        /// and with a given status. It then sorts these tasks based on their priority before converting them
+        /// into an immutable sorted set.
+        /// </remarks>
+        public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksByStatus(ApplicationUser user, EmployeeTaskStatusEnum status)
+        {
+            return _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._TaskStatus == status)
+                .OrderByDescending(task => task._Priority)
+                .ToImmutableSortedSet();
+        }
+
+        /// <summary>
+        /// Retrieves a HashSet of employee tasks assigned to the specified user with the given priority.
+        /// </summary>
+        /// <param name="user">The user for whom to retrieve the employee tasks.</param>
+        /// <param name="priority">The priority of the tasks to retrieve.</param>
+        /// <returns>
+        /// A HashSet containing employee tasks assigned to the specified user and having the specified priority.
+        /// </returns>
+        /// <remarks>
+        /// This method filters the collection of employee tasks to include only those assigned to the specified user
+        /// and having the specified priority. It then returns these tasks as a HashSet.
+        /// </remarks>
+        public HashSet<EmployeeTask> GetEmployeeTasksByPriority(ApplicationUser user, EmployeeTaskPriorityEnum priority)
+            => _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._Priority == priority).ToHashSet();
+            
 
 
-        
+
+
+
+
     }
 }
