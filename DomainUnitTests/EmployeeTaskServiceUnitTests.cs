@@ -18,10 +18,12 @@ namespace DomainUnitTests
         private EmployeeTask _Task1 { get; set; }
         private EmployeeTask _Task2 { get; set; }
         private EmployeeTask _Task3 { get; set; }
+        private EmployeeTask _Task4 { get; set; }
 
         private ApplicationUser _ApplicationUser1 { get; set; }
         private ApplicationUser _ApplicationUser2 { get; set; }
         private ApplicationUser _ApplicationUser3 { get; set; }
+        private ApplicationUser _ApplicationUser4 { get; set; }
 
         public EmployeeTaskServiceUnitTests()
         {
@@ -29,17 +31,20 @@ namespace DomainUnitTests
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
             ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo", "SurnameTwo");
             ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree", "SurnameThree");
+            ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             _ApplicationUser1 = user1;
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
-            List<ApplicationUser> applicationUsers = new List<ApplicationUser>() {user1, user2 };
+            _ApplicationUser4 = user4;
+            List<ApplicationUser> applicationUsers1 = new List<ApplicationUser>() {user1, user2 };
+            List<ApplicationUser> applicationUsers2 = new List<ApplicationUser>() {user3 };
 
             // Intance 1
             Guid task1Guid = Guid.NewGuid();
             var task1Id = new EmployeeTaskId(task1Guid);
             var task1Title = new EmployeeTaskTitle("Task 1");
             var task1Description = new EmployeeTaskDescription("Description for Task 1");
-            var assignedEmployees1 = applicationUsers;
+            var assignedEmployees1 = applicationUsers1;
             var priority1 = EmployeeTaskPriorityEnum.High;
             var startDate1 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate1 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(7));
@@ -51,7 +56,7 @@ namespace DomainUnitTests
             var task2Id = new EmployeeTaskId(task2Guid);
             var task2Title = new EmployeeTaskTitle("Task 2");
             var task2Description = new EmployeeTaskDescription("Description for Task 2");
-            var assignedEmployees2 = applicationUsers;
+            var assignedEmployees2 = applicationUsers1;
             var priority2 = EmployeeTaskPriorityEnum.Medium;
             var startDate2 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate2 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(5));
@@ -63,15 +68,27 @@ namespace DomainUnitTests
             var task3Id = new EmployeeTaskId(task3Guid);
             var task3Title = new EmployeeTaskTitle("Task 3");
             var task3Description = new EmployeeTaskDescription("Description for Task 3");
-            var assignedEmployees3 = applicationUsers;
+            var assignedEmployees3 = applicationUsers2;
             var priority3 = EmployeeTaskPriorityEnum.Low;
             var startDate3 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate3 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
 
             _Task3 = new EmployeeTask(task3Id, task3Title, task3Description, assignedEmployees3, priority3, startDate3, endDate3);
-            
 
-            service = new EmployeeTaskService(new HashSet<EmployeeTask> {_Task1, _Task2});
+
+            // Instance 4
+            Guid task4Guid = Guid.NewGuid();
+            var task4Id = new EmployeeTaskId(task3Guid);
+            var task4Title = new EmployeeTaskTitle("Task 3");
+            var task4Description = new EmployeeTaskDescription("Description for Task 3");
+            var assignedEmployees4 = new List<ApplicationUser>();
+            var priority4 = EmployeeTaskPriorityEnum.Low;
+            var startDate4 = new EmployeeTaskStartDate(DateTime.UtcNow);
+            var endDate4 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
+
+            _Task4 = new EmployeeTask(task3Id, task3Title, task3Description, assignedEmployees3, priority3, startDate3, endDate3);
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> {_Task1, _Task2, _Task3});
             
         }
 
@@ -86,7 +103,7 @@ namespace DomainUnitTests
         [Fact]
         public void AssignTask_AddsTaskToList_ShouldReturnTrue()
         {
-            Assert.True(service.AssignTask(_Task3));
+            Assert.True(service.AssignTask(_Task4));
         }
         [Fact]
         public void AssignTask_AddsTaskToList_ShouldReturnFalse()
@@ -109,7 +126,7 @@ namespace DomainUnitTests
         [Fact]
         public void DeleteTask_RemovesTaskFromList_ShouldReturnFalse()
         {
-            Assert.False(service.DeleteTask(_Task3));
+            Assert.False(service.DeleteTask(_Task4));
         }
 
         [Fact]
@@ -133,14 +150,27 @@ namespace DomainUnitTests
         {
             var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser1);
 
-            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && !resultTasks.Contains(_Task3));
+            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && !resultTasks.Contains(_Task3) && !resultTasks.Contains(_Task4));
         }
 
         [Fact]
         public void GetAllEmployeeTasks_ReturnsEmptySetForNonAssignedUser()
         {
-            var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser3);
+            var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser4);
 
+            Assert.Empty(resultTasks);
+        }
+
+        [Fact]
+        public void GetAllEmployeeTasksForUsersGroup_ReturnsExpectedTasksForUsers()
+        {
+            var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser1, _ApplicationUser3 });
+            Assert.True(resultTasks.Contains(_Task1) && resultTasks.Contains(_Task2) && resultTasks.Contains(_Task3));
+        }
+        [Fact]
+        public void GetAllEmployeeTasksForUsersGroup_ReturnsEmptySetForNonAssignedUser()
+        {
+            var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser4});
             Assert.Empty(resultTasks);
         }
     }
