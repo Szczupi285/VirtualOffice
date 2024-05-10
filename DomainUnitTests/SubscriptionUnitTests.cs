@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Subscription;
 using VirtualOffice.Domain.ValueObjects.Subscription;
 using Xunit.Sdk;
@@ -260,6 +262,73 @@ namespace DomainUnitTests
             Assert.Equal(0, result);
         }
 
+        #endregion
+
+        #region SubscriptionFee
+
+        static SubscriptionId id = new SubscriptionId(Guid.NewGuid());
+        static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);        
+        static bool isPayed = false;
+
+        [Fact]
+        public void SubscriptionFee_NoneSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.None;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(0, subscription._subscriptionFee);
+        }
+
+        [Fact]
+        public void SubscriptionFee_TrialSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.Trial;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(0, subscription._subscriptionFee);
+        }
+
+        [Fact]
+        public void SubscriptionFee_BasicSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.Basic;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(100, subscription._subscriptionFee);
+        }
+
+        [Fact]
+        public void SubscriptionFee_EnterpriseSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.Enterprise;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(200, subscription._subscriptionFee);
+        }
+
+        [Fact]
+        public void SubscriptionFee_PremiumSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.Premium;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(350, subscription._subscriptionFee);
+        }
+
+        [Fact]
+        public void SubscriptionFee_UnlimitedSubscription_ReturnsCorrectValue()
+        {
+            SubscriptionTypeEnum type = SubscriptionTypeEnum.Unlimited;
+
+            Subscription subscription = new Subscription(id, startDate, type, isPayed);
+
+            Assert.Equal(600, subscription._subscriptionFee);
+        }
         #endregion
     }
 }
