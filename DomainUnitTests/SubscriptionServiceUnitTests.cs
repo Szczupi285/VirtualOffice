@@ -171,12 +171,13 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void GetCurrentSubscription_ShouldReturnCurrentSubscriptionNotFoundException()
+        public void GetCurrentSubscription_ShouldReturnNewSubscriptionTypeOfNone()
         {
             ICollection<Subscription> subscriptions = new List<Subscription>();
             _subscriptionService = new SubscriptionService(subscriptions);
 
-            Assert.Throws<CurrentSubscriptionNotFoundException>(() => _subscriptionService.GetCurrentSubscription());
+            SubscriptionTypeEnum type = _subscriptionService.GetCurrentSubscription()._subType;
+            Assert.Equal(SubscriptionTypeEnum.None, type);
         }
 
     }
