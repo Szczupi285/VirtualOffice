@@ -33,13 +33,17 @@ namespace VirtualOffice.Domain.Services
 
         internal bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
         {
+            if (_Subscriptions.Count == 0) return false;
+
             bool flag = true;
             foreach(Subscription sub in _Subscriptions)
             {
                 if (subscription._subEndDate.Value < sub._subStartDate.Value ||
                     subscription._subStartDate.Value > sub._subEndDate.Value)
                     flag = false;
-                else
+                else if (sub._subType == SubscriptionTypeEnum.None)
+                    flag = false; // ignores subscriptions of type None as it is the default
+                else 
                     return true;                
             }
             return flag;

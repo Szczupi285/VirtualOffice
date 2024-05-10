@@ -17,13 +17,13 @@ namespace DomainUnitTests
 
         static SubscriptionId id = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);
-        static SubscriptionTypeEnum type = SubscriptionTypeEnum.None;
+        static SubscriptionTypeEnum type = SubscriptionTypeEnum.Basic;
         static bool isPayed = false;
         Subscription subscription = new Subscription(id, startDate, type, isPayed);
 
         static SubscriptionId id2 = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate2 = new SubscriptionStartDate(DateTime.UtcNow.AddDays(35));
-        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.None;
+        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.Basic;
         static bool isPayed2 = false;
         Subscription subscription2 = new Subscription(id2, startDate2, type2, isPayed2);
 
@@ -51,30 +51,30 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_CurrentSubscription_ShouldReturnTrue()
+        public void DoesSubInThatPeriodAlreadyExists_SubscriptionTypeNone_ShouldReturnFalse()
         {
-            Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription));
+            subscription.UpdateSubType(SubscriptionTypeEnum.None);
+            Assert.False(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription));
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_StartAndEndDateOverlap_ShouldReturnTrue()
+        public void DoesSubInThatPeriodAlreadyExists_CurrentSubscription_ShouldReturnTrue()
         {
-            Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription2));
-
+            subscription.UpdateSubType(SubscriptionTypeEnum.Basic);
+            Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription));
         }
 
         [Fact]
         public void DoesSubInThatPeriodAlreadyExists_StartDateOverlaps_ShouldReturnTrue()
         {
-            Subscription sub = new Subscription(id, startDate.Value.AddDays(1), type, isPayed);
+            Subscription sub = new Subscription(id, startDate.Value.AddDays(1), SubscriptionTypeEnum.Basic, isPayed);
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub));
         }
 
         [Fact]
         public void DoesSubInThatPeriodAlreadyExists_EndDateOverlaps_ShouldReturnTrue()
         {
-
-            Subscription sub2 = new Subscription(id, startDate.Value.AddDays(31), type, isPayed);
+            Subscription sub2 = new Subscription(id, startDate.Value.AddDays(31), SubscriptionTypeEnum.Basic, isPayed);
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub2));
         }
 
