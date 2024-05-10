@@ -12,32 +12,32 @@ using VirtualOffice.Domain.ValueObjects.Subscription;
 namespace DomainUnitTests
 {
     public class SubscriptionServiceUnitTests
-    {        
+    {
         private SubscriptionService _subscriptionService { get; set; }
 
         static SubscriptionId id = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);
-        static SubscriptionTypeEnum type = SubscriptionTypeEnum.None;        
+        static SubscriptionTypeEnum type = SubscriptionTypeEnum.None;
         static bool isPayed = false;
         Subscription subscription = new Subscription(id, startDate, type, isPayed);
 
         static SubscriptionId id2 = new SubscriptionId(Guid.NewGuid());
         static SubscriptionStartDate startDate2 = new SubscriptionStartDate(DateTime.UtcNow.AddDays(35));
-        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.None;        
+        static SubscriptionTypeEnum type2 = SubscriptionTypeEnum.None;
         static bool isPayed2 = false;
         Subscription subscription2 = new Subscription(id2, startDate2, type2, isPayed2);
 
         public SubscriptionServiceUnitTests()
-        {          
+        {
             ICollection<Subscription> subscriptions = new List<Subscription>();
             subscriptions.Add(subscription);
             subscriptions.Add(subscription2);
             _subscriptionService = new SubscriptionService(subscriptions);
         }
-        
+
         [Fact]
         public void AddSubscription_DatesOverlap_ShouldReturnSubscriptionDatesOverlapsException()
-        {            
+        {
             Assert.Throws<SubscriptionDatesOverlapException>(() => _subscriptionService.AddSubscription(subscription));
         }
 
@@ -51,27 +51,27 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue()
+        public void DoesSubInThatPeriodAlreadyExists_CurrentSubscription_ShouldReturnTrue()
         {
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription));
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue2()
+        public void DoesSubInThatPeriodAlreadyExists_StartAndEndDateOverlap_ShouldReturnTrue()
         {
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(subscription2));
 
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue3()
+        public void DoesSubInThatPeriodAlreadyExists_StartDateOverlaps_ShouldReturnTrue()
         {
             Subscription sub = new Subscription(id, startDate.Value.AddDays(1), type, isPayed);
             Assert.True(_subscriptionService.DoesSubInThatPeriodAlreadyExists(sub));
         }
 
         [Fact]
-        public void DoesSubInThatPeriodAlreadyExists_ShouldReturnTrue4()
+        public void DoesSubInThatPeriodAlreadyExists_EndDateOverlaps_ShouldReturnTrue()
         {
 
             Subscription sub2 = new Subscription(id, startDate.Value.AddDays(31), type, isPayed);
@@ -94,7 +94,7 @@ namespace DomainUnitTests
 
         [Fact]
         public void GetSubscriptionById_SubscriptionNotFound_ShouldReturnSubscription()
-        {            
+        {
             Assert.Equal(subscription, _subscriptionService.GetSubscriptionById(id));
         }
 
@@ -103,7 +103,7 @@ namespace DomainUnitTests
         {
             SubscriptionStartDate start1 = new SubscriptionStartDate(startDate2.Value.AddDays(31));
             SubscriptionStartDate start2 = new SubscriptionStartDate(start1.Value.AddDays(31));
-           
+
             Subscription subscription1 = new Subscription(id, start1, type, isPayed);
             Subscription subscription2 = new Subscription(id, start2, type, isPayed);
 
@@ -164,6 +164,20 @@ namespace DomainUnitTests
             Assert.Equal(300, _subscriptionService.GetPaymentAmmount(subscriptions));
         }
 
+        [Fact]
+        public void GetCurrentSubscription_ShouldReturnSubscription()
+        {
+            Assert.Equal(subscription, _subscriptionService.GetCurrentSubscription());
+        }
+
+        [Fact]
+        public void GetCurrentSubscription_ShouldReturnCurrentSubscriptionNotFoundException()
+        {
+            ICollection<Subscription> subscriptions = new List<Subscription>();
+            _subscriptionService = new SubscriptionService(subscriptions);
+
+            Assert.Throws<CurrentSubscriptionNotFoundException>(() => _subscriptionService.GetCurrentSubscription());
+        }
 
     }
 }
