@@ -152,6 +152,14 @@ namespace DomainUnitTests
             Assert.DoesNotContain(_Task3, resultTasks);
             Assert.DoesNotContain(_Task4, resultTasks);
         }
+        [Fact]
+        public void GetAllEmployeeTasks_ReturnsExpectedTasksInGoodOrder()
+        {
+            var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser1);
+
+            Assert.True(resultTasks[0] ==  _Task1);
+            Assert.True(resultTasks[1] ==  _Task2);
+        }
 
         [Fact]
         public void GetAllEmployeeTasks_ReturnsEmptySetForNonAssignedUser()
@@ -176,6 +184,14 @@ namespace DomainUnitTests
             Assert.Empty(resultTasks);
         }
         [Fact]
+        public void GetAllEmployeeTasksForUsersGroup_ReturnsExpectedTasksInGoodOrder()
+        {
+            var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser1, _ApplicationUser2 });
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
+        }
+        [Fact]
         public void GetEmployeeTasksUntilDate_ReturnsExpectedTasksForUsers()
         {
             var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(6));
@@ -183,10 +199,27 @@ namespace DomainUnitTests
 
         }
         [Fact]
+        public void GetEmployeeTasksUntilDate_ReturnsExpectedTasksInGoodOrder()
+        {
+            var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(10));
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
+        }
+        [Fact]
         public void GetEmployeeTasksUntilDate_ReturnsEmptySetForNotFoundTasks()
         {
             var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(1));
             Assert.Empty(resultTasks);
+        }
+
+        [Fact]
+        public void GetEmployeeTasksByStatus_ReturnsExpectedTasksInGoodOrder()
+        {
+            var resultTasks = service.GetEmployeeTasksByStatus(_ApplicationUser1, EmployeeTaskStatusEnum.NotStarted);
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
         }
         [Fact]
         public void GetEmployeeTasksByStatus_ReturnsOneTaskWithTaskStatusNotStarted()
@@ -250,7 +283,7 @@ namespace DomainUnitTests
             Assert.Contains(_Task1, resultTasks);
             Assert.Contains(_Task2, resultTasks);
         }
-
+        
         [Fact]
         public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityUrgent()
         {
@@ -293,6 +326,20 @@ namespace DomainUnitTests
             Assert.Empty(resultTasks);
         }
         [Fact]
+        public void GetOverdueTasks_ReturnsExpectedTasksInGoodOrder()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(10));
+
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+
+            var resultTasks = service.GetOverdueTasks(_ApplicationUser1);
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
+        }
+        [Fact]
         public void GetOverdueTasks_ReturnsExpectedTasksForUsers()
         {
 
@@ -319,6 +366,15 @@ namespace DomainUnitTests
             var resultTasks = service.GetOverdueTasks(_ApplicationUser1);
             Assert.Contains(_Task1, resultTasks);
             Assert.Contains(_Task2, resultTasks);
+        }
+
+        [Fact]
+        public void GetCurrentTasks_ReturnsExpectedTasksInGoodOrder()
+        {
+            var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
         }
         [Fact]
         public void GetCurrentTasks_ReturnsExpectedTasksForUser()
@@ -432,7 +488,19 @@ namespace DomainUnitTests
             Assert.Contains(_Task1, resultTasks);
             Assert.Contains(_Task2, resultTasks);
         }
+        [Fact]
+        public void GetEmployeeTasksPlannedForFuture_ReturnsExpectedTasksInGoodOrder()
+        {
+            var mock = new Mock<IDateTimeProvider>();
+            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddYears(-1));
 
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 }, mock.Object);
+
+            var resultTasks = service.GetEmployeeTasksPlannedForFuture(_ApplicationUser1);
+
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
+        }
         [Fact]
         public void GetEmployeeTasksPlannedForFuture_ShouldContainTasks()
         {

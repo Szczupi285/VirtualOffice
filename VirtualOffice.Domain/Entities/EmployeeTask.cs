@@ -85,7 +85,8 @@ namespace VirtualOffice.Domain.Entities
         {
             if(other == null)
                 throw new ArgumentNullException();
-            return _Priority.CompareTo(other._Priority);
+            return other._Priority.CompareTo(_Priority);
+            //return _Priority.CompareTo(other._Priority);
         }
     }
 }
