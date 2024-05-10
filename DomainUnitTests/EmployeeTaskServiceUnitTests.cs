@@ -86,7 +86,7 @@ namespace DomainUnitTests
             var startDate4 = new EmployeeTaskStartDate(DateTime.UtcNow);
             var endDate4 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
 
-            _Task4 = new EmployeeTask(task3Id, task3Title, task3Description, assignedEmployees3, priority3, startDate3, endDate3);
+            _Task4 = new EmployeeTask(task4Id, task4Title, task4Description, assignedEmployees4, priority4, startDate4, endDate4);
 
             service = new EmployeeTaskService(new HashSet<EmployeeTask> {_Task1, _Task2, _Task3});
             
@@ -172,6 +172,20 @@ namespace DomainUnitTests
         {
             var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser4});
             Assert.Empty(resultTasks);
+        }
+        [Fact]
+        public void GetEmployeeTasksUntilDate_ReturnsExpectedTasksForUsers()
+        {
+            var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(6));
+            Assert.Contains(_Task2, resultTasks);
+
+        }
+        [Fact]
+        public void GetEmployeeTasksUntilDate_ReturnsEmptySetForNotFoundTasks()
+        {
+            var resultTasks = service.GetEmployeeTasksUntilDate(_ApplicationUser1, DateTime.UtcNow.AddDays(1));
+            Assert.Empty(resultTasks);
+
         }
     }
 }

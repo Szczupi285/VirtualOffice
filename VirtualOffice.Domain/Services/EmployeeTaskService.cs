@@ -86,7 +86,7 @@ namespace VirtualOffice.Domain.Services
         /// </returns>
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksUntilDate(ApplicationUser user, DateTime endDate)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._EndDate < endDate)
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._EndDate < endDate)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
@@ -107,7 +107,7 @@ namespace VirtualOffice.Domain.Services
         /// </remarks>
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksByStatus(ApplicationUser user, EmployeeTaskStatusEnum status)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._TaskStatus == status)
+            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._TaskStatus == status)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
@@ -125,7 +125,7 @@ namespace VirtualOffice.Domain.Services
         /// and having the specified priority. It then returns these tasks as a HashSet.
         /// </remarks>
         public HashSet<EmployeeTask> GetEmployeeTasksByPriority(ApplicationUser user, EmployeeTaskPriorityEnum priority)
-            => _EmployeeTasks.Where(task => task._AssignedEmployees == user && task._Priority == priority).ToHashSet();
+            => _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._Priority == priority).ToHashSet();
 
 
         /// <summary>
