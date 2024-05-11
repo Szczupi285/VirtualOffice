@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.EmployeeTask;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class EmployeeTask
+    public class EmployeeTask : IComparable<EmployeeTask>
     {
         public EmployeeTaskId Id { get; private set; }
         public EmployeeTaskTitle _Title {get; private set;}
@@ -21,6 +21,7 @@ namespace VirtualOffice.Domain.Entities
 
         // start date is not set to default Utc.Now because it will be avalible to create tasks that are supposed to be started in the future
         public EmployeeTaskStartDate _StartDate {get; private set;}
+
         public EmployeeTaskEndDate _EndDate {get; private set;}
 
 
@@ -43,7 +44,7 @@ namespace VirtualOffice.Domain.Entities
         public void SetTitle(string title) => _Title = title;
         public void SetDescription(string description) => _Description = description;
         public void SetPriority(EmployeeTaskPriorityEnum priority) => _Priority = priority;
-        public void SetStatus(EmployeeTaskStatusEnum Status) => _TaskStatus = Status;
+        public void UpdateStatus(EmployeeTaskStatusEnum Status) => _TaskStatus = Status;
 
         public void AddEmployee(ApplicationUser user) 
         {
@@ -80,7 +81,12 @@ namespace VirtualOffice.Domain.Entities
             _EndDate = endDate;
         }
 
-
-
+        public int CompareTo(EmployeeTask? other)
+        {
+            if(other == null)
+                throw new ArgumentNullException();
+            return other._Priority.CompareTo(_Priority);
+            //return _Priority.CompareTo(other._Priority);
+        }
     }
 }

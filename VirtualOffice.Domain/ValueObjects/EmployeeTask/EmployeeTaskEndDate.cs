@@ -7,13 +7,13 @@ using VirtualOffice.Domain.Exceptions.EmployeeTask;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public sealed record EmployeeTaskEndDate
+    public record EmployeeTaskEndDate
     {
         public DateTime Value { get; }
 
         public EmployeeTaskEndDate(DateTime value)
         {
-            if (value < DateTime.UtcNow)
+            if (value <= DateTime.UtcNow)
                 throw new InvalidEmployeeTaskEndDateException(value);
             Value = value;
         }

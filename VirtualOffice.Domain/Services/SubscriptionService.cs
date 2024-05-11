@@ -79,7 +79,7 @@ namespace VirtualOffice.Domain.Services
         // return type none when higher tiers are not avalible
         public Subscription GetCurrentSubscription()
         {
-            Subscription currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
+            Subscription? currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
             if (currentSubscription is null)
             {
                 SubscriptionId id = new SubscriptionId(Guid.NewGuid());
