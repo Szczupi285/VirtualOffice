@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
-namespace VirtualOffice.Domain.ValueObjects.Notes
+namespace VirtualOffice.Domain.ValueObjects.Note
 {
     public sealed record NoteContent : AbstractRecordName
     {

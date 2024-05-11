@@ -4,14 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Exceptions.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.Exceptions.Note;
 
-namespace VirtualOffice.Domain.ValueObjects.Notes
+namespace VirtualOffice.Domain.ValueObjects.Note
 {
     public sealed record NoteId : AbstractRecordId
     {
-        public NoteId(Guid value) : base(value, new EmptyApplicationUserIdException())
+        public NoteId(Guid value) : base(value, new EmptyNoteIdException())
         {
         }
 

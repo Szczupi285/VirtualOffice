@@ -3,68 +3,126 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.Exceptions.SubscriptionService;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Domain.Services
 {
-    internal class SubscriptionService
+    
+    public class SubscriptionService
     {
-        ICollection<Subscription> _Subscriptions;
-
-        internal SubscriptionService(ICollection<Subscription> subscriptions)
+        //private  { get; set; }
+        private ICollection<Subscription> _Subscriptions { get; set; }
+        public int SubscriptionsCount => _Subscriptions.Count;
+        
+        public SubscriptionService(ICollection<Subscription> subscriptions)
         {
             _Subscriptions = subscriptions;
         }
 
-        private void AddSubscription(Subscription subscription)
+        public void AddSubscription(Subscription subscription)
         {
-            
+            if(!DoesSubInThatPeriodAlreadyExists(subscription))
+                _Subscriptions.Add(subscription);
+            else
+                throw new SubscriptionDatesOverlapException(subscription._subStartDate, subscription._subEndDate);
         }
+            
 
-        private bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
+        internal bool DoesSubInThatPeriodAlreadyExists(Subscription subscription)
         {
+            if (_Subscriptions.Count == 0) return false;
+
+            bool flag = true;
             foreach(Subscription sub in _Subscriptions)
             {
-                if((subscription._subStartDate < sub._subStartDate &&
-                    subscription._subEndDate.Value < sub._subStartDate.Value) ||
-                    (subscription._subStartDate.Value > sub._subEndDate.Value &&
-                    subscription._subEndDate > sub._subEndDate)
-                    )
-                {
-                    return false;
-                }
+                if (subscription._subEndDate.Value < sub._subStartDate.Value ||
+                    subscription._subStartDate.Value > sub._subEndDate.Value)
+                    flag = false;
+                else if (sub._subType == SubscriptionTypeEnum.None)
+                    flag = false; // ignores subscriptions of type None as it is the default
+                else 
+                    return true;                
             }
-            return true;
+            return flag;
         }
 
-        public void AddSubscriptionRange(ICollection<Subscription> subscription)
-        {
+        public Subscription GetSubscriptionById(SubscriptionId id) 
+            => _Subscriptions.FirstOrDefault(s => s.Id == id) ?? throw new SubscriptionNotFoundException(id);
 
-        }
-        private void UpgradeSubscriptionType(Subscription subscription)
+        public void AddSubscriptionRange(ICollection<Subscription> subscriptions)
         {
+            foreach(Subscription sub in subscriptions)
+            {
+                AddSubscription(sub);
+            }
+        }
+        private void UpgradeSubscriptionType(SubscriptionId id, SubscriptionTypeEnum subType) 
+        {
+            Subscription subscription = _Subscriptions.FirstOrDefault(s => s.Id == id) ?? throw new SubscriptionNotFoundException(id);
+            if (subscription._subType == SubscriptionTypeEnum.Unlimited || subscription._subType >= subType)
+                throw new SubscriptionTypeCannotBeChangedToLowerTier(subscription._subType, subType);
 
+            subscription.UpdateSubType(subType);
         }
-        public void UpgradeSubscriptionTypeRange(ICollection<Subscription> subscription)
+        public void UpgradeSubscriptionTypeRange(ICollection<SubscriptionId> Ids, SubscriptionTypeEnum subscriptionType)
         {
+            foreach(SubscriptionId id in Ids)
+            {
+                UpgradeSubscriptionType(id, subscriptionType);
+            }
+        }
 
-        }
-        public Subscription GetCurrentSubscription(ICollection<Subscription> subscriptions)
+        // consider what to return
+        // return type none when higher tiers are not avalible
+        public Subscription GetCurrentSubscription()
         {
-            throw new NotImplementedException();
+            Subscription? currentSubscription = _Subscriptions.FirstOrDefault(s => DateTime.UtcNow > s._subStartDate.Value && DateTime.UtcNow < s._subEndDate.Value);
+            if (currentSubscription is null)
+            {
+                SubscriptionId id = new SubscriptionId(Guid.NewGuid());
+                return new Subscription(id, DateTime.UtcNow, SubscriptionTypeEnum.None, false);
+            }                
+            return currentSubscription;
         }
-        private bool PayForSubscription(Subscription subscription) 
+        private void UpdateSubscriptionPaymentStatus(Subscription subscription) 
         {
-            throw new NotImplementedException();
+            Subscription sub = GetCurrentSubscription();
+            sub.Pay();
         }
-        public bool PayForSubscriptionRange(ICollection<Subscription> subscriptions)
+        public void UpdateSubscriptionPaymentStatusRange(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            foreach (Subscription subscription in subscriptions)
+            {
+                subscription.Pay(); 
+            }
         }
-        private decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
+        internal decimal GetPaymentAmmount(ICollection<Subscription> subscriptions)
         {
-            throw new NotImplementedException();
+            ICollection<Subscription> subs = GetActiveSubscriptions(subscriptions);
+            decimal amount = 0;
+            foreach(Subscription sub in subs)
+            {
+                amount += sub._subscriptionFee;
+            }
+            return amount;
         }
+
+        private ICollection<Subscription> GetActiveSubscriptions(ICollection<Subscription> subscriptions)
+        {
+            ICollection<Subscription> ActiveSubscriptions = new List<Subscription>();
+
+            Subscription currentSubscription = GetCurrentSubscription();
+            foreach (Subscription sub in subscriptions)
+            {
+                if (sub._subStartDate >= currentSubscription._subStartDate)
+                    ActiveSubscriptions.Add(sub);
+            }
+            return ActiveSubscriptions;
+        }
+
 
 
 

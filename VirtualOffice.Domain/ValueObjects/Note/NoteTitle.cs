@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Exceptions.Note;
 
-namespace VirtualOffice.Domain.ValueObjects.Notes
+namespace VirtualOffice.Domain.ValueObjects.Note
 {
     public sealed record NoteTitle : AbstractRecordName
     {

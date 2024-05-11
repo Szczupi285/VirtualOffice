@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.ValueObjects.Notes;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class Notes
+    public class Note
     {
         public NoteId Id { get; private set; }
 
@@ -15,11 +15,17 @@ namespace VirtualOffice.Domain.Entities
 
         public NoteContent _content { get; private set; }
 
-        public Notes(NoteId id, NoteTitle title, NoteContent content)
+        public Note(NoteId id, NoteTitle title, NoteContent content)
         {
             Id = id;
             _title = title;
             _content = content;
         }
+        public void EditContent(string content) => _content = content;
+
+        public void EditTitle(string title) => _title = title;
+
+
+
     }
 }

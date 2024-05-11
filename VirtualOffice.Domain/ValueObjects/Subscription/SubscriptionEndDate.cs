@@ -14,8 +14,8 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
         public SubscriptionEndDate(DateTime value)
         {
             // since assigning value to SubscriptionEndDate is not fully instant we decrease minutes 
-            // so it won't return exception if we try assing datetime.Now + 31 days 
-            if (value < DateTime.Now.AddDays(31).AddMinutes(-1))
+            // so it won't return exception if we try assing datetime.UtcNow + 31 days 
+            if (value < DateTime.UtcNow.AddDays(30).AddMinutes(-1))
                 throw new SubscriptionEndDateInvalidException(value);
 
             Value = value;
