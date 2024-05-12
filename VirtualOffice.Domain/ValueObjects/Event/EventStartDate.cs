@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Domain.ValueObjects.Event
 {
-    internal class EventStartDate
+    public sealed record EventStartDate
     {
     }
 }
