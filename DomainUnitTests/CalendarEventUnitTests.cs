@@ -171,5 +171,67 @@ namespace DomainUnitTests
             Assert.Equal(startDate, dt);
         }
         #endregion
+
+        #region EventEndDate
+        [Fact]
+        public void EventEndDate1dayBeforeNow_EventEndDateCannotBePastException()
+        {
+            Assert.Throws<InvalidEventEndDateException>(()
+                => new EventEndDate
+                (
+                    DateTime.UtcNow.AddDays(-1))
+                );
+        }
+        [Fact]
+        public void EventEndDate1dHourBeforeNow_EventEndDateCannotBePastException()
+        {
+            Assert.Throws<InvalidEventEndDateException>(()
+                => new EventEndDate
+                (
+                    DateTime.UtcNow.AddHours(-1))
+                );
+        }
+        [Fact]
+        public void EventEndDateInvalidCurrentTime_ShouldThrowInvalidEventEndDateException()
+        {
+            Assert.Throws<InvalidEventEndDateException>(()
+                => new EventEndDate
+                (
+                    DateTime.UtcNow
+                ));
+        }
+        [Fact]
+        public void EventEndDateValid31daysFromNow_ShouldNotThrowException()
+        {
+            EventEndDate EndDate = DateTime.UtcNow.AddDays(31);
+        }
+        [Fact]
+        public void EventEndDateValidYearFromNow_ShouldNotThrowException()
+        {
+            EventEndDate EndDate = DateTime.UtcNow.AddYears(1);
+        }
+
+
+        [Fact]
+        public void ValidData_DateTimeToEventEndDateConversion_ShouldEqual()
+        {
+            var dt = DateTime.UtcNow.AddDays(31);
+
+            EventEndDate EndDate = dt;
+
+            Assert.Equal(dt, EndDate);
+        }
+        [Fact]
+        public void ValidData_EventEndDateToDateTimeConversionShouldEqual()
+        {
+            EventEndDate EndDate = new EventEndDate(DateTime.UtcNow.AddDays(31));
+
+
+            var dt = EndDate;
+
+
+            Assert.Equal(EndDate, dt);
+        }
+        #endregion
     }
 }

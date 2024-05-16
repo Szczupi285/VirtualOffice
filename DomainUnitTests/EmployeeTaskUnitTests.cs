@@ -229,7 +229,7 @@ namespace DomainUnitTests
         #region EmployeeTaskEndDate
 
         [Fact]
-        public void EmployeeTaskEndDate31daysBeforeNow_EmployeeTaskEndDateCannotBePastException()
+        public void EmployeeTaskEndDate1dayBeforeNow_EmployeeTaskEndDateCannotBePastException()
         {
             Assert.Throws<InvalidEmployeeTaskEndDateException>(()
                 => new EmployeeTaskEndDate
