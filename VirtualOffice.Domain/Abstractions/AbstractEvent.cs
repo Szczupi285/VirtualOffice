@@ -63,7 +63,7 @@ namespace VirtualOffice.Domain.Abstractions
             _VisibleTo.Remove(user);
         }
 
-        public void RemoveUsersRangeFromVisibleTO(ICollection<ApplicationUser> users)
+        public void RemoveUsersRangeFromVisibleTo(ICollection<ApplicationUser> users)
         {
             foreach (ApplicationUser user in users)
             {
