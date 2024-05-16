@@ -15,8 +15,9 @@ namespace VirtualOffice.Domain.Entities
     {
 
         public PublicChatRoomName _Name {get; private set; }
-        public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages) : base(id, participants, messages)
+        public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages, PublicChatRoomName name) : base(id, participants, messages)
         {
+            _Name = name;
         }
         public void AddParticipant(ApplicationUser participant)
         {

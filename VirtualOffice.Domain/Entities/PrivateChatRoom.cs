@@ -14,7 +14,7 @@ namespace VirtualOffice.Domain.Entities
         public PrivateChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages) : base(id, participants, messages)
         {
             if (participants.Count != 2)
-                throw new InvalidPrivateRoomParticipants();
+                throw new InvalidPrivateRoomParticipantsException();
         }
     }
 }

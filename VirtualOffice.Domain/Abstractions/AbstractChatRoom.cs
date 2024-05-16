@@ -20,7 +20,7 @@ namespace VirtualOffice.Domain.Abstractions
         protected AbstractChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages)
         {
             if (participants.Count < 2)
-                throw new InvalidChatRoomParticipants();
+                throw new InvalidChatRoomParticipantsException();
             Id = id;
             _Participants = participants;
             _Messages = messages;
