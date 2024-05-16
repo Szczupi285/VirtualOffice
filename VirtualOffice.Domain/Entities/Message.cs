@@ -8,7 +8,7 @@ using VirtualOffice.Domain.ValueObjects.Message;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class Message
+    public class Message : IComparable<Message>
     {
         public MessageId Id { get; }
 
@@ -19,7 +19,7 @@ namespace VirtualOffice.Domain.Entities
             get => DateTime.UtcNow;
         }
 
-        public MessageContent _Content {get;}
+        public MessageContent _Content { get; }
 
 
         public Message(MessageId id, ApplicationUser sender, MessageContent content)
@@ -27,6 +27,13 @@ namespace VirtualOffice.Domain.Entities
             Id = id;
             _Sender = sender;
             _Content = content;
+        }
+
+        public int CompareTo(Message? other)
+        {
+            if (other == null)
+                throw new ArgumentNullException();
+            return _SendDate.CompareTo(other._SendDate);
         }
     }
 }
