@@ -70,5 +70,53 @@ namespace DomainUnitTests
             Assert.Throws<EmptyEventTitleException>(() => new EventTitle(""));
         }
         #endregion
+
+        #region EventDescription
+
+        public void ValidEventDescription_ValidEventDescriptionToStringConversionShouldEqual()
+        {
+            EventDescription title = "example";
+            string test = title;
+
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidEventDescription_StringToValidEventDescriptionConversionShouldEqual()
+        {
+            string test = "example";
+            EventDescription title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullEventDescription_ShouldThrowEmptyEventDescriptionException()
+        {
+            Assert.Throws<EmptyEventDescriptionException>(() => new EventDescription(null));
+        }
+        [Fact]
+        public void EmptyEventDescription_ShouldThrowEmptyEventDescriptionException()
+        {
+            Assert.Throws<EmptyEventDescriptionException>(() => new EventDescription(""));
+        }
+        [Fact]
+        public void TooLongEventDescription_ShouldThrowTooLongEventDescriptionException()
+        {
+            string invalidString = new string('a', 1001);
+            Assert.Throws<TooLongEventDescriptionException>(
+                () => new EventDescription(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersEventDescription_ShouldNotThrowException()
+        {
+            string validString = new string('a', 1000);
+            new EventDescription(validString);
+        }
+        [Fact]
+        public void MinCharactersEventDescription_ShouldNotThrowException()
+        {
+            string validString = new string('a', 1);
+            new EventDescription(validString);
+
+        }
+        #endregion 
     }
 }

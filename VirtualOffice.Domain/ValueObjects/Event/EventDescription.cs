@@ -10,7 +10,7 @@ namespace VirtualOffice.Domain.ValueObjects.Event
 {
     public sealed record EventDescription : AbstractRecordName
     {
-        public EventDescription(string value) : base(value, 100, new EmptyEventDescriptionException(), new TooLongEventDescriptionException(value, 100))
+        public EventDescription(string value) : base(value, 1000, new EmptyEventDescriptionException(), new TooLongEventDescriptionException(value, 1000))
         {
         }
 
