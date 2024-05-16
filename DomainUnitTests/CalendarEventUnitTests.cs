@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Event;
-using VirtualOffice.Domain.Exceptions.Note;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Event;
-using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace DomainUnitTests
 {
@@ -73,6 +69,7 @@ namespace DomainUnitTests
 
         #region EventDescription
 
+        [Fact]
         public void ValidEventDescription_ValidEventDescriptionToStringConversionShouldEqual()
         {
             EventDescription title = "example";
@@ -117,6 +114,62 @@ namespace DomainUnitTests
             new EventDescription(validString);
 
         }
-        #endregion 
+        #endregion
+
+        #region EventStartDate
+
+        [Fact]
+        public void EventStartDate31daysBeforeNow_EventStartDateCannotBePastException()
+        {
+            Assert.Throws<EventStartDateCannotBePastException>(()
+                => new EventStartDate
+                (
+                    DateTime.UtcNow.AddDays(-31))
+                );
+        }
+        [Fact]
+        public void EventStartDate1HourBeforeNow_EventStartDateCannotBePastException()
+        {
+            Assert.Throws<EventStartDateCannotBePastException>(()
+                => new EventStartDate
+                (
+                    DateTime.UtcNow.AddHours(-1))
+                );
+        }
+        [Fact]
+        public void EventStartDateValid31daysFromNow_ShouldNotThrowException()
+        {
+            EventStartDate startDate = DateTime.UtcNow.AddDays(31);
+        }
+        [Fact]
+        public void EventStartDateValidYearFromNow_ShouldNotThrowException()
+        {
+            EventStartDate startDate = DateTime.UtcNow.AddYears(1);
+        }
+        [Fact]
+        public void EventStartDateValidCurrentTime_ShouldNotThrowException()
+        {
+            EventStartDate startDate = DateTime.UtcNow;
+        }
+
+        [Fact]
+        public void ValidData_DateTimeToEventStartDateConversion_ShouldEqual()
+        {
+            var dt = DateTime.UtcNow.AddDays(31);
+
+            EventStartDate startDate = dt;
+
+            Assert.Equal(dt, startDate);
+        }
+        [Fact]
+        public void ValidData_EventStartDateToDateTimeConversionShouldEqual()
+        {
+            EventStartDate startDate = new EventStartDate(DateTime.UtcNow.AddDays(31));
+
+            var dt = startDate;
+
+            Assert.Equal(startDate, dt);
+        }
+        #endregion
     }
 }
