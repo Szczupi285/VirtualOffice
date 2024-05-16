@@ -5,14 +5,16 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Event;
+using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Event;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace DomainUnitTests
 {
     public class CalendarEventUnitTests
     {
-        #region CalendarEventId
+        #region EventId
 
         [Fact]
         public void EmptyEmptyEventIdId_ShouldReturnEmptyEmptyEventIdIdException()
@@ -38,6 +40,34 @@ namespace DomainUnitTests
             Guid guid = id;
 
             Assert.Equal(id.Value, guid);
+        }
+        #endregion
+
+        #region EventTitle
+        [Fact]
+        public void ValidEventTitle_ValidEventTitleToStringConversionShouldEqual()
+        {
+            EventTitle title = "example";
+            string test = title;
+
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidEventTitle_StringToValidEventTitleConversionShouldEqual()
+        {
+            string test = "example";
+            EventTitle title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullEventTitle_ShouldThrowEmptyEventTitleException()
+        {
+            Assert.Throws<EmptyEventTitleException>(() => new EventTitle(null));
+        }
+        [Fact]
+        public void EmptyEventTitle_ShouldThrowEmptyEventTitleException()
+        {
+            Assert.Throws<EmptyEventTitleException>(() => new EventTitle(""));
         }
         #endregion
     }
