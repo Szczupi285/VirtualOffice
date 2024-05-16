@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.Exceptions.ChatRoom;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 
 namespace VirtualOffice.Domain.Abstractions
@@ -12,16 +13,25 @@ namespace VirtualOffice.Domain.Abstractions
     {
         public ChatRoomId Id { get; }  
 
-        public List<ApplicationUser> _Participants { get; private set; }
+        public HashSet<ApplicationUser> _Participants { get; private set; }
 
         public SortedSet<Message> _Messages { get; private set; }
 
-        public AbstractChatRoom(ChatRoomId id, List<ApplicationUser> participants, SortedSet<Message> messages)
+        protected AbstractChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages)
         {
+            if (participants.Count < 2)
+                throw new InvalidChatRoomParticipants();
             Id = id;
             _Participants = participants;
             _Messages = messages;
         }
+
+        public void SendMessage(ApplicationUser sender, string content)
+        {
+            Message message = new Message(Guid.NewGuid(), sender, content);
+            _Messages.Add(message);
+        }
+
 
 
     }
