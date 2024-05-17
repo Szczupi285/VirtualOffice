@@ -10,7 +10,7 @@ namespace DomainUnitTests
 {
     public class PrivateChatRoomUnitTests
     {
-            private HashSet<ApplicationUser> _Participants;
+         private HashSet<ApplicationUser> _Participants;
          private SortedSet<Message> _Messages = new SortedSet<Message>();
          private ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
          private ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");

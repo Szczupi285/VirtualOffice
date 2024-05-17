@@ -34,6 +34,7 @@ namespace VirtualOffice.Domain.Abstractions
         {
             if (!_Participants.Contains(sender))
                 throw new UserIsNotAParticipantOfThisChat(sender.Id);
+
             Message message = new Message(Guid.NewGuid(), sender, content);
             _Messages.Add(message);
         }

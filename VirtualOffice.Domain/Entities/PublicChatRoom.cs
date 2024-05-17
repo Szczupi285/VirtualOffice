@@ -19,6 +19,7 @@ namespace VirtualOffice.Domain.Entities
         {
             _Name = name;
         }
+        // we don't check for duplicates since it's a hashSet
         public void AddParticipant(ApplicationUser participant)
         {
             _Participants.Add(participant);
@@ -32,6 +33,11 @@ namespace VirtualOffice.Domain.Entities
         }
         public void RemoveParticipant(ApplicationUser participant)
         {
+            if (!_Participants.Contains(participant))
+                throw new UserIsNotAParticipantOfThisChat(participant.Id);
+            else if (_Participants.Count == 1)
+                throw new ChatRoomCannotHaveNoParticipants();
+
             _Participants.Remove(participant);
         }
         public void RemoveRangeParticipant(ICollection<ApplicationUser> participants)
