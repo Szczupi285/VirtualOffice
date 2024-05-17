@@ -3,6 +3,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -102,6 +103,35 @@ namespace DomainUnitTests
         }
         #endregion
 
+        #region SendDate
+
+        [Fact]
+        public void SendDateShouldEqualToDateTimeUtcNow()
+        {
+            var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            var Message = new Message(Guid.NewGuid(), sender1, new MessageContent("Hello World1"));
+            DateTime roundedSendDate = Message._SendDate.AddTicks(-(Message._SendDate.Ticks % TimeSpan.TicksPerSecond));
+            DateTime roundedUtcNow = DateTime.UtcNow.AddTicks(-(Message._SendDate.Ticks % TimeSpan.TicksPerSecond));
+            Assert.Equal(roundedUtcNow, roundedSendDate);
+        }
+        [Fact]
+        public void SendDate_CallsOnce_UtcNow()
+        {
+            var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+
+            var mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            var currentTime = DateTime.UtcNow;
+            mockDateTimeProvider.Setup(m => m.UtcNow()).Returns(currentTime);
+
+            var message = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World1"), mockDateTimeProvider.Object);
+
+            var result = message._SendDate;
+
+            Assert.Equal(currentTime, result);
+            mockDateTimeProvider.Verify(m => m.UtcNow(), Times.Once);
+        }
+        #endregion
+
         #region CompareTo
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsNegative()
@@ -109,51 +139,53 @@ namespace DomainUnitTests
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var sender2 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var message1 = new Message(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"));
-            Mock<IDateTimeProvider> mock = new Mock<IDateTimeProvider>();
-            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-1));
-            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mock.Object);
-            Assert.True(message1.CompareTo(message2) == -1);
+            Mock<IDateTimeProvider> mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-1));
+            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
+
+            Assert.Equal(-1, message1.CompareTo(message2));
         }
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsPositive()
         {
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var sender2 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
-            Mock<IDateTimeProvider> mock = new Mock<IDateTimeProvider>();
-            Mock<IDateTimeProvider> mock1 = new Mock<IDateTimeProvider>();
-            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
-            mock1.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-1));
-            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mock.Object);
-            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mock1.Object);
+            Mock<IDateTimeProvider> mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            Mock<IDateTimeProvider> mockDateTimeProvider1 = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
+            mockDateTimeProvider1.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-1));
+            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
+            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider1.Object);
 
-            Assert.True(message1.CompareTo(message2) == 1);
+            Assert.Equal(1, message1.CompareTo(message2));
         }
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsZero()
         {
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var sender2 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
-            Mock<IDateTimeProvider> mock = new Mock<IDateTimeProvider>();
-            Mock<IDateTimeProvider> mock1 = new Mock<IDateTimeProvider>();
-            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
-            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mock.Object);
-            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mock.Object);
+            Mock<IDateTimeProvider> mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            Mock<IDateTimeProvider> mockDateTimeProvider1 = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
+            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
+            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
 
-            Assert.True(message1.CompareTo(message2) == 0);
+            Assert.Equal(0 ,message1.CompareTo(message2));
         }
         [Fact]
         public void CompareTo_Null_ShouldThrowArgumentNullException()
         {
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var sender2 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
-            Mock<IDateTimeProvider> mock = new Mock<IDateTimeProvider>();
-            Mock<IDateTimeProvider> mock1 = new Mock<IDateTimeProvider>();
-            mock.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
-            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mock.Object);
-            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mock.Object);
+            Mock<IDateTimeProvider> mockDateTimeProvider = new Mock<IDateTimeProvider>();
+            Mock<IDateTimeProvider> mockDateTimeProvider1 = new Mock<IDateTimeProvider>();
+            mockDateTimeProvider.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
+            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
+            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
 
             Assert.Throws<ArgumentNullException>(() => message1.CompareTo(null));
         }
+
         #endregion
     }
 }
