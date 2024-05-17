@@ -48,5 +48,53 @@ namespace DomainUnitTests
 
         }
         #endregion
+
+        #region MessageContent
+        [Fact]
+        public void ValidMessageContent_ValidMessageContentToStringConversionShouldEqual()
+        {
+            MessageContent title = "example";
+            string test = title;
+
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void ValidMessageContent_StringToValidMessageContentConversionShouldEqual()
+        {
+            string test = "example";
+            MessageContent title = test;
+            Assert.Equal(test, title);
+        }
+        [Fact]
+        public void NullMessageContent_ShouldThrowEmptyMessageContentException()
+        {
+            Assert.Throws<EmptyMessageContentException>(() => new MessageContent(null));
+        }
+        [Fact]
+        public void EmptyMessageContent_ShouldThrowEmptyMessageContentException()
+        {
+            Assert.Throws<EmptyMessageContentException>(() => new MessageContent(""));
+        }
+        [Fact]
+        public void TooLongMessageContent_ShouldThrowTooLongMessageContentException()
+        {
+            string invalidString = new string('a', 501);
+            Assert.Throws<TooLongMessageContentException>(
+                () => new MessageContent(invalidString));
+        }
+        [Fact]
+        public void MaxCharactersMessageContent_ShouldNotThrowException()
+        {
+            string validString = new string('a', 500);
+            new MessageContent(validString);
+        }
+        [Fact]
+        public void MinCharactersMessageContent_ShouldNotThrowException()
+        {
+            string validString = new string('a', 1);
+            new MessageContent(validString);
+
+        }
+        #endregion
     }
 }
