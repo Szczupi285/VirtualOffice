@@ -14,7 +14,7 @@ namespace DomainUnitTests
          private SortedSet<Message> _Messages = new SortedSet<Message>();
          private ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
          private ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
-         private ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+         private ApplicationUser UserNotAdded = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
          private PrivateChatRoom _ChatRoom;
 
         public PrivateChatRoomUnitTests()
@@ -29,7 +29,7 @@ namespace DomainUnitTests
         [Fact]
         public void InvalidParticipantNumber_ThreeParticipants_ShouldThrowInvalidParticipantsException()
         {
-            _Participants.Add(user2);
+            _Participants.Add(UserNotAdded);
             Assert.Throws<InvalidPrivateRoomParticipantsException>(() => new PrivateChatRoom(Guid.NewGuid(), _Participants, _Messages));
         }
         [Fact]
@@ -41,8 +41,8 @@ namespace DomainUnitTests
         [Fact]
         public void InvalidParticipantNumber_NoParticipants_ShouldThrowInvalidChatRoomParticipantsException()
         {
+            _Participants.Remove(user);
             _Participants.Remove(user1);
-            _Participants.Remove(user2);
             Assert.Throws<InvalidChatRoomParticipantsException>(() => new PrivateChatRoom(Guid.NewGuid(), _Participants, _Messages));
         }
         [Fact]

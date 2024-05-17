@@ -7,9 +7,9 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.ChatRoom
 {
-    public class ChatRoomCannotHaveNoParticipants : VirtualOfficeException
+    public class ChatRoomCannotBeEmpty : VirtualOfficeException
     {
-        public ChatRoomCannotHaveNoParticipants() : base("Chat room must have at least one participant.")
+        public ChatRoomCannotBeEmpty() : base("Chat room must have at least one participant.")
         {
         }
     }

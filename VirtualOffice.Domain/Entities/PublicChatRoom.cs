@@ -14,19 +14,20 @@ namespace VirtualOffice.Domain.Entities
     public class PublicChatRoom : AbstractChatRoom
     {
 
-        public PublicChatRoomName _Name {get; private set; }
+        public PublicChatRoomName _Name { get; private set; }
         public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages, PublicChatRoomName name) : base(id, participants, messages)
         {
             _Name = name;
         }
+
         // we don't check for duplicates since it's a hashSet
         public void AddParticipant(ApplicationUser participant)
         {
             _Participants.Add(participant);
         }
-        public void AddRangeParticipant(ICollection<ApplicationUser> participants)
+        public void AddRangeParticipants(ICollection<ApplicationUser> participants)
         {
-            foreach(var participant in _Participants)
+            foreach(var participant in participants)
             {
                 AddParticipant(participant);
             }
@@ -35,14 +36,15 @@ namespace VirtualOffice.Domain.Entities
         {
             if (!_Participants.Contains(participant))
                 throw new UserIsNotAParticipantOfThisChat(participant.Id);
+            // if last person want to leave Public Chat Room, then room must be deleted
             else if (_Participants.Count == 1)
-                throw new ChatRoomCannotHaveNoParticipants();
+                throw new ChatRoomCannotBeEmpty();
 
             _Participants.Remove(participant);
         }
-        public void RemoveRangeParticipant(ICollection<ApplicationUser> participants)
+        public void RemoveRangeParticipants(ICollection<ApplicationUser> participants)
         {
-            foreach (var participant in _Participants)
+            foreach (var participant in participants)
             {
                 RemoveParticipant(participant);
             }
