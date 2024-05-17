@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Exceptions.ChatRoomService;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
-namespace VirtualOffice.Domain.Services
+namespace VirtualOffice.Domain.Services.ChatRoom
 {
     public class PublicChatRoomService
     {
