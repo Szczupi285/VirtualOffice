@@ -7,9 +7,9 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.ChatRoom
 {
-    public class EmptyChatRoomIdExceptionException : VirtualOfficeException
+    public class EmptyChatRoomIdException : VirtualOfficeException
     {
-        public EmptyChatRoomIdExceptionException()
+        public EmptyChatRoomIdException()
             : base("ChatRoom Id cannot be empty")
         {
         }

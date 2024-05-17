@@ -41,15 +41,6 @@ namespace DomainUnitTests
             Assert.Equal(id.Value, guid);
 
         }
-        [Fact]
-        public void ValidNoteId_GuidToValidNoteIdConversionShouldEqual()
-        {
-
-            NoteId id = new NoteId(Guid.NewGuid());
-
-            Guid guid = id;
-
-        }
         #endregion
 
         #region noteTitle

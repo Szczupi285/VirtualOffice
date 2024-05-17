@@ -11,7 +11,7 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractChatRoom
     {
-        public ChatRoomId Id { get; }  
+        public ChatRoomId Id { get; }
 
         public HashSet<ApplicationUser> _Participants { get; private set; }
 
@@ -19,7 +19,11 @@ namespace VirtualOffice.Domain.Abstractions
 
         protected AbstractChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages)
         {
-            if (participants.Count < 2)
+            if (messages is null)
+                throw new ArgumentNullException($"{nameof(messages)} cannot be null");
+            else if(participants is null)
+                throw new ArgumentNullException($"{nameof(participants)} cannot be null");
+            else if (participants.Count < 2)
                 throw new InvalidChatRoomParticipantsException();
             Id = id;
             _Participants = participants;
@@ -31,8 +35,6 @@ namespace VirtualOffice.Domain.Abstractions
             Message message = new Message(Guid.NewGuid(), sender, content);
             _Messages.Add(message);
         }
-
-
 
     }
 }

@@ -11,7 +11,7 @@ namespace VirtualOffice.Domain.ValueObjects.AbstractChatRoom
 {
     public sealed record ChatRoomId : AbstractRecordId
     {
-        public ChatRoomId(Guid value) : base(value, new EmptyChatRoomIdExceptionException())
+        public ChatRoomId(Guid value) : base(value, new EmptyChatRoomIdException())
         {
         }
 

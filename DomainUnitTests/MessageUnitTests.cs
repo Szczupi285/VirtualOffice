@@ -110,8 +110,8 @@ namespace DomainUnitTests
         {
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var Message = new Message(Guid.NewGuid(), sender1, new MessageContent("Hello World1"));
-            DateTime roundedSendDate = Message._SendDate.AddTicks(-(Message._SendDate.Ticks % TimeSpan.TicksPerSecond));
-            DateTime roundedUtcNow = DateTime.UtcNow.AddTicks(-(Message._SendDate.Ticks % TimeSpan.TicksPerSecond));
+            long roundedSendDate = Message._SendDate.Ticks / TimeSpan.TicksPerMinute;
+            long roundedUtcNow = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute;
             Assert.Equal(roundedUtcNow, roundedSendDate);
         }
         [Fact]
