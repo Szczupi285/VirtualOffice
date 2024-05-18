@@ -5,7 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
+using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.Abstractions
 {
@@ -33,11 +35,15 @@ namespace VirtualOffice.Domain.Abstractions
         public void SendMessage(ApplicationUser sender, string content)
         {
             if (!_Participants.Contains(sender))
-                throw new UserIsNotAParticipantOfThisChat(sender.Id);
+                throw new UserIsNotAParticipantOfThisChatException(sender.Id);
 
             Message message = new Message(Guid.NewGuid(), sender, content);
             _Messages.Add(message);
         }
+
+        public ApplicationUser GetParticipantById(ApplicationUserId id)
+            => _Participants.FirstOrDefault(u => u.Id == id) ?? throw new ChatRoomParticipantNotFoundException(id.ToString());
+
 
     }
 }

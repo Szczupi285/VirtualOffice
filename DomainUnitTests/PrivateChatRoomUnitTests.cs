@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
+using VirtualOffice.Domain.Exceptions.Office;
 
 namespace DomainUnitTests
 {
@@ -67,7 +68,21 @@ namespace DomainUnitTests
         {
             ApplicationUser NotAParticipant = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
 
-            Assert.Throws<UserIsNotAParticipantOfThisChat>(() => _ChatRoom.SendMessage(NotAParticipant, "content"));
+            Assert.Throws<UserIsNotAParticipantOfThisChatException>(() => _ChatRoom.SendMessage(NotAParticipant, "content"));
+        }
+
+        [Fact]
+        public void GetParticipantById_ParticipantFound_ShouldReturnUser()
+        {
+            ApplicationUser foundMember = _ChatRoom.GetParticipantById(user.Id);
+
+            Assert.Equal(user, foundMember);
+        }
+        [Fact]
+        public void GetParticipantById_ParticipantNotFound_ShouldThrowOfficeMemberNotFoundException()
+        {
+            Assert.Throws<ChatRoomParticipantNotFoundException>(()
+                => _ChatRoom.GetParticipantById(Guid.NewGuid()));
         }
 
     }

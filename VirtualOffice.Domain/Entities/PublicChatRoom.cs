@@ -35,10 +35,10 @@ namespace VirtualOffice.Domain.Entities
         public void RemoveParticipant(ApplicationUser participant)
         {
             if (!_Participants.Contains(participant))
-                throw new UserIsNotAParticipantOfThisChat(participant.Id);
+                throw new UserIsNotAParticipantOfThisChatException(participant.Id);
             // if last person want to leave Public Chat Room, then room must be deleted
             else if (_Participants.Count == 1)
-                throw new ChatRoomCannotBeEmpty();
+                throw new ChatRoomCannotBeEmptyException();
 
             _Participants.Remove(participant);
         }

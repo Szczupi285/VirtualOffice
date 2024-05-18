@@ -126,13 +126,13 @@ namespace DomainUnitTests
         [Fact]
         public void RemoveParticipant_NotAParticipant_ShouldThrowUserIsNotAParticipantOfThisChat()
         {
-            Assert.Throws<UserIsNotAParticipantOfThisChat>(() => _ChatRoom.RemoveParticipant(userNotAdded1)); 
+            Assert.Throws<UserIsNotAParticipantOfThisChatException>(() => _ChatRoom.RemoveParticipant(userNotAdded1)); 
         }
         [Fact]
         public void RemoveParticipant_LastParticipant_ChatRoomCannotBeEmpty()
         {
             _ChatRoom.RemoveParticipant(user1);
-            Assert.Throws<ChatRoomCannotBeEmpty>(() => _ChatRoom.RemoveParticipant(user));
+            Assert.Throws<ChatRoomCannotBeEmptyException>(() => _ChatRoom.RemoveParticipant(user));
         }
         [Fact]
         public void RemoveParticipantsRange_ParticipantsRemoved()
@@ -163,6 +163,19 @@ namespace DomainUnitTests
             Assert.Equal(a, _ChatRoom._Name);
         }
 
+        [Fact]
+        public void GetParticipantById_ParticipantFound_ShouldReturnUser()
+        {
+            ApplicationUser foundMember = _ChatRoom.GetParticipantById(user.Id);
+
+            Assert.Equal(user, foundMember);
+        }
+        [Fact]
+        public void GetParticipantById_ParticipantNotFound_ShouldThrowOfficeMemberNotFoundException()
+        {
+            Assert.Throws<ChatRoomParticipantNotFoundException>(()
+                => _ChatRoom.GetParticipantById(Guid.NewGuid()));
+        }
 
         #endregion
     }
