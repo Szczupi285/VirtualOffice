@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace DomainUnitTests
 {

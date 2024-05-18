@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.Exceptions.Event;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.Event
 {

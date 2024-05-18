@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
-namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
+namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 {
     public record ScheduleItemEndDate
     {

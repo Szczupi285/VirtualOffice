@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.Entities

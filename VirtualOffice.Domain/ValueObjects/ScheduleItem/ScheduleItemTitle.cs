@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
-namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
+namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 {
     public sealed record ScheduleItemTitle : AbstractRecordName
     {

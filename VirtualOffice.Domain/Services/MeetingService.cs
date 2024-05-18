@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Services

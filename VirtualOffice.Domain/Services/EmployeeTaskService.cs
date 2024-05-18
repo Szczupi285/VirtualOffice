@@ -7,13 +7,14 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Services
 {
     public class EmployeeTaskService : AbstractScheduleItemService<EmployeeTask>
     {
+        
         public EmployeeTaskService(HashSet<EmployeeTask> scheduleItems) : base(scheduleItems)
         {
         }
@@ -21,7 +22,6 @@ namespace VirtualOffice.Domain.Services
         public EmployeeTaskService(HashSet<EmployeeTask> scheduleItems, IDateTimeProvider dateTimeProvider) : base(scheduleItems, dateTimeProvider)
         {
         }
-
 
         /// <summary>
         /// Retrieves an immutable sorted set of employee tasks assigned to the specified user, sorted by priority.

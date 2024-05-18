@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Entities
 {

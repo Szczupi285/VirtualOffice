@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoomService;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Abstractions

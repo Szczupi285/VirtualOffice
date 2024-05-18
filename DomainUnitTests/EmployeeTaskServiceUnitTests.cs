@@ -2,8 +2,9 @@
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Services;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
+
 
 
 namespace DomainUnitTests
