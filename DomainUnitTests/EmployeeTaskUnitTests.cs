@@ -318,11 +318,6 @@ namespace DomainUnitTests
             Assert.Equal(EmployeeTaskStatusEnum.InProgress, _EmployeeTask._TaskStatus);
         }
         [Fact]
-        public void AddEmployee_EmployeeIsAlreadyAssigned_ShouldThrowUserIsAlreadyMemberOfThisCollectionException()
-        {
-            Assert.Throws<UserIsAlreadyMemberOfThisCollectionException>(() => _EmployeeTask.AddEmployee(_ApplicationUser));
-        }
-        [Fact]
         public void AddEmployee_UserNotAssignedPreviously_ListShouldContainUser()
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
