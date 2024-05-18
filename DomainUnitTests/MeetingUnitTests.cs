@@ -11,19 +11,19 @@ using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace DomainUnitTests
 {
-    public class EmployeeTaskUnitTests
+    public class MeetingUnitTest
     {
-        private EmployeeTask _EmployeeTask { get; set; }
+        private Meeting _Meeting { get; set; }
         private ApplicationUser _ApplicationUser { get; set; }
         private ApplicationUser _ApplicationUser2 { get; set; }
         private ApplicationUser _ApplicationUser3 { get; set; }
 
-        public EmployeeTaskUnitTests()
+        public MeetingUnitTest()
         {
 
-            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne" , "SurnameOne");
-            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo" , "SurnameTwo");
-            ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree" , "SurnameThree");
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
+            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo", "SurnameTwo");
+            ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree", "SurnameThree");
             _ApplicationUser = user1;
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
@@ -35,10 +35,10 @@ namespace DomainUnitTests
             users.Add(user3);
             Guid guid = Guid.NewGuid();
 
-            EmployeeTask employeeTask = new EmployeeTask(guid, "title", "description",
-                users, EmployeeTaskPriorityEnum.Low, DateTime.UtcNow, DateTime.UtcNow.AddHours(8));
+            Meeting meeting = new Meeting(guid, "title", "description",
+                users, DateTime.UtcNow, DateTime.UtcNow.AddHours(8));
 
-            _EmployeeTask = employeeTask;
+            _Meeting = meeting;
         }
 
 
@@ -278,51 +278,30 @@ namespace DomainUnitTests
 
             Assert.Equal(EndDate, dt);
         }
-
-        #endregion
-
-        #region Properties
-        [Fact]
-        public void ScheduleItemStatus_DefaultStatus_ShouldBeNotStarted()
-        {
-            Assert.Equal(EmployeeTaskStatusEnum.NotStarted, _EmployeeTask._TaskStatus);
-        }
         #endregion
 
         #region methods
         [Fact]
-        public void EmployeeTask_SetTitle_ProperlySetted()
+        public void _Meeting_SetTitle_ProperlySetted()
         {
             string title = "ChangedTitle";
-            _EmployeeTask.SetTitle(title);
-            Assert.Equal(title, _EmployeeTask._Title);
+            _Meeting.SetTitle(title);
+            Assert.Equal(title, _Meeting._Title);
         }
 
         [Fact]
-        public void EmployeeTask_SetDescription_ProperlySetted()
+        public void _Meeting_SetDescription_ProperlySetted()
         {
             string description = "ChangedDescription";
-            _EmployeeTask.SetDescription(description);
-            Assert.Equal(description, _EmployeeTask._Description);
-        }
-        [Fact]
-        public void EmployeeTask_SetPriority_ProperlySetted()
-        {
-            _EmployeeTask.SetPriority(EmployeeTaskPriorityEnum.Urgent);
-            Assert.Equal(EmployeeTaskPriorityEnum.Urgent, _EmployeeTask._Priority);
-        }
-        [Fact]
-        public void EmployeeTask_UpdateStatus_ProperlySetted()
-        {
-            _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.InProgress);
-            Assert.Equal(EmployeeTaskStatusEnum.InProgress, _EmployeeTask._TaskStatus);
+            _Meeting.SetDescription(description);
+            Assert.Equal(description, _Meeting._Description);
         }
         [Fact]
         public void AddEmployee_UserNotAssignedPreviously_ListShouldContainUser()
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
-            _EmployeeTask.AddEmployee(user4);
-            Assert.Contains(user4, _EmployeeTask._AssignedEmployees);
+            _Meeting.AddEmployee(user4);
+            Assert.Contains(user4,_Meeting._AssignedEmployees);
         }
         [Fact]
         public void AddEmployeesRange_UserNotAssignedPreviously_ListShouldContainUsers()
@@ -330,54 +309,56 @@ namespace DomainUnitTests
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             ApplicationUser user5 = new ApplicationUser(Guid.NewGuid(), "NameFive", "SurnameFive");
             ApplicationUser user6 = new ApplicationUser(Guid.NewGuid(), "NameSix", "SurnameSix");
-            List<ApplicationUser> usersList = new List<ApplicationUser>() {user4, user5, user6 };
-            _EmployeeTask.AddEmployeesRange(usersList);
-            Assert.True(_EmployeeTask._AssignedEmployees.Contains(user4) &&
-                _EmployeeTask._AssignedEmployees.Contains(user5) &&
-                _EmployeeTask._AssignedEmployees.Contains(user6));
+            List<ApplicationUser> usersList = new List<ApplicationUser>() { user4, user5, user6 };
+            _Meeting.AddEmployeesRange(usersList);
+            Assert.True(_Meeting._AssignedEmployees.Contains(user4) &&
+                _Meeting._AssignedEmployees.Contains(user5) &&
+                _Meeting._AssignedEmployees.Contains(user6));
         }
 
         [Fact]
         public void RemoveEmployee_EmployeeIsAlreadyAssigned_ShouldRemoveEmployee()
         {
-            Assert.Contains(_ApplicationUser,_EmployeeTask._AssignedEmployees);
-            _EmployeeTask.RemoveEmployee(_ApplicationUser);
-            Assert.DoesNotContain(_ApplicationUser,_EmployeeTask._AssignedEmployees);
+            Assert.Contains(_ApplicationUser, _Meeting._AssignedEmployees);
+            _Meeting.RemoveEmployee(_ApplicationUser);
+            Assert.DoesNotContain(_ApplicationUser, _Meeting._AssignedEmployees);
         }
         [Fact]
-        public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThisScheduleItemException()
+        public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThis_MeetingException()
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
-            Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _EmployeeTask.RemoveEmployee(user4));
+            Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _Meeting.RemoveEmployee(user4));
         }
         [Fact]
         public void RemoveEmployeesRange_UsersAssignedPreviously_ListShouldNotContainUsers()
         {
-            Assert.True(_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser) &&
-                _EmployeeTask._AssignedEmployees.Contains(_ApplicationUser2) &&
-                _EmployeeTask._AssignedEmployees.Contains(_ApplicationUser3));
+            Assert.True(_Meeting._AssignedEmployees.Contains(_ApplicationUser) &&
+                _Meeting._AssignedEmployees.Contains(_ApplicationUser2) &&
+                _Meeting._AssignedEmployees.Contains(_ApplicationUser3));
 
             List<ApplicationUser> usersList = new List<ApplicationUser>() { _ApplicationUser, _ApplicationUser2, _ApplicationUser3 };
-            _EmployeeTask.RemoveEmployeesRange(usersList);
+            _Meeting.RemoveEmployeesRange(usersList);
 
-            Assert.True(!_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser) &&
-                !_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser2) &&
-                !_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser3));
+            Assert.True(!_Meeting._AssignedEmployees.Contains(_ApplicationUser) &&
+                !_Meeting._AssignedEmployees.Contains(_ApplicationUser2) &&
+                !_Meeting._AssignedEmployees.Contains(_ApplicationUser3));
         }
 
         [Fact]
-        public void InvalidUpdateEndDate_EndDateIsBeforeStartDate_ShouldThrowEmployeeTaskEndDateCannotBeBeforeStartDate()
+        public void InvalidUpdateEndDate_EndDateIsBeforeStartDate_ShouldThrow_MeetingEndDateCannotBeBeforeStartDate()
         {
-            Assert.Throws<EndDateCannotBeBeforeStartDate>(() => _EmployeeTask.UpdateEndDate(_EmployeeTask._StartDate.Value.AddSeconds(-1)));
+            Assert.Throws<EndDateCannotBeBeforeStartDate>(() => _Meeting.UpdateEndDate(_Meeting._StartDate.Value.AddSeconds(-1)));
         }
         [Fact]
         public void ValidUpdateEndDate_EndDateShouldBeEqualToUpdatedDate()
         {
-            DateTime dateToUpdate = _EmployeeTask._StartDate.Value.AddSeconds(1);
-            _EmployeeTask.UpdateEndDate(dateToUpdate);
-            Assert.Equal(dateToUpdate, _EmployeeTask._EndDate);
+            DateTime dateToUpdate = _Meeting._StartDate.Value.AddSeconds(1);
+            _Meeting.UpdateEndDate(dateToUpdate);
+            Assert.Equal(dateToUpdate, _Meeting._EndDate);
         }
 
         #endregion
     }
 }
+
+
