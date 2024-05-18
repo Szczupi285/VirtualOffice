@@ -13,7 +13,6 @@ namespace VirtualOffice.Domain.Entities
 {
     public class EmployeeTask : AbstractScheduleItem, IComparable<EmployeeTask>
     {
-       
         public EmployeeTaskPriorityEnum _Priority {get; private set;}
         public EmployeeTaskStatusEnum _TaskStatus{ get; private set; } = EmployeeTaskStatusEnum.NotStarted;
 

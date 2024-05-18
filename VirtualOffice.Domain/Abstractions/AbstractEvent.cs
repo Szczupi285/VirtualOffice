@@ -12,7 +12,7 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractEvent
     {
-        public EventId Id { get; private set; }
+        public EventId Id { get;  }
         public EventTitle _Title { get; private set; }
         public EventDescription _Description { get; private set; }
         public EventStartDate _StartDate { get; private set; }

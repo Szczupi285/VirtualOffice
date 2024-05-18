@@ -28,9 +28,5 @@ namespace VirtualOffice.Domain.Abstractions
         internal void AddPreviousVersion(AbstractDocument previousVersion) => _previousVersion = previousVersion;
 
         internal void AddAttachment(ICollection<DocumentFilePath> attachmentFilePaths) => _attachmentFilePaths = attachmentFilePaths; 
-
-
-
-        
     }
 }

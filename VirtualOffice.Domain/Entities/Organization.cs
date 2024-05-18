@@ -6,7 +6,7 @@ namespace VirtualOffice.Domain.Entities
 
     public class Organization 
     {
-        public OrganizationId Id { get; private set; }
+        public OrganizationId Id { get; }
 
         public OrganizationName _name { get; private set; }
 
