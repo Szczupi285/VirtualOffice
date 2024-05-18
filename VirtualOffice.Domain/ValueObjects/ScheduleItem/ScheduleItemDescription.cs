@@ -4,27 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Exceptions.EmployeeTask;
+using VirtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public sealed record EmployeeTaskDescription
+    public sealed record ScheduleItemDescription
     {
         string Value { get; }
-        public EmployeeTaskDescription(string value)
+        public ScheduleItemDescription(string value)
         {
             if (value is null)
                 value = "";
             else if (value.Length > 1500)
-                throw new TooLongEmployeeTaskDescriptionException(value, 1500);
+                throw new TooLongScheduleItemDescriptionException(value, 1500);
 
             Value = value;
         }
 
-        public static implicit operator EmployeeTaskDescription(string content)
+        public static implicit operator ScheduleItemDescription(string content)
             => new(content);
 
-        public static implicit operator string(EmployeeTaskDescription content)
+        public static implicit operator string(ScheduleItemDescription content)
             => content.Value;
     }
 }

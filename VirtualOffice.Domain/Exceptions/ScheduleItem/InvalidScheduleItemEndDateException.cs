@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Shared.Abstractions.Exceptions;
 
-namespace VirtualOffice.Domain.Exceptions.EmployeeTask
+namespace VIrtualOffice.Domain.Exceptions.ScheduleItem
 {
-    public class InvalidEmployeeTaskEndDateException : VirtualOfficeException
+    public class InvalidScheduleItemEndDateException : VirtualOfficeException
     {
         DateTime Value;
-        public InvalidEmployeeTaskEndDateException(DateTime value) : base($"EmployeeTask EndDate cannot be in the past")
+        public InvalidScheduleItemEndDateException(DateTime value) : base($"ScheduleItem EndDate cannot be in the past")
         {
             Value = value;
         }

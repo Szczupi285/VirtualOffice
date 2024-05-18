@@ -4,17 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Exceptions.EmployeeTask;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public sealed record EmployeeTaskId : AbstractRecordId
+    public sealed record ScheduleItemId : AbstractRecordId
     {
-        public EmployeeTaskId(Guid value) : base(value, new EmptyEmployeeTaskIdException())
+        public ScheduleItemId(Guid value) : base(value, new EmptyEmployeeScheduleItemIdException())
         {
         }
 
-        public static implicit operator EmployeeTaskId(Guid id)
+        public static implicit operator ScheduleItemId(Guid id)
             => new(id);
     }
 }
