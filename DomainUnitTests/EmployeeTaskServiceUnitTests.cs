@@ -90,54 +90,54 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void AssignTask_AddsTaskToList()
+        public void AssignScheduleItem_AddsTaskToList()
         {
-            service.AssignTask(_Task3);
+            service.AssignScheduleItem(_Task3);
 
-            Assert.Contains(_Task3, service._EmployeeTasks);
-        }
-
-        [Fact]
-        public void AssignTask_AddsTaskToList_ShouldReturnTrue()
-        {
-            Assert.True(service.AssignTask(_Task4));
-        }
-        [Fact]
-        public void AssignTask_AddsTaskToList_ShouldReturnFalse()
-        {
-            Assert.False(service.AssignTask(_Task1));
+            Assert.Contains(_Task3, service._ScheduleItems);
         }
 
         [Fact]
-        public void DeleteTask_RemovesTaskFromList()
+        public void AssignScheduleItem_AddsTaskToList_ShouldReturnTrue()
         {
-            service.DeleteTask(_Task1);
-
-            Assert.DoesNotContain(_Task1, service._EmployeeTasks); 
+            Assert.True(service.AssignScheduleItem(_Task4));
         }
         [Fact]
-        public void DeleteTask_RemovesTaskFromList_ShouldReturnTrue()
+        public void AssignScheduleItem_AddsTaskToList_ShouldReturnFalse()
         {
-            Assert.True(service.DeleteTask(_Task1));
-        }
-        [Fact]
-        public void DeleteTask_RemovesTaskFromList_ShouldReturnFalse()
-        {
-            Assert.False(service.DeleteTask(_Task4));
+            Assert.False(service.AssignScheduleItem(_Task1));
         }
 
         [Fact]
-        public void GetTaskById_ReturnsTaskIfExists()
+        public void DeleteScheduleItem_RemovesTaskFromList()
         {
-            var resultTask = service.GetTaskById(_Task1.Id);
+            service.DeleteScheduleItem(_Task1);
+
+            Assert.DoesNotContain(_Task1, service._ScheduleItems); 
+        }
+        [Fact]
+        public void DeleteScheduleItem_RemovesTaskFromList_ShouldReturnTrue()
+        {
+            Assert.True(service.DeleteScheduleItem(_Task1));
+        }
+        [Fact]
+        public void DeleteScheduleItem_RemovesTaskFromList_ShouldReturnFalse()
+        {
+            Assert.False(service.DeleteScheduleItem(_Task4));
+        }
+
+        [Fact]
+        public void GetScheduleItemById_ReturnsTaskIfExists()
+        {
+            var resultTask = service.GetScheduleItemById(_Task1.Id);
 
             Assert.Equal(_Task1, resultTask);
         }
 
         [Fact]
-        public void GetTaskById_ReturnsNullForNonExistentId()
+        public void GetScheduleItemById_ReturnsNullForNonExistentId()
         {
-            var resultTask = service.GetTaskById(Guid.NewGuid());
+            var resultTask = service.GetScheduleItemById(Guid.NewGuid());
 
             Assert.Null(resultTask);
         }

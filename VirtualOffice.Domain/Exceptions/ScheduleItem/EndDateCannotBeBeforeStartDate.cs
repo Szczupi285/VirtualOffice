@@ -11,7 +11,7 @@ namespace VIrtualOffice.Domain.Exceptions.ScheduleItem
     {
         DateTime EndDate;
         DateTime StartDate;
-        public EndDateCannotBeBeforeStartDate(DateTime endDate, DateTime startDate) : base($"End Date: {endDate} is before Start Date: {startDate}")
+        public EndDateCannotBeBeforeStartDate(DateTime startDate, DateTime endDate) : base($"End Date: {endDate} is before Start Date: {startDate}")
         {
             EndDate = endDate;
             StartDate = startDate;
