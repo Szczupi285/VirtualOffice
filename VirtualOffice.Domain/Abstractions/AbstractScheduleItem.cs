@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Abstractions
 {
@@ -18,8 +18,8 @@ namespace VirtualOffice.Domain.Abstractions
         public ScheduleItemDescription _Description { get; private set; }
         public HashSet<ApplicationUser> _AssignedEmployees { get; private set; }
         // start date is not set to default Utc.Now because it will be avalible to create tasks that are supposed to be started in the future
-        public ScheduleItemStartDate _StartDate { get; private set; }
-        public ScheduleItemEndDate _EndDate { get; private set; }
+        public ScheduleItemStartDate _StartDate { get; private protected set; }
+        public ScheduleItemEndDate _EndDate { get; private protected set; }
 
         public AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
           HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)

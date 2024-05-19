@@ -4,40 +4,24 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Services
 {
-    public class EmployeeTaskService
+    public class EmployeeTaskService : AbstractScheduleItemService<EmployeeTask>
     {
-        public HashSet<EmployeeTask> _EmployeeTasks {get; private set;}
-
-        private readonly IDateTimeProvider _DateTimeProvider;
-
-        public EmployeeTaskService(HashSet<EmployeeTask> employeeTasks)
+        
+        public EmployeeTaskService(HashSet<EmployeeTask> scheduleItems) : base(scheduleItems)
         {
-            _EmployeeTasks = employeeTasks;
-            _DateTimeProvider = new DateTimeProvider();
-        }
-        internal EmployeeTaskService(HashSet<EmployeeTask> employeeTasks, IDateTimeProvider dateTimeProvider)
-        {
-            _EmployeeTasks = employeeTasks;
-            _DateTimeProvider = dateTimeProvider;
         }
 
-        public bool AssignTask(EmployeeTask task) => _EmployeeTasks.Add(task);   
-
-        public bool DeleteTask(EmployeeTask task) => _EmployeeTasks.Remove(task);
-
-
-
-        /// <summary>
-        /// Retrieves an EmployeeTask by id. Id EmployeeTask is not found, returns null.
-        /// </summary>
-        public EmployeeTask? GetTaskById(ScheduleItemId id) => _EmployeeTasks.FirstOrDefault(x => x.Id == id);
+        public EmployeeTaskService(HashSet<EmployeeTask> scheduleItems, IDateTimeProvider dateTimeProvider) : base(scheduleItems, dateTimeProvider)
+        {
+        }
 
         /// <summary>
         /// Retrieves an immutable sorted set of employee tasks assigned to the specified user, sorted by priority.
@@ -54,7 +38,7 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of employee tasks assigned to the specified user, sorted by priority.</returns>
         public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasks(ApplicationUser user)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user))
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user))
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
@@ -75,7 +59,7 @@ namespace VirtualOffice.Domain.Services
         public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasksForUsersGroup(ICollection<ApplicationUser> users)
         {
 
-            return _EmployeeTasks.Where(task => users.Any(user => task._AssignedEmployees.Contains(user)))
+            return _ScheduleItems.Where(task => users.Any(user => task._AssignedEmployees.Contains(user)))
              .OrderByDescending(task => task._Priority)
              .ToImmutableSortedSet();
         }
@@ -95,7 +79,7 @@ namespace VirtualOffice.Domain.Services
         /// </returns>
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksUntilDate(ApplicationUser user, DateTime endDate)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._EndDate < endDate)
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user) && task._EndDate < endDate)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
@@ -116,7 +100,7 @@ namespace VirtualOffice.Domain.Services
         /// </remarks>
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksByStatus(ApplicationUser user, EmployeeTaskStatusEnum status)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._TaskStatus == status)
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user) && task._TaskStatus == status)
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
@@ -134,7 +118,7 @@ namespace VirtualOffice.Domain.Services
         /// and having the specified priority. It then returns these tasks as a HashSet.
         /// </remarks>
         public HashSet<EmployeeTask> GetEmployeeTasksByPriority(ApplicationUser user, EmployeeTaskPriorityEnum priority)
-            => _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user) && task._Priority == priority).ToHashSet();
+            => _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user) && task._Priority == priority).ToHashSet();
 
 
         /// <summary>
@@ -153,7 +137,7 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of overdue employee tasks assigned to the specified user.</returns>
         public ImmutableSortedSet<EmployeeTask> GetOverdueTasks(ApplicationUser user)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user)
             && task._EndDate < _DateTimeProvider.UtcNow()
             && task._TaskStatus != EmployeeTaskStatusEnum.Done)
                 .OrderByDescending(task => task._Priority)
@@ -175,7 +159,7 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of current employee tasks assigned to the specified user.</returns>
         public ImmutableSortedSet<EmployeeTask> GetCurrentTasks(ApplicationUser user)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user)
             && task._StartDate < _DateTimeProvider.UtcNow()
             && task._TaskStatus != EmployeeTaskStatusEnum.Done)
                 .OrderByDescending(task => task._Priority)
@@ -198,7 +182,7 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of employee tasks planned for the future and assigned to the specified user.</returns>
         public ImmutableSortedSet<EmployeeTask> GetEmployeeTasksPlannedForFuture(ApplicationUser user)
         {
-            return _EmployeeTasks.Where(task => task._AssignedEmployees.Contains(user)
+            return _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user)
             && task._StartDate > _DateTimeProvider.UtcNow())
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();

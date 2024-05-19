@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
-namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
+namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 {
     public sealed record ScheduleItemStartDate
     {
