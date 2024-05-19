@@ -9,7 +9,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class Note
     {
-        public NoteId Id { get; private set; }
+        public NoteId Id { get; }
 
         public NoteTitle _title { get; private set; }
 

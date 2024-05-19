@@ -8,7 +8,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class Office
     {
-        public OfficeId Id { get; private set; }
+        public OfficeId Id { get; }
 
         public OfficeName _officeName { get; private set; }
 
