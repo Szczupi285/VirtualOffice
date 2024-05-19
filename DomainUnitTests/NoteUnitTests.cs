@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace DomainUnitTests
@@ -36,15 +39,6 @@ namespace DomainUnitTests
 
             Guid guid = id;
             Assert.Equal(id.Value, guid);
-
-        }
-        [Fact]
-        public void ValidNoteId_GuidToValidNoteIdConversionShouldEqual()
-        {
-
-            NoteId id = new NoteId(Guid.NewGuid());
-
-            Guid guid = id;
 
         }
         #endregion
@@ -124,5 +118,7 @@ namespace DomainUnitTests
 
         }
         #endregion
+
+      
     }
 }
