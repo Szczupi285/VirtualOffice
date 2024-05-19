@@ -37,7 +37,7 @@ namespace VirtualOffice.Domain.Services
         /// <summary>
         /// Retrieves an EmployeeTask by id. Id EmployeeTask is not found, returns null.
         /// </summary>
-        public EmployeeTask? GetTaskById(EmployeeTaskId id) => _EmployeeTasks.FirstOrDefault(x => x.Id == id);
+        public EmployeeTask? GetTaskById(ScheduleItemId id) => _EmployeeTasks.FirstOrDefault(x => x.Id == id);
 
         /// <summary>
         /// Retrieves an immutable sorted set of employee tasks assigned to the specified user, sorted by priority.

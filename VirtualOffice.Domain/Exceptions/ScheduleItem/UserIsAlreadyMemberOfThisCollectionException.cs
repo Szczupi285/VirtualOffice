@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Shared.Abstractions.Exceptions;
 
-namespace VirtualOffice.Domain.Exceptions.EmployeeTask
+namespace VIrtualOffice.Domain.Exceptions.ScheduleItem
 {
-    internal class UserIsNotAssignedToThisTaskException : VirtualOfficeException
+    public class UserIsAlreadyMemberOfThisCollectionException : VirtualOfficeException
     {
         ApplicationUserId Id;
-        public UserIsNotAssignedToThisTaskException(ApplicationUserId id) : base($"User with Id: {id} is not assigned to this task")
+        public UserIsAlreadyMemberOfThisCollectionException(ApplicationUserId id) : base($"User with Id: {id} is already assigned to this Collection")
         {
             Id = id;
         }

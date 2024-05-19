@@ -3,25 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.EmployeeTask;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.EmployeeTask
 {
-    public record EmployeeTaskEndDate
+    public record ScheduleItemEndDate
     {
         public DateTime Value { get; }
 
-        public EmployeeTaskEndDate(DateTime value)
+        public ScheduleItemEndDate(DateTime value)
         {
             if (value <= DateTime.UtcNow)
-                throw new InvalidEmployeeTaskEndDateException(value);
+                throw new InvalidScheduleItemEndDateException(value);
             Value = value;
         }
 
-        public static implicit operator DateTime(EmployeeTaskEndDate EndDate)
+        public static implicit operator DateTime(ScheduleItemEndDate EndDate)
             => EndDate.Value;
 
-        public static implicit operator EmployeeTaskEndDate(DateTime EndDate)
+        public static implicit operator ScheduleItemEndDate(DateTime EndDate)
             => new(EndDate);
     }
 }

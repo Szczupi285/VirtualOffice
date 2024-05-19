@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Exceptions.EmployeeTask;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.EmployeeTask;
 using VirtualOffice.Domain.Consts;
 
@@ -28,7 +28,7 @@ namespace DomainUnitTests
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
 
-            List<ApplicationUser> users = new List<ApplicationUser>();
+            HashSet<ApplicationUser> users = new HashSet<ApplicationUser>();
 
             users.Add(user1);
             users.Add(user2);
@@ -47,15 +47,15 @@ namespace DomainUnitTests
         [Fact]
         public void EmptyEmployeeTaskId_ShouldReturnEmptyEmployeeTaskIdException()
         {
-            Assert.Throws<EmptyEmployeeTaskIdException>(()
-                => new EmployeeTaskId(Guid.Empty));
+            Assert.Throws<EmptyEmployeeScheduleItemIdException>(()
+                => new ScheduleItemId(Guid.Empty));
         }
         [Fact]
         public void ValidEmployeeTaskId_ValidGuidToAppUserIdConversion_ShouldEqual()
         {
             var guid = Guid.NewGuid();
 
-            EmployeeTaskId id = guid;
+            ScheduleItemId id = guid;
 
             Assert.Equal(id.Value, guid);
         }
@@ -63,7 +63,7 @@ namespace DomainUnitTests
         public void ValidEmployeeTaskId_ValidAppUserIdToGuidConversionShouldEqual()
         {
 
-            EmployeeTaskId id = new EmployeeTaskId(Guid.NewGuid());
+            ScheduleItemId id = new ScheduleItemId(Guid.NewGuid());
 
             Guid guid = id;
 
@@ -76,15 +76,15 @@ namespace DomainUnitTests
         [Fact]
         public void EmptyEmployeeTaskTitle_ShouldReturnEmptyEmployeeTaskTitleException()
         {
-            Assert.Throws<EmptyEmployeeTaskTitleException>(()
-                => new EmployeeTaskTitle(""));
+            Assert.Throws<EmptyScheduleItemTitleException>(()
+                => new ScheduleItemTitle(""));
         }
 
         [Fact]
         public void NullEmployeeTaskTitle_ShouldReturnEmptyEmployeeTaskTitleException()
         {
-            Assert.Throws<EmptyEmployeeTaskTitleException>(()
-                => new EmployeeTaskTitle(null));
+            Assert.Throws<EmptyScheduleItemTitleException>(()
+                => new ScheduleItemTitle(null));
         }
 
         [Fact]
@@ -92,14 +92,14 @@ namespace DomainUnitTests
         {
             string title = "ExampleTitle";
 
-            EmployeeTaskTitle tit = title;
+            ScheduleItemTitle tit = title;
 
             Assert.Equal(title, tit);
         }
         [Fact]
         public void ValidEmployeeTaskTitle_ValidEmployeeTaskTitleToStringConversionShouldEqual()
         {
-            EmployeeTaskTitle tit = new EmployeeTaskTitle("ExampleTitle");
+            ScheduleItemTitle tit = new ScheduleItemTitle("ExampleTitle");
 
             string title = tit;
 
@@ -110,36 +110,36 @@ namespace DomainUnitTests
         public void InvalidEmployeeTaskTitle_TooLongTitle()
         {
             string s = new string('a', 101);
-            Assert.Throws<TooLongEmployeeTaskTitleException>(() => new EmployeeTaskTitle(s));
+            Assert.Throws<TooLongScheduleItemTitleException>(() => new ScheduleItemTitle(s));
         }
         [Fact]
         public void ValidEmployeeTaskTitle_HundredChars()
         {
             string s = new string('a', 100);
-            new EmployeeTaskTitle(s);
+            new ScheduleItemTitle(s);
         }
         [Fact]
         public void ValidEmployeeTaskTitle_OneChar()
         {
-            new EmployeeTaskTitle("a");
+            new ScheduleItemTitle("a");
         }
 
         #endregion
 
-        #region EmployeeTaskDescription 
+        #region ScheduleItemDescription 
         [Fact]
-        public void ValidEmployeeTaskDescription_ValidStringToEmployeeTaskDescriptionConversion_ShouldEqual()
+        public void ValidScheduleItemDescription_ValidStringToScheduleItemDescriptionConversion_ShouldEqual()
         {
             string Description = "ExampleDescription";
 
-            EmployeeTaskDescription desc = Description;
+            ScheduleItemDescription desc = Description;
 
             Assert.Equal(Description, desc);
         }
         [Fact]
-        public void ValidEmployeeTaskDescription_ValidEmployeeTaskDescriptionToStringConversionShouldEqual()
+        public void ValidScheduleItemDescription_ValidScheduleItemDescriptionToStringConversionShouldEqual()
         {
-            EmployeeTaskDescription desc = new EmployeeTaskDescription("ExampleDescription");
+            ScheduleItemDescription desc = new ScheduleItemDescription("ExampleDescription");
 
             string Description = desc;
 
@@ -147,31 +147,31 @@ namespace DomainUnitTests
 
         }
         [Fact]
-        public void InvalidEmployeeTaskDescription_TooLongDescription()
+        public void InvalidScheduleItemDescription_TooLongDescription()
         {
             string s = new string('a', 1501);
-            Assert.Throws<TooLongEmployeeTaskDescriptionException>(() => new EmployeeTaskDescription(s));
+            Assert.Throws<TooLongScheduleItemDescriptionException>(() => new ScheduleItemDescription(s));
         }
         [Fact]
-        public void ValidEmployeeTaskDescription_HundredChars()
+        public void ValidScheduleItemDescription_HundredChars()
         {
             string s = new string('a', 1500);
-            new EmployeeTaskDescription(s);
+            new ScheduleItemDescription(s);
         }
         [Fact]
-        public void ValidEmployeeTaskDescription_OneChar()
+        public void ValidScheduleItemDescription_OneChar()
         {
-            new EmployeeTaskDescription("a");
+            new ScheduleItemDescription("a");
         }
         [Fact]
-        public void ValidEmployeeTaskDescription_WhiteSpace()
+        public void ValidScheduleItemDescription_WhiteSpace()
         {
-            new EmployeeTaskDescription(" ");
+            new ScheduleItemDescription(" ");
         }
         [Fact]
-        public void ValidEmployeeTaskDescription_Empty()
+        public void ValidScheduleItemDescription_Empty()
         {
-            new EmployeeTaskDescription("");
+            new ScheduleItemDescription("");
         }
         #endregion
 
@@ -180,8 +180,8 @@ namespace DomainUnitTests
         [Fact]
         public void EmployeeTaskStartDate31daysBeforeNow_EmployeeTaskStartDateCannotBePastException()
         {
-            Assert.Throws<EmployeeTaskStartDateCannotBePastException>(()
-                => new EmployeeTaskStartDate
+            Assert.Throws<ScheduleItemStartDateCannotBePastException>(()
+                => new ScheduleItemStartDate
                 (
                     DateTime.UtcNow.AddDays(-31))
                 );
@@ -189,17 +189,17 @@ namespace DomainUnitTests
         [Fact]
         public void EmployeeTaskStartDateValid31daysFromNow_ShouldNotThrowException()
         {
-            EmployeeTaskStartDate startDate = DateTime.UtcNow.AddDays(31);
+            ScheduleItemStartDate startDate = DateTime.UtcNow.AddDays(31);
         }
         [Fact]
         public void EmployeeTaskStartDateValidYearFromNow_ShouldNotThrowException()
         {
-            EmployeeTaskStartDate startDate = DateTime.UtcNow.AddYears(1);
+            ScheduleItemStartDate startDate = DateTime.UtcNow.AddYears(1);
         }
         [Fact]
         public void EmployeeTaskStartDateValidCurrentTime_ShouldNotThrowException()
         {
-            EmployeeTaskStartDate startDate = DateTime.UtcNow;
+            ScheduleItemStartDate startDate = DateTime.UtcNow;
         }
 
         [Fact]
@@ -207,14 +207,14 @@ namespace DomainUnitTests
         {
             var dt = DateTime.UtcNow.AddDays(31);
 
-            EmployeeTaskStartDate startDate = dt;
+            ScheduleItemStartDate startDate = dt;
 
             Assert.Equal(dt, startDate);
         }
         [Fact]
         public void ValidData_EmployeeTaskStartDateToDateTimeConversionShouldEqual()
         {
-            EmployeeTaskStartDate startDate = new EmployeeTaskStartDate(DateTime.UtcNow.AddDays(31));
+            ScheduleItemStartDate startDate = new ScheduleItemStartDate(DateTime.UtcNow.AddDays(31));
 
 
             var dt = startDate;
@@ -231,8 +231,8 @@ namespace DomainUnitTests
         [Fact]
         public void EmployeeTaskEndDate1dayBeforeNow_EmployeeTaskEndDateCannotBePastException()
         {
-            Assert.Throws<InvalidEmployeeTaskEndDateException>(()
-                => new EmployeeTaskEndDate
+            Assert.Throws<InvalidScheduleItemEndDateException>(()
+                => new ScheduleItemEndDate
                 (
                     DateTime.UtcNow.AddDays(-1))
                 );
@@ -240,8 +240,8 @@ namespace DomainUnitTests
         [Fact]
         public void EmployeeTaskEndDateInvalidCurrentTime_ShouldThrowInvalidEmployeeTaskEndDateException()
         {
-            Assert.Throws<InvalidEmployeeTaskEndDateException>(()
-                => new EmployeeTaskEndDate
+            Assert.Throws<InvalidScheduleItemEndDateException>(()
+                => new ScheduleItemEndDate
                 (
                     DateTime.UtcNow
                 ));
@@ -249,12 +249,12 @@ namespace DomainUnitTests
         [Fact]
         public void EmployeeTaskEndDateValid31daysFromNow_ShouldNotThrowException()
         {
-            EmployeeTaskEndDate EndDate = DateTime.UtcNow.AddDays(31);
+            ScheduleItemEndDate EndDate = DateTime.UtcNow.AddDays(31);
         }
         [Fact]
         public void EmployeeTaskEndDateValidYearFromNow_ShouldNotThrowException()
         {
-            EmployeeTaskEndDate EndDate = DateTime.UtcNow.AddYears(1);
+            ScheduleItemEndDate EndDate = DateTime.UtcNow.AddYears(1);
         }
 
 
@@ -263,14 +263,14 @@ namespace DomainUnitTests
         {
             var dt = DateTime.UtcNow.AddDays(31);
 
-            EmployeeTaskEndDate EndDate = dt;
+            ScheduleItemEndDate EndDate = dt;
 
             Assert.Equal(dt, EndDate);
         }
         [Fact]
         public void ValidData_EmployeeTaskEndDateToDateTimeConversionShouldEqual()
         {
-            EmployeeTaskEndDate EndDate = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(31));
+            ScheduleItemEndDate EndDate = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(31));
 
 
             var dt = EndDate;
@@ -318,11 +318,6 @@ namespace DomainUnitTests
             Assert.Equal(EmployeeTaskStatusEnum.InProgress, _EmployeeTask._TaskStatus);
         }
         [Fact]
-        public void AddEmployee_EmployeeIsAlreadyAssigned_ShouldThrowUserIsAlreadyAssignedToThisTaskException()
-        {
-            Assert.Throws<UserIsAlreadyAssignedToThisTaskException>(() => _EmployeeTask.AddEmployee(_ApplicationUser));
-        }
-        [Fact]
         public void AddEmployee_UserNotAssignedPreviously_ListShouldContainUser()
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
@@ -350,10 +345,10 @@ namespace DomainUnitTests
             Assert.False(_EmployeeTask._AssignedEmployees.Contains(_ApplicationUser));
         }
         [Fact]
-        public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThisTaskException()
+        public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThisScheduleItemException()
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
-            Assert.Throws<UserIsNotAssignedToThisTaskException>(() => _EmployeeTask.RemoveEmployee(user4));
+            Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _EmployeeTask.RemoveEmployee(user4));
         }
         [Fact]
         public void RemoveEmployeesRange_UsersAssignedPreviously_ListShouldNotContainUsers()
@@ -373,7 +368,7 @@ namespace DomainUnitTests
         [Fact]
         public void InvalidUpdateEndDate_EndDateIsBeforeStartDate_ShouldThrowEmployeeTaskEndDateCannotBeBeforeStartDate()
         {
-            Assert.Throws<EmployeeTaskEndDateCannotBeBeforeStartDate>(() => _EmployeeTask.UpdateEndDate(_EmployeeTask._StartDate.Value.AddSeconds(-1)));
+            Assert.Throws<EndDateCannotBeBeforeStartDate>(() => _EmployeeTask.UpdateEndDate(_EmployeeTask._StartDate.Value.AddSeconds(-1)));
         }
         [Fact]
         public void ValidUpdateEndDate_EndDateShouldBeEqualToUpdatedDate()
