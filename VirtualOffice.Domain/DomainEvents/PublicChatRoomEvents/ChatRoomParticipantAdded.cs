@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.Entities;
 
-namespace VirtualOffice.Domain.DomainEvents.ChatRommEvents
+namespace VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents
 {
-    internal class ParticipantAdded
-    {
-    }
+    public record ChatRoomParticipantAdded(PublicChatRoom room, ApplicationUser participant) : IDomainEvent;
+    
 }

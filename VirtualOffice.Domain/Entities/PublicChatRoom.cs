@@ -8,6 +8,7 @@ using VirtualOffice.Domain.Exceptions.ChatRoom;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ChatRoom;
+using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
 
 namespace VirtualOffice.Domain.Entities
 {
@@ -26,6 +27,7 @@ namespace VirtualOffice.Domain.Entities
             if (participant is null)
                 throw new ArgumentNullException(nameof(participant));
             _Participants.Add(participant);
+            AddEvent(new ChatRoomParticipantAdded(this, participant));
         }
         public void AddRangeParticipants(ICollection<ApplicationUser> participants)
         {
@@ -45,6 +47,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new ChatRoomCannotBeEmptyException();
 
             _Participants.Remove(participant);
+            AddEvent(new ChatRoomParticipantRemoved(this, participant));
         }
         public void RemoveRangeParticipants(ICollection<ApplicationUser> participants)
         {
@@ -54,8 +57,11 @@ namespace VirtualOffice.Domain.Entities
             }
         }
 
-        public void SetName(string name) => _Name = name;
-
+        public void SetName(string name)
+        {
+            _Name = name;
+            AddEvent(new ChatRoomNameSetted(this, _Name));
+        }
         
     }
 }
