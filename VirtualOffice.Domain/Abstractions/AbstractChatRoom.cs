@@ -11,7 +11,7 @@ using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractChatRoom
+    public abstract class AbstractChatRoom : AggregateRoot<ChatRoomId>
     {
         public ChatRoomId Id { get; }
 
@@ -36,7 +36,6 @@ namespace VirtualOffice.Domain.Abstractions
         {
             if (!_Participants.Contains(sender))
                 throw new UserIsNotAParticipantOfThisChatException(sender.Id);
-
             Message message = new Message(Guid.NewGuid(), sender, content);
             _Messages.Add(message);
         }

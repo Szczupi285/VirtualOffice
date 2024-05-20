@@ -25,7 +25,5 @@ namespace VirtualOffice.Domain.Entities
 
         public void EditTitle(string title) => _title = title;
 
-
-
     }
 }

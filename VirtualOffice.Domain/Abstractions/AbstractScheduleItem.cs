@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractScheduleItem
+    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>
     {
 
         public ScheduleItemId Id { get; }
@@ -21,7 +21,7 @@ namespace VirtualOffice.Domain.Abstractions
         public ScheduleItemStartDate _StartDate { get; private protected set; }
         public ScheduleItemEndDate _EndDate { get; private protected set; }
 
-        public AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
+        protected AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
           HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
         {
             if (startDate.Value >= endDate.Value)
