@@ -7,6 +7,8 @@ using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Domain.Abstractions
 {
@@ -35,12 +37,21 @@ namespace VirtualOffice.Domain.Abstractions
             _EndDate = endDate;
         }
 
-        public void SetTitle(string title) => _Title = title;
-        public void SetDescription(string description) => _Description = description;
+        public void SetTitle(string title)
+        {
+            _Title = title;
+            AddEvent(new ScheduleItemTitleSetted(this, title));
+        }
+        public void SetDescription(string description)
+        {
+            _Description = description;
+            AddEvent(new ScheduleItemDescriptionSetted(this, description));
+        }
 
         public void AddEmployee(ApplicationUser user)
         {
             _AssignedEmployees.Add(user);
+            AddEvent(new EmployeeAddedToScheduleItem(this, user));
         }
         public void AddEmployeesRange(ICollection<ApplicationUser> users)
         {
@@ -54,6 +65,8 @@ namespace VirtualOffice.Domain.Abstractions
                 throw new UserIsNotAssignedToThisScheduleItemException(user.Id);
 
             _AssignedEmployees.Remove(user);
+            AddEvent(new EmployeeRemovedFromScheduleItem(this, user));
+
         }
 
         public void RemoveEmployeesRange(ICollection<ApplicationUser> users)
@@ -67,6 +80,7 @@ namespace VirtualOffice.Domain.Abstractions
                 throw new EndDateCannotBeBeforeStartDate(endDate, _StartDate);
 
             _EndDate = endDate;
+            AddEvent(new ScheduleItemEndDateUpdated(this, endDate));
         }
     }
 }

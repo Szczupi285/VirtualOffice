@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Domain.DomainEvents
 {
-    public interface IDomainEvent 
+    public interface IDomainEvent
     {
     }
 }

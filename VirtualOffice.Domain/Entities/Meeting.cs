@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.MeetingEvent;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
@@ -20,6 +22,8 @@ namespace VirtualOffice.Domain.Entities
         {
             if (newStartDate > _EndDate)
                 throw new EndDateCannotBeBeforeStartDate(newStartDate, _EndDate);
+            _StartDate = newStartDate;
+            AddEvent(new MeetingStartDateUpdated(this));
         }
         public void RescheduleMeeting(DateTime newStartDate, DateTime newEndDate)
         {
@@ -27,7 +31,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new EndDateCannotBeBeforeStartDate(newStartDate, newEndDate);
             _EndDate = newEndDate;
             _StartDate = newStartDate;
-
+            AddEvent(new MeetingRescheduled(this));
         }
     }
 }
