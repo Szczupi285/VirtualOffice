@@ -25,12 +25,12 @@ namespace VirtualOffice.Domain.Entities
         public void EditContent(string content)
         {
             _content = content;
-            AddEvent(new NoteContentChanged(this));
+            AddEvent(new NoteContentChanged(this, content));
         }
         public void EditTitle(string title)
         {
             _title = title;
-            AddEvent(new NoteTitleChanged(this));
+            AddEvent(new NoteTitleChanged(this, title));
         }
 
     }

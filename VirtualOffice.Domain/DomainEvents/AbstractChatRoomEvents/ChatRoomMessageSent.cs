@@ -8,6 +8,6 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents
 {
-    public record ChatRoomMessageSent(AbstractChatRoom room, Message message) : IDomainEvent
+    public record ChatRoomMessageSent(AbstractChatRoom room, Message message) : IDomainEvent;
     
 }
