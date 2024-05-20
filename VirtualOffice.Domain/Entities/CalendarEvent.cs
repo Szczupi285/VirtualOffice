@@ -4,14 +4,27 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.ValueObjects.Event;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class CalendarEvent : AbstractEvent
+    public class CalendarEvent : AbstractScheduleItem
     {
-        public CalendarEvent(EventId id, EventTitle titile, EventStartDate startDate, EventEndDate endDate, EventDescription eventDescription, ICollection<ApplicationUser> visibleTo) : base(id, titile, startDate, endDate, eventDescription, visibleTo)
+        public CalendarEvent(ScheduleItemId id, ScheduleItemTitle titile, ScheduleItemDescription eventDescription, 
+            HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
+            : base(id, titile, eventDescription, assignedEmployees, startDate, endDate)
         {
         }
+
+        public void UpdateStartDate(DateTime startDate)
+        {
+            if (_EndDate <= startDate)
+                throw new EndDateCannotBeBeforeStartDate(_EndDate, startDate);
+
+            _StartDate = startDate;
+        }
+
+      
     }
 }

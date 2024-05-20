@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Exceptions.Event;
-using VirtualOffice.Domain.ValueObjects.Event;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace DomainUnitTests
 {
@@ -16,39 +16,39 @@ namespace DomainUnitTests
         public ApplicationUser User { get; set; }
         public CalendarEventUnitTests()
         {
-            var eventId = new EventId(Guid.NewGuid());
-            var title = new EventTitle("Sample Event");
-            var startDate = new EventStartDate(DateTime.UtcNow);
-            var endDate = new EventEndDate(DateTime.UtcNow.AddDays(1));
-            var description = new EventDescription("This is a sample event description");
+            var eventId = new ScheduleItemId(Guid.NewGuid());
+            var title = new ScheduleItemTitle("Sample Event");
+            var startDate = new ScheduleItemStartDate(DateTime.UtcNow);
+            var endDate = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(1));
+            var description = new ScheduleItemDescription("This is a sample event description");
             User = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
-            var visibleTo = new List<ApplicationUser> { User };
+            var visibleTo = new HashSet<ApplicationUser> { User };
 
-            _CalendarEvent = new CalendarEvent(eventId, title, startDate, endDate, description, visibleTo);
+            _CalendarEvent = new CalendarEvent(eventId, title, description, visibleTo, startDate, endDate);
         }
 
-        #region EventId
+        #region ScheduleItemId
 
         [Fact]
-        public void EmptyEmptyEventIdId_ShouldReturnEmptyEmptyEventIdIdException()
+        public void EmptyScheduleItemId_ShouldReturnEmptyScheduleItemIdException()
         {
-            Assert.Throws<EmptyEventIdException>(()
-                => new EventId(Guid.Empty));
+            Assert.Throws<EmptyEmployeeScheduleItemIdException>(()
+                => new ScheduleItemId(Guid.Empty));
         }
         [Fact]
-        public void ValidEmptyEventIdId_ValidGuidToAppUserIdConversion_ShouldEqual()
+        public void ValidScheduleItemId_ValidGuidToAppUserIdConversion_ShouldEqual()
         {
             var guid = Guid.NewGuid();
 
-            EventId id = guid;
+            ScheduleItemId id = guid;
 
             Assert.Equal(id.Value, guid);
         }
         [Fact]
-        public void ValidEmptyEventIdId_ValidAppUserIdToGuidConversionShouldEqual()
+        public void ValidScheduleItemId_ValidAppUserIdToGuidConversionShouldEqual()
         {
 
-            EventId id = new EventId(Guid.NewGuid());
+            ScheduleItemId id = new ScheduleItemId(Guid.NewGuid());
 
             Guid guid = id;
 
@@ -56,192 +56,206 @@ namespace DomainUnitTests
         }
         #endregion
 
-        #region EventTitle
-        [Fact]
-        public void ValidEventTitle_ValidEventTitleToStringConversionShouldEqual()
-        {
-            EventTitle title = "example";
-            string test = title;
+        #region ScheduleItemTitle
 
-            Assert.Equal(test, title);
+        [Fact]
+        public void EmptyScheduleItemTitle_ShouldReturnEmptyScheduleItemTitleException()
+        {
+            Assert.Throws<EmptyScheduleItemTitleException>(()
+                => new ScheduleItemTitle(""));
+        }
+
+        [Fact]
+        public void NullScheduleItemTitle_ShouldReturnEmptyScheduleItemTitleException()
+        {
+            Assert.Throws<EmptyScheduleItemTitleException>(()
+                => new ScheduleItemTitle(null));
+        }
+
+        [Fact]
+        public void ValidScheduleItemTitle_ValidStringToScheduleItemTitleConversion_ShouldEqual()
+        {
+            string title = "ExampleTitle";
+
+            ScheduleItemTitle tit = title;
+
+            Assert.Equal(title, tit);
         }
         [Fact]
-        public void ValidEventTitle_StringToValidEventTitleConversionShouldEqual()
+        public void ValidScheduleItemTitle_ValidScheduleItemTitleToStringConversionShouldEqual()
         {
-            string test = "example";
-            EventTitle title = test;
-            Assert.Equal(test, title);
+            ScheduleItemTitle tit = new ScheduleItemTitle("ExampleTitle");
+
+            string title = tit;
+
+            Assert.Equal(tit, title);
+
         }
         [Fact]
-        public void NullEventTitle_ShouldThrowEmptyEventTitleException()
+        public void InvalidScheduleItemTitle_TooLongTitle()
         {
-            Assert.Throws<EmptyEventTitleException>(() => new EventTitle(null));
+            string s = new string('a', 101);
+            Assert.Throws<TooLongScheduleItemTitleException>(() => new ScheduleItemTitle(s));
         }
         [Fact]
-        public void EmptyEventTitle_ShouldThrowEmptyEventTitleException()
+        public void ValidScheduleItemTitle_HundredChars()
         {
-            Assert.Throws<EmptyEventTitleException>(() => new EventTitle(""));
+            string s = new string('a', 100);
+            new ScheduleItemTitle(s);
+        }
+        [Fact]
+        public void ValidScheduleItemTitle_OneChar()
+        {
+            new ScheduleItemTitle("a");
+        }
+
+        #endregion
+
+        #region ScheduleItemDescription 
+        [Fact]
+        public void ValidScheduleItemDescription_ValidStringToScheduleItemDescriptionConversion_ShouldEqual()
+        {
+            string Description = "ExampleDescription";
+
+            ScheduleItemDescription desc = Description;
+
+            Assert.Equal(Description, desc);
+        }
+        [Fact]
+        public void ValidScheduleItemDescription_ValidScheduleItemDescriptionToStringConversionShouldEqual()
+        {
+            ScheduleItemDescription desc = new ScheduleItemDescription("ExampleDescription");
+
+            string Description = desc;
+
+            Assert.Equal(desc, Description);
+
+        }
+        [Fact]
+        public void InvalidScheduleItemDescription_TooLongDescription()
+        {
+            string s = new string('a', 1501);
+            Assert.Throws<TooLongScheduleItemDescriptionException>(() => new ScheduleItemDescription(s));
+        }
+        [Fact]
+        public void ValidScheduleItemDescription_HundredChars()
+        {
+            string s = new string('a', 1500);
+            new ScheduleItemDescription(s);
+        }
+        [Fact]
+        public void ValidScheduleItemDescription_OneChar()
+        {
+            new ScheduleItemDescription("a");
+        }
+        [Fact]
+        public void ValidScheduleItemDescription_WhiteSpace()
+        {
+            new ScheduleItemDescription(" ");
+        }
+        [Fact]
+        public void ValidScheduleItemDescription_Empty()
+        {
+            new ScheduleItemDescription("");
         }
         #endregion
 
-        #region EventDescription
+        #region ScheduleItemStartDate
 
         [Fact]
-        public void ValidEventDescription_ValidEventDescriptionToStringConversionShouldEqual()
+        public void ScheduleItemStartDate31daysBeforeNow_ScheduleItemStartDateCannotBePastException()
         {
-            EventDescription title = "example";
-            string test = title;
-
-            Assert.Equal(test, title);
-        }
-        [Fact]
-        public void ValidEventDescription_StringToValidEventDescriptionConversionShouldEqual()
-        {
-            string test = "example";
-            EventDescription title = test;
-            Assert.Equal(test, title);
-        }
-        [Fact]
-        public void NullEventDescription_ShouldThrowEmptyEventDescriptionException()
-        {
-            Assert.Throws<EmptyEventDescriptionException>(() => new EventDescription(null));
-        }
-        [Fact]
-        public void EmptyEventDescription_ShouldThrowEmptyEventDescriptionException()
-        {
-            Assert.Throws<EmptyEventDescriptionException>(() => new EventDescription(""));
-        }
-        [Fact]
-        public void TooLongEventDescription_ShouldThrowTooLongEventDescriptionException()
-        {
-            string invalidString = new string('a', 1001);
-            Assert.Throws<TooLongEventDescriptionException>(
-                () => new EventDescription(invalidString));
-        }
-        [Fact]
-        public void MaxCharactersEventDescription_ShouldNotThrowException()
-        {
-            string validString = new string('a', 1000);
-            new EventDescription(validString);
-        }
-        [Fact]
-        public void MinCharactersEventDescription_ShouldNotThrowException()
-        {
-            string validString = new string('a', 1);
-            new EventDescription(validString);
-
-        }
-        #endregion
-
-        #region EventStartDate
-
-        [Fact]
-        public void EventStartDate31daysBeforeNow_EventStartDateCannotBePastException()
-        {
-            Assert.Throws<EventStartDateCannotBePastException>(()
-                => new EventStartDate
+            Assert.Throws<ScheduleItemStartDateCannotBePastException>(()
+                => new ScheduleItemStartDate
                 (
                     DateTime.UtcNow.AddDays(-31))
                 );
         }
         [Fact]
-        public void EventStartDate1HourBeforeNow_EventStartDateCannotBePastException()
+        public void ScheduleItemStartDateValid31daysFromNow_ShouldNotThrowException()
         {
-            Assert.Throws<EventStartDateCannotBePastException>(()
-                => new EventStartDate
-                (
-                    DateTime.UtcNow.AddHours(-1))
-                );
+            ScheduleItemStartDate startDate = DateTime.UtcNow.AddDays(31);
         }
         [Fact]
-        public void EventStartDateValid31daysFromNow_ShouldNotThrowException()
+        public void ScheduleItemStartDateValidYearFromNow_ShouldNotThrowException()
         {
-            EventStartDate startDate = DateTime.UtcNow.AddDays(31);
+            ScheduleItemStartDate startDate = DateTime.UtcNow.AddYears(1);
         }
         [Fact]
-        public void EventStartDateValidYearFromNow_ShouldNotThrowException()
+        public void ScheduleItemStartDateValidCurrentTime_ShouldNotThrowException()
         {
-            EventStartDate startDate = DateTime.UtcNow.AddYears(1);
-        }
-        [Fact]
-        public void EventStartDateValidCurrentTime_ShouldNotThrowException()
-        {
-            EventStartDate startDate = DateTime.UtcNow;
+            ScheduleItemStartDate startDate = DateTime.UtcNow;
         }
 
         [Fact]
-        public void ValidData_DateTimeToEventStartDateConversion_ShouldEqual()
+        public void ValidData_DateTimeToScheduleItemStartDateConversion_ShouldEqual()
         {
             var dt = DateTime.UtcNow.AddDays(31);
 
-            EventStartDate startDate = dt;
+            ScheduleItemStartDate startDate = dt;
 
             Assert.Equal(dt, startDate);
         }
         [Fact]
-        public void ValidData_EventStartDateToDateTimeConversionShouldEqual()
+        public void ValidData_ScheduleItemStartDateToDateTimeConversionShouldEqual()
         {
-            EventStartDate startDate = new EventStartDate(DateTime.UtcNow.AddDays(31));
+            ScheduleItemStartDate startDate = new ScheduleItemStartDate(DateTime.UtcNow.AddDays(31));
+
 
             var dt = startDate;
 
+
             Assert.Equal(startDate, dt);
         }
+
+
         #endregion
 
-        #region EventEndDate
+        #region ScheduleItemEndDate
+
         [Fact]
-        public void EventEndDate1dayBeforeNow_EventEndDateCannotBePastException()
+        public void ScheduleItemEndDate1dayBeforeNow_ScheduleItemEndDateCannotBePastException()
         {
-            Assert.Throws<InvalidEventEndDateException>(()
-                => new EventEndDate
+            Assert.Throws<InvalidScheduleItemEndDateException>(()
+                => new ScheduleItemEndDate
                 (
                     DateTime.UtcNow.AddDays(-1))
                 );
         }
         [Fact]
-        public void EventEndDate1dHourBeforeNow_EventEndDateCannotBePastException()
+        public void ScheduleItemEndDateInvalidCurrentTime_ShouldThrowInvalidScheduleItemEndDateException()
         {
-            Assert.Throws<InvalidEventEndDateException>(()
-                => new EventEndDate
-                (
-                    DateTime.UtcNow.AddHours(-1))
-                );
-        }
-        [Fact]
-        public void EventEndDateInvalidCurrentTime_ShouldThrowInvalidEventEndDateException()
-        {
-            Assert.Throws<InvalidEventEndDateException>(()
-                => new EventEndDate
+            Assert.Throws<InvalidScheduleItemEndDateException>(()
+                => new ScheduleItemEndDate
                 (
                     DateTime.UtcNow
                 ));
         }
         [Fact]
-        public void EventEndDateValid31daysFromNow_ShouldNotThrowException()
+        public void ScheduleItemEndDateValid31daysFromNow_ShouldNotThrowException()
         {
-            EventEndDate EndDate = DateTime.UtcNow.AddDays(31);
+            ScheduleItemEndDate EndDate = DateTime.UtcNow.AddDays(31);
         }
         [Fact]
-        public void EventEndDateValidYearFromNow_ShouldNotThrowException()
+        public void ScheduleItemEndDateValidYearFromNow_ShouldNotThrowException()
         {
-            EventEndDate EndDate = DateTime.UtcNow.AddYears(1);
+            ScheduleItemEndDate EndDate = DateTime.UtcNow.AddYears(1);
         }
 
 
         [Fact]
-        public void ValidData_DateTimeToEventEndDateConversion_ShouldEqual()
+        public void ValidData_DateTimeToScheduleItemEndDateConversion_ShouldEqual()
         {
             var dt = DateTime.UtcNow.AddDays(31);
 
-            EventEndDate EndDate = dt;
+            ScheduleItemEndDate EndDate = dt;
 
             Assert.Equal(dt, EndDate);
         }
         [Fact]
-        public void ValidData_EventEndDateToDateTimeConversionShouldEqual()
+        public void ValidData_ScheduleItemEndDateToDateTimeConversionShouldEqual()
         {
-            EventEndDate EndDate = new EventEndDate(DateTime.UtcNow.AddDays(31));
+            ScheduleItemEndDate EndDate = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(31));
 
 
             var dt = EndDate;
@@ -258,7 +272,7 @@ namespace DomainUnitTests
            
             string newTitle = "New Title";
 
-            _CalendarEvent.EditTitle(newTitle);
+            _CalendarEvent.SetTitle(newTitle);
 
             Assert.Equal(newTitle, _CalendarEvent._Title);
         }
@@ -268,7 +282,7 @@ namespace DomainUnitTests
         {
             string newDescription = "New Description";
 
-            _CalendarEvent.EditDescription(newDescription);
+            _CalendarEvent.SetDescription(newDescription);
 
             Assert.Equal(newDescription, _CalendarEvent._Description);
         }
@@ -278,7 +292,7 @@ namespace DomainUnitTests
         {
             DateTime startDate = DateTime.Now;
 
-            _CalendarEvent.EditStartDate(startDate);
+            _CalendarEvent.UpdateStartDate(startDate);
 
             Assert.Equal(startDate, _CalendarEvent._StartDate);
         }
@@ -288,7 +302,7 @@ namespace DomainUnitTests
         {
             DateTime endDate = DateTime.Now;
 
-            _CalendarEvent.EditEndDate(endDate);
+            _CalendarEvent.UpdateEndDate(endDate);
 
             Assert.Equal(endDate, _CalendarEvent._EndDate);
         }
@@ -299,17 +313,9 @@ namespace DomainUnitTests
             var userId = Guid.NewGuid();
             var user = new ApplicationUser(userId, "ExampleName", "ExampleSurname");
 
-            _CalendarEvent.AddUserToVisibleTo(user);
+            _CalendarEvent.AddEmployee(user);
 
-            Assert.Contains(user, _CalendarEvent._VisibleTo);
-        }
-
-        [Fact]
-        public void AddUserToVisibleTo_ThrowsExceptionIfUserAlreadyExists()
-        {
-            var userId = Guid.NewGuid();
-
-            Assert.Throws<ThisEventIsAlreadyVIsibleToThisUser>(() => _CalendarEvent.AddUserToVisibleTo(User));
+            Assert.Contains(user, _CalendarEvent._AssignedEmployees);
         }
 
         [Fact]
@@ -322,41 +328,28 @@ namespace DomainUnitTests
            
             };
 
-            _CalendarEvent.AddUsersRangeToVisibleTo(users);
+            _CalendarEvent.AddEmployeesRange(users);
 
-            Assert.Equal(users.Count + 1, _CalendarEvent._VisibleTo.Count);
+            Assert.Equal(users.Count + 1, _CalendarEvent._AssignedEmployees.Count);
             foreach (var user in users)
             {
-                Assert.Contains(user, _CalendarEvent._VisibleTo);
+                Assert.Contains(user, _CalendarEvent._AssignedEmployees);
             }
-        }
-        [Fact]
-        public void AddUsersRangeToVisibleTo_ShouldThrowThisEventIsAlreadyVisibleToThisUser()
-        {
-            var users = new List<ApplicationUser>
-            {
-                new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
-                new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
-                User
-
-            };
-            
-            Assert.Throws<ThisEventIsAlreadyVIsibleToThisUser>(() => _CalendarEvent.AddUsersRangeToVisibleTo(users));
         }
 
         [Fact]
         public void RemoveUserFromVisibleTo_RemovesUser()
         {
-            _CalendarEvent.RemoveUserFromVisibleTo(User);
+            _CalendarEvent.RemoveEmployee(User);
 
-            Assert.DoesNotContain(User, _CalendarEvent._VisibleTo);
+            Assert.DoesNotContain(User, _CalendarEvent._AssignedEmployees);
         }
 
         [Fact]
         public void RemoveUserFromVisibleTo_ThrowsExceptionIfUserNotFound()
         {
             var testUser = new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname");
-            Assert.Throws<UserIsNotFoundInVisibleToCollection>(() => _CalendarEvent.RemoveUserFromVisibleTo(testUser));
+            Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _CalendarEvent.RemoveEmployee(testUser));
         }
 
         [Fact]
@@ -368,13 +361,14 @@ namespace DomainUnitTests
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname")
 
             };
-            _CalendarEvent.AddUsersRangeToVisibleTo(users);
-
-            _CalendarEvent.RemoveUsersRangeFromVisibleTo(users);
+            _CalendarEvent.AddEmployeesRange(users);
+          
+            _CalendarEvent.RemoveEmployeesRange(users);
 
             foreach (var user in users)
             {
-                Assert.DoesNotContain(user, _CalendarEvent._VisibleTo);
+                Assert.DoesNotContain(user, _CalendarEvent._AssignedEmployees);
+                Assert.Contains(User, _CalendarEvent._AssignedEmployees);
             }
         }
 
@@ -389,7 +383,7 @@ namespace DomainUnitTests
 
             };
 
-            Assert.Throws<UserIsNotFoundInVisibleToCollection>(() => _CalendarEvent.RemoveUsersRangeFromVisibleTo(users));
+            Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _CalendarEvent.RemoveEmployeesRange(users));
         }
         #endregion
     }
