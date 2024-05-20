@@ -23,6 +23,8 @@ namespace VirtualOffice.Domain.Entities
         // we don't check for duplicates since it's a hashSet
         public void AddParticipant(ApplicationUser participant)
         {
+            if (participant is null)
+                throw new ArgumentNullException(nameof(participant));
             _Participants.Add(participant);
         }
         public void AddRangeParticipants(ICollection<ApplicationUser> participants)
@@ -34,7 +36,9 @@ namespace VirtualOffice.Domain.Entities
         }
         public void RemoveParticipant(ApplicationUser participant)
         {
-            if (!_Participants.Contains(participant))
+            if(participant is null)
+                throw new ArgumentNullException(nameof(participant));
+            else if (!_Participants.Contains(participant))
                 throw new UserIsNotAParticipantOfThisChatException(participant.Id);
             // if last person want to leave Public Chat Room, then room must be deleted
             else if (_Participants.Count == 1)

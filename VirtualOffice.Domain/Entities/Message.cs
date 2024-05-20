@@ -11,39 +11,36 @@ namespace VirtualOffice.Domain.Entities
 {
     public class Message : IComparable<Message>
     {
-        private readonly IDateTimeProvider _DateTimeProvider;
+        private readonly IDateTimeProvider _dateTimeProvider;
+        private readonly ApplicationUser _sender;
+        private readonly MessageContent _content;
+
         public MessageId Id { get; }
-
-        public ApplicationUser _Sender {  get; }
-
-        public DateTime _SendDate 
-        {
-            get => _DateTimeProvider.UtcNow();
-        }
-
-        public MessageContent _Content { get; }
+        public ApplicationUser Sender => _sender;
+        public DateTime SendDate => _dateTimeProvider.UtcNow();
+        public MessageContent Content => _content;
 
 
         public Message(MessageId id, ApplicationUser sender, MessageContent content)
         {
             Id = id;
-            _Sender = sender;
-            _Content = content;
-            _DateTimeProvider = new DateTimeProvider();
+            _sender = sender;
+            _content = content;
+            _dateTimeProvider = new DateTimeProvider();
         }
         protected Message(MessageId id, ApplicationUser sender, MessageContent content, IDateTimeProvider dateTimeProvider)
         {
             Id = id;
-            _Sender = sender;
-            _Content = content;
-            _DateTimeProvider = dateTimeProvider;
+            _sender = sender;
+            _content = content;
+            _dateTimeProvider = dateTimeProvider;
         }
 
         public int CompareTo(Message? other)
         {
             if (other == null)
                 throw new ArgumentNullException();
-            return other._SendDate.CompareTo(this._SendDate);
+            return other.SendDate.CompareTo(this.SendDate);
         }
 
        

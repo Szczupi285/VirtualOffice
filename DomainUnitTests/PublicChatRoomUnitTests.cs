@@ -116,6 +116,11 @@ namespace DomainUnitTests
             _ChatRoom.AddRangeParticipants(new List<ApplicationUser>() { userNotAdded1, userNotAdded2});
             Assert.Contains(user, _ChatRoom._Participants);
         }
+        [Fact]
+        public void AddParticipant_NullArgument()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ChatRoom.AddParticipant(null));
+        }
 
         [Fact]
         public void RemoveParticipant_ParticipantRemoved()
@@ -133,6 +138,11 @@ namespace DomainUnitTests
         {
             _ChatRoom.RemoveParticipant(user1);
             Assert.Throws<ChatRoomCannotBeEmptyException>(() => _ChatRoom.RemoveParticipant(user));
+        }
+        [Fact]
+        public void RemoveParticipant_NullArgument()
+        {
+            Assert.Throws<ArgumentNullException>(() => _ChatRoom.RemoveParticipant(null));
         }
         [Fact]
         public void RemoveParticipantsRange_ParticipantsRemoved()
