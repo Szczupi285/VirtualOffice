@@ -95,7 +95,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.Null(org._userLimit);
         }
@@ -108,7 +108,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
 
             Assert.Throws<InvalidOrganizationUserLimitException>(()
@@ -121,7 +121,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(3 == org._userLimit);
         }
@@ -132,7 +132,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Basic, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(30 == org._userLimit);
         }
@@ -144,7 +144,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Enterprise, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(100 == org._userLimit);
         }
@@ -155,7 +155,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Premium, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(500 == org._userLimit);
         }
@@ -199,7 +199,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
 
             Assert.True(org.IsUnlimited());
@@ -211,7 +211,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.None, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -222,7 +222,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -234,7 +234,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Basic, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -245,7 +245,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Enterprise, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -256,7 +256,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Premium, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -272,8 +272,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
             org.AddUser(new ApplicationUser(Guid.NewGuid(), "Name", "surname"));
@@ -288,11 +288,11 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
-            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToAdd = new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
@@ -313,8 +313,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
             new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreRem = org._usedSlots;
@@ -338,7 +338,7 @@ namespace DomainUnitTests
             ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
             ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
 
-            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToRemove = new HashSet<ApplicationUser>()
             {
                 user1,
                 user2, 
@@ -346,8 +346,8 @@ namespace DomainUnitTests
                 user4,
             };
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser>()
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 user1,
@@ -374,8 +374,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
 
@@ -391,8 +391,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
 
@@ -408,8 +408,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
@@ -427,10 +427,10 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
-            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToAdd = new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
@@ -457,8 +457,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
 
             org.RemoveUser(user);
 
@@ -473,8 +473,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { user }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { user }, subscription);
 
             Assert.Throws<CantRemoveOnlyUserException>(() => org.RemoveUser(user));
         }
@@ -487,8 +487,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => org.RemoveUser(user));
         }
@@ -510,7 +510,7 @@ namespace DomainUnitTests
             ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
             ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
 
-            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToRemove = new HashSet<ApplicationUser>()
             {
                user1,
                user2,
@@ -518,8 +518,8 @@ namespace DomainUnitTests
                user4,
             };
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> 
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> 
             { 
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 user1,

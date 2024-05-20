@@ -9,8 +9,6 @@ namespace VirtualOffice.Domain.Entities
 
     public class Organization : AggregateRoot<OrganizationId>
     {
-        public OrganizationId Id { get; }
-
         public OrganizationName _name { get; private set; }
 
         public OrganizationUserLimit _userLimit {

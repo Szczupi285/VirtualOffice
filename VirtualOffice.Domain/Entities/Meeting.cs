@@ -16,7 +16,6 @@ namespace VirtualOffice.Domain.Entities
             : base(id, title, description, assignedEmployees, startDate, endDate)
         {
         }
-
         public void UpdateStartDate(DateTime newStartDate)
         {
             if (newStartDate > _EndDate)
