@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
@@ -26,6 +27,31 @@ namespace DomainUnitTests
 
             _CalendarEvent = new CalendarEvent(eventId, title, description, visibleTo, startDate, endDate);
         }
+
+        #region Events
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted()
+        {
+            _CalendarEvent.SetTitle("Title");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_CalendarEventShouldEqual()
+        {
+            _CalendarEvent.SetTitle("Title");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal(_CalendarEvent ,Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_TitleShouldEqual()
+        {
+            _CalendarEvent.SetTitle("Title");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal("Title", Event.title);
+        }
+
+        #endregion
 
         #region ScheduleItemId
 
