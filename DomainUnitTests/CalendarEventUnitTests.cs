@@ -51,6 +51,28 @@ namespace DomainUnitTests
             Assert.Equal("Title", Event.title);
         }
 
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted()
+        {
+            _CalendarEvent.SetDescription("Description");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_CalendarEventShouldEqual()
+        {
+            _CalendarEvent.SetDescription("Description");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_DescriptionShouldEqual()
+        {
+            _CalendarEvent.SetDescription("Description");
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal("Description", Event.description);
+        }
+
         #endregion
 
         #region ScheduleItemId
