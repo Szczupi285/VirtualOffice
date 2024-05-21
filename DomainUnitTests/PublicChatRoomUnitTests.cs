@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
+using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
@@ -68,6 +70,48 @@ namespace DomainUnitTests
             _ChatRoom.SendMessage(user, "message");
             var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
             Assert.Equal(user, Event.message.Sender);
+        }
+        [Fact]
+        public void AddParticipant_ShouldRaiseChatRoomParticipantAdded()
+        {
+            _ChatRoom.AddParticipant(userNotAdded1);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantAdded>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void AddParticipant_ShouldRaiseChatRoomParticipantAdded_EventRoomShouldEqual()
+        {
+            _ChatRoom.AddParticipant(userNotAdded1);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantAdded>().Single();
+            Assert.Equal(_ChatRoom, Event.room);
+        }
+        [Fact]
+        public void AddParticipant_ShouldRaiseChatRoomParticipantAdded_ParticipantShouldEqual()
+        {
+            _ChatRoom.AddParticipant(userNotAdded1);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantAdded>().Single();
+            Assert.Equal(userNotAdded1, Event.participant);
+        }
+        [Fact]
+        public void RemoveParticipant_ShouldRaiseChatRoomParticipantRemoved()
+        {
+            _ChatRoom.RemoveParticipant(user);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantRemoved>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void RemoveParticipant_ShouldRaiseChatRoomParticipantRemoved_EventRoomShouldEqual()
+        {
+            _ChatRoom.RemoveParticipant(user);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantRemoved>().Single();
+            Assert.Equal(_ChatRoom, Event.room);
+        }
+        [Fact]
+        public void RemoveParticipant_ShouldRaiseChatRoomParticipantRemoved_ParticipantShouldEqual()
+        {
+            _ChatRoom.RemoveParticipant(user);
+            var Event = _ChatRoom.Events.OfType<ChatRoomParticipantRemoved>().Single();
+            Assert.Equal(user, Event.participant);
         }
         #endregion
 
