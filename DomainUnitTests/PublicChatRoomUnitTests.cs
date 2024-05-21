@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
+using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ChatRoom;
+using static Xunit.Assert;
 
 namespace DomainUnitTests
 {
@@ -36,6 +39,38 @@ namespace DomainUnitTests
             // Remember to refactor AddParticipant method if we decide to change data structure
             Assert.IsType<HashSet<ApplicationUser>>(_ChatRoom._Participants);
         }
+        #region Events
+        [Fact]
+        public void SendMessage_ShouldRaiseChatRoomMessageSend()
+        {
+            _ChatRoom.SendMessage(user, "message");
+            var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SendMessage_ShouldRaiseChatRoomMessageSend_EventRoomShouldEqual()
+        {
+            _ChatRoom.SendMessage(user, "message");
+            var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
+            Assert.Equal(_ChatRoom, Event.room);
+        }
+        [Fact]
+        public void SendMessage_ShouldRaiseChatRoomMessageSend_EventMessageContentShouldEqual()
+        {
+            _ChatRoom.SendMessage(user, "message");
+            var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
+            Assert.Equal("message", Event.message.Content);
+            Assert.Equal(user, Event.message.Sender);
+        }
+        [Fact]
+        public void SendMessage_ShouldRaiseChatRoomMessageSend_EventMessageSenderShouldEqual()
+        {
+            _ChatRoom.SendMessage(user, "message");
+            var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
+            Assert.Equal(user, Event.message.Sender);
+        }
+        #endregion
+
 
         #region Constructors
         [Fact]
