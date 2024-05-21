@@ -113,6 +113,27 @@ namespace DomainUnitTests
             var Event = _ChatRoom.Events.OfType<ChatRoomParticipantRemoved>().Single();
             Assert.Equal(user, Event.participant);
         }
+        [Fact]
+        public void SetName_ShouldRaiseChatRoomNameSetted()
+        {
+            _ChatRoom.SetName("ChangedName");
+            var Event = _ChatRoom.Events.OfType<ChatRoomNameSetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseChatRoomNameSetted_EventRoomShouldEqual()
+        {
+            _ChatRoom.SetName("ChangedName");
+            var Event = _ChatRoom.Events.OfType<ChatRoomNameSetted>().Single();
+            Assert.Equal(_ChatRoom, Event.room);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseChatRoomNameSetted_NameShouldEqual()
+        {
+            _ChatRoom.SetName("ChangedName");
+            var Event = _ChatRoom.Events.OfType<ChatRoomNameSetted>().Single();
+            Assert.Equal("ChangedName", Event.name);
+        }
         #endregion
 
 
