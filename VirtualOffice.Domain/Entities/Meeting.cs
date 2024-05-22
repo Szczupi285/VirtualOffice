@@ -23,7 +23,7 @@ namespace VirtualOffice.Domain.Entities
             if (newStartDate > _EndDate)
                 throw new EndDateCannotBeBeforeStartDate(newStartDate, _EndDate);
             _StartDate = newStartDate;
-            AddEvent(new MeetingStartDateUpdated(this));
+            AddEvent(new MeetingStartDateUpdated(this, newStartDate));
         }
         public void RescheduleMeeting(DateTime newStartDate, DateTime newEndDate)
         {
@@ -31,7 +31,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new EndDateCannotBeBeforeStartDate(newStartDate, newEndDate);
             _EndDate = newEndDate;
             _StartDate = newStartDate;
-            AddEvent(new MeetingRescheduled(this));
+            AddEvent(new MeetingRescheduled(this, newStartDate, newEndDate));
         }
     }
 }

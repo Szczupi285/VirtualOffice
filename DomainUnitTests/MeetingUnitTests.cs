@@ -8,6 +8,11 @@ using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
+using VirtualOffice.Domain.DomainEvents.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+using VirtualOffice.Domain.DomainEvents.MeetingEvent;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DomainUnitTests
 {
@@ -17,6 +22,8 @@ namespace DomainUnitTests
         private ApplicationUser _ApplicationUser { get; set; }
         private ApplicationUser _ApplicationUser2 { get; set; }
         private ApplicationUser _ApplicationUser3 { get; set; }
+        private ApplicationUser UserNotAdded { get; set; }
+
 
         public MeetingUnitTest()
         {
@@ -24,6 +31,7 @@ namespace DomainUnitTests
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
             ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo", "SurnameTwo");
             ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree", "SurnameThree");
+            UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             _ApplicationUser = user1;
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
@@ -41,6 +49,170 @@ namespace DomainUnitTests
             _Meeting = meeting;
         }
 
+        #region Events
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted()
+        {
+            _Meeting.SetTitle("Title");
+            var Event = _Meeting.Events.OfType<ScheduleItemTitleSetted>().Single();
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_MeetingShouldEqual()
+        {
+            _Meeting.SetTitle("Title");
+            var Event = _Meeting.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal(_Meeting, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_TitleShouldEqual()
+        {
+            _Meeting.SetTitle("Title");
+            var Event = _Meeting.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal("Title", Event.title);
+        }
+
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted()
+        {
+            _Meeting.SetDescription("Description");
+            var Event = _Meeting.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_MeetingShouldEqual()
+        {
+            _Meeting.SetDescription("Description");
+            var Event = _Meeting.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal(_Meeting, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_DescriptionShouldEqual()
+        {
+            _Meeting.SetDescription("Description");
+            var Event = _Meeting.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal("Description", Event.description);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem()
+        {
+            _Meeting.AddEmployee(UserNotAdded);
+            var Event = _Meeting.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_MeetingShouldEqual()
+        {
+            _Meeting.AddEmployee(UserNotAdded);
+            var Event = _Meeting.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(_Meeting, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_UserShouldEqual()
+        {
+            _Meeting.AddEmployee(UserNotAdded);
+            var Event = _Meeting.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(UserNotAdded, Event.user);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem()
+        {
+            _Meeting.RemoveEmployee(_ApplicationUser);
+            var Event = _Meeting.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_MeetingShouldEqual()
+        {
+            _Meeting.RemoveEmployee(_ApplicationUser);
+            var Event = _Meeting.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(_Meeting, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_UserShouldEqual()
+        {
+            _Meeting.RemoveEmployee(_ApplicationUser);
+            var Event = _Meeting.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(_ApplicationUser, Event.user);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateEndDate(date);
+            var Event = _Meeting.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_MeetingShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateEndDate(date);
+            var Event = _Meeting.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.Equal(_Meeting, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_DateShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateEndDate(date);
+            var Event = _Meeting.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.Equal(date, Event.EndDate);
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateStartDate(date);
+            var Event = _Meeting.Events.OfType<MeetingStartDateUpdated>().Single();
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_MeetingShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateStartDate(date);
+            var Event = _Meeting.Events.OfType<MeetingStartDateUpdated>().Single();
+            Assert.Equal(_Meeting, Event.meeting);
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_DateShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _Meeting.UpdateStartDate(date);
+            var Event = _Meeting.Events.OfType<MeetingStartDateUpdated>().Single();
+            Assert.Equal(date, Event.startDate);
+        }
+        [Fact]
+        public void RescheduleMeeting_ShouldRaiseCalendarEventStartDateUpdate()
+        {
+            DateTime startDate = DateTime.UtcNow.AddHours(5);
+            DateTime endDate = DateTime.UtcNow.AddHours(7);
+            _Meeting.RescheduleMeeting(startDate, endDate);
+            var Event = _Meeting.Events.OfType<MeetingRescheduled>().Single();
+        }
+        [Fact]
+        public void RescheduleMeeting_ShouldRaiseCalendarEventStartDateUpdate_MeetingShouldEqual()
+        {
+            DateTime startDate = DateTime.UtcNow.AddHours(5);
+            DateTime endDate = DateTime.UtcNow.AddHours(7);
+            _Meeting.RescheduleMeeting(startDate, endDate);
+            var Event = _Meeting.Events.OfType<MeetingRescheduled>().Single();
+            Assert.Equal(_Meeting, Event.Meeting);
+        }
+        [Fact]
+        public void RescheduleMeeting_ShouldRaiseCalendarEventStartDateUpdate_StartDateShouldEqual()
+        {
+            DateTime startDate = DateTime.UtcNow.AddHours(5);
+            DateTime endDate = DateTime.UtcNow.AddHours(7);
+            _Meeting.RescheduleMeeting(startDate, endDate);
+            var Event = _Meeting.Events.OfType<MeetingRescheduled>().Single();
+            Assert.Equal(startDate, Event.startDate);
+        }
+        [Fact]
+        public void RescheduleMeeting_ShouldRaiseCalendarEventStartDateUpdate_EndDateShouldEqual()
+        {
+            DateTime startDate = DateTime.UtcNow.AddHours(5);
+            DateTime endDate = DateTime.UtcNow.AddHours(7);
+            _Meeting.RescheduleMeeting(startDate, endDate);
+            var Event = _Meeting.Events.OfType<MeetingRescheduled>().Single();
+            Assert.Equal(endDate, Event.endDate);
+        }
+        #endregion
 
         #region ScheduleItemId
 
