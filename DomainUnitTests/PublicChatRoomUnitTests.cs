@@ -47,7 +47,6 @@ namespace DomainUnitTests
         {
             _ChatRoom.SendMessage(user, "message");
             var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SendMessage_ShouldRaiseChatRoomMessageSend_EventRoomShouldEqual()
@@ -76,7 +75,6 @@ namespace DomainUnitTests
         {
             _ChatRoom.AddParticipant(userNotAdded1);
             var Event = _ChatRoom.Events.OfType<ChatRoomParticipantAdded>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void AddParticipant_ShouldRaiseChatRoomParticipantAdded_EventRoomShouldEqual()
@@ -97,7 +95,6 @@ namespace DomainUnitTests
         {
             _ChatRoom.RemoveParticipant(user);
             var Event = _ChatRoom.Events.OfType<ChatRoomParticipantRemoved>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void RemoveParticipant_ShouldRaiseChatRoomParticipantRemoved_EventRoomShouldEqual()
@@ -118,7 +115,6 @@ namespace DomainUnitTests
         {
             _ChatRoom.SetName("ChangedName");
             var Event = _ChatRoom.Events.OfType<ChatRoomNameSetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetName_ShouldRaiseChatRoomNameSetted_EventRoomShouldEqual()

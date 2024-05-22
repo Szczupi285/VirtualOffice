@@ -34,7 +34,6 @@ namespace DomainUnitTests
         {
             _ChatRoom.SendMessage(user, "message");
             var Event = _ChatRoom.Events.OfType<ChatRoomMessageSent>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SendMessage_ShouldRaiseChatRoomMessageSend_EventRoomShouldEqual()

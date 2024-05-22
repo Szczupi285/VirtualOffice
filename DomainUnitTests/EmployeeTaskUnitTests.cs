@@ -54,7 +54,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.SetTitle("Title");
             var Event = _EmployeeTask.Events.OfType<ScheduleItemTitleSetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted_EmployeeTaskShouldEqual()
@@ -76,7 +75,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.SetDescription("Description");
             var Event = _EmployeeTask.Events.OfType<ScheduleItemDescriptionSetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_EmployeeTaskShouldEqual()
@@ -97,7 +95,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.AddEmployee(UserNotAdded);
             var Event = _EmployeeTask.Events.OfType<EmployeeAddedToScheduleItem>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_EmployeeTaskShouldEqual()
@@ -118,7 +115,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.RemoveEmployee(_ApplicationUser);
             var Event = _EmployeeTask.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_EmployeeTaskShouldEqual()
@@ -140,7 +136,6 @@ namespace DomainUnitTests
             DateTime date = DateTime.UtcNow.AddHours(5);
             _EmployeeTask.UpdateEndDate(date);
             var Event = _EmployeeTask.Events.OfType<ScheduleItemEndDateUpdated>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_EmployeeTaskShouldEqual()
@@ -155,7 +150,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.SetPriority(EmployeeTaskPriorityEnum.Urgent);
             var Event = _EmployeeTask.Events.OfType<PrioritySetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetPriority_ShouldRaisePrioritySetted_EmployeeTaskShouldEqual()
@@ -176,7 +170,6 @@ namespace DomainUnitTests
         {
             _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
             var Event = _EmployeeTask.Events.OfType<StatusUpdated>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void UpdateStatus_ShouldRaisePrioritySetted_EmployeeTaskShouldEqual()

@@ -39,7 +39,6 @@ namespace DomainUnitTests
         {
             _CalendarEvent.SetTitle("Title");
             var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted_CalendarEventShouldEqual()
@@ -61,7 +60,6 @@ namespace DomainUnitTests
         {
             _CalendarEvent.SetDescription("Description");
             var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_CalendarEventShouldEqual()
@@ -82,7 +80,6 @@ namespace DomainUnitTests
         {
             _CalendarEvent.AddEmployee(UserNotAdded);
             var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_CalendarEventShouldEqual()
@@ -103,7 +100,6 @@ namespace DomainUnitTests
         {
             _CalendarEvent.RemoveEmployee(User);
             var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_CalendarEventShouldEqual()
@@ -125,7 +121,6 @@ namespace DomainUnitTests
             DateTime date = DateTime.UtcNow.AddHours(5);
             _CalendarEvent.UpdateEndDate(date);
             var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_CalendarEventShouldEqual()
@@ -149,7 +144,6 @@ namespace DomainUnitTests
             DateTime date = DateTime.UtcNow.AddHours(5);
             _CalendarEvent.UpdateStartDate(date);
             var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
-            Assert.NotNull(Event);
         }
         [Fact]
         public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_CalendarEventShouldEqual()
