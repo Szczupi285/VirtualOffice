@@ -524,23 +524,6 @@ namespace DomainUnitTests
         }
         
         [Fact]
-        public void AddUser_WhenUserAlreadyAdded_ShouldThrowException()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
-            Guid guid2 = Guid.NewGuid();
-
-            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
-            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
-
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-
-            org.AddUser(user);
-
-            Assert.Throws<UserIsAlreadyMemberOfThisOrganizationException>(() => org.AddUser(user));
-        }
-
-        [Fact]
         public void AddUser_WhenNotEnoughtSlots_ShouldThrowException()
         {
             Guid guid1 = Guid.NewGuid();

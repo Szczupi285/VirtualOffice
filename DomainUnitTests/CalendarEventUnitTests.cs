@@ -76,6 +76,13 @@ namespace DomainUnitTests
             Assert.Equal("Description", Event.description);
         }
         [Fact]
+        public void AddEmployee_ShouldNotRaiseEmployeeAddedToScheduleItem()
+        {
+            _CalendarEvent.AddEmployee(User);
+            var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().SingleOrDefault();
+            Assert.Null(Event);
+        }
+        [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem()
         {
             _CalendarEvent.AddEmployee(UserNotAdded);

@@ -90,6 +90,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new OrganizationNotEnoughSlotsException();
 
             bool HasBeenAdded = _organizationUsers.Add(user);
+
             if(HasBeenAdded)
                 AddEvent(new UserAddedToOrganization(this, user));
         }

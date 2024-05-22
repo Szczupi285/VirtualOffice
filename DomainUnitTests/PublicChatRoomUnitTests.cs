@@ -132,7 +132,6 @@ namespace DomainUnitTests
         }
         #endregion
 
-
         #region Constructors
         [Fact]
         public void InvalidParticipantNumber_OneParticipant_ShouldThrowInvalidChatRoomParticipantsException()

@@ -34,18 +34,15 @@ namespace VirtualOffice.Domain.Entities
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
-            {
                 throw new UserIsAlreadyMemberOfThisOfficeException(user.Id);
-            }
+
             _members.Add(user);
         }
 
         public void AddRangeMembers(ICollection<ApplicationUser> users)
         {
             foreach (ApplicationUser user in users) 
-            { 
                 AddMember(user);
-            }
         }
 
         public void RemoveMember(ApplicationUser user) 
@@ -53,9 +50,7 @@ namespace VirtualOffice.Domain.Entities
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
-            {
                 _members.Remove(user);
-            }
             else
                 throw new UserIsNotMemberOfThisOfficeException(user.Id);
         }
@@ -63,9 +58,7 @@ namespace VirtualOffice.Domain.Entities
         public void RemoveRangeMembers(ICollection<ApplicationUser> users)
         {
             foreach(ApplicationUser user in users)
-            {
                 RemoveMember(user);
-            }
         }
 
         public ApplicationUser GetMemberById(ApplicationUserId id)
