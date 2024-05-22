@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
@@ -15,6 +17,45 @@ namespace DomainUnitTests
 {
     public class OrganizationUnitTests
     {
+        private Organization _Org { get; set; }
+        private ApplicationUser User { get; set; }
+        private ApplicationUser UserNotAdded { get; set; }
+        private Office Office { get; set; }
+        private Office OfficeNotAdded { get; set; }
+        public OrganizationUnitTests()
+        {
+            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
+            Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
+            OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
+            Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
+            _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
+                new HashSet<ApplicationUser>(){ user }, subscription);
+        }
+
+        #region Events
+
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+        }
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded_OrganizationShouldEqual()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded_OfficeShouldEqual()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+            Assert.Equal(OfficeNotAdded, Event.office);
+        }
+        #endregion
 
         #region OrganizationId
         [Fact]
