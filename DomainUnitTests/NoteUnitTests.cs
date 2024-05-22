@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Domain.DomainEvents.NoteEvent;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Note;
@@ -15,6 +16,11 @@ namespace DomainUnitTests
 {
     public class NoteUnitTests
     {
+        Note _Note { get; set; }
+        public NoteUnitTests()
+        {
+            _Note = new Note(Guid.NewGuid(), "title", "content");
+        }
         #region noteId
         [Fact]
         public void EmptyNoteId_ShouldReturnEmptyNoteIdException()
@@ -40,6 +46,49 @@ namespace DomainUnitTests
             Guid guid = id;
             Assert.Equal(id.Value, guid);
 
+        }
+        #endregion
+
+        #region
+        [Fact]
+        public void EditContent_ShouldRaiseNoteContentChangedEvent()
+        {
+            _Note.EditContent("new");
+            var Event = _Note.Events.OfType<NoteContentChanged>().Single();
+        }
+        [Fact]
+        public void EditContent_ShouldRaiseNoteContentChangedEvent_NoteShouldEqual()
+        {
+            _Note.EditContent("new");
+            var Event = _Note.Events.OfType<NoteContentChanged>().Single();
+            Assert.Equal(_Note, Event.note);
+        }
+        [Fact]
+        public void EditContent_ShouldRaiseNoteContentChangedEvent_ContentShouldEqual()
+        {
+            _Note.EditContent("new");
+            var Event = _Note.Events.OfType<NoteContentChanged>().Single();
+            Assert.Equal("new", Event.content);
+        }
+        [Fact]
+        public void EditTitle_ShouldRaiseNoteTitleChangedEvent()
+        {
+            _Note.EditTitle("new");
+            var Event = _Note.Events.OfType<NoteTitleChanged>().Single();
+        }
+        [Fact]
+        public void EditTitle_ShouldRaiseNoteTitleChangedEvent_NoteShouldEqual()
+        {
+            _Note.EditTitle("new");
+            var Event = _Note.Events.OfType<NoteTitleChanged>().Single();
+            Assert.Equal(_Note, Event.note);
+        }
+        [Fact]
+        public void EditTitle_ShouldRaiseNoteTitleChangedEvent_TitleShouldEqual()
+        {
+            _Note.EditTitle("new");
+            var Event = _Note.Events.OfType<NoteTitleChanged>().Single();
+            Assert.Equal("new", Event.title);
         }
         #endregion
 
