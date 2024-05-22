@@ -50,8 +50,10 @@ namespace VirtualOffice.Domain.Abstractions
 
         public void AddEmployee(ApplicationUser user)
         {
-            _AssignedEmployees.Add(user);
-            AddEvent(new EmployeeAddedToScheduleItem(this, user));
+            bool HasBeenAdded = _AssignedEmployees.Add(user);
+
+            if (HasBeenAdded)
+                AddEvent(new EmployeeAddedToScheduleItem(this, user));
         }
         public void AddEmployeesRange(ICollection<ApplicationUser> users)
         {

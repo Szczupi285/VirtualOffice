@@ -63,8 +63,10 @@ namespace VirtualOffice.Domain.Entities
         {
             if (office == null) 
                 throw new ArgumentNullException("Office cannot be null");
-            _offices.Add(office);
-            AddEvent(new OfficeAdded(this, office));
+            bool hasBeenAdded = _offices.Add(office);
+
+            if (hasBeenAdded)
+                AddEvent(new OfficeAdded(this, office));
         }
         public void RemoveOffice(Office office)
         {

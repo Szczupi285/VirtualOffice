@@ -55,6 +55,26 @@ namespace DomainUnitTests
             var Event = _Org.Events.OfType<OfficeAdded>().Single();
             Assert.Equal(OfficeNotAdded, Event.office);
         }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+        }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved_OrganizationShouldEqual()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved_OfficeShouldEqual()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+            Assert.Equal(Office, Event.office);
+        }
         #endregion
 
         #region OrganizationId
