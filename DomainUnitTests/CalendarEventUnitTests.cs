@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
@@ -15,6 +16,8 @@ namespace DomainUnitTests
     {
         public CalendarEvent _CalendarEvent { get; set; }
         public ApplicationUser User { get; set; }
+        public ApplicationUser UserNotAdded { get; set; }
+
         public CalendarEventUnitTests()
         {
             var eventId = new ScheduleItemId(Guid.NewGuid());
@@ -23,6 +26,7 @@ namespace DomainUnitTests
             var endDate = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(1));
             var description = new ScheduleItemDescription("This is a sample event description");
             User = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
+            UserNotAdded = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
             var visibleTo = new HashSet<ApplicationUser> { User };
 
             _CalendarEvent = new CalendarEvent(eventId, title, description, visibleTo, startDate, endDate);
@@ -72,7 +76,48 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
             Assert.Equal("Description", Event.description);
         }
-
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem()
+        {
+            _CalendarEvent.AddEmployee(UserNotAdded);
+            var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_CalendarEventShouldEqual()
+        {
+            _CalendarEvent.AddEmployee(UserNotAdded);
+            var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_UserShouldEqual()
+        {
+            _CalendarEvent.AddEmployee(UserNotAdded);
+            var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(UserNotAdded, Event.user);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem()
+        {
+            _CalendarEvent.RemoveEmployee(User);
+            var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_CalendarEventShouldEqual()
+        {
+            _CalendarEvent.RemoveEmployee(User);
+            var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_UserShouldEqual()
+        {
+            _CalendarEvent.RemoveEmployee(User);
+            var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(User, Event.user);
+        }
         #endregion
 
         #region ScheduleItemId
