@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.Entities;
@@ -117,6 +118,54 @@ namespace DomainUnitTests
             _CalendarEvent.RemoveEmployee(User);
             var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
             Assert.Equal(User, Event.user);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateEndDate(date);
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_CalendarEventShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateEndDate(date);
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_DateShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateEndDate(date);
+            var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.Equal(date, Event.EndDate);
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateStartDate(date);
+            var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_CalendarEventShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateStartDate(date);
+            var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
+            Assert.Equal(_CalendarEvent, Event.calendarEvent);
+        }
+        [Fact]
+        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_DateShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _CalendarEvent.UpdateStartDate(date);
+            var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
+            Assert.Equal(date, Event.StartDate);
         }
         #endregion
 
