@@ -1,6 +1,7 @@
 ﻿using Moq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,16 +26,25 @@ namespace DomainUnitTests
         public OrganizationUnitTests()
         {
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            User = user;
             UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
             Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
             OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
             Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
             _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
-                new HashSet<ApplicationUser>(){ user }, subscription);
+                new HashSet<ApplicationUser>(){ user, user1 }, subscription);
         }
 
         #region Events
 
+        [Fact]
+        public void AddOffice_ShouldNotRaiseOfficeAdded()
+        {
+            _Org.AddOffice(Office);
+            var Event = _Org.Events.OfType<OfficeAdded>().SingleOrDefault();
+            Assert.Null(Event);
+        }
         [Fact]
         public void AddOffice_ShouldRaiseOfficeAdded()
         {
@@ -74,6 +84,74 @@ namespace DomainUnitTests
             _Org.RemoveOffice(Office);
             var Event = _Org.Events.OfType<OfficeRemoved>().Single();
             Assert.Equal(Office, Event.office);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted_OrganizationShouldEqual()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted_NameShouldEqual()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+            Assert.Equal("new", Event.name);
+        }
+        [Fact]
+        public void AddUser_ShouldNotRaiseUserAddedToOrganization()
+        {
+            _Org.AddUser(User);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().SingleOrDefault();
+            
+            Assert.Null(Event);
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().SingleOrDefault();
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization_OrganizationShouldEqual()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization_userShouldEqual()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().Single();
+            Assert.Equal(UserNotAdded, Event.user);
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserAddedToOrganization()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().SingleOrDefault();
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserAddedToOrganization_OrganizationShouldEqual()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserRemovedFromOrganization>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserAddedToOrganization_userShouldEqual()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserRemovedFromOrganization>().Single();
+            Assert.Equal(User, Event.user);
         }
         #endregion
 

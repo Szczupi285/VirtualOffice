@@ -86,15 +86,12 @@ namespace VirtualOffice.Domain.Entities
 
         public void AddUser(ApplicationUser user)
         {
-            bool aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
-
-            if (aleadyExists)
-                throw new UserIsAlreadyMemberOfThisOrganizationException(user.Id);
-            else if (!_isUnlimited && _usedSlots >= _userLimit)
+            if (!_isUnlimited && _usedSlots >= _userLimit)
                 throw new OrganizationNotEnoughSlotsException();
 
-            AddEvent(new UserAddedToOrganization(this, user));
-            _organizationUsers.Add(user);
+            bool HasBeenAdded = _organizationUsers.Add(user);
+            if(HasBeenAdded)
+                AddEvent(new UserAddedToOrganization(this, user));
         }
         public void AddRangeUsers(ICollection<ApplicationUser> users)
         {
