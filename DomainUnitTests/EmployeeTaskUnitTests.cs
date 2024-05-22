@@ -8,6 +8,10 @@ using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+using Microsoft.VisualBasic;
+using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
 namespace DomainUnitTests
 {
@@ -17,6 +21,7 @@ namespace DomainUnitTests
         private ApplicationUser _ApplicationUser { get; set; }
         private ApplicationUser _ApplicationUser2 { get; set; }
         private ApplicationUser _ApplicationUser3 { get; set; }
+        private ApplicationUser UserNotAdded { get; set; }
 
         public EmployeeTaskUnitTests()
         {
@@ -24,9 +29,11 @@ namespace DomainUnitTests
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne" , "SurnameOne");
             ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo" , "SurnameTwo");
             ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree" , "SurnameThree");
+            ApplicationUser userNotAdded = new ApplicationUser(Guid.NewGuid(), "NameFour" , "SurnameFour");
             _ApplicationUser = user1;
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
+            UserNotAdded = userNotAdded;
 
             HashSet<ApplicationUser> users = new HashSet<ApplicationUser>();
 
@@ -41,7 +48,152 @@ namespace DomainUnitTests
             _EmployeeTask = employeeTask;
         }
 
+        #region Events
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted()
+        {
+            _EmployeeTask.SetTitle("Title");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.SetTitle("Title");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetTitle_ShouldRaiseScheduleItemTitleSetted_TitleShouldEqual()
+        {
+            _EmployeeTask.SetTitle("Title");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemTitleSetted>().Single();
+            Assert.Equal("Title", Event.title);
+        }
 
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted()
+        {
+            _EmployeeTask.SetDescription("Description");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.SetDescription("Description");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_DescriptionShouldEqual()
+        {
+            _EmployeeTask.SetDescription("Description");
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemDescriptionSetted>().Single();
+            Assert.Equal("Description", Event.description);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem()
+        {
+            _EmployeeTask.AddEmployee(UserNotAdded);
+            var Event = _EmployeeTask.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.AddEmployee(UserNotAdded);
+            var Event = _EmployeeTask.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_UserShouldEqual()
+        {
+            _EmployeeTask.AddEmployee(UserNotAdded);
+            var Event = _EmployeeTask.Events.OfType<EmployeeAddedToScheduleItem>().Single();
+            Assert.Equal(UserNotAdded, Event.user);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem()
+        {
+            _EmployeeTask.RemoveEmployee(_ApplicationUser);
+            var Event = _EmployeeTask.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.RemoveEmployee(_ApplicationUser);
+            var Event = _EmployeeTask.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_UserShouldEqual()
+        {
+            _EmployeeTask.RemoveEmployee(_ApplicationUser);
+            var Event = _EmployeeTask.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
+            Assert.Equal(_ApplicationUser, Event.user);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _EmployeeTask.UpdateEndDate(date);
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_EmployeeTaskShouldEqual()
+        {
+            DateTime date = DateTime.UtcNow.AddHours(5);
+            _EmployeeTask.UpdateEndDate(date);
+            var Event = _EmployeeTask.Events.OfType<ScheduleItemEndDateUpdated>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetPriority_ShouldRaisePrioritySetted()
+        {
+            _EmployeeTask.SetPriority(EmployeeTaskPriorityEnum.Urgent);
+            var Event = _EmployeeTask.Events.OfType<PrioritySetted>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void SetPriority_ShouldRaisePrioritySetted_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.SetPriority(EmployeeTaskPriorityEnum.Urgent);
+            var Event = _EmployeeTask.Events.OfType<PrioritySetted>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void SetPriority_ShouldRaisePrioritySetted_PriorityShouldEqual()
+        {
+            _EmployeeTask.SetPriority(EmployeeTaskPriorityEnum.Urgent);
+            var Event = _EmployeeTask.Events.OfType<PrioritySetted>().Single();
+            Assert.Equal(EmployeeTaskPriorityEnum.Urgent, Event.priorityEnum);
+        }
+        [Fact]
+        public void UpdateStatus_ShouldRaisePrioritySetted()
+        {
+            _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            var Event = _EmployeeTask.Events.OfType<StatusUpdated>().Single();
+            Assert.NotNull(Event);
+        }
+        [Fact]
+        public void UpdateStatus_ShouldRaisePrioritySetted_EmployeeTaskShouldEqual()
+        {
+            _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            var Event = _EmployeeTask.Events.OfType<StatusUpdated>().Single();
+            Assert.Equal(_EmployeeTask, Event.abstractScheduleItem);
+        }
+        [Fact]
+        public void UpdateStatus_ShouldRaisePrioritySetted_UpdateStatusShouldEqual()
+        {
+            _EmployeeTask.UpdateStatus(EmployeeTaskStatusEnum.AwaitingReview);
+            var Event = _EmployeeTask.Events.OfType<StatusUpdated>().Single();
+            Assert.Equal(EmployeeTaskStatusEnum.AwaitingReview, Event.statusEnum);
+        }
+
+        #endregion
         #region ScheduleItemId
 
         [Fact]
