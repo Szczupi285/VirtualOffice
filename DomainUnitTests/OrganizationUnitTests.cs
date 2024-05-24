@@ -20,19 +20,20 @@ namespace DomainUnitTests
     {
         private Organization _Org { get; set; }
         private ApplicationUser User { get; set; }
+        private ApplicationUser UserNotAddedToOffice { get; set; }
         private ApplicationUser UserNotAdded { get; set; }
         private Office Office { get; set; }
         private Office OfficeNotAdded { get; set; }
         public OrganizationUnitTests()
         {
             User = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
-            var user = new ApplicationUser(Guid.NewGuid(), "N", "S");
+            UserNotAddedToOffice = new ApplicationUser(Guid.NewGuid(), "N", "S");
             UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
             Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new HashSet<ApplicationUser> { User });
             OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeNameOne", "DescriptionOne", new HashSet<ApplicationUser> { User });
             Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
             _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
-                new HashSet<ApplicationUser>(){ User, user }, subscription);
+                new HashSet<ApplicationUser>(){ User, UserNotAddedToOffice }, subscription);
         }
 
         #region Events
@@ -155,29 +156,29 @@ namespace DomainUnitTests
         [Fact]
         public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice()
         {
-            _Org.AddOfficeUser(UserNotAdded, Office);
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
             var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
         }
         [Fact]
         public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_OrganizationShouldEqual()
         {
-            _Org.AddOfficeUser(UserNotAdded, Office);
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
             var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
             Assert.Equal(_Org, Event.organization);
         }
         [Fact]
         public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_OfficeShoulEqual()
         {
-            _Org.AddOfficeUser(UserNotAdded, Office);
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
             var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
             Assert.Equal(Office, Event.office);
         }
         [Fact]
         public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_UserShoulEqual()
         {
-            _Org.AddOfficeUser(UserNotAdded, Office);
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
             var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
-            Assert.Equal(UserNotAdded, Event.User);
+            Assert.Equal(UserNotAddedToOffice, Event.User);
         }
         [Fact]
         public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice()
