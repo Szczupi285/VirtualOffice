@@ -326,7 +326,7 @@ namespace DomainUnitTests
             Guid guid3 = Guid.NewGuid();
             Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
-            Assert.True(100 == org._userLimit);
+            Assert.True(500 == org._userLimit);
         }
         [Fact]
         public void OrganiazationUserLimitGetSubTypePremium()
@@ -337,7 +337,7 @@ namespace DomainUnitTests
             Guid guid3 = Guid.NewGuid();
             Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
-            Assert.True(500 == org._userLimit);
+            Assert.True(100 == org._userLimit);
         }
 
         [Theory]
@@ -548,16 +548,43 @@ namespace DomainUnitTests
 
         #region _slotsLeft
         [Fact]
+        public void slotsLeft_ShouldChange()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Basic);
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            Assert.Equal((ushort)28, _Org._slotsLeft);
+            _Org.AddUser(tempUser);
+            Assert.Equal((ushort)27, _Org._slotsLeft);
+        }
+        [Fact]
         public void slotsLeft_Unlimited_ShouldEqualNull()
         {
             _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Unlimited);
             Assert.Null(_Org._slotsLeft);
         }
         [Fact]
-        public void slotsLeft_Trial_ShouldEqualNull()
+        public void slotsLeft_Trial_ShouldEqual1()
         {
             _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Trial);
             Assert.Equal((ushort)1, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual28()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Basic);
+            Assert.Equal((ushort)28, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual98()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Premium);
+            Assert.Equal((ushort)98, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual498()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Enterprise);
+            Assert.Equal((ushort)498, _Org._slotsLeft);
         }
         #endregion
 
