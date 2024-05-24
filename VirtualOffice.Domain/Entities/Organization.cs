@@ -128,5 +128,41 @@ namespace VirtualOffice.Domain.Entities
         }
         internal bool IsUnlimited() => _isUnlimited;
 
+        public void AddOfficeUser(ApplicationUser user, Office office)
+        {
+            if (!_offices.Contains(office))
+                throw new OfficeHasNotBeenFoundException(office.Id);
+            else if (!_organizationUsers.Contains(user))
+                throw new UserIsNotAMemberOfThisOrganization(user.Id);
+            
+            if (office.AddMember(user))
+                AddEvent(new UserRemovedFromOffice(this, office, user));
+
+        }
+        public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
+        {
+            foreach(ApplicationUser user in users)
+                AddOfficeUser(user, office);
+        }
+
+        public void RemoveOfficeUser(ApplicationUser user, Office office)
+        {
+
+            if (!_offices.Contains(office))
+                throw new OfficeHasNotBeenFoundException(office.Id);
+            else if (!_organizationUsers.Contains(user))
+                throw new UserIsNotAMemberOfThisOrganization(user.Id);
+
+            if (office.RemoveMember(user))
+                AddEvent(new UserRemovedFromOffice(this, office, user));
+
+        }
+
+        public void RemoveRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
+        {
+            foreach (ApplicationUser user in users)
+                RemoveOfficeUser(user, office);
+        }
+
     }
 }

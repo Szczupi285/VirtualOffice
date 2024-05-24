@@ -17,7 +17,7 @@ namespace DomainUnitTests
 
         public OfficeUnitTests()
         {
-            _office = new Office(Guid.NewGuid(), "Office", "Description", new List<ApplicationUser> { });
+            _office = new Office(Guid.NewGuid(), "Office", "Description", new HashSet<ApplicationUser> { });
         }
 
         #region OfficeId
@@ -150,35 +150,12 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void AddMember_AlreadyMember_ShouldThrowUserIsAlreadyMemberOfThisOfficeException()
+        public void AddMember_AlreadyMember_ShouldReturnFalse()
         {
             ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
 
-            Assert.Throws<UserIsAlreadyMemberOfThisOfficeException>(() => _office.AddMember(member));
-        }
-        [Fact]
-        public void AddRangeMembers_ShouldContainMembers()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Guid guid2 = Guid.NewGuid();
-            Guid guid3 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
-
-            List<ApplicationUser> memberList = new List<ApplicationUser>
-            {
-                user1,
-                user2,
-                user3,
-            };
-            _office.AddRangeMembers(memberList);
-
-            foreach(ApplicationUser member in memberList)
-            {
-                Assert.Contains(member, _office._members);
-            }
+            Assert.False(_office.AddMember(member));
         }
 
         #endregion
@@ -195,13 +172,10 @@ namespace DomainUnitTests
             ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
             ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
-            List<ApplicationUser> memberList = new List<ApplicationUser>
-            {
-                user1,
-                user2,
-                user3,
-            };
-            _office.AddRangeMembers(memberList);
+           
+            _office.AddMember(user1);
+            _office.AddMember(user1);
+            _office.AddMember(user1);
 
             _office.RemoveMember(user1);
 
@@ -209,7 +183,7 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void RemoveMember_UserNotFound_ShouldThrowUserIsNotMemberOfThisOfficeException()
+        public void RemoveMember_UserNotFound_ShouldReturnFalse()
         {
             Guid guid1 = Guid.NewGuid();
             Guid guid2 = Guid.NewGuid();
@@ -218,55 +192,23 @@ namespace DomainUnitTests
             ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
             ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
-            List<ApplicationUser> memberList = new List<ApplicationUser>
-            {
-                user1,
-                user2,
-                user3,
-            };
-            _office.AddRangeMembers(memberList);
+
+            _office.AddMember(user1);
+            _office.AddMember(user1);
+            _office.AddMember(user1);
+
 
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
 
-            Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
+            Assert.False(_office.RemoveMember(user4));
         }
         [Fact]
-        public void RemoveMember_EmptyCollectionOfMembers_ShouldThrowUserIsNotMemberOfThisOfficeException()
+        public void RemoveMember_EmptyCollectionOfMembers_ShouldReturnFalse()
         {
 
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
 
-            Assert.Throws<UserIsNotMemberOfThisOfficeException>(() => _office.RemoveMember(user4));
-        }
-
-        [Fact]
-        public void RemoveRangeMembers_ShouldNotContainMembers()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Guid guid2 = Guid.NewGuid();
-            Guid guid3 = Guid.NewGuid();
-            Guid guid4 = Guid.NewGuid();
-            ApplicationUser user1 = new ApplicationUser(guid1, "name", "surname");
-            ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
-            ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
-            ApplicationUser user4 = new ApplicationUser(guid4, "name", "surname");
-
-            List<ApplicationUser> memberList = new List<ApplicationUser>
-            {
-                user1,
-                user2,
-                user3,
-                user4
-            };
-
-            _office.AddRangeMembers(memberList);
-
-
-            _office.RemoveRangeMembers(memberList);
-            foreach (ApplicationUser member in memberList)
-            {
-                Assert.DoesNotContain(member, _office._members);
-            }
+            Assert.False(_office.RemoveMember(user4));
         }
 
         #endregion
@@ -315,7 +257,9 @@ namespace DomainUnitTests
                 new ApplicationUser(Guid.NewGuid(), "name", "surname"),
             };
 
-            _office.AddRangeMembers(users);
+            _office.AddMember(users[0]);
+            _office.AddMember(users[1]);
+            _office.AddMember(users[2]);
 
             ICollection<ApplicationUser> members = _office.GetAllMembers();
 

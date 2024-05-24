@@ -18,9 +18,9 @@ namespace VirtualOffice.Domain.Entities
         // private ActivityLog _activityLog;
         
         // unlike in Organization situation, Office might not have any members/users assigned to it
-        internal ICollection<ApplicationUser> _members { get; private set; }
+        internal HashSet<ApplicationUser> _members { get; private set; }
 
-        internal Office(OfficeId id, OfficeName name, OfficeDescription description, ICollection<ApplicationUser> members) 
+        internal Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
         { 
             Id= id;
             _officeName = name;
@@ -29,36 +29,27 @@ namespace VirtualOffice.Domain.Entities
             _members = members;
         }   
 
-        public void AddMember(ApplicationUser user) 
+        internal bool AddMember(ApplicationUser user) 
         {
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
-                throw new UserIsAlreadyMemberOfThisOfficeException(user.Id);
+                return false;
 
             _members.Add(user);
+            return true;
         }
 
-        public void AddRangeMembers(ICollection<ApplicationUser> users)
-        {
-            foreach (ApplicationUser user in users) 
-                AddMember(user);
-        }
-
-        public void RemoveMember(ApplicationUser user) 
+        internal bool RemoveMember(ApplicationUser user) 
         {
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
-            if (alreadyExists)
-                _members.Remove(user);
-            else
-                throw new UserIsNotMemberOfThisOfficeException(user.Id);
-        }
+            if (!alreadyExists)
+                return false;
 
-        public void RemoveRangeMembers(ICollection<ApplicationUser> users)
-        {
-            foreach(ApplicationUser user in users)
-                RemoveMember(user);
+            _members.Remove(user);
+            return true;
+            
         }
 
         public ApplicationUser GetMemberById(ApplicationUserId id)

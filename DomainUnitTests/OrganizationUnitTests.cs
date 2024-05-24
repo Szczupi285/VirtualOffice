@@ -29,8 +29,8 @@ namespace DomainUnitTests
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
             User = user;
             UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
-            Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
-            OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeName", "Description", new List<ApplicationUser> { user });
+            Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new HashSet<ApplicationUser> { user });
+            OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeName", "Description", new HashSet<ApplicationUser> { user });
             Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
             _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
                 new HashSet<ApplicationUser>(){ user, user1 }, subscription);
