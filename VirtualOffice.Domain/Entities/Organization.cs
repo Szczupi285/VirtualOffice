@@ -137,7 +137,6 @@ namespace VirtualOffice.Domain.Entities
             else if(office.AddMember(user))
                 AddEvent(new UserAddedToOffice(this, office, user));
 
-
         }
         public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
         {

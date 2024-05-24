@@ -715,5 +715,34 @@ namespace DomainUnitTests
         }
 
         #endregion
+
+        #region AddingOfficeUsers
+        [Fact]
+        public void AddOfficeUser_OfficeNotInOrg_ShouldThrowOfficeHasNotBeenFoundException()
+        {
+            Assert.Throws<OfficeHasNotBeenFoundException>(() => _Org.AddOfficeUser(User, OfficeNotAdded));
+        }
+        [Fact]
+        public void AddOfficeUser_UserNotInOrg_ShouldThrowUserIsNotAMemberOfThisOrganization()
+        {
+            Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => _Org.AddOfficeUser(UserNotAdded, Office));
+        }
+        [Fact]
+        public void AddOfficeUser_ValidData_ShouldAddUser()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            Assert.Contains(UserNotAddedToOffice, Office._members); 
+        }
+        [Fact]
+        public void AddRangeOfficeUsers_ValidData_ShouldAddUsers()
+        {
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            _Org.AddUser(tempUser);
+            _Org.AddRangeOfficeUsers(new List<ApplicationUser>() { tempUser, UserNotAddedToOffice }, Office);
+            Assert.Contains(tempUser, Office._members);
+            Assert.Contains(UserNotAddedToOffice, Office._members);
+        }
+        #endregion
     }
 }
+                                
