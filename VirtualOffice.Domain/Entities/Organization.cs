@@ -18,11 +18,28 @@ namespace VirtualOffice.Domain.Entities
                 {
                     return null!;
                 }
-                return (ushort?)_subscription._subType;
+                return (ushort)_subscription._subType;
             }
         }  
 
-        public OrganizationUsedSlots _usedSlots { get => (uint)_organizationUsers.Count(); } 
+        public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); } 
+
+        public ushort? _slotsLeft
+        {
+            get
+            {
+                if (_userLimit is null)
+                    return null;
+                else
+                {
+                    var slotsLeft = _userLimit - _usedSlots;
+                    if (slotsLeft <= 0)
+                        throw new OrganizationNotEnoughSlotsException();
+                    else
+                        return (ushort)slotsLeft;
+                }
+            }
+        }
 
         public HashSet<Office> _offices { get; private set; }
 

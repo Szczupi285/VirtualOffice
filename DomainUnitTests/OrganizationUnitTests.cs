@@ -268,8 +268,9 @@ namespace DomainUnitTests
 
         #region OrganizationUserLimit
         [Theory]
-        [InlineData(0)]
         [InlineData(1001)]
+        [InlineData(2001)]
+        [InlineData(10000)]
         public void InvalidOrganizationUserLimit_ShouldReturnInvalidOrganizationUserLimitException(ushort input)
         {
             Assert.Throws<InvalidOrganizationUserLimitException>(()
@@ -293,20 +294,6 @@ namespace DomainUnitTests
             Assert.Null(org._userLimit);
         }
         
-        // since user with sub type none should't be able to use application at all we're throwing exception for userLimit 0 which is equal to no subscribtion
-        [Fact]
-        public void OrganiazationUserLimitGetSubTypeNone_ShouldThrowInvalidOrganizationUserLimitException()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
-            Guid guid2 = Guid.NewGuid();
-            Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
-
-
-            Assert.Throws<InvalidOrganizationUserLimitException>(()
-                => 0 == org._userLimit);
-        }
         [Fact]
         public void OrganiazationUserLimitGetSubTypeTrial()
         {
