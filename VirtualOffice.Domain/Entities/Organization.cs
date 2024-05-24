@@ -24,9 +24,21 @@ namespace VirtualOffice.Domain.Entities
 
         public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); } 
 
-        public OrganizationSlotsLeft _slotsLeft
+        public ushort? _slotsLeft
         {
-            get => new OrganizationSlotsLeft(_userLimit, _usedSlots);
+            get
+            { 
+                if (_userLimit is null)
+                    return null;
+                else
+                {
+                    var slotsLeft = _userLimit - _usedSlots;
+                    if (slotsLeft <= 0)
+                        throw new OrganizationNotEnoughSlotsException();
+                    else
+                       return (ushort)slotsLeft;
+                }
+            }
         }
 
         public HashSet<Office> _offices { get; private set; }

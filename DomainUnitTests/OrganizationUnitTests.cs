@@ -553,6 +553,12 @@ namespace DomainUnitTests
             _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Unlimited);
             Assert.Null(_Org._slotsLeft);
         }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqualNull()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Trial);
+            Assert.Equal((ushort)1, _Org._slotsLeft);
+        }
         #endregion
 
         #region Adding users
