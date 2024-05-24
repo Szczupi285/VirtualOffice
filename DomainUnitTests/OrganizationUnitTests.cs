@@ -742,6 +742,32 @@ namespace DomainUnitTests
             Assert.Contains(tempUser, Office._members);
             Assert.Contains(UserNotAddedToOffice, Office._members);
         }
+        [Fact]
+        public void RemoveOfficeUser_OfficeNotInOrg_ShouldThrowOfficeHasNotBeenFoundException()
+        {
+            Assert.Throws<OfficeHasNotBeenFoundException>(() => _Org.RemoveOfficeUser(User, OfficeNotAdded));
+        }
+        [Fact]
+        public void RemoveOfficeUser_UserNotInOrg_ShouldThrowUserIsNotAMemberOfThisOrganization()
+        {
+            Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => _Org.RemoveOfficeUser(UserNotAdded, Office));
+        }
+        [Fact]
+        public void RemoveOfficeUser_ValidData_ShouldRemoveUser()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            Assert.DoesNotContain(User, Office._members);
+        }
+        [Fact]
+        public void RemoveRangeOfficeUsers_ValidData_ShouldRemoveUsers()
+        {
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            _Org.AddUser(tempUser);
+            _Org.AddOfficeUser(tempUser, Office);
+            _Org.RemoveRangeOfficeUsers(new List<ApplicationUser>() { tempUser, User }, Office);
+            Assert.DoesNotContain(tempUser, Office._members);
+            Assert.DoesNotContain(User, Office._members);
+        }
         #endregion
     }
 }
