@@ -134,9 +134,9 @@ namespace VirtualOffice.Domain.Entities
                 throw new OfficeHasNotBeenFoundException(office.Id);
             else if (!_organizationUsers.Contains(user))
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
-            
-            if (office.AddMember(user))
-                AddEvent(new UserRemovedFromOffice(this, office, user));
+            else if(office.AddMember(user))
+                AddEvent(new UserAddedToOffice(this, office, user));
+
 
         }
         public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
