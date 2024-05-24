@@ -24,21 +24,9 @@ namespace VirtualOffice.Domain.Entities
 
         public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); } 
 
-        public ushort? _slotsLeft
+        public OrganizationSlotsLeft _slotsLeft
         {
-            get
-            {
-                if (_userLimit is null)
-                    return null;
-                else
-                {
-                    var slotsLeft = _userLimit - _usedSlots;
-                    if (slotsLeft <= 0)
-                        throw new OrganizationNotEnoughSlotsException();
-                    else
-                        return (ushort)slotsLeft;
-                }
-            }
+            get => new OrganizationSlotsLeft(_userLimit, _usedSlots);
         }
 
         public HashSet<Office> _offices { get; private set; }
@@ -103,7 +91,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void AddUser(ApplicationUser user)
         {
-            if (!_isUnlimited && _usedSlots >= _userLimit)
+            if (!_isUnlimited && _slotsLeft <= 0)
                 throw new OrganizationNotEnoughSlotsException();
 
             bool HasBeenAdded = _organizationUsers.Add(user);

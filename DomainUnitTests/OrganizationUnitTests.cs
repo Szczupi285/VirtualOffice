@@ -546,6 +546,15 @@ namespace DomainUnitTests
 
         #endregion
 
+        #region _slotsLeft
+        [Fact]
+        public void slotsLeft_Unlimited_ShouldEqualNull()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Unlimited);
+            Assert.Null(_Org._slotsLeft);
+        }
+        #endregion
+
         #region Adding users
         [Fact]
         public void AddUser_ShouldContainUser()
@@ -723,6 +732,7 @@ namespace DomainUnitTests
         [Fact]
         public void AddRangeOfficeUsers_ValidData_ShouldAddUsers()
         {
+            var x = _Org._slotsLeft;
             var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
             _Org.AddUser(tempUser);
             _Org.AddRangeOfficeUsers(new List<ApplicationUser>() { tempUser, UserNotAddedToOffice }, Office);
