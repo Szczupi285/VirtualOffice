@@ -179,6 +179,33 @@ namespace DomainUnitTests
             var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
             Assert.Equal(UserNotAdded, Event.User);
         }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_OrganizationShouldEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_OfficeShoulEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(Office, Event.office);
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_UserShoulEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(User, Event.User);
+        }
         #endregion
 
         #region OrganizationId
