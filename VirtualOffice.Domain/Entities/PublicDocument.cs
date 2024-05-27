@@ -12,6 +12,8 @@ namespace VirtualOffice.Domain.Entities
 {
     public class PublicDocument : AbstractDocument
     {
+        //created with builder
+
         public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
 
         public ICollection<ApplicationUserId> _eligibleForRead {  get; private set; }
