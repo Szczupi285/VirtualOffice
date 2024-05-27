@@ -15,6 +15,6 @@ namespace VirtualOffice.Domain.Repositories
         void Delete(Guid id);
         IEnumerable<CalendarEvent> GetAllForUser(Guid userId);
         IEnumerable<CalendarEvent> GetAllForUserFutureEvents(Guid userId);
-        IEnumerable<CalendarEvent> GetAllForUserInCertainPeriod(Guid userId, DateTime startDate, DateTime endDate);
+        IEnumerable<CalendarEvent> GetAllForUserByDate(Guid userId, DateTime startDate, DateTime endDate);
     }
 }
