@@ -16,10 +16,13 @@ namespace DomainUnitTests
 {
     public class NoteUnitTests
     {
-        Note _Note { get; set; }
+        private Note _Note { get; set; }
+        private ApplicationUser User { get; set; }
+
         public NoteUnitTests()
         {
-            _Note = new Note(Guid.NewGuid(), "title", "content");
+            User = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            _Note = new Note(Guid.NewGuid(), "title", "content", User);
         }
         #region noteId
         [Fact]

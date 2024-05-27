@@ -11,9 +11,9 @@ namespace VirtualOffice.Domain.Repositories
     public interface IOrganizationRepository
     {
         Organization GetById(OrganizationId guid);
-        void Add(Organization user);
-        void Update(Organization user);
-        void Delete(OrganizationId id);
+        void Add(Organization organization);
+        void Update(Organization organization);
+        void Delete(OrganizationId guid);
         IEnumerable<Office> GetOffices(OrganizationId organizationId);
         IEnumerable<ApplicationUser> GetUsers(OrganizationId organizationId);
         IEnumerable<Subscription> GetSubscriptions(OrganizationId organizationId);

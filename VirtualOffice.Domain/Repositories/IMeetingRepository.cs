@@ -11,9 +11,9 @@ namespace VirtualOffice.Domain.Repositories
     public interface IMeetingRepository
     {
         Meeting GetById(ScheduleItemId guid);
-        void Add(Meeting user);
-        void Update(Meeting user);
-        void Delete(ScheduleItemId id);
+        void Add(Meeting meeting);
+        void Update(Meeting meeting);
+        void Delete(ScheduleItemId guid);
         IEnumerable<Meeting> GetAllForUser(ApplicationUser userId);
         IEnumerable<Meeting> GetAllForUserFutureEvents(ApplicationUser userId);
         IEnumerable<Meeting> GetAllForUserByDate(ApplicationUser userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);

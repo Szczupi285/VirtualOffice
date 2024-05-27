@@ -13,9 +13,9 @@ namespace VirtualOffice.Domain.Repositories
     public interface IEmployeeTaskRepository
     {
         EmployeeTask GetById(ScheduleItemId guid);
-        void Add(EmployeeTask user);
-        void Update(EmployeeTask user);
-        void Delete(ScheduleItemId id);
+        void Add(EmployeeTask employeeTask);
+        void Update(EmployeeTask employeeTask);
+        void Delete(ScheduleItemId guidid);
         IEnumerable<EmployeeTask> GetAllForUser(ApplicationUserId userId);
         IEnumerable<EmployeeTask> GetAllForUserFutureEvents(ApplicationUserId userId);
         IEnumerable<EmployeeTask> GetAllForUserByDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);

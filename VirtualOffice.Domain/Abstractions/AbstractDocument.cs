@@ -8,9 +8,8 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractDocument
+    public abstract class AbstractDocument : AggregateRoot<DocumentId>
     {
-        public DocumentId Id { get; private protected set; }
         public DocumentTitle _title { get; private protected set; }
 
         public DocumentContent _content { get; private protected set; }

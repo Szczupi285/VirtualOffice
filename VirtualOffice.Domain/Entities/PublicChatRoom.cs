@@ -14,7 +14,6 @@ namespace VirtualOffice.Domain.Entities
 {
     public class PublicChatRoom : AbstractChatRoom
     {
-
         public PublicChatRoomName _Name { get; private set; }
         public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages, PublicChatRoomName name) : base(id, participants, messages)
         {

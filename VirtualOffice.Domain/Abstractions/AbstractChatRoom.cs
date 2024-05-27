@@ -15,8 +15,6 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractChatRoom : AggregateRoot<ChatRoomId>
     {
-        public ChatRoomId Id { get; }
-
         public HashSet<ApplicationUser> _Participants { get; private set; }
 
         public SortedSet<Message> _Messages { get; private set; }

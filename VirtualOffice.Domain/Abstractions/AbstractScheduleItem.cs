@@ -14,8 +14,6 @@ namespace VirtualOffice.Domain.Abstractions
 {
     public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>
     {
-
-        public ScheduleItemId Id { get; }
         public ScheduleItemTitle _Title { get; private set; }
         public ScheduleItemDescription _Description { get; private set; }
         public HashSet<ApplicationUser> _AssignedEmployees { get; private set; }
