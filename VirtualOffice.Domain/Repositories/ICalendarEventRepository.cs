@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Repositories
 {
     public interface ICalendarEventRepository
     {
-        CalendarEvent GetById(Guid guid);
+        CalendarEvent GetById(ScheduleItemId guid);
         void Add(CalendarEvent user);
         void Update(CalendarEvent user);
-        void Delete(Guid id);
-        IEnumerable<CalendarEvent> GetAllForUser(Guid userId);
-        IEnumerable<CalendarEvent> GetAllForUserFutureEvents(Guid userId);
-        IEnumerable<CalendarEvent> GetAllForUserByDate(Guid userId, DateTime startDate, DateTime endDate);
+        void Delete(ScheduleItemId id);
+        IEnumerable<CalendarEvent> GetAllForUser(ApplicationUserId userId);
+        IEnumerable<CalendarEvent> GetAllForUserFutureEvents(ApplicationUserId userId);
+        IEnumerable<CalendarEvent> GetAllForUserByDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
     }
 }

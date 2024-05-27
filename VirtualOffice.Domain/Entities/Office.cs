@@ -27,7 +27,10 @@ namespace VirtualOffice.Domain.Entities
             _description = description;
            
             _members = members;
-        }   
+        }
+
+        public void SetName(OfficeName name) => _officeName = name;
+        public void SetDescription(OfficeDescription description) => _description = description;
 
         internal bool AddMember(ApplicationUser user) 
         {

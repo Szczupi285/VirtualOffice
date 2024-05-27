@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Repositories
 {
     public interface INoteRepository
     {
-        Note GetById(Guid guid);
+        Note GetById(NoteId guid);
         void Add(Note user);
         void Update(Note user);
-        void Delete(Guid id);
-        IEnumerable<Note> GetAllForUser(Guid userId);
-        IEnumerable<Note> GetAllSortedForUser(Guid userId);
+        void Delete(NoteId id);
+        IEnumerable<Note> GetAllForUser(ApplicationUser userId);
+        IEnumerable<Note> GetAllSortedForUser(ApplicationUser userId);
     }
 }

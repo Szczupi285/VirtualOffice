@@ -4,14 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.Repositories
 {
     public interface IUserRepository
     {
-        ApplicationUser GetById(Guid id);
+        ApplicationUser GetById(ApplicationUserId id);
         void Add(ApplicationUser user);
         void Update(ApplicationUser user);
-        void Delete(Guid id);
+        void Delete(ApplicationUserId id);
     }
 }
