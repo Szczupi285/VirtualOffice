@@ -34,7 +34,7 @@ namespace VirtualOffice.Domain.Entities
         public void SettedCreationDate(ApplicationUserId userId)
         {
             AddCreationDate(userId);
-            AddEvent(new PublicDocumentSettedCreationDate(this, userId, DateTime.Now));
+            AddEvent(new PublicDocumentSettedCreationDate(this, userId, DateTime.UtcNow));
         }
 
         public void AddEligibleForRead(ApplicationUserId eligibleForRead)
