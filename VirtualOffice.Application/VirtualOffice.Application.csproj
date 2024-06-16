@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\VirtualOffice.Domain\VirtualOffice.Domain.csproj" />
+    <ProjectReference Include="..\VirtualOffice.Shared\VirtualOffice.Shared.csproj" />
   </ItemGroup>
 
 </Project>

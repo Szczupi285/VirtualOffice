@@ -8,7 +8,6 @@
 
   <ItemGroup>
 	  <ProjectReference Include="..\VirtualOffice.Shared.Abstractions\VirtualOffice.Shared.Abstractions.csproj" />
-	  <ProjectReference Include="..\VirtualOffice.Shared\VirtualOffice.Shared.csproj" />
       <InternalsVisibleTo Include="DomainUnitTests" />
   </ItemGroup>
 
