@@ -19,7 +19,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{DD5EF0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{F27A01A5-84E1-42B2-8038-5C8D133A9361}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainUnitTests", "..\DomainUnitTests\DomainUnitTests.csproj", "{A9F5F7C8-EDD9-41BF-9E29-4F25031315A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DomainUnitTests", "..\DomainUnitTests\DomainUnitTests.csproj", "{A9F5F7C8-EDD9-41BF-9E29-4F25031315A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

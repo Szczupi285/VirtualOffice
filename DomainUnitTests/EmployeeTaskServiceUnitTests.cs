@@ -2,8 +2,9 @@
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Services;
-using VirtualOffice.Domain.ValueObjects.EmployeeTask;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
+
 
 
 namespace DomainUnitTests
@@ -33,55 +34,55 @@ namespace DomainUnitTests
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
             _ApplicationUser4 = user4;
-            List<ApplicationUser> applicationUsers1 = new List<ApplicationUser>() {user1, user2 };
-            List<ApplicationUser> applicationUsers2 = new List<ApplicationUser>() {user3 };
+            HashSet<ApplicationUser> applicationUsers1 = new HashSet<ApplicationUser>() {user1, user2 };
+            HashSet<ApplicationUser> applicationUsers2 = new HashSet<ApplicationUser>() {user3 };
 
             // Intance 1
             Guid task1Guid = Guid.NewGuid();
-            var task1Id = new EmployeeTaskId(task1Guid);
-            var task1Title = new EmployeeTaskTitle("Task 1");
-            var task1Description = new EmployeeTaskDescription("Description for Task 1");
+            var task1Id = new ScheduleItemId(task1Guid);
+            var task1Title = new ScheduleItemTitle("Task 1");
+            var task1Description = new ScheduleItemDescription("Description for Task 1");
             var assignedEmployees1 = applicationUsers1;
             var priority1 = EmployeeTaskPriorityEnum.High;
-            var startDate1 = new EmployeeTaskStartDate(DateTime.UtcNow);
-            var endDate1 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(7));
+            var startDate1 = new ScheduleItemStartDate(DateTime.UtcNow);
+            var endDate1 = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(7));
 
             _Task1 = new EmployeeTask(task1Id, task1Title, task1Description, assignedEmployees1, priority1, startDate1, endDate1);
 
             // Instance 2
             Guid task2Guid = Guid.NewGuid();
-            var task2Id = new EmployeeTaskId(task2Guid);
-            var task2Title = new EmployeeTaskTitle("Task 2");
-            var task2Description = new EmployeeTaskDescription("Description for Task 2");
+            var task2Id = new ScheduleItemId(task2Guid);
+            var task2Title = new ScheduleItemTitle("Task 2");
+            var task2Description = new ScheduleItemDescription("Description for Task 2");
             var assignedEmployees2 = applicationUsers1;
             var priority2 = EmployeeTaskPriorityEnum.Medium;
-            var startDate2 = new EmployeeTaskStartDate(DateTime.UtcNow);
-            var endDate2 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(5));
+            var startDate2 = new ScheduleItemStartDate(DateTime.UtcNow);
+            var endDate2 = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(5));
 
             _Task2 = new EmployeeTask(task2Id, task2Title, task2Description, assignedEmployees2, priority2, startDate2, endDate2);
 
             // Instance 3
             Guid task3Guid = Guid.NewGuid();
-            var task3Id = new EmployeeTaskId(task3Guid);
-            var task3Title = new EmployeeTaskTitle("Task 3");
-            var task3Description = new EmployeeTaskDescription("Description for Task 3");
+            var task3Id = new ScheduleItemId(task3Guid);
+            var task3Title = new ScheduleItemTitle("Task 3");
+            var task3Description = new ScheduleItemDescription("Description for Task 3");
             var assignedEmployees3 = applicationUsers2;
             var priority3 = EmployeeTaskPriorityEnum.Low;
-            var startDate3 = new EmployeeTaskStartDate(DateTime.UtcNow);
-            var endDate3 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
+            var startDate3 = new ScheduleItemStartDate(DateTime.UtcNow);
+            var endDate3 = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(3));
 
             _Task3 = new EmployeeTask(task3Id, task3Title, task3Description, assignedEmployees3, priority3, startDate3, endDate3);
 
 
             // Instance 4
             Guid task4Guid = Guid.NewGuid();
-            var task4Id = new EmployeeTaskId(task3Guid);
-            var task4Title = new EmployeeTaskTitle("Task 4");
-            var task4Description = new EmployeeTaskDescription("Description for Task 4");
-            var assignedEmployees4 = new List<ApplicationUser>();
+            var task4Id = new ScheduleItemId(task3Guid);
+            var task4Title = new ScheduleItemTitle("Task 4");
+            var task4Description = new ScheduleItemDescription("Description for Task 4");
+            var assignedEmployees4 = new HashSet<ApplicationUser>();
             var priority4 = EmployeeTaskPriorityEnum.Low;
-            var startDate4 = new EmployeeTaskStartDate(DateTime.UtcNow);
-            var endDate4 = new EmployeeTaskEndDate(DateTime.UtcNow.AddDays(3));
+            var startDate4 = new ScheduleItemStartDate(DateTime.UtcNow);
+            var endDate4 = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(3));
 
             _Task4 = new EmployeeTask(task4Id, task4Title, task4Description, assignedEmployees4, priority4, startDate4, endDate4);
 
@@ -90,54 +91,54 @@ namespace DomainUnitTests
         }
 
         [Fact]
-        public void AssignTask_AddsTaskToList()
+        public void AssignScheduleItem_AddsTaskToList()
         {
-            service.AssignTask(_Task3);
+            service.AssignScheduleItem(_Task3);
 
-            Assert.Contains(_Task3, service._EmployeeTasks);
-        }
-
-        [Fact]
-        public void AssignTask_AddsTaskToList_ShouldReturnTrue()
-        {
-            Assert.True(service.AssignTask(_Task4));
-        }
-        [Fact]
-        public void AssignTask_AddsTaskToList_ShouldReturnFalse()
-        {
-            Assert.False(service.AssignTask(_Task1));
+            Assert.Contains(_Task3, service._ScheduleItems);
         }
 
         [Fact]
-        public void DeleteTask_RemovesTaskFromList()
+        public void AssignScheduleItem_AddsTaskToList_ShouldReturnTrue()
         {
-            service.DeleteTask(_Task1);
-
-            Assert.DoesNotContain(_Task1, service._EmployeeTasks); 
+            Assert.True(service.AssignScheduleItem(_Task4));
         }
         [Fact]
-        public void DeleteTask_RemovesTaskFromList_ShouldReturnTrue()
+        public void AssignScheduleItem_AddsTaskToList_ShouldReturnFalse()
         {
-            Assert.True(service.DeleteTask(_Task1));
-        }
-        [Fact]
-        public void DeleteTask_RemovesTaskFromList_ShouldReturnFalse()
-        {
-            Assert.False(service.DeleteTask(_Task4));
+            Assert.False(service.AssignScheduleItem(_Task1));
         }
 
         [Fact]
-        public void GetTaskById_ReturnsTaskIfExists()
+        public void DeleteScheduleItem_RemovesTaskFromList()
         {
-            var resultTask = service.GetTaskById(_Task1.Id);
+            service.DeleteScheduleItem(_Task1);
+
+            Assert.DoesNotContain(_Task1, service._ScheduleItems); 
+        }
+        [Fact]
+        public void DeleteScheduleItem_RemovesTaskFromList_ShouldReturnTrue()
+        {
+            Assert.True(service.DeleteScheduleItem(_Task1));
+        }
+        [Fact]
+        public void DeleteScheduleItem_RemovesTaskFromList_ShouldReturnFalse()
+        {
+            Assert.False(service.DeleteScheduleItem(_Task4));
+        }
+
+        [Fact]
+        public void GetScheduleItemById_ReturnsTaskIfExists()
+        {
+            var resultTask = service.GetScheduleItemById(_Task1.Id);
 
             Assert.Equal(_Task1, resultTask);
         }
 
         [Fact]
-        public void GetTaskById_ReturnsNullForNonExistentId()
+        public void GetScheduleItemById_ReturnsNullForNonExistentId()
         {
-            var resultTask = service.GetTaskById(Guid.NewGuid());
+            var resultTask = service.GetScheduleItemById(Guid.NewGuid());
 
             Assert.Null(resultTask);
         }

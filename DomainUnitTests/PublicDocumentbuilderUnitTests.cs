@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Builders.Document;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.DomainEvents;
+using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
+using VirtualOffice.Domain.DomainEvents.PublicDocumentEvents;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.BuilderExceptions;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
@@ -15,6 +19,8 @@ namespace DomainUnitTests
 {
     public class PublicDocumentBuilderUnitTests
     {
+        PublicDocument _publicDocument {  get; set; }
+
         PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
         Guid id = Guid.NewGuid();
         string content = "Sample content";
@@ -25,6 +31,9 @@ namespace DomainUnitTests
         List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath(@"C:\") };
         AbstractDocument previousVersion = new PublicDocument();
 
+       
+
+        #region properties
         [Fact]
         public void PublicDocumentBuilder_NoPropertiesSet_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -222,7 +231,7 @@ namespace DomainUnitTests
             documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
-       
+        #endregion
 
     }
 }

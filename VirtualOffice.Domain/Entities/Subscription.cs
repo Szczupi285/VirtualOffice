@@ -5,7 +5,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class Subscription
     {
-        public SubscriptionId Id { get; private set; }
+        public SubscriptionId Id { get; }
 
         internal SubscriptionStartDate _subStartDate;
 

@@ -5,14 +5,13 @@ namespace VirtualOffice.Domain.Entities
 {
     public class ApplicationUser
     {
-        public ApplicationUserId Id { get; private set; }
+        public ApplicationUserId Id { get; }
 
         public ApplicationUserName _name { get; private set; }
 
         public ApplicationUserSurname _surname { get; private set; }
 
         private PermissionsEnum _permissions;
-
 
         // private Settings _settings;
 
