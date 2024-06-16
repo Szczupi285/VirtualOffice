@@ -110,7 +110,7 @@ namespace DomainUnitTests
         {
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var Message = new Message(Guid.NewGuid(), sender1, new MessageContent("Hello World1"));
-            long roundedSendDate = Message._SendDate.Ticks / TimeSpan.TicksPerMinute;
+            long roundedSendDate = Message.SendDate.Ticks / TimeSpan.TicksPerMinute;
             long roundedUtcNow = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute;
             Assert.Equal(roundedUtcNow, roundedSendDate);
         }
@@ -125,7 +125,7 @@ namespace DomainUnitTests
 
             var message = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World1"), mockDateTimeProvider.Object);
 
-            var result = message._SendDate;
+            var result = message.SendDate;
 
             Assert.Equal(currentTime, result);
             mockDateTimeProvider.Verify(m => m.UtcNow(), Times.Once);

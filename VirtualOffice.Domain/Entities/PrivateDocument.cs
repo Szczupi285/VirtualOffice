@@ -11,7 +11,6 @@ namespace VirtualOffice.Domain.Entities
     public class PrivateDocument : AbstractDocument
     {
         public DocumentCreationDate _creationDate { get; private set; } = DateTime.UtcNow;
-
     }
     
 }

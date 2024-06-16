@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
@@ -23,6 +24,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new EndDateCannotBeBeforeStartDate(_EndDate, startDate);
 
             _StartDate = startDate;
+            AddEvent(new CalendarEventStartDateUpdated(this, startDate));
         }
 
       

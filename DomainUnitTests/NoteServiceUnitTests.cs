@@ -13,14 +13,16 @@ namespace DomainUnitTests
     public class NoteServiceUnitTests
     {
         private NoteService _NoteService { get; set; }
+        private ApplicationUser User { get; set; }
         private Guid _Id { get; set; } = Guid.NewGuid();
 
         public NoteServiceUnitTests()
         {
+            User = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(_Id, title, content);
+            Note note = new Note(_Id, title, content, User);
             ICollection<Note> notes = new List<Note>();
             notes.Add(note);
             _NoteService = new NoteService(notes);
@@ -34,7 +36,7 @@ namespace DomainUnitTests
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(id, title, content);
+            Note note = new Note(id, title, content, User);
 
             _NoteService.AddNote(note);
 
@@ -46,7 +48,7 @@ namespace DomainUnitTests
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(_Id, title, content);
+            Note note = new Note(_Id, title, content, User);
 
             _NoteService.DeleteNote(_Id);
 

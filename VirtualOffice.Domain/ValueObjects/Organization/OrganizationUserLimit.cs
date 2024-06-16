@@ -14,7 +14,7 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
         // we're throwing exception
         public OrganizationUserLimit(ushort? value)
         {
-            if (value is 0 or > 1000)
+            if (value > 1000)
                 throw new InvalidOrganizationUserLimitException(value);
             Value = value;
         }

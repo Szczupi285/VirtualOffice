@@ -13,7 +13,6 @@ namespace VirtualOffice.Domain.Entities
 
         private PermissionsEnum _permissions;
 
-
         // private Settings _settings;
 
         // private Roles _roles;

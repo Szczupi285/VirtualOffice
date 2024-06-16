@@ -11,11 +11,9 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
 {
     public sealed record OrganizationUsedSlots
     {
-        // Even thought userLimit data type is ushort, UsedSlots uses int
-        // since it's possible to have subscribtion with unlimited slots.
-        public uint Value { get; }
+        public ushort Value { get; }
 
-        public OrganizationUsedSlots(uint value)
+        public OrganizationUsedSlots(ushort value)
         {
             if (value == 0)
                 throw new InvalidOrganizationUsedSlotsException();
@@ -23,10 +21,10 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
             Value = value;
         }
 
-        public static implicit operator uint(OrganizationUsedSlots userLimit)
+        public static implicit operator ushort(OrganizationUsedSlots userLimit)
             => userLimit.Value;
 
-        public static implicit operator OrganizationUsedSlots(uint userLimit)
+        public static implicit operator OrganizationUsedSlots(ushort userLimit)
             => new(userLimit);
 
     }
