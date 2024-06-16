@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\VirtualOffice.Shared.Abstractions\VirtualOffice.Shared.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>
