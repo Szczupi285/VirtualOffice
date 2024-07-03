@@ -8,7 +8,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.CalendarEventCommands
 {
-    public record CreateCalendarEvent(Guid guid, string title, string description, ICollection<ApplicationUser> assignedEmployees, DateTime startDate, DateTime endDate) : ICommand;
+    public record CreateCalendarEvent(Guid guid, string title, string description, HashSet<ApplicationUser> assignedEmployees, DateTime startDate, DateTime endDate) : ICommand;
 
 
 }
