@@ -11,12 +11,12 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface ICalendarEventRepository
     {
-        CalendarEvent GetById(ScheduleItemId guid);
-        void Add(CalendarEvent calendarEvent);
-        void Update(CalendarEvent calendarEvent);
-        void Delete(ScheduleItemId guid);
-        IEnumerable<CalendarEvent> GetAllForUser(ApplicationUserId userId);
-        IEnumerable<CalendarEvent> GetAllForUserFutureEvents(ApplicationUserId userId);
-        IEnumerable<CalendarEvent> GetAllForUserByDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
+        Task<CalendarEvent> GetById(ScheduleItemId guid);
+        Task Add(CalendarEvent calendarEvent);
+        Task Update(CalendarEvent calendarEvent);
+        Task Delete(ScheduleItemId guid);
+        Task<IEnumerable<CalendarEvent>> GetAllForUser(ApplicationUserId userId);
+        Task<IEnumerable<CalendarEvent>> GetAllForUserFutureEvents(ApplicationUserId userId);
+        Task<IEnumerable<CalendarEvent>> GetAllForUserByDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
     }
 }
