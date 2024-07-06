@@ -27,5 +27,9 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 
         public static implicit operator ScheduleItemStartDate(DateTime startDate)
             => new(startDate);
+
+        public static bool operator ==(ScheduleItemStartDate startDate, DateTime value) => startDate.Value == value;
+        public static bool operator != (ScheduleItemStartDate startDate, DateTime value) => startDate.Value != value;
+
     }
 }
