@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Shared.Abstractions.Commands;
 
-namespace VirtualOffice.Application.Commands.EmployeeTaskCommands
+namespace VirtualOffice.Application.Commands.MeetingCommands
 {
-    public record DeleteEmployeeTask(Guid guid) : ICommand;
-    
+    public record DeleteMeeting(Guid guid) : ICommand;
 }

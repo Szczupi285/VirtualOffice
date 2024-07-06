@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Exceptions;
+using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
@@ -31,7 +32,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                 throw new CalendarEventDoesNotExistException(command.guid);
             }
 
-            var calEv = _repository.Delete(command.guid);
+            await _repository.Delete(command.guid);
         }
     }
 }

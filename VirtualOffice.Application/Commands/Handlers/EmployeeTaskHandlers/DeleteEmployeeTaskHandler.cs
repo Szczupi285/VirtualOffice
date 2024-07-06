@@ -32,7 +32,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
                 throw new EmployeeTaskDoesNotExistsException(command.guid);
             }
 
-            var calEv = _repository.Delete(command.guid);
+            await _repository.Delete(command.guid);
         }
     }
 }
