@@ -4,31 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
-using VirtualOffice.Application.Exceptions;
+using VirtualOffice.Application.Commands.EmployeeTaskCommands;
+using VirtualOffice.Application.Exceptions.CalendarEvent;
+using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
-using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Shared.Abstractions.Commands;
 
-namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
+namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class DeleteCalendarEventHandler : ICommandHandler<DeleteCalendarEvent>
+    public class DeleteEmployeeTaskHandler : ICommandHandler<DeleteEmployeeTask>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
 
-        public DeleteCalendarEventHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
+        public DeleteEmployeeTaskHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task HandleAsync(DeleteCalendarEvent command, CancellationToken cancellationToken)
+        public async Task HandleAsync(DeleteEmployeeTask command, CancellationToken cancellationToken)
         {
 
             if (!await _readService.ExistsByIdAsync(command.guid))
             {
-                throw new CalendarEventDoesNotExistException(command.guid);
+                throw new EmployeeTaskDoesNotExistsException(command.guid);
             }
 
             var calEv = _repository.Delete(command.guid);

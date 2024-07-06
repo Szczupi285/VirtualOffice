@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Exceptions;
+using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Shared.Abstractions.Commands;

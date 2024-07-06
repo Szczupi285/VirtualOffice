@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Exceptions;
+using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
@@ -35,6 +36,9 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
             var calEv = await _repository.GetById(id);
 
+
+            // we update only changed properties rather than whole object 
+            // beacuse changing the title to the same title would raise an event.
             if (calEv._Title != title)
                 calEv.SetTitle(title);
             if (calEv._Description != eventDescription)
