@@ -8,6 +8,6 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.EmployeeTaskCommands
 {
-    public record RemopveAssignedEmployeesToEmployeeTask(Guid guid, HashSet<ApplicationUser> employeeToRemove) : ICommand;
+    public record RemoveAssignedEmployeesToEmployeeTask(Guid guid, HashSet<ApplicationUser> employeesToRemove) : ICommand;
 
 }
