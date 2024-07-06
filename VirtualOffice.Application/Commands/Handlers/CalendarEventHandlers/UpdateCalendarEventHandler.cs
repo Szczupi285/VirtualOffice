@@ -10,7 +10,7 @@ using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Shared.Abstractions.Commands;
 
-namespace VirtualOffice.Application.Commands.Handlers
+namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
     public class UpdateCalendarEventHandler : ICommandHandler<UpdateCalendarEvent>
     {
@@ -35,15 +35,15 @@ namespace VirtualOffice.Application.Commands.Handlers
 
             var calEv = await _repository.GetById(id);
 
-            if(calEv._Title != title)
+            if (calEv._Title != title)
                 calEv.SetTitle(title);
-            if(calEv._Description != eventDescription)
+            if (calEv._Description != eventDescription)
                 calEv.SetDescription(eventDescription);
-            if(calEv._StartDate != startDate)
+            if (calEv._StartDate != startDate)
                 calEv.UpdateStartDate(startDate);
-            if(calEv._EndDate != endDate)
+            if (calEv._EndDate != endDate)
                 calEv.UpdateEndDate(endDate);
-                
+
             await _repository.Update(calEv);
         }
     }

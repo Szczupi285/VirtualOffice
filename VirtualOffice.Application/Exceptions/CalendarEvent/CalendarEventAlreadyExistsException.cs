@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Shared.Abstractions.Exceptions;
 
-namespace VirtualOffice.Application.Exceptions
+namespace VirtualOffice.Application.Exceptions.CalendarEvent
 {
     public class CalendarEventAlreadyExistsException : VirtualOfficeException
     {
