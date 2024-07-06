@@ -38,7 +38,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
 
             // we update only changed properties rather than whole object 
-            // beacuse change from title to same title would raise an event.
+            // beacuse changing the title to the same title would raise an event.
             if (calEv._Title != title)
                 calEv.SetTitle(title);
             if (calEv._Description != eventDescription)
