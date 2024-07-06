@@ -11,8 +11,8 @@ namespace VirtualOffice.Domain.Consts
         None = 0,
         Trial = 3,
         Basic = 30,
-        Enterprise = 100,
-        Premium = 500,
+        Premium = 100,
+        Enterprise = 500,
         Unlimited = -1,
     }
 }
