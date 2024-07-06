@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Moq;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
@@ -15,6 +18,196 @@ namespace DomainUnitTests
 {
     public class OrganizationUnitTests
     {
+        private Organization _Org { get; set; }
+        private ApplicationUser User { get; set; }
+        private ApplicationUser UserNotAddedToOffice { get; set; }
+        private ApplicationUser UserNotAdded { get; set; }
+        private Office Office { get; set; }
+        private Office OfficeNotAdded { get; set; }
+        public OrganizationUnitTests()
+        {
+            User = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            UserNotAddedToOffice = new ApplicationUser(Guid.NewGuid(), "N", "S");
+            UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
+            Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new HashSet<ApplicationUser> { User });
+            OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeNameOne", "DescriptionOne", new HashSet<ApplicationUser> { User });
+            Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
+            _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
+                new HashSet<ApplicationUser>(){ User, UserNotAddedToOffice }, subscription);
+        }
+
+        #region Events
+
+        [Fact]
+        public void AddOffice_ShouldNotRaiseOfficeAdded()
+        {
+            _Org.AddOffice(Office);
+            var Event = _Org.Events.OfType<OfficeAdded>().SingleOrDefault();
+            Assert.Null(Event);
+        }
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+        }
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded_OrganizationShouldEqual()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void AddOffice_ShouldRaiseOfficeAdded_OfficeShouldEqual()
+        {
+            _Org.AddOffice(OfficeNotAdded);
+            var Event = _Org.Events.OfType<OfficeAdded>().Single();
+            Assert.Equal(OfficeNotAdded, Event.office);
+        }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+        }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved_OrganizationShouldEqual()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveOffice_ShouldRaiseOfficeRemoved_OfficeShouldEqual()
+        {
+            _Org.RemoveOffice(Office);
+            var Event = _Org.Events.OfType<OfficeRemoved>().Single();
+            Assert.Equal(Office, Event.office);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted_OrganizationShouldEqual()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void SetName_ShouldRaiseOrganizationNameSetted_NameShouldEqual()
+        {
+            _Org.SetName("new");
+            var Event = _Org.Events.OfType<OrganizationNameSetted>().Single();
+            Assert.Equal("new", Event.name);
+        }
+        [Fact]
+        public void AddUser_ShouldNotRaiseUserAddedToOrganization()
+        {
+            _Org.AddUser(User);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().SingleOrDefault();
+            
+            Assert.Null(Event);
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().Single();
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization_OrganizationShouldEqual()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void AddUser_ShouldRaiseUserAddedToOrganization_userShouldEqual()
+        {
+            _Org.AddUser(UserNotAdded);
+            var Event = _Org.Events.OfType<UserAddedToOrganization>().Single();
+            Assert.Equal(UserNotAdded, Event.user);
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserRemovedFromOrganization()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserRemovedFromOrganization>().Single();
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserRemovedFromOrganization_OrganizationShouldEqual()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserRemovedFromOrganization>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveUser_ShouldRaiseUserRemovedFromOrganization_userShouldEqual()
+        {
+            _Org.RemoveUser(User);
+            var Event = _Org.Events.OfType<UserRemovedFromOrganization>().Single();
+            Assert.Equal(User, Event.user);
+        }
+        [Fact]
+        public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
+        }
+        [Fact]
+        public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_OrganizationShouldEqual()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_OfficeShoulEqual()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
+            Assert.Equal(Office, Event.office);
+        }
+        [Fact]
+        public void AddOfficeUser_ShouldRaiseOfficeUserAddedToOffice_UserShoulEqual()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            var Event = _Org.Events.OfType<UserAddedToOffice>().Single();
+            Assert.Equal(UserNotAddedToOffice, Event.User);
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_OrganizationShouldEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(_Org, Event.organization);
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_OfficeShoulEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(Office, Event.office);
+        }
+        [Fact]
+        public void RemoveOfficeUser_ShouldRaiseOfficeUserRemovedFromOffice_UserShoulEqual()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            var Event = _Org.Events.OfType<UserRemovedFromOffice>().Single();
+            Assert.Equal(User, Event.User);
+        }
+        #endregion
 
         #region OrganizationId
         [Fact]
@@ -75,8 +268,9 @@ namespace DomainUnitTests
 
         #region OrganizationUserLimit
         [Theory]
-        [InlineData(0)]
         [InlineData(1001)]
+        [InlineData(2001)]
+        [InlineData(10000)]
         public void InvalidOrganizationUserLimit_ShouldReturnInvalidOrganizationUserLimitException(ushort input)
         {
             Assert.Throws<InvalidOrganizationUserLimitException>(()
@@ -95,25 +289,11 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.Null(org._userLimit);
         }
         
-        // since user with sub type none should't be able to use application at all we're throwing exception for userLimit 0 which is equal to no subscribtion
-        [Fact]
-        public void OrganiazationUserLimitGetSubTypeNone_ShouldThrowInvalidOrganizationUserLimitException()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
-            Guid guid2 = Guid.NewGuid();
-            Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
-
-
-            Assert.Throws<InvalidOrganizationUserLimitException>(()
-                => 0 == org._userLimit);
-        }
         [Fact]
         public void OrganiazationUserLimitGetSubTypeTrial()
         {
@@ -121,7 +301,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(3 == org._userLimit);
         }
@@ -132,7 +312,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Basic, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.True(30 == org._userLimit);
         }
@@ -144,9 +324,9 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Enterprise, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
-            Assert.True(100 == org._userLimit);
+            Assert.True(500 == org._userLimit);
         }
         [Fact]
         public void OrganiazationUserLimitGetSubTypePremium()
@@ -155,9 +335,9 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Premium, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
-            Assert.True(500 == org._userLimit);
+            Assert.True(100 == org._userLimit);
         }
 
         [Theory]
@@ -199,7 +379,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
 
             Assert.True(org.IsUnlimited());
@@ -211,7 +391,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.None, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -222,7 +402,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -234,7 +414,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Basic, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -245,7 +425,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Enterprise, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -256,7 +436,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Premium, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            Organization org = new Organization(guid2, "Organization", new List<Office> { }, new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { }, new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.False(org.IsUnlimited());
         }
@@ -272,8 +452,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
             org.AddUser(new ApplicationUser(Guid.NewGuid(), "Name", "surname"));
@@ -288,11 +468,11 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreAdd = org._usedSlots;
-            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToAdd = new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
@@ -313,8 +493,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
             new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             uint usersPreRem = org._usedSlots;
@@ -338,7 +518,7 @@ namespace DomainUnitTests
             ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
             ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
 
-            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToRemove = new HashSet<ApplicationUser>()
             {
                 user1,
                 user2, 
@@ -346,8 +526,8 @@ namespace DomainUnitTests
                 user4,
             };
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser>()
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 user1,
@@ -366,6 +546,48 @@ namespace DomainUnitTests
 
         #endregion
 
+        #region _slotsLeft
+        [Fact]
+        public void slotsLeft_ShouldChange()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Basic);
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            Assert.Equal((ushort)28, _Org._slotsLeft);
+            _Org.AddUser(tempUser);
+            Assert.Equal((ushort)27, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Unlimited_ShouldEqualNull()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Unlimited);
+            Assert.Null(_Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual1()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Trial);
+            Assert.Equal((ushort)1, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual28()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Basic);
+            Assert.Equal((ushort)28, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual98()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Premium);
+            Assert.Equal((ushort)98, _Org._slotsLeft);
+        }
+        [Fact]
+        public void slotsLeft_Trial_ShouldEqual498()
+        {
+            _Org._subscription.UpdateSubType(SubscriptionTypeEnum.Enterprise);
+            Assert.Equal((ushort)498, _Org._slotsLeft);
+        }
+        #endregion
+
         #region Adding users
         [Fact]
         public void AddUser_ShouldContainUser()
@@ -374,8 +596,8 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
 
@@ -385,31 +607,14 @@ namespace DomainUnitTests
         }
         
         [Fact]
-        public void AddUser_WhenUserAlreadyAdded_ShouldThrowException()
-        {
-            Guid guid1 = Guid.NewGuid();
-            Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
-            Guid guid2 = Guid.NewGuid();
-
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
-
-            ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-
-            org.AddUser(user);
-
-            Assert.Throws<UserIsAlreadyMemberOfThisOrganizationException>(() => org.AddUser(user));
-        }
-
-        [Fact]
         public void AddUser_WhenNotEnoughtSlots_ShouldThrowException()
         {
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
             ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
@@ -427,10 +632,10 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
-            List<ApplicationUser> usersToAdd = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToAdd = new HashSet<ApplicationUser>()
             {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
@@ -457,8 +662,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"), user, }, subscription);
 
             org.RemoveUser(user);
 
@@ -473,8 +678,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { user }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { user }, subscription);
 
             Assert.Throws<CantRemoveOnlyUserException>(() => org.RemoveUser(user));
         }
@@ -487,8 +692,8 @@ namespace DomainUnitTests
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
             ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Mike", "Jackson");
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname") }, subscription);
 
             Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => org.RemoveUser(user));
         }
@@ -510,7 +715,7 @@ namespace DomainUnitTests
             ApplicationUser user3 = new ApplicationUser(guidu3, "Name", "surname");
             ApplicationUser user4 = new ApplicationUser(guidu4, "Name", "surname");
 
-            List<ApplicationUser> usersToRemove = new List<ApplicationUser>()
+            HashSet<ApplicationUser> usersToRemove = new HashSet<ApplicationUser>()
             {
                user1,
                user2,
@@ -518,8 +723,8 @@ namespace DomainUnitTests
                user4,
             };
 
-            Organization org = new Organization(guid2, "Organization", new List<Office> { },
-            new List<ApplicationUser> 
+            Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
+            new HashSet<ApplicationUser> 
             { 
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 user1,
@@ -539,5 +744,61 @@ namespace DomainUnitTests
         }
 
         #endregion
+
+        #region AddingOfficeUsers
+        [Fact]
+        public void AddOfficeUser_OfficeNotInOrg_ShouldThrowOfficeHasNotBeenFoundException()
+        {
+            Assert.Throws<OfficeHasNotBeenFoundException>(() => _Org.AddOfficeUser(User, OfficeNotAdded));
+        }
+        [Fact]
+        public void AddOfficeUser_UserNotInOrg_ShouldThrowUserIsNotAMemberOfThisOrganization()
+        {
+            Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => _Org.AddOfficeUser(UserNotAdded, Office));
+        }
+        [Fact]
+        public void AddOfficeUser_ValidData_ShouldAddUser()
+        {
+            _Org.AddOfficeUser(UserNotAddedToOffice, Office);
+            Assert.Contains(UserNotAddedToOffice, Office._members); 
+        }
+        [Fact]
+        public void AddRangeOfficeUsers_ValidData_ShouldAddUsers()
+        {
+            var x = _Org._slotsLeft;
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            _Org.AddUser(tempUser);
+            _Org.AddRangeOfficeUsers(new List<ApplicationUser>() { tempUser, UserNotAddedToOffice }, Office);
+            Assert.Contains(tempUser, Office._members);
+            Assert.Contains(UserNotAddedToOffice, Office._members);
+        }
+        [Fact]
+        public void RemoveOfficeUser_OfficeNotInOrg_ShouldThrowOfficeHasNotBeenFoundException()
+        {
+            Assert.Throws<OfficeHasNotBeenFoundException>(() => _Org.RemoveOfficeUser(User, OfficeNotAdded));
+        }
+        [Fact]
+        public void RemoveOfficeUser_UserNotInOrg_ShouldThrowUserIsNotAMemberOfThisOrganization()
+        {
+            Assert.Throws<UserIsNotAMemberOfThisOrganization>(() => _Org.RemoveOfficeUser(UserNotAdded, Office));
+        }
+        [Fact]
+        public void RemoveOfficeUser_ValidData_ShouldRemoveUser()
+        {
+            _Org.RemoveOfficeUser(User, Office);
+            Assert.DoesNotContain(User, Office._members);
+        }
+        [Fact]
+        public void RemoveRangeOfficeUsers_ValidData_ShouldRemoveUsers()
+        {
+            var tempUser = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+            _Org.AddUser(tempUser);
+            _Org.AddOfficeUser(tempUser, Office);
+            _Org.RemoveRangeOfficeUsers(new List<ApplicationUser>() { tempUser, User }, Office);
+            Assert.DoesNotContain(tempUser, Office._members);
+            Assert.DoesNotContain(User, Office._members);
+        }
+        #endregion
     }
 }
+                                

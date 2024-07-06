@@ -1,13 +1,14 @@
-﻿using VirtualOffice.Domain.Exceptions.Organization;
+﻿using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents;
+using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
+using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
 {
 
-    public class Organization 
+    public class Organization : AggregateRoot<OrganizationId>
     {
-        public OrganizationId Id { get; }
-
         public OrganizationName _name { get; private set; }
 
         public OrganizationUserLimit _userLimit {
@@ -17,18 +18,35 @@ namespace VirtualOffice.Domain.Entities
                 {
                     return null!;
                 }
-                return (ushort?)_subscription._subType;
+                return (ushort)_subscription._subType;
             }
         }  
 
-        public OrganizationUsedSlots _usedSlots { get => (uint)_organizationUsers.Count(); } 
+        public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); } 
 
-        public ICollection<Office> _offices { get; private set; }
+        public ushort? _slotsLeft
+        {
+            get
+            { 
+                if (_userLimit is null)
+                    return null;
+                else
+                {
+                    var slotsLeft = _userLimit - _usedSlots;
+                    if (slotsLeft <= 0)
+                        throw new OrganizationNotEnoughSlotsException();
+                    else
+                       return (ushort)slotsLeft;
+                }
+            }
+        }
+
+        public HashSet<Office> _offices { get; private set; }
 
         // consider this relation since office already contains 
         // users list, but we would have to check distinct users every time
         // we add user to office. Since one user may be a member of many offices
-        public ICollection<ApplicationUser> _organizationUsers { get; private set; }
+        public HashSet<ApplicationUser> _organizationUsers { get; private set; }
 
         public Subscription _subscription { get; private set; }
 
@@ -44,7 +62,7 @@ namespace VirtualOffice.Domain.Entities
         }
 
         internal Organization(OrganizationId id, OrganizationName name,
-             ICollection<Office> offices, ICollection<ApplicationUser> organizationUsers
+             HashSet<Office> offices, HashSet<ApplicationUser> organizationUsers
             ,Subscription subscription)
         {
             if(organizationUsers.Count == 0 )
@@ -57,17 +75,41 @@ namespace VirtualOffice.Domain.Entities
             _subscription = subscription;
 
         }
-         
+
+        public void AddOffice(Office office)
+        {
+            if (office == null) 
+                throw new ArgumentNullException("Office cannot be null");
+            bool hasBeenAdded = _offices.Add(office);
+
+            if (hasBeenAdded)
+                AddEvent(new OfficeAdded(this, office));
+        }
+        public void RemoveOffice(Office office)
+        {
+            if(office is null)
+                throw new ArgumentNullException("Office Cannot be null");
+            else if (!_offices.Contains(office))
+                throw new OfficeHasNotBeenFoundException(office.Id);
+
+            _offices.Remove(office);
+            AddEvent(new OfficeRemoved(this, office));
+        }
+        public void SetName(string name)
+        {
+            _name = name;
+            AddEvent(new OrganizationNameSetted(this, _name));
+        }
+
         public void AddUser(ApplicationUser user)
         {
-            bool aleadyExists = _organizationUsers.Any(u => u.Id == user.Id);
-
-            if (aleadyExists)
-                throw new UserIsAlreadyMemberOfThisOrganizationException(user.Id);
-            else if (!_isUnlimited && _usedSlots >= _userLimit)
+            if (!_isUnlimited && _slotsLeft <= 0)
                 throw new OrganizationNotEnoughSlotsException();
-            
-            _organizationUsers.Add(user);
+
+            bool HasBeenAdded = _organizationUsers.Add(user);
+
+            if(HasBeenAdded)
+                AddEvent(new UserAddedToOrganization(this, user));
         }
         public void AddRangeUsers(ICollection<ApplicationUser> users)
         {
@@ -85,7 +127,10 @@ namespace VirtualOffice.Domain.Entities
             if (alreadyExists && _organizationUsers.Count <= 1)
                 throw new CantRemoveOnlyUserException(user);
             else if (alreadyExists)
+            {
                 _organizationUsers.Remove(user);
+                AddEvent(new UserRemovedFromOrganization(this, user));
+            }
             else
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
 
@@ -99,6 +144,41 @@ namespace VirtualOffice.Domain.Entities
             }
         }
         internal bool IsUnlimited() => _isUnlimited;
+
+        public void AddOfficeUser(ApplicationUser user, Office office)
+        {
+            if (!_offices.Contains(office))
+                throw new OfficeHasNotBeenFoundException(office.Id);
+            else if (!_organizationUsers.Contains(user))
+                throw new UserIsNotAMemberOfThisOrganization(user.Id);
+            else if(office.AddMember(user))
+                AddEvent(new UserAddedToOffice(this, office, user));
+
+        }
+        public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
+        {
+            foreach(ApplicationUser user in users)
+                AddOfficeUser(user, office);
+        }
+
+        public void RemoveOfficeUser(ApplicationUser user, Office office)
+        {
+
+            if (!_offices.Contains(office))
+                throw new OfficeHasNotBeenFoundException(office.Id);
+            else if (!_organizationUsers.Contains(user))
+                throw new UserIsNotAMemberOfThisOrganization(user.Id);
+
+            if (office.RemoveMember(user))
+                AddEvent(new UserRemovedFromOffice(this, office, user));
+
+        }
+
+        public void RemoveRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
+        {
+            foreach (ApplicationUser user in users)
+                RemoveOfficeUser(user, office);
+        }
 
     }
 }

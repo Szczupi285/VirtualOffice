@@ -7,13 +7,13 @@ using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractScheduleItem
+    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>
     {
-
-        public ScheduleItemId Id { get; }
         public ScheduleItemTitle _Title { get; private set; }
         public ScheduleItemDescription _Description { get; private set; }
         public HashSet<ApplicationUser> _AssignedEmployees { get; private set; }
@@ -21,7 +21,7 @@ namespace VirtualOffice.Domain.Abstractions
         public ScheduleItemStartDate _StartDate { get; private protected set; }
         public ScheduleItemEndDate _EndDate { get; private protected set; }
 
-        public AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
+        protected AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
           HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
         {
             if (startDate.Value >= endDate.Value)
@@ -35,12 +35,23 @@ namespace VirtualOffice.Domain.Abstractions
             _EndDate = endDate;
         }
 
-        public void SetTitle(string title) => _Title = title;
-        public void SetDescription(string description) => _Description = description;
+        public void SetTitle(string title)
+        {
+            _Title = title;
+            AddEvent(new ScheduleItemTitleSetted(this, title));
+        }
+        public void SetDescription(string description)
+        {
+            _Description = description;
+            AddEvent(new ScheduleItemDescriptionSetted(this, description));
+        }
 
         public void AddEmployee(ApplicationUser user)
         {
-            _AssignedEmployees.Add(user);
+            bool HasBeenAdded = _AssignedEmployees.Add(user);
+
+            if (HasBeenAdded)
+                AddEvent(new EmployeeAddedToScheduleItem(this, user));
         }
         public void AddEmployeesRange(ICollection<ApplicationUser> users)
         {
@@ -54,6 +65,8 @@ namespace VirtualOffice.Domain.Abstractions
                 throw new UserIsNotAssignedToThisScheduleItemException(user.Id);
 
             _AssignedEmployees.Remove(user);
+            AddEvent(new EmployeeRemovedFromScheduleItem(this, user));
+
         }
 
         public void RemoveEmployeesRange(ICollection<ApplicationUser> users)
@@ -67,6 +80,7 @@ namespace VirtualOffice.Domain.Abstractions
                 throw new EndDateCannotBeBeforeStartDate(endDate, _StartDate);
 
             _EndDate = endDate;
+            AddEvent(new ScheduleItemEndDateUpdated(this, endDate));
         }
     }
 }

@@ -8,6 +8,7 @@ using VirtualOffice.Domain.Consts;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
 namespace VirtualOffice.Domain.Entities
 {
@@ -24,8 +25,16 @@ namespace VirtualOffice.Domain.Entities
             _Priority = priority;
         }
 
-        public void SetPriority(EmployeeTaskPriorityEnum priority) => _Priority = priority;
-        public void UpdateStatus(EmployeeTaskStatusEnum Status) => _TaskStatus = Status;
+        public void SetPriority(EmployeeTaskPriorityEnum priority)
+        {
+            _Priority = priority;
+            AddEvent(new PrioritySetted(this, priority));
+        }
+        public void UpdateStatus(EmployeeTaskStatusEnum Status)
+        {
+            _TaskStatus = Status;
+            AddEvent(new StatusUpdated(this, Status));
+        }
 
         public int CompareTo(EmployeeTask? other)
         {
