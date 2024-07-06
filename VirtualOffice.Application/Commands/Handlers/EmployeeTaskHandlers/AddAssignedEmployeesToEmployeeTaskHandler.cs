@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Commands.EmployeeTaskCommands;
-using VirtualOffice.Application.Exceptions.CalendarEvent;
+using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Shared.Abstractions.Commands;
@@ -28,7 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
             if (!await _readService.ExistsByIdAsync(command.guid))
             {
-                throw new CalendarEventDoesNotExistException(command.guid);
+                throw new EmployeeTaskDoesNotExistsException(command.guid);
             }
 
             var calEv = await _repository.GetById(command.guid);

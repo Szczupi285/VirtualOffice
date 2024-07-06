@@ -13,20 +13,18 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-   
-
-    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : ICommandHandler<RemoveAssignedEmployeesToEmployeeTask>
+    public class DeleteEmployeeTaskHandler : ICommandHandler<DeleteEmployeeTask>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
 
-        public RemoveAssignedEmployeesFromEmployeeTaskHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
+        public DeleteEmployeeTaskHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task HandleAsync(RemoveAssignedEmployeesToEmployeeTask command, CancellationToken cancellationToken)
+        public async Task HandleAsync(DeleteEmployeeTask command, CancellationToken cancellationToken)
         {
 
             if (!await _readService.ExistsByIdAsync(command.guid))
@@ -34,9 +32,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
                 throw new EmployeeTaskDoesNotExistsException(command.guid);
             }
 
-            var calEv = await _repository.GetById(command.guid);
-            calEv.RemoveEmployeesRange(command.employeesToRemove);
-            await _repository.Update(calEv);
+            var calEv = _repository.Delete(command.guid);
         }
     }
 }
