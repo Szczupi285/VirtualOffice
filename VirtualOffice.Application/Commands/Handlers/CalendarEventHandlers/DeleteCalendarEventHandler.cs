@@ -10,7 +10,7 @@ using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Shared.Abstractions.Commands;
 
-namespace VirtualOffice.Application.Commands.Handlers
+namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
     public class DeleteCalendarEventHandler : ICommandHandler<DeleteCalendarEvent>
     {
