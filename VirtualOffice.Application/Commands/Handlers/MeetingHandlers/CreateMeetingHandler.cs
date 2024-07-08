@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,18 +24,20 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
             _readService = eventReadService;
         }
 
-        public async Task HandleAsync(CreateMeeting command, CancellationToken cancellationToken)
+        public async Task Handle(CreateMeeting request, CancellationToken cancellationToken)
         {
-            var (id, title, description, assignedEmployees, startDate, endDate) = command;
+            var (Id, Title, Description, AssignedEmployees, StartDate, EndDate) = request;
 
-            if (await _readService.ExistsByIdAsync(id))
+            if (await _readService.ExistsByIdAsync(Id))
             {
-                throw new MeetingAlreadyExistsException(id);
+                throw new MeetingAlreadyExistsException(Id);
             }
 
-            Meeting meeting = new Meeting(id, title, description, assignedEmployees, startDate, endDate);
+            Meeting meeting = new Meeting(Id, Title, Description, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(meeting);
         }
+
+       
     }
 }
