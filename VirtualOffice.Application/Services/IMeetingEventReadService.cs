@@ -9,5 +9,6 @@ namespace VirtualOffice.Application.Services
     public interface IMeetingEventReadService
     {        
         Task<bool> ExistsByIdAsync(Guid id);
+        Task SaveChanges(CancellationToken cancellationToken);
     }
 }
