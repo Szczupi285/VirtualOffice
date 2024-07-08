@@ -18,7 +18,7 @@ namespace VirtualOffice.Shared
 
             services.AddScoped<ICommandDispatcher, MemoryCommandDispatcher>();
             services.Scan(s => s.FromAssemblies(assembly)
-            .AddClasses(c => c.AssignableTo(typeof(ICommandHandler<>)))
+            .AddClasses(c => c.AssignableTo(typeof(IRequestHandler<>)))
             .AsImplementedInterfaces()
             .WithScopedLifetime());
             

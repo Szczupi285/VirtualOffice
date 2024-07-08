@@ -15,7 +15,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
    
 
-    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : ICommandHandler<RemoveAssignedEmployeesToEmployeeTask>
+    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : IRequestHandler<RemoveAssignedEmployeesToEmployeeTask>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

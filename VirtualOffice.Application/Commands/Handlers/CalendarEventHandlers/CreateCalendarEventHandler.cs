@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -14,7 +15,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class CreateCalendarEventHandler : ICommandHandler<CreateCalendarEvent>
+    public class CreateCalendarEventHandler : MediatR.IRequestHandler<CreateCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
@@ -25,18 +26,19 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(CreateCalendarEvent command, CancellationToken cancellationToken)
+        public async Task Handle(CreateCalendarEvent request, CancellationToken cancellationToken)
         {
+            var (Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
 
-            var (id, title, eventDescription, assignedEmployees, startDate, endDate) = command;
-
-            if (await _readService.ExistsByIdAsync(id))
+            if (await _readService.ExistsByIdAsync(Id))
             {
-                throw new CalendarEventAlreadyExistsException(id);
+                throw new CalendarEventAlreadyExistsException(Id);
             }
-            CalendarEvent calEv = new CalendarEvent(id, title, eventDescription, assignedEmployees, startDate, endDate);
+            CalendarEvent calEv = new CalendarEvent(Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(calEv);
         }
+
+      
     }
 }

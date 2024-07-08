@@ -13,7 +13,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class DeleteEmployeeTaskHandler : ICommandHandler<DeleteEmployeeTask>
+    public class DeleteEmployeeTaskHandler : IRequestHandler<DeleteEmployeeTask>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

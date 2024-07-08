@@ -18,7 +18,7 @@ namespace VirtualOffice.Shared.Commands
         public async Task DispatchAsync<TCommand>(TCommand command, CancellationToken cancellationToken) where TCommand : class, ICommand
         {
             using var scope = _serviceProvider.CreateScope();
-            var handler = scope.ServiceProvider.GetRequiredService<ICommandHandler<TCommand>>();
+            var handler = scope.ServiceProvider.GetRequiredService<IRequestHandler<TCommand>>();
             await handler.HandleAsync(command, cancellationToken);
         }
     }

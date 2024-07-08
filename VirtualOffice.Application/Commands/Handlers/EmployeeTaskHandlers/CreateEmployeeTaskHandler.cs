@@ -13,7 +13,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class CreateEmployeeTaskHandler : ICommandHandler<CreateEmployeeTask>
+    public class CreateEmployeeTaskHandler : IRequestHandler<CreateEmployeeTask>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;

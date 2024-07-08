@@ -12,7 +12,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class AddAssignedEmployeesToEmployeeTaskHandler : ICommandHandler<AddAssignedEmployeesToEmployeeTask>
+    public class AddAssignedEmployeesToEmployeeTaskHandler : IRequestHandler<AddAssignedEmployeesToEmployeeTask>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

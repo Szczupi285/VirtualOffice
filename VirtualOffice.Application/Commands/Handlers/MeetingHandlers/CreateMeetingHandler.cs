@@ -12,7 +12,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
 {
-    public class CreateMeetingHandler : ICommandHandler<CreateMeeting>
+    public class CreateMeetingHandler : IRequestHandler<CreateMeeting>
     {
         public IMeetingRepository _repository;
         public IMeetingEventReadService _readService;

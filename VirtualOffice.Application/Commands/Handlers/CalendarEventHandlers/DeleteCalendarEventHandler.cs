@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,7 +14,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class DeleteCalendarEventHandler : ICommandHandler<DeleteCalendarEvent>
+    public class DeleteCalendarEventHandler : IRequestHandler<DeleteCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
@@ -24,15 +25,16 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(DeleteCalendarEvent command, CancellationToken cancellationToken)
+        public async Task Handle(DeleteCalendarEvent request, CancellationToken cancellationToken)
         {
-
-            if (!await _readService.ExistsByIdAsync(command.guid))
+            if (!await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new CalendarEventDoesNotExistException(command.guid);
+                throw new CalendarEventDoesNotExistException(request.Guid);
             }
 
-            await _repository.Delete(command.guid);
+            await _repository.Delete(request.Guid);
         }
+
+      
     }
 }

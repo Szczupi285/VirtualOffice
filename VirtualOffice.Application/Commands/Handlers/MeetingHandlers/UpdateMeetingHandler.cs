@@ -12,7 +12,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    public class UpdateMeetingHandler : ICommandHandler<UpdateMeeting>
+    public class UpdateMeetingHandler : IRequestHandler<UpdateMeeting>
     {
         public IMeetingRepository _repository;
         public IMeetingEventReadService _readService;

@@ -13,7 +13,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class UpdateCalendarEventHandler : ICommandHandler<UpdateCalendarEvent>
+    public class UpdateCalendarEventHandler : IRequestHandler<UpdateCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
