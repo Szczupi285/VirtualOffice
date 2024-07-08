@@ -26,6 +26,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             }
 
             await _repository.Delete(request.Guid);
+            await _repository.SaveAsync(cancellationToken);
+
         }
     }
 }

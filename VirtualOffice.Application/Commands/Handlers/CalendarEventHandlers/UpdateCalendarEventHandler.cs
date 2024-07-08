@@ -41,8 +41,10 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                 calEv.UpdateEndDate(EndDate);
 
             await _repository.Update(calEv);
+            await _repository.SaveAsync(cancellationToken);
+
         }
 
-     
+
     }
 }

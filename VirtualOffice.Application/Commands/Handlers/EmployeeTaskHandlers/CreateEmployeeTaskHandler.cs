@@ -30,6 +30,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             EmployeeTask empTask = new EmployeeTask(id, title, eventDescription, assignedEmployees, priority, startDate, endDate);
 
             await _repository.Add(empTask);
+            await _repository.SaveAsync(cancellationToken);
+
         }
     }
 }

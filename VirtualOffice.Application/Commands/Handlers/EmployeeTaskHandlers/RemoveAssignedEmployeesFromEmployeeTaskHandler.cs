@@ -30,6 +30,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             var calEv = await _repository.GetById(request.Guid);
             calEv.RemoveEmployeesRange(request.EmployeesToRemove);
             await _repository.Update(calEv);
+            await _repository.SaveAsync(cancellationToken);
+
         }
     }
 }

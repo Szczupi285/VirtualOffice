@@ -38,6 +38,8 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
                 meeting.UpdateEndDate(EndDate);
 
             await _repository.Update(meeting);
+            await _repository.SaveAsync(cancellationToken);
+
         }
 
     }

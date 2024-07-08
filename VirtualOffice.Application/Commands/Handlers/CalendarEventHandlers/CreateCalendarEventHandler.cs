@@ -29,8 +29,10 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             CalendarEvent calEv = new CalendarEvent(Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(calEv);
+            await _repository.SaveAsync(cancellationToken);
+
         }
 
-      
+
     }
 }

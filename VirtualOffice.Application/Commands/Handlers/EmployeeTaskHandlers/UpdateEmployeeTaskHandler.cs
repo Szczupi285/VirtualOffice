@@ -43,6 +43,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
                 empTask.SetPriority(priority);
 
             await _repository.Update(empTask);
+            await _repository.SaveAsync(cancellationToken);
+
         }
     }
 }
