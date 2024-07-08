@@ -20,7 +20,6 @@ namespace VirtualOffice.Domain.Repositories
         IEnumerable<PrivateDocument> GetAllForUser(ApplicationUser userId);
         IEnumerable<PrivateDocument> GetAllSortedForUser(ApplicationUser userId);
         IEnumerable<PublicDocument> GetAllForUserByDate(ApplicationUserId userId, DocumentCreationDate date);
-
-
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

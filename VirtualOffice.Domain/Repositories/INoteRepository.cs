@@ -16,5 +16,6 @@ namespace VirtualOffice.Domain.Repositories
         void Delete(NoteId guid);
         IEnumerable<Note> GetAllForUser(ApplicationUser userId);
         IEnumerable<Note> GetAllSortedByTitleForUser(ApplicationUser userId);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

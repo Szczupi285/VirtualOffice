@@ -14,5 +14,6 @@ namespace VirtualOffice.Domain.Repositories
         void Add(ApplicationUser user);
         void Update(ApplicationUser user);
         void Delete(ApplicationUserId id);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

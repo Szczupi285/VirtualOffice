@@ -23,6 +23,7 @@ namespace VirtualOffice.Domain.Repositories
         Task<IEnumerable<EmployeeTask>> GetAllForUserByPriorityAndDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate, EmployeeTaskPriorityEnum priority);
         Task<IEnumerable<EmployeeTask>> GetAllForUserByStatus(ApplicationUserId userId, EmployeeTaskStatusEnum priority);
         Task<IEnumerable<EmployeeTask>> GetAllForUserByStatusAndDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate, EmployeeTaskStatusEnum priority);
+        Task SaveAsync(CancellationToken cancellationToken);
 
     }
 }

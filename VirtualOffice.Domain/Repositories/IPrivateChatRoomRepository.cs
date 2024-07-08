@@ -17,5 +17,6 @@ namespace VirtualOffice.Domain.Repositories
         void Update(PrivateChatRoom chatRoom);
         void Delete(ChatRoomId id);
         IEnumerable<PrivateChatRoom> GetAllByUserId(ApplicationUserId id);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

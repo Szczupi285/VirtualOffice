@@ -17,5 +17,6 @@ namespace VirtualOffice.Domain.Repositories
         IEnumerable<Office> GetOffices(OrganizationId organizationId);
         IEnumerable<ApplicationUser> GetUsers(OrganizationId organizationId);
         IEnumerable<Subscription> GetSubscriptions(OrganizationId organizationId);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

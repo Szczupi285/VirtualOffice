@@ -17,5 +17,6 @@ namespace VirtualOffice.Domain.Repositories
         Task<IEnumerable<Meeting>> GetAllForUser(ApplicationUser userId);
         Task<IEnumerable<Meeting>> GetAllForUserFutureEvents(ApplicationUser userId);
         Task<IEnumerable<Meeting>> GetAllForUserByDate(ApplicationUser userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }
