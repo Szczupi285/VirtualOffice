@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +8,6 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.EmployeeTaskCommands
 {
-    public record DeleteEmployeeTask(Guid guid) : ICommand;
+    public record DeleteEmployeeTask(Guid Guid) : IRequest;
     
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class AddCalendarEventAssignedEmployeesHandler : ICommandHandler<AddCalendarEventAssignedEmployees>
+    public class AddCalendarEventAssignedEmployeesHandler : IRequestHandler<AddCalendarEventAssignedEmployees>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
@@ -23,17 +24,17 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(AddCalendarEventAssignedEmployees command, CancellationToken cancellationToken)
+        public async Task Handle(AddCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
-
-            if (!await _readService.ExistsByIdAsync(command.guid))
+            if (!await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new CalendarEventDoesNotExistException(command.guid);
+                throw new CalendarEventDoesNotExistException(request.Guid);
             }
 
-            var calEv = await _repository.GetById(command.guid);
-            calEv.AddEmployeesRange(command.employeesToAdd);
+            var calEv = await _repository.GetById(request.Guid);
+            calEv.AddEmployeesRange(request.EmployeesToAdd);
             await _repository.Update(calEv);
         }
+      
     }
 }
