@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,7 +24,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
             _readService = eventReadService;
         }
 
-        public async Task HandleAsync(CreateMeeting command, CancellationToken cancellationToken)
+        public async Task Handle(CreateMeeting command, CancellationToken cancellationToken)
         {
             var (id, title, description, assignedEmployees, startDate, endDate) = command;
 

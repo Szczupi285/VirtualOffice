@@ -13,7 +13,7 @@ using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class AddCalendarEventAssignedEmployeesHandler : MediatR.IRequestHandler<AddCalendarEventAssignedEmployees>
+    public class AddCalendarEventAssignedEmployeesHandler : IRequestHandler<AddCalendarEventAssignedEmployees>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;
