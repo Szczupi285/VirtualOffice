@@ -1,16 +1,8 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
-using VirtualOffice.Application.Exceptions;
 using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;
-using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
-using VirtualOffice.Shared.Abstractions.Commands;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using VirtualOffice.Domain.Entities;
-using System.Threading.Tasks;
-using VirtualOffice.Shared.Abstractions.Commands;
+﻿using VirtualOffice.Domain.Entities;
 using MediatR;
 
 namespace VirtualOffice.Application.Commands.CalendarEventCommands
