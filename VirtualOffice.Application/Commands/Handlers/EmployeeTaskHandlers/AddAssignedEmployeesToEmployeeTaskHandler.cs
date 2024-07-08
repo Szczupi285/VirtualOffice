@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,16 +24,16 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(AddAssignedEmployeesToEmployeeTask command, CancellationToken cancellationToken)
+        public async Task Handle(AddAssignedEmployeesToEmployeeTask request, CancellationToken cancellationToken)
         {
 
-            if (!await _readService.ExistsByIdAsync(command.guid))
+            if (!await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new EmployeeTaskDoesNotExistsException(command.guid);
+                throw new EmployeeTaskDoesNotExistsException(request.Guid);
             }
 
-            var calEv = await _repository.GetById(command.guid);
-            calEv.AddEmployeesRange(command.employeesToAdd);
+            var calEv = await _repository.GetById(request.Guid);
+            calEv.AddEmployeesRange(request.EmployeesToAdd);
             await _repository.Update(calEv);
         }
     }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,15 +25,15 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(DeleteEmployeeTask command, CancellationToken cancellationToken)
+        public async Task Handle(DeleteEmployeeTask request, CancellationToken cancellationToken)
         {
 
-            if (!await _readService.ExistsByIdAsync(command.guid))
+            if (!await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new EmployeeTaskDoesNotExistsException(command.guid);
+                throw new EmployeeTaskDoesNotExistsException(request.Guid);
             }
 
-            await _repository.Delete(command.guid);
+            await _repository.Delete(request.Guid);
         }
     }
 }

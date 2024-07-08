@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -24,10 +25,10 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(UpdateEmployeeTask command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateEmployeeTask request, CancellationToken cancellationToken)
         {
 
-            var (id, title, description, endDate, status, priority) = command;
+            var (id, title, description, endDate, status, priority) = request;
 
             if (!await _readService.ExistsByIdAsync(id))
             {
