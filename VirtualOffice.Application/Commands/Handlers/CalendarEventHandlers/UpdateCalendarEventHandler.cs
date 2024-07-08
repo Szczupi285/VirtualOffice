@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,31 +25,32 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(UpdateCalendarEvent command, CancellationToken cancellationToken)
+        public async Task Handle(UpdateCalendarEvent request, CancellationToken cancellationToken)
         {
+            var (Id, Title, EventDescription, StartDate, EndDate) = request;
 
-            var (id, title, eventDescription, startDate, endDate) = command;
-
-            if (!await _readService.ExistsByIdAsync(id))
+            if (!await _readService.ExistsByIdAsync(Id))
             {
-                throw new CalendarEventDoesNotExistException(id);
+                throw new CalendarEventDoesNotExistException(Id);
             }
 
-            var calEv = await _repository.GetById(id);
+            var calEv = await _repository.GetById(Id);
 
 
             // we update only changed properties rather than whole object 
             // beacuse changing the title to the same title would raise an event.
-            if (calEv._Title != title)
-                calEv.SetTitle(title);
-            if (calEv._Description != eventDescription)
-                calEv.SetDescription(eventDescription);
-            if (calEv._StartDate != startDate)
-                calEv.UpdateStartDate(startDate);
-            if (calEv._EndDate != endDate)
-                calEv.UpdateEndDate(endDate);
+            if (calEv._Title != Title)
+                calEv.SetTitle(Title);
+            if (calEv._Description != EventDescription)
+                calEv.SetDescription(EventDescription);
+            if (calEv._StartDate != StartDate)
+                calEv.UpdateStartDate(StartDate);
+            if (calEv._EndDate != EndDate)
+                calEv.UpdateEndDate(EndDate);
 
             await _repository.Update(calEv);
         }
+
+     
     }
 }

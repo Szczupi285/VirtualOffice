@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,17 +24,18 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             _readService = readService;
         }
 
-        public async Task HandleAsync(RemoveCalendarEventAssignedEmployees command, CancellationToken cancellationToken)
+        public async Task Handle(RemoveCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
-
-            if (!await _readService.ExistsByIdAsync(command.guid))
+            if (!await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new CalendarEventDoesNotExistException(command.guid);
+                throw new CalendarEventDoesNotExistException(request.Guid);
             }
 
-            var calEv = await _repository.GetById(command.guid);
-            calEv.RemoveEmployeesRange(command.employeesToRemove);
+            var calEv = await _repository.GetById(request.Guid);
+            calEv.RemoveEmployeesRange(request.EmployeesToRemove);
             await _repository.Update(calEv);
         }
+
+      
     }
 }
