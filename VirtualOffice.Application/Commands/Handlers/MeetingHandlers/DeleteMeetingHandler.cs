@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    public class DeleteMeetingHandler
+    public class DeleteMeetingHandler : IRequestHandler<DeleteMeeting>
     {
         public IMeetingRepository _repository;
         public IMeetingEventReadService _readService;
@@ -22,15 +23,15 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             _readService = eventReadService;
         }
 
-        public async Task HandleAsync(DeleteMeeting command, CancellationToken cancellationToken)
+        public async Task Handle(DeleteMeeting request, CancellationToken cancellationToken)
         {
-
-            if (await _readService.ExistsByIdAsync(command.guid))
+            if (await _readService.ExistsByIdAsync(request.Guid))
             {
-                throw new MeetingDoesNotExistException(command.guid);
+                throw new MeetingDoesNotExistException(request.Guid);
             }
 
-            await _repository.Delete(command.guid);
+            await _repository.Delete(request.Guid);
         }
+
     }
 }
