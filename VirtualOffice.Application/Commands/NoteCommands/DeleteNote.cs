@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Commands.NoteCommands
 {
-    public record CreateNote(Guid Id, string Title, string Content, ApplicationUser User) : IRequest;
+    public record DeleteNote(Guid Id) : IRequest;
 }

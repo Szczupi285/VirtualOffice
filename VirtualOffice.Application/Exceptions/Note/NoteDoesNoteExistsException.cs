@@ -7,9 +7,9 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Application.Exceptions.Note
 {
-    public class NoteAlreadayExistsException : VirtualOfficeException
+    public class NoteDoesNoteExistsException : VirtualOfficeException
     {
-        public NoteAlreadayExistsException(Guid guid) : base($"Note with Id: {guid} already exsits")
+        public NoteDoesNoteExistsException(Guid id) : base($"Note with Id: {id} does not exist")
         {
         }
     }
