@@ -11,23 +11,33 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 {
-    public class DeleteNoteHandler : IRequestHandler<DeleteNote>
+    public class UpdateNoteHandler : IRequestHandler<UpdateNote>
     {
         public INoteRepository _repository;
         public INoteReadService _readService;
 
-        public DeleteNoteHandler(INoteRepository repository, INoteReadService noteReadService)
+        public UpdateNoteHandler(INoteRepository repository, INoteReadService noteReadService)
         {
             _repository = repository;
             _readService = noteReadService;
         }
 
-        public async Task Handle(DeleteNote request, CancellationToken cancellationToken)
+        public async Task Handle(UpdateNote request, CancellationToken cancellationToken)
         {
-            if(!await _readService.ExistsByIdAsync(request.Id))
-                throw new NoteDoesNoteExistsException(request.Id);
+            var (Id, Title, Content) = request;
 
-            await _repository.Delete(request.Id);
+
+            if (!await _readService.ExistsByIdAsync(Id))
+                throw new NoteDoesNoteExistsException(Id);
+
+            var note = await _repository.GetById(Id);
+
+            if (note._title != Title)
+                note.EditTitle(Title);
+            if(note._content != Content)
+                note.EditContent(Content);
+
+            await _repository.Update(note);
             await _repository.SaveAsync(cancellationToken);
         }
     }

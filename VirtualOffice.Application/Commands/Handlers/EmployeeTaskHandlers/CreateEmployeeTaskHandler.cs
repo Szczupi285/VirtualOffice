@@ -24,9 +24,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             var (id, title, eventDescription, assignedEmployees, startDate, endDate, priority) = request;
 
             if (await _readService.ExistsByIdAsync(id))
-            {
                 throw new EmployeeTaskAlreadyExistsException(id);
-            }
+            
             EmployeeTask empTask = new EmployeeTask(id, title, eventDescription, assignedEmployees, priority, startDate, endDate);
 
             await _repository.Add(empTask);
