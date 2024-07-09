@@ -2,6 +2,7 @@
 using VirtualOffice.Domain.DomainEvents;
 using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Exceptions.Organization;
+using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
@@ -76,9 +77,19 @@ namespace VirtualOffice.Domain.Entities
 
         }
 
+        public Office GetOfficeById(OfficeId id) 
+        {
+            var office = _offices.FirstOrDefault(x => x.Id == id);
+            if(office is null)
+                throw new OfficeHasNotBeenFoundException(id);
+
+            return office;
+        }
+
+
         public void AddOffice(Office office)
         {
-            if (office == null) 
+            if (office is null) 
                 throw new ArgumentNullException("Office cannot be null");
             bool hasBeenAdded = _offices.Add(office);
 

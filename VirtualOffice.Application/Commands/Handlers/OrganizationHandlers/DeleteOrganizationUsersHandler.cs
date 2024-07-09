@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class DeleteOrganizationUsersHandler
+    public class DeleteOrganizationUsersHandler : IRequest<DeleteOrganizationUsers>
     {
 
         public IOrganizationRepository _repository;
