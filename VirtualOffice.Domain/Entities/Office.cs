@@ -20,7 +20,7 @@ namespace VirtualOffice.Domain.Entities
         // unlike in Organization situation, Office might not have any members/users assigned to it
         internal HashSet<ApplicationUser> _members { get; private set; }
 
-        internal Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
+        public Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
         { 
             Id= id;
             _officeName = name;
