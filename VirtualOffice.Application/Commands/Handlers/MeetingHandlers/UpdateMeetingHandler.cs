@@ -22,9 +22,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             var (Id, Title, Description, StartDate, EndDate) = request;
 
             if (await _readService.ExistsByIdAsync(Id))
-            {
                 throw new MeetingDoesNotExistException(Id);
-            }
 
             var meeting = _repository.GetById(Id);
 

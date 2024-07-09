@@ -21,9 +21,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
         {
 
             if (!await _readService.ExistsByIdAsync(request.Guid))
-            {
                 throw new EmployeeTaskDoesNotExistsException(request.Guid);
-            }
 
             var calEv = await _repository.GetById(request.Guid);
             calEv.AddEmployeesRange(request.EmployeesToAdd);

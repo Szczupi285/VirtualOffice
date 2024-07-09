@@ -22,9 +22,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             var (Id, Title, EventDescription, StartDate, EndDate) = request;
 
             if (!await _readService.ExistsByIdAsync(Id))
-            {
                 throw new CalendarEventDoesNotExistException(Id);
-            }
 
             var calEv = await _repository.GetById(Id);
 

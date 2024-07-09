@@ -23,9 +23,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             var (id, title, description, endDate, status, priority) = request;
 
             if (!await _readService.ExistsByIdAsync(id))
-            {
                 throw new EmployeeTaskDoesNotExistsException(id);
-            }
 
             var empTask = await _repository.GetById(id);
 

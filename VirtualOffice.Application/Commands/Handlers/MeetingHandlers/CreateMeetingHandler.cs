@@ -23,9 +23,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
             var (Id, Title, Description, AssignedEmployees, StartDate, EndDate) = request;
 
             if (await _readService.ExistsByIdAsync(Id))
-            {
                 throw new MeetingAlreadyExistsException(Id);
-            }
 
             Meeting meeting = new Meeting(Id, Title, Description, AssignedEmployees, StartDate, EndDate);
 

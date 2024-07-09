@@ -23,9 +23,8 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             var (Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
 
             if (await _readService.ExistsByIdAsync(Id))
-            {
                 throw new CalendarEventAlreadyExistsException(Id);
-            }
+            
             CalendarEvent calEv = new CalendarEvent(Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(calEv);

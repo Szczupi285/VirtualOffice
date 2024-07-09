@@ -20,9 +20,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
         public async Task Handle(AddCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Guid))
-            {
                 throw new CalendarEventDoesNotExistException(request.Guid);
-            }
 
             var calEv = await _repository.GetById(request.Guid);
             calEv.AddEmployeesRange(request.EmployeesToAdd);

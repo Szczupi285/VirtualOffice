@@ -21,9 +21,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
         {
 
             if (!await _readService.ExistsByIdAsync(request.Guid))
-            {
                 throw new EmployeeTaskDoesNotExistsException(request.Guid);
-            }
 
             await _repository.Delete(request.Guid);
             await _repository.SaveAsync(cancellationToken);
