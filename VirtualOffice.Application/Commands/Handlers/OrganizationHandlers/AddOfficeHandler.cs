@@ -36,7 +36,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             
             await _repository.Update(org);
             await _repository.SaveAsync(cancellationToken);
-
             
         }
     }

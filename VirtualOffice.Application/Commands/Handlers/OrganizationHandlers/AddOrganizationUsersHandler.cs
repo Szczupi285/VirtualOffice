@@ -33,8 +33,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             org.AddRangeUsers(request.Users);
             await _repository.Update(org);
             await _repository.SaveAsync(cancellationToken);
-
-
         }
     }
 }
