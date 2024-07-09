@@ -16,22 +16,21 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
     {
 
         public IOrganizationRepository _repository;
-        public IOrganizationReadService _OrgReadService;
-        public IOfficeReadService _OfficeReadService;
+        public IOrganizationReadService _readService;
+       
 
-        public AddOrganizationOfficeUsersHandler(IOrganizationRepository repository, IOrganizationReadService orgReadService, IOfficeReadService officeReadService)
+        public AddOrganizationOfficeUsersHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {
             _repository = repository;
-            _OrgReadService = orgReadService;
-            _OfficeReadService = officeReadService;
+            _readService = readService;
+            
         }
 
         public async Task Handle(AddOrganizationOfficeUsers request, CancellationToken cancellationToken)
         {
-            if (!await _OrgReadService.ExistsByIdAsync(request.OrganizationId))
+            if (!await _readService.ExistsByIdAsync(request.OrganizationId))
                 throw new OrganizationDoesNotExistsException(request.OrganizationId);
-            if (!await _OfficeReadService.ExistsByIdAsync(request.OfficeId))
-                throw new OfficeDoesNotExistException(request.OfficeId);
+            
 
 
             var org = await _repository.GetById(request.OrganizationId);
