@@ -11,11 +11,11 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IPublicChatRoomRepository
     {
-        PublicChatRoom GetById(ChatRoomId guid);
-        void Add(PublicChatRoom chatRoom);
-        void Update(PublicChatRoom chatRoom);
-        void Delete(ChatRoomId id);
-        IEnumerable<PublicChatRoom> GetAllByUserId(ApplicationUserId id);
+        Task<PublicChatRoom> GetById(ChatRoomId guid);
+        Task Add(PublicChatRoom chatRoom);
+        Task Update(PublicChatRoom chatRoom);
+        Task Delete(ChatRoomId id);
+        Task<IEnumerable<PublicChatRoom>> GetAllByUserId(ApplicationUserId id);
         Task SaveAsync(CancellationToken cancellationToken);
     }
 }

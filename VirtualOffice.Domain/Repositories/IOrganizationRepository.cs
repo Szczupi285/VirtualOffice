@@ -10,13 +10,13 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IOrganizationRepository
     {
-        Organization GetById(OrganizationId guid);
-        void Add(Organization organization);
-        void Update(Organization organization);
-        void Delete(OrganizationId guid);
-        IEnumerable<Office> GetOffices(OrganizationId organizationId);
-        IEnumerable<ApplicationUser> GetUsers(OrganizationId organizationId);
-        IEnumerable<Subscription> GetSubscriptions(OrganizationId organizationId);
+        Task<Organization> GetById(OrganizationId guid);
+        Task Add(Organization organization);
+        Task Update(Organization organization);
+        Task Delete(OrganizationId guid);
+        Task<IEnumerable<Office>> GetOffices(OrganizationId organizationId);
+        Task<IEnumerable<ApplicationUser>> GetUsers(OrganizationId organizationId);
+        Task<IEnumerable<Subscription>> GetSubscriptions(OrganizationId organizationId);
         Task SaveAsync(CancellationToken cancellationToken);
     }
 }
