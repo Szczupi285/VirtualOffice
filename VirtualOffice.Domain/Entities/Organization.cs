@@ -61,7 +61,7 @@ namespace VirtualOffice.Domain.Entities
             }
         }
 
-        internal Organization(OrganizationId id, OrganizationName name,
+        public Organization(OrganizationId id, OrganizationName name,
              HashSet<Office> offices, HashSet<ApplicationUser> organizationUsers
             ,Subscription subscription)
         {
