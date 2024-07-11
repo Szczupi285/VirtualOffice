@@ -12,30 +12,25 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
-    public class CreatePrivateChatRoomHandler : IRequestHandler<CreatePrivateChatRoom>
+    public class DeletePrivateChatRoomHandler : IRequestHandler<DeletePrivateChatRoom>
     {
-
         public IPrivateChatRoomRepository _repository;
         public IPrivateChatRoomReadService _readService;
 
-        public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
+        public DeletePrivateChatRoomHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
         {
             _repository = repository;
             _readService = noteReadService;
         }
 
 
-        public async Task Handle(CreatePrivateChatRoom request, CancellationToken cancellationToken)
+        public async Task Handle(DeletePrivateChatRoom request, CancellationToken cancellationToken)
         {
+            if (!await _readService.ExistsByIdAsync(request.Id))
+                throw new PrivateChatRoomDoesNotExistException(request.Id);
 
-            if (await _readService.ExistsByIdAsync(request.Id))
-                throw new PrivateChatRoomAlreadyExistException(request.Id);
-
-            PrivateChatRoom pcr = new(request.Id, request.Participants, request.Messages);
-
-            await _repository.Add(pcr);
+            await _repository.Delete(request.Id);
             await _repository.SaveAsync(cancellationToken);
         }
     }
-    
 }
