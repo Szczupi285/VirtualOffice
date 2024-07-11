@@ -8,5 +8,5 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Commands.PrivateChatRoomCommands
 {
-   public record CreatePrivateChatRoom(Guid Id, HashSet<ApplicationUser> Participants, SortedSet<Message> Messages) : IRequest;
+   public record CreatePrivateChatRoom(HashSet<ApplicationUser> Participants, SortedSet<Message> Messages) : IRequest;
 }

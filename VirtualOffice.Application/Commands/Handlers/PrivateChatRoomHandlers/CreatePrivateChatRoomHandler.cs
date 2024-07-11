@@ -16,22 +16,15 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
     {
 
         public IPrivateChatRoomRepository _repository;
-        public IPrivateChatRoomReadService _readService;
 
-        public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
+        public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository)
         {
             _repository = repository;
-            _readService = noteReadService;
         }
-
 
         public async Task Handle(CreatePrivateChatRoom request, CancellationToken cancellationToken)
         {
-
-            if (await _readService.ExistsByIdAsync(request.Id))
-                throw new PrivateChatRoomAlreadyExistException(request.Id);
-
-            PrivateChatRoom pcr = new(request.Id, request.Participants, request.Messages);
+            PrivateChatRoom pcr = new(Guid.NewGuid(), request.Participants, request.Messages);
 
             await _repository.Add(pcr);
             await _repository.SaveAsync(cancellationToken);
