@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.Document;
 
-namespace VirtualOffice.Application.Commands.PrivateDocumentCommands
+namespace VirtualOffice.Application.Commands.CreatePrivateDocumentCommands
 {
-    public record PrivateDocument(ChatRoomId id, DocumentContent content, DocumentTitle title, DocumentCreationDate creationDate, DocumentFilePath filePath) : IRequest;
+    public record CreatePrivateDocument(DocumentId Id, DocumentContent Content, DocumentTitle Title, DocumentCreationDate CreationDate, DocumentFilePath FilePath) : IRequest;
 }
