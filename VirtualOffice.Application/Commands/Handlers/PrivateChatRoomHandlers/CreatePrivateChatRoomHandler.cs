@@ -12,13 +12,13 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
-    public class CreatePrivateChatRoomHandlerHandler : IRequestHandler<CreatePrivateChatRoom>
+    public class CreatePrivateChatRoomHandler : IRequestHandler<CreatePrivateChatRoom>
     {
 
         public IPrivateChatRoomRepository _repository;
         public IPrivateChatRoomReadService _readService;
 
-        public CreatePrivateChatRoomHandlerHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
+        public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
         {
             _repository = repository;
             _readService = noteReadService;
