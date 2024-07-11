@@ -10,22 +10,18 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
     public class CreateMeetingHandler : IRequestHandler<CreateMeeting>
     {
         public IMeetingRepository _repository;
-        public IMeetingEventReadService _readService;
 
-        public CreateMeetingHandler(IMeetingRepository repository, IMeetingEventReadService eventReadService)
+        public CreateMeetingHandler(IMeetingRepository repository)
         {
             _repository = repository;
-            _readService = eventReadService;
+            
         }
 
         public async Task Handle(CreateMeeting request, CancellationToken cancellationToken)
         {
-            var (Id, Title, Description, AssignedEmployees, StartDate, EndDate) = request;
+            var (Title, Description, AssignedEmployees, StartDate, EndDate) = request;
 
-            if (await _readService.ExistsByIdAsync(Id))
-                throw new MeetingAlreadyExistsException(Id);
-
-            Meeting meeting = new Meeting(Id, Title, Description, AssignedEmployees, StartDate, EndDate);
+            Meeting meeting = new Meeting(Guid.NewGuid(), Title, Description, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(meeting);
             await _repository.SaveAsync(cancellationToken);
