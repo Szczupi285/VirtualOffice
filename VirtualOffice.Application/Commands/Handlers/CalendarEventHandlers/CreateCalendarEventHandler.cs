@@ -10,22 +10,18 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
     public class CreateCalendarEventHandler : IRequestHandler<CreateCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
-        private readonly ICalendarEventReadService _readService;
 
-        public CreateCalendarEventHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
+        public CreateCalendarEventHandler(ICalendarEventRepository repository)
         {
             _repository = repository;
-            _readService = readService;
+            
         }
 
         public async Task Handle(CreateCalendarEvent request, CancellationToken cancellationToken)
         {
-            var (Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
-
-            if (await _readService.ExistsByIdAsync(Id))
-                throw new CalendarEventAlreadyExistsException(Id);
+            var (Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
             
-            CalendarEvent calEv = new CalendarEvent(Id, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
+            CalendarEvent calEv = new CalendarEvent(Guid.NewGuid(), Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
             await _repository.Add(calEv);
             await _repository.SaveAsync(cancellationToken);
