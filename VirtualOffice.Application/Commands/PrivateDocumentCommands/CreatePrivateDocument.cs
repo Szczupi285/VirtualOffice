@@ -10,5 +10,5 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Application.Commands.CreatePrivateDocumentCommands
 {
-    public record CreatePrivateDocument(DocumentId Id, DocumentContent Content, DocumentTitle Title, DocumentCreationDate CreationDate, DocumentFilePath FilePath) : IRequest;
+    public record CreatePrivateDocument(DocumentContent Content, DocumentTitle Title, List<DocumentFilePath> FilePaths) : IRequest;
 }
