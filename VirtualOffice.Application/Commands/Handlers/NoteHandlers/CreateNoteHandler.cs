@@ -16,24 +16,17 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
     {
 
         public INoteRepository _repository;
-        public INoteReadService _readService;
 
-        public CreateNoteHandler(INoteRepository repository, INoteReadService noteReadService)
+        public CreateNoteHandler(INoteRepository repository)
         {
             _repository = repository;
-            _readService = noteReadService;
         }
-
 
         public async Task Handle(CreateNote request, CancellationToken cancellationToken)
         {
+            var(Title, Content, User) = request;
 
-            var(Id, Title, Content, User) = request;
-
-            if(await _readService.ExistsByIdAsync(request.Id))
-                throw new NoteAlreadayExistsException(request.Id);
-
-            Note note = new(Id, Title, Content, User); 
+            Note note = new(Guid.NewGuid(), Title, Content, User); 
 
             await _repository.Add(note);
             await _repository.SaveAsync(cancellationToken);

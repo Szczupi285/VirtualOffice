@@ -8,5 +8,5 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Commands.NoteCommands
 {
-    public record CreateNote(Guid Id, string Title, string Content, ApplicationUser User) : IRequest;
+    public record CreateNote(string Title, string Content, ApplicationUser User) : IRequest;
 }
