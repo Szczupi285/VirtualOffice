@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders.Document
 {
-    internal class PrivateDocumentBuilder : IDocumentBuilder
+    public class PrivateDocumentBuilder : IDocumentBuilder
     {
         private PrivateDocument _document = new PrivateDocument();
 

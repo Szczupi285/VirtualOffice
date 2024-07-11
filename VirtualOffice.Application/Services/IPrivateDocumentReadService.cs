@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Application.Services
 {
-    public interface IPrivateDocumentReadServices
+    public interface IPrivateDocumentReadService
     {
         Task<bool> ExistsByIdAsync(Guid id);
     }
