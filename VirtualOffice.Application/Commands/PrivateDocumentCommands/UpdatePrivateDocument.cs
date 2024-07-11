@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MediatR;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Application.Commands.PrivateDocumentCommands
 {
-    public record UpdatePrivateDocument(ChatRoomId Id, DocumentContent Content, DocumentTitle Title, DocumentCreationDate CreationDate, DocumentFilePath FilePath)
+    public record UpdatePrivateDocument(ChatRoomId Id, DocumentContent Content, DocumentTitle Title, DocumentCreationDate CreationDate, DocumentFilePath FilePath) : IRequest
     {
     }
 }
