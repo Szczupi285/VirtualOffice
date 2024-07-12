@@ -13,7 +13,6 @@ namespace VirtualOffice.Domain.Builders.Document
         void SetId(Guid id);
         void SetTitle(string title);
         void SetContent(string content);
-        void SetPreviousVersion(AbstractDocument previousVersion);
         void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths);
 
     }

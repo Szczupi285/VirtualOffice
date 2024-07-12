@@ -82,38 +82,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentContentSetted>().Single();
             Assert.Equal("Content", Event.content);
         }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted_PublicDocumentShouldEqual()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-            Assert.Equal(publicDocument, Event.document);
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted_PreviousVersionShouldEqual()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-            Assert.Equal(previousVersion, Event.previousVersion);
-        }
+       
         [Fact]
         public void AddNewAttachment_ShouldRaiseNewAttachmentAdded()
         {
@@ -285,15 +254,6 @@ namespace DomainUnitTests
             _publicDocument.SetContent(newDescription);
 
             Assert.Equal(newDescription, _publicDocument._content);
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldSetPreviousVersion()
-        {
-            PublicDocument previousVersion = new PublicDocument();
-
-            _publicDocument.SetPreviousVersion(previousVersion);
-
-            Assert.Equal(previousVersion, _publicDocument._previousVersion);
         }
         [Fact]
         public void AddNewAttachment_ShouldAddAttachmentToList()

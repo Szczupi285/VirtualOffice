@@ -17,8 +17,6 @@ namespace VirtualOffice.Domain.Abstractions
 
         public DocumentContent _content { get; private protected set; }
 
-        public AbstractDocument? _previousVersion { get; private protected set; }
-
         public ICollection<DocumentFilePath>? _attachmentFilePaths { get; private protected set; }
 
         internal void AddId(Guid id) => Id = id;
@@ -26,8 +24,6 @@ namespace VirtualOffice.Domain.Abstractions
         internal void AddTitle(string title) => _title = title;
 
         internal void AddContent(string content) => _content = content;
-
-        internal void AddPreviousVersion(AbstractDocument previousVersion) => _previousVersion = previousVersion;
 
         internal void AddAttachment(ICollection<DocumentFilePath> attachmentFilePaths) => _attachmentFilePaths = attachmentFilePaths;
 
@@ -41,11 +37,6 @@ namespace VirtualOffice.Domain.Abstractions
         {
             _content = content;
             AddEvent(new DocumentContentSetted(this, content));
-        }
-        public void SetPreviousVersion(AbstractDocument previousVersion)
-        {
-            _previousVersion = previousVersion;
-            AddEvent(new DocumentPreviousVersionSetted(this, previousVersion));
         }
         public void AddNewAttachment(DocumentFilePath attachmentFilePath)
         {

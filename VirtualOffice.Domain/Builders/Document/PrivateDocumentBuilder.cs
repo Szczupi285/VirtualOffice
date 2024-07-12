@@ -41,12 +41,6 @@ namespace VirtualOffice.Domain.Builders.Document
             _document.AddId(id);
             IsIdSet = true;
         }
-
-        public void SetPreviousVersion(AbstractDocument previousVersion)
-        {
-            _document.AddPreviousVersion(previousVersion);
-        }
-
         public void SetTitle(string title)
         {
             _document.AddTitle(title);
