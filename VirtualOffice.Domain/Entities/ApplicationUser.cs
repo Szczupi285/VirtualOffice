@@ -1,37 +1,42 @@
 ﻿using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.DomainEvents.ApplicationUserEvents;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.Abstractions;
 
 namespace VirtualOffice.Domain.Entities
 {
     public class ApplicationUser
     {
-        public ApplicationUserId Id { get; }
+        public ApplicationUserId _Id { get; }
 
-        public ApplicationUserName _name { get; private set; }
+        public ApplicationUserName _Name { get; private set; }
 
-        public ApplicationUserSurname _surname { get; private set; }
+        public ApplicationUserSurname _Surname { get; private set; }
 
-        private PermissionsEnum _permissions;
+        private PermissionsEnum _Permissions;
 
         // private Settings _settings;
 
         // private Roles _roles;
 
-        internal ApplicationUser(Guid id, string name, string surname)
+        public ApplicationUser(Guid id, string name, string surname)
         {
-            Id = id;
-            _name = name;
-            _surname = surname;
-            _permissions = PermissionsEnum.None;
+            _Id = id;
+            _Name = name;
+            _Surname = surname;
+            _Permissions = PermissionsEnum.None;
         }
 
-        internal ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions) 
+        public ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions) 
         {
-            Id = id;
-            _name = name;
-            _surname = surname;
-            _permissions = permissions;
+            _Id = id;
+            _Name = name;
+            _Surname = surname;
+            _Permissions = permissions;
         }
+
+        public void EditName(ApplicationUserName name) => _Name = name;
+        public void EditSurname(ApplicationUserSurname surname) => _Surname = surname;
 
     }
 }
