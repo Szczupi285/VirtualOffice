@@ -22,12 +22,18 @@ namespace VirtualOffice.Domain.Entities
         public ICollection<ApplicationUserId> _eligibleForWrite { get; }
 
 
-        public PublicDocumentMemento(Guid id, string title, string content, AbstractDocument? previousVersion, ICollection<DocumentFilePath>? attachmentFilePaths)
+       
+
+        public PublicDocumentMemento(Guid id, string title, string content, ICollection<DocumentFilePath>? attachmentFilePaths,
+            (DocumentCreationDate, ApplicationUserId) creationDetails, ICollection<ApplicationUserId> eligibleForRead, ICollection<ApplicationUserId> eligibleForWrite)
         {
             Id = id;
             _title = title;
             _content = content;
-            _attachmentFilePaths = attachmentFilePaths?.ToList();
+            _attachmentFilePaths = attachmentFilePaths;
+            _creationDetails = creationDetails;
+            _eligibleForRead = eligibleForRead;
+            _eligibleForWrite = eligibleForWrite;
         }
     }
 }

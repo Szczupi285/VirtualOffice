@@ -17,7 +17,7 @@ namespace VirtualOffice.Domain.Entities
 
         public DocumentCreationDate _creationDate;
 
-        public PrivateDocumentMemento(Guid id, string title, string content, AbstractDocument? previousVersion, ICollection<DocumentFilePath>? attachmentFilePaths, DocumentCreationDate documentCreationDate)
+        public PrivateDocumentMemento(Guid id, string title, string content, ICollection<DocumentFilePath>? attachmentFilePaths, DocumentCreationDate documentCreationDate)
         {
             Id = id;
             _title = title;
