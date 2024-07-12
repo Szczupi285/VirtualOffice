@@ -12,17 +12,43 @@ namespace VirtualOffice.Application.Services
     {
         private readonly Stack<PrivateDocumentMemento> _mementoStack = new();
 
+        private readonly List<PrivateDocumentMemento> _mementos = new List<PrivateDocumentMemento>();
+        private int _currentMementoIndex = -1;
+
         public void SaveState(PrivateDocument document)
         {
-            _mementoStack.Push(document.SaveToMemento());
+            // If we're not at the latest state, remove all states after the current index
+            if (_currentMementoIndex < _mementos.Count - 1)
+            {
+                _mementos.RemoveRange(_currentMementoIndex + 1, _mementos.Count - _currentMementoIndex - 1);
+            }
+
+            _mementos.Add(document.SaveToMemento());
+            _currentMementoIndex++;
         }
 
-        public void RestoreState(PrivateDocument document)
+        public bool RestorePreviousState(PrivateDocument document)
         {
-            if (_mementoStack.Count > 0)
+            if (_currentMementoIndex > 0)
             {
-                document.RestoreFromMemento(_mementoStack.Pop());
+                _currentMementoIndex--;
+                document.RestoreFromMemento(_mementos[_currentMementoIndex]);
+                return true;
             }
+
+            return false;
+        }
+
+        public bool RestoreNextState(PrivateDocument document)
+        {
+            if (_currentMementoIndex < _mementos.Count - 1)
+            {
+                _currentMementoIndex++;
+                document.RestoreFromMemento(_mementos[_currentMementoIndex]);
+                return true;
+            }
+
+            return false;
         }
     }
 }

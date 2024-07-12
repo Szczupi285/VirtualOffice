@@ -1,5 +1,4 @@
 ﻿using VirtualOffice.Domain.Consts;
-using VirtualOffice.Domain.DomainEvents.ApplicationUserEvents;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.Abstractions;
 
@@ -7,7 +6,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class ApplicationUser
     {
-        public ApplicationUserId _Id { get; }
+        public ApplicationUserId Id { get; }
 
         public ApplicationUserName _Name { get; private set; }
 
@@ -21,7 +20,7 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUser(Guid id, string name, string surname)
         {
-            _Id = id;
+            Id = id;
             _Name = name;
             _Surname = surname;
             _Permissions = PermissionsEnum.None;
@@ -29,7 +28,7 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions) 
         {
-            _Id = id;
+            Id = id;
             _Name = name;
             _Surname = surname;
             _Permissions = permissions;

@@ -21,7 +21,7 @@ namespace VirtualOffice.Domain.Entities
         {
             // properies are not valdiated by add methods since they were already validated when the object was constructed and saved to memento
             Id = memento.Id;
-            _title = memento._title);
+            _title = memento._title;
             _content = memento._content;
             _attachmentFilePaths = memento._attachmentFilePaths;
             _creationDate = memento._creationDate;

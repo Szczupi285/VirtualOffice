@@ -34,7 +34,7 @@ namespace VirtualOffice.Domain.Entities
 
         internal bool AddMember(ApplicationUser user) 
         {
-            bool alreadyExists = _members.Any(i => i._Id == user._Id);
+            bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (alreadyExists)
                 return false;
@@ -45,7 +45,7 @@ namespace VirtualOffice.Domain.Entities
 
         internal bool RemoveMember(ApplicationUser user) 
         {
-            bool alreadyExists = _members.Any(i => i._Id == user._Id);
+            bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
             if (!alreadyExists)
                 return false;
@@ -56,7 +56,7 @@ namespace VirtualOffice.Domain.Entities
         }
 
         public ApplicationUser GetMemberById(ApplicationUserId id)
-            => _members.FirstOrDefault(u => u._Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
+            => _members.FirstOrDefault(u => u.Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
 
         public ApplicationUser GetMemberBySurname(ApplicationUserSurname surname)
             => _members.FirstOrDefault(u => u._Surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
