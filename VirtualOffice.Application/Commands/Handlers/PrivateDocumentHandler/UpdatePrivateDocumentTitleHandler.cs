@@ -11,24 +11,28 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
-    public class DeletePrivateDocumentHandler : IRequestHandler<DeletePrivateDocument>
+    public class UpdatePrivateDocumentTitleHandler : IRequestHandler<UpdatePrivateDocumentTitle>
     {
         IPrivateDocumentRepository _repository;
         IPrivateDocumentReadService _readService;
 
-        public DeletePrivateDocumentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
+        public UpdatePrivateDocumentTitleHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task Handle(DeletePrivateDocument request, CancellationToken cancellationToken)
-        {
+       
 
+        public async Task Handle(UpdatePrivateDocumentTitle request, CancellationToken cancellationToken)
+        {
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);
 
-            await _repository.Delete(request.Id);
+            var privDoc = await _repository.GetById(request.Id);
+            privDoc.SetTitle(request.Title);
+
+            await _repository.Update(privDoc);
             await _repository.SaveAsync(cancellationToken);
         }
     }

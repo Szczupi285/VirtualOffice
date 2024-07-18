@@ -9,7 +9,5 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Application.Commands.PrivateDocumentCommands
 {
-    public record UpdatePrivateDocument(ChatRoomId Id, DocumentContent Content, DocumentTitle Title, DocumentCreationDate CreationDate, DocumentFilePath FilePath) : IRequest
-    {
-    }
+    public record UpdatePrivateDocumentTitle(Guid Id, string Title) : IRequest;
 }

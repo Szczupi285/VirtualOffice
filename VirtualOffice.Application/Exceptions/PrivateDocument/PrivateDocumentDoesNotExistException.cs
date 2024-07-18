@@ -7,9 +7,9 @@ using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Application.Exceptions.PrivateDocument
 {
-    public class PrivateDocumentAlreadyDoeasNotExistException : VirtualOfficeException
+    public class PrivateDocumentDoesNotExistException : VirtualOfficeException
     {
-        public PrivateDocumentAlreadyDoeasNotExistException(Guid id) : base($"Private document with Id: {id} does not exist")
+        public PrivateDocumentDoesNotExistException(Guid id) : base($"Private document with Id: {id} does not exist")
         {
         }
     }
