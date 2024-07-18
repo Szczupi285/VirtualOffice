@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Application.Commands.PrivateDocumentCommands
 {
-    public record UpdatePrivateDocumentContent(Guid Id, string content) : IRequest;
+    public record UpdatePrivateDocumentContent(Guid Id, string Content) : IRequest;
 
 }
