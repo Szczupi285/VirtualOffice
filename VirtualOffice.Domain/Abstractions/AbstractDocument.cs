@@ -61,13 +61,16 @@ namespace VirtualOffice.Domain.Abstractions
 
         public void DeleteAttachment(DocumentFilePath attachmentFilePath)
         {
-            if (!_attachmentFilePaths.Contains(attachmentFilePath))
+            if(_attachmentFilePaths != null)
             {
-                throw new InvalidDocumentFilePathException(attachmentFilePath);
-            }
-            _attachmentFilePaths.Remove(attachmentFilePath);
+                if (!_attachmentFilePaths.Contains(attachmentFilePath))
+                {
+                    throw new InvalidDocumentFilePathException(attachmentFilePath);
+                }
+                _attachmentFilePaths.Remove(attachmentFilePath);
 
-            AddEvent(new AttachmentDeleted(this, attachmentFilePath));
+                AddEvent(new AttachmentDeleted(this, attachmentFilePath));
+            }
         }
 
         public void DeleteAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths)
