@@ -11,7 +11,6 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
-    
     public class AddAttachmentHandler : IRequestHandler<AddAttachment>
     {
         IPrivateDocumentRepository _repository;

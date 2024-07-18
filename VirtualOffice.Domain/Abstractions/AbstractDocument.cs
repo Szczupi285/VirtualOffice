@@ -41,9 +41,11 @@ namespace VirtualOffice.Domain.Abstractions
         }
         public void AddNewAttachment(DocumentFilePath attachmentFilePath)
         {
+
             if(_attachmentFilePaths is not null)
             {
-                _attachmentFilePaths.Add(attachmentFilePath);
+                if(!_attachmentFilePaths.Contains(attachmentFilePath))
+                    _attachmentFilePaths.Add(attachmentFilePath);
             }
             else
                 _attachmentFilePaths = new List<DocumentFilePath>() { attachmentFilePath };
