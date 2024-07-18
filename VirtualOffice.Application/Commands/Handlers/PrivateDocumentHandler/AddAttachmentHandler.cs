@@ -29,7 +29,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
                 throw new PrivateDocumentDoesNotExistException(request.Id);
 
             var privDoc = await _repository.GetById(request.Id);
-            privDoc.SetContent(request.Content);
+            privDoc.AddNewAttachment(request.AttachmentFilePath);
 
             await _repository.Update(privDoc);
             await _repository.SaveAsync(cancellationToken);
