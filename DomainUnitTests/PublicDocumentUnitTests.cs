@@ -31,6 +31,7 @@ namespace DomainUnitTests
             documentBuilder.SetCreationDetails(new ApplicationUserId(Guid.NewGuid()));
             documentBuilder.SetEligibleForRead(new List<ApplicationUserId> { new ApplicationUserId(Guid.NewGuid()) });
             documentBuilder.SetEligibleForWrite(new List<ApplicationUserId> { new ApplicationUserId(Guid.NewGuid()) });
+            documentBuilder.SetAttachments(new List<DocumentFilePath> { new DocumentFilePath(@"D:\file.txt") });
 
             return documentBuilder.GetDocument();
         }
@@ -125,6 +126,32 @@ namespace DomainUnitTests
 
             var Events = publicDocument.Events.OfType<PublicDocumentSettedCreationDate>().ToList();
             Assert.Single(Events);
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseDeleteAttachment()
+        {
+            var publicDocument = BuildValidPublicDocument();
+
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_PublicDocumentShouldEqual()
+        {
+            var publicDocument = BuildValidPublicDocument();
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+            Assert.Equal(publicDocument, Event.document);
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_AttachmentFilePathShouldEqual()
+        {
+            var publicDocument = BuildValidPublicDocument();
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+            Assert.Equal(@"D:\file.txt", Event.filePath);
         }
         [Fact]
         public void SettedCreationDate_ShouldRaiseEventPublicDocumentSettedCreationDate_PublicDocumentShouldEqual()

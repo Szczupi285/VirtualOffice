@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.Exceptions.Document;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Abstractions
@@ -55,6 +56,25 @@ namespace VirtualOffice.Domain.Abstractions
             foreach(DocumentFilePath documentFilePath in documentFilePaths)
             {
                 AddNewAttachment(documentFilePath);
+            }
+        }
+
+        public void DeleteAttachment(DocumentFilePath attachmentFilePath)
+        {
+            if (!_attachmentFilePaths.Contains(attachmentFilePath))
+            {
+                throw new InvalidDocumentFilePathException(attachmentFilePath);
+            }
+            _attachmentFilePaths.Remove(attachmentFilePath);
+
+            AddEvent(new AttachmentDeleted(this, attachmentFilePath));
+        }
+
+        public void DeleteAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths)
+        {
+            foreach (DocumentFilePath documentFilePath in documentFilePaths)
+            {
+                DeleteAttachment(documentFilePath);
             }
         }
     }

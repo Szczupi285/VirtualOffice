@@ -237,7 +237,7 @@ namespace DomainUnitTests
             ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
 
-            ApplicationUser foundMember = _office.GetMemberBySurname(member._surname);
+            ApplicationUser foundMember = _office.GetMemberBySurname(member._Surname);
 
             Assert.Equal(member, foundMember);
         }
