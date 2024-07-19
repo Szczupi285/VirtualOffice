@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Application.Commands.PrivateDocumentCommands
+namespace VirtualOffice.Application.Commands.PublicDocumentCommands
 {
-    public record DeletePrivateDocument(Guid Id) : IRequest;
+   public record DeletePublicDocument(Guid Id) : IRequest;
 }
