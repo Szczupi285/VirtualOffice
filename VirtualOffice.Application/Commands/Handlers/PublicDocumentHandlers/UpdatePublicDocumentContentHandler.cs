@@ -11,24 +11,24 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
-    public class UpdatePublicDocumentTitleHandler : IRequestHandler<UpdatePublicDocumentTitle>
+    public class UpdatePublicDocumentContentHandler : IRequestHandler<UpdatePublicDocumentContent>
     {
         IPublicDocumentRepository _repository;
         IPublicDocumentReadService _readService;
 
-        public UpdatePublicDocumentTitleHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
+        public UpdatePublicDocumentContentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task Handle(UpdatePublicDocumentTitle request, CancellationToken cancellationToken)
+        public async Task Handle(UpdatePublicDocumentContent request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PublicDocumentDoesNotExistException(request.Id);
 
             var pubDoc = await _repository.GetById(request.Id);
-            pubDoc.SetTitle(request.Title);
+            pubDoc.SetContent(request.Content);
 
             await _repository.Update(pubDoc);
             await _repository.SaveAsync(cancellationToken);

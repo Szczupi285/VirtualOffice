@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Application.Commands.PublicDocumentCommands
 {
-    public record UpdatePublicDocumentTitle(Guid Id, string Title) : IRequest;
+    public record UpdatePublicDocumentContent(Guid Id, string Content) : IRequest;
 }
