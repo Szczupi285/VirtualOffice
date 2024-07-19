@@ -11,18 +11,18 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
-    public class DeleteAttachmentHandler : IRequestHandler<DeleteAttachment>
+    public class DeletePrivateDocumentAttachmentHandler : IRequestHandler<DeletePrivateDocumentAttachment>
     {
         IPrivateDocumentRepository _repository;
         IPrivateDocumentReadService _readService;
 
-        public DeleteAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
+        public DeletePrivateDocumentAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task Handle(DeleteAttachment request, CancellationToken cancellationToken)
+        public async Task Handle(DeletePrivateDocumentAttachment request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);

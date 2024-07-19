@@ -1,12 +1,6 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Application.Commands.PrivateDocumentCommands;
 using VirtualOffice.Application.Commands.PublicDocumentCommands;
-using VirtualOffice.Application.Exceptions.PrivateDocument;
+using VirtualOffice.Application.Exceptions.PublicDocument;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
 
@@ -14,10 +8,10 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
     public class AddPublicDocumentAttachmentHandler : IRequestHandler<AddPublicDocumentAttachment>
     {
-        IPrivateDocumentRepository _repository;
-        IPrivateDocumentReadService _readService;
+        IPublicDocumentRepository _repository;
+        IPublicDocumentReadService _readService;
 
-        public AddPublicDocumentAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
+        public AddPublicDocumentAttachmentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {
             _repository = repository;
             _readService = readService;
@@ -26,7 +20,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
         public async Task Handle(AddPublicDocumentAttachment request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id))
-                throw new PrivateDocumentDoesNotExistException(request.Id);
+                throw new PublicDocumentDoesNotExistException(request.Id);
 
             var pubDoc = await _repository.GetById(request.Id);
             pubDoc.AddNewAttachment(request.AttachmentFilePath);

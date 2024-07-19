@@ -11,18 +11,18 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
-    public class AddAttachmentHandler : IRequestHandler<AddAttachment>
+    public class AddPrivateDocumentAttachmentHandler : IRequestHandler<AddPrivateDocumentAttachment>
     {
         IPrivateDocumentRepository _repository;
         IPrivateDocumentReadService _readService;
 
-        public AddAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
+        public AddPrivateDocumentAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
             _repository = repository;
             _readService = readService;
         }
 
-        public async Task Handle(AddAttachment request, CancellationToken cancellationToken)
+        public async Task Handle(AddPrivateDocumentAttachment request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);
