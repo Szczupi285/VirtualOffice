@@ -11,7 +11,7 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IMeetingRepository
     {
-        IMeeting GetById(ScheduleItemId guid);
+        Task<IMeeting> GetById(ScheduleItemId guid);
         Task Add(IMeeting meeting);
         Task Update(IMeeting meeting);
         Task Delete(ScheduleItemId guid);
