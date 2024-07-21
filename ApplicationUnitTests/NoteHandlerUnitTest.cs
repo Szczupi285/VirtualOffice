@@ -4,11 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.Commands.Handlers.NoteHandlers;
 using VirtualOffice.Application.Commands.NoteCommands;
+using VirtualOffice.Application.Exceptions.EmployeeTask;
+using VirtualOffice.Application.Exceptions.Note;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace ApplicationUnitTests
 {
@@ -50,6 +54,40 @@ namespace ApplicationUnitTests
             var request = new CreateNote("Title", "Content", _user1);
             // Act
             await _createNoteHandler.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteNoteHandler_ShouldThrowNoteDoesNoteExistsException()
+        {
+            // Arrange
+            var request = new DeleteNote(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<NoteDoesNoteExistsException>(() => _deleteNoteHandler.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteNoteHandler_ShouldCallDeleteOnce()
+        {
+
+            // Arrange
+            var request = new DeleteNote(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            // Act
+            await _deleteNoteHandler.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Delete(It.IsAny<NoteId>()), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteNoteHandler_ShouldCallSaveOnce()
+        {
+
+            // Arrange
+            var request = new DeleteNote(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            // Act
+            await _deleteNoteHandler.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
