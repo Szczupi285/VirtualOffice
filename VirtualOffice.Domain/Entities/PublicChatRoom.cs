@@ -9,10 +9,11 @@ using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ChatRoom;
 using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
+using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class PublicChatRoom : AbstractChatRoom
+    public class PublicChatRoom : AbstractChatRoom, IPublicChatRoom
     {
         public PublicChatRoomName _Name { get; private set; }
         public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages, PublicChatRoomName name) : base(id, participants, messages)
