@@ -8,6 +8,7 @@ using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
 using VirtualOffice.Domain.Exceptions.Office;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
