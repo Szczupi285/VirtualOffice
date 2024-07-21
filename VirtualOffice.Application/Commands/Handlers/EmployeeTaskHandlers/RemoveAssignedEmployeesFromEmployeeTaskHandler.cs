@@ -8,7 +8,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
 
 
-    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : IRequestHandler<RemoveAssignedEmployeesToEmployeeTask>
+    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : IRequestHandler<RemoveAssignedEmployeesFromEmployeeTask>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;
@@ -19,7 +19,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             _readService = readService;
         }
 
-        public async Task Handle(RemoveAssignedEmployeesToEmployeeTask request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveAssignedEmployeesFromEmployeeTask request, CancellationToken cancellationToken)
         {
 
             if (!await _readService.ExistsByIdAsync(request.Guid))

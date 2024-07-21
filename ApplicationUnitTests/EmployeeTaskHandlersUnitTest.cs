@@ -78,5 +78,42 @@ namespace ApplicationUnitTests
             _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
+
+        [Fact]
+        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldThrowEmployeeTaskDoesNotExistsException()
+        {
+            // Arrange 
+            var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser>(){ _user1, _user2 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _RemAssgEmpHandler.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldRemoveEmployeesAndSave()
+        {
+
+            // Arrange
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
+                           .ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
+
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(EmployeeTaskMock.Object);
+
+            var handler = new RemoveAssignedEmployeesFromEmployeeTaskHandler(_repositoryMock.Object, _readServiceMock.Object);
+
+            var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+
+            // Act
+            await handler.Handle(request, CancellationToken.None);
+
+            // Assert
+            EmployeeTaskMock.Verify(c => c.RemoveEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToRemove)), Times.Once);
+            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+        }
     }
 }
