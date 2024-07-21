@@ -8,10 +8,10 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
     public class DeleteEmployeeTaskHandler : IRequestHandler<DeleteEmployeeTask>
     {
-        private readonly ICalendarEventRepository _repository;
-        private readonly ICalendarEventReadService _readService;
+        private readonly IEmployeeTaskRepository _repository;
+        private readonly IEmployeeTaskReadService _readService;
 
-        public DeleteEmployeeTaskHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
+        public DeleteEmployeeTaskHandler(IEmployeeTaskRepository repository, IEmployeeTaskReadService readService)
         {
             _repository = repository;
             _readService = readService;

@@ -8,10 +8,10 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
     public class AddAssignedEmployeesToEmployeeTaskHandler : IRequestHandler<AddAssignedEmployeesToEmployeeTask>
     {
-        private readonly ICalendarEventRepository _repository;
-        private readonly ICalendarEventReadService _readService;
+        private readonly IEmployeeTaskRepository _repository;
+        private readonly IEmployeeTaskReadService _readService;
 
-        public AddAssignedEmployeesToEmployeeTaskHandler(ICalendarEventRepository repository, ICalendarEventReadService readService)
+        public AddAssignedEmployeesToEmployeeTaskHandler(IEmployeeTaskRepository repository, IEmployeeTaskReadService readService)
         {
             _repository = repository;
             _readService = readService;
