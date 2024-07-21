@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Document;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Abstractions
@@ -42,9 +43,9 @@ namespace VirtualOffice.Domain.Abstractions
         public void AddNewAttachment(DocumentFilePath attachmentFilePath)
         {
 
-            if(_attachmentFilePaths is not null)
+            if (_attachmentFilePaths is not null)
             {
-                if(!_attachmentFilePaths.Contains(attachmentFilePath))
+                if (!_attachmentFilePaths.Contains(attachmentFilePath))
                     _attachmentFilePaths.Add(attachmentFilePath);
             }
             else
@@ -55,7 +56,7 @@ namespace VirtualOffice.Domain.Abstractions
 
         public void AddNewAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths)
         {
-            foreach(DocumentFilePath documentFilePath in documentFilePaths)
+            foreach (DocumentFilePath documentFilePath in documentFilePaths)
             {
                 AddNewAttachment(documentFilePath);
             }
@@ -63,7 +64,7 @@ namespace VirtualOffice.Domain.Abstractions
 
         public void DeleteAttachment(DocumentFilePath attachmentFilePath)
         {
-            if(_attachmentFilePaths != null)
+            if (_attachmentFilePaths != null)
             {
                 if (!_attachmentFilePaths.Contains(attachmentFilePath))
                 {
