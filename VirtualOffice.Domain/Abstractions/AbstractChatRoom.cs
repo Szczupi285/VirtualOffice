@@ -23,7 +23,7 @@ namespace VirtualOffice.Domain.Abstractions
         {
             if (messages is null)
                 throw new ArgumentNullException($"{nameof(messages)} cannot be null");
-            else if(participants is null)
+            else if (participants is null)
                 throw new ArgumentNullException($"{nameof(participants)} cannot be null");
             else if (participants.Count < 2)
                 throw new InvalidChatRoomParticipantsException();

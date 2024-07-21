@@ -5,11 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class PrivateChatRoom : AbstractChatRoom
+    public class PrivateChatRoom : AbstractChatRoom, IPrivateChatRoom
     {
         public PrivateChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages) : base(id, participants, messages)
         {
