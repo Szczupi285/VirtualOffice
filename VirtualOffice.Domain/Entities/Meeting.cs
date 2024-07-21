@@ -11,7 +11,7 @@ using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class Meeting : AbstractScheduleItem
+    public class Meeting : AbstractScheduleItem, IMeeting
     {
         public Meeting(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
             HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)

@@ -1,18 +1,15 @@
-﻿using VirtualOffice.Domain.Consts;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
-namespace VirtualOffice.Domain.Interfaces
+namespace VirtualOffice.Domain.Abstractions
 {
-    public interface IEmployeeTask
+    public interface IMeeting
     {
         HashSet<ApplicationUser> _AssignedEmployees { get; }
         ScheduleItemDescription _Description { get; }
         ScheduleItemEndDate _EndDate { get; }
         ScheduleItemStartDate _StartDate { get; }
         ScheduleItemTitle _Title { get; }
-        EmployeeTaskPriorityEnum _Priority { get; }
-        EmployeeTaskStatusEnum _TaskStatus { get; }
 
         void AddEmployee(ApplicationUser user);
         void AddEmployeesRange(ICollection<ApplicationUser> users);
@@ -21,9 +18,7 @@ namespace VirtualOffice.Domain.Interfaces
         void SetDescription(string description);
         void SetTitle(string title);
         void UpdateEndDate(DateTime endDate);
-        void SetPriority(EmployeeTaskPriorityEnum priority);
-        void UpdateStatus(EmployeeTaskStatusEnum Status);
-
-
+        void UpdateStartDate(DateTime newStartDate);
+        void RescheduleMeeting(DateTime newStartDate, DateTime newEndDate);
     }
 }
