@@ -55,7 +55,7 @@ namespace ApplicationUnitTests
             await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _AddAssgEmpHandler.Handle(request, CancellationToken.None));
         }
         [Fact]
-        public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldAddEmployeesAndSave_WhenEmployeeTaskExists()
+        public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldAddEmployees_WhenEmployeeTaskExists()
         {
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
@@ -75,10 +75,52 @@ namespace ApplicationUnitTests
 
             // Assert
             EmployeeTaskMock.Verify(c => c.AddEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToAdd)), Times.Once);
-            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
+        [Fact]
+        public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldUpdateEmployeeTask_WhenEmployeeTaskExists()
+        {
+            // Arrange
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
+                           .ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            EmployeeTaskMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
+
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(EmployeeTaskMock.Object);
+
+
+            var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+
+            // Act
+            await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+        }
+        [Fact]
+        public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldSaveEmployeeTask()
+        {
+            // Arrange
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
+                           .ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            EmployeeTaskMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
+
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(EmployeeTaskMock.Object);
+
+
+            var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+
+            // Act
+            await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+        }
         [Fact]
         public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldThrowEmployeeTaskDoesNotExistsException()
         {
@@ -90,7 +132,7 @@ namespace ApplicationUnitTests
             await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _RemAssgEmpHandler.Handle(request, CancellationToken.None));
         }
         [Fact]
-        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldRemoveEmployeesAndSave()
+        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldRemoveEmployees()
         {
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
@@ -110,13 +152,54 @@ namespace ApplicationUnitTests
 
             // Assert
             EmployeeTaskMock.Verify(c => c.RemoveEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToRemove)), Times.Once);
+        }
+        [Fact]
+        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldUpdate()
+        {
+            // Arrange
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
+                           .ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
+
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(EmployeeTaskMock.Object);
+
+
+            var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+
+            // Act
+            await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
+
+            // Assert
             _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+        }
+        [Fact]
+        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldSave()
+        {
+            // Arrange
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
+                           .ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
+
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(EmployeeTaskMock.Object);
+
+
+            var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+
+            // Act
+            await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
+
+            // Assert
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
         [Fact]
-        public async Task CreateEmployeeTaskHandler_ShouldCreateEmployeeTask()
+        public async Task CreateEmployeeTaskHandler_ShouldAddEmployeeTask()
         {
-
             // Arrange
             var request = new CreateEmployeeTask("Title", "Desc", new HashSet<ApplicationUser>() { _user1, _user2 },
                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2), EmployeeTaskPriorityEnum.Low);
@@ -124,8 +207,55 @@ namespace ApplicationUnitTests
             await _CreEmpTaskHandler.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.Add(It.IsAny<IEmployeeTask>()), Times.Once);
+
+        }
+        [Fact]
+        public async Task CreateEmployeeTaskHandler_ShouldSaveEmployeeTask()
+        {
+            // Arrange
+            var request = new CreateEmployeeTask("Title", "Desc", new HashSet<ApplicationUser>() { _user1, _user2 },
+                DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2), EmployeeTaskPriorityEnum.Low);
+            // Act
+            await _CreEmpTaskHandler.Handle(request, CancellationToken.None);
+            // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
 
+        }
+        [Fact]
+        public async Task DeleteEmployeeTaskHandler_ShouldThrowEmployeeTaskDoesNotExistsException()
+        {
+            // Arrange
+            var request = new DeleteEmployeeTask(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await  Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _DelEmpTaskHandler.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteEmployeeTaskHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeleteEmployeeTask(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            // Act
+            await _DelEmpTaskHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.Delete(It.IsAny<ScheduleItemId>()), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteEmployeeTaskHandler_ShouldCallSaveOnce()
+        {
+            // Arrange
+            var request = new DeleteEmployeeTask(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            // Act
+            await _DelEmpTaskHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
     }
 }
