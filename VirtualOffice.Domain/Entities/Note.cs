@@ -1,11 +1,10 @@
 ﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.NoteEvent;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class Note : AggregateRoot<NoteId>, INote
+    public class Note : AggregateRoot<NoteId>
     {
         public NoteTitle _title { get; private set; }
 

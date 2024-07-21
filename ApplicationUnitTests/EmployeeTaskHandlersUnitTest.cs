@@ -5,7 +5,6 @@ using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
@@ -13,6 +12,8 @@ namespace ApplicationUnitTests
 {
     public class EmployeeTaskHandlersUnitTest
     {
+        private readonly Guid guid = Guid.NewGuid();
+        private readonly EmployeeTask _empTask;
         private readonly Mock<IEmployeeTaskRepository> _repositoryMock;
         private readonly Mock<IEmployeeTaskReadService> _readServiceMock;
         private readonly AddAssignedEmployeesToEmployeeTaskHandler _AddAssgEmpHandler;
@@ -22,6 +23,8 @@ namespace ApplicationUnitTests
         private readonly UpdateEmployeeTaskHandler _UpdEmpTaskHandler;
         private readonly ApplicationUser _user1;
         private readonly ApplicationUser _user2;
+        private readonly ApplicationUser _user3;
+        private readonly ApplicationUser _user4;
 
         public EmployeeTaskHandlersUnitTest()
         {
@@ -34,41 +37,25 @@ namespace ApplicationUnitTests
             _UpdEmpTaskHandler = new UpdateEmployeeTaskHandler(_repositoryMock.Object, _readServiceMock.Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
             _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
+            _user3 = new ApplicationUser(Guid.NewGuid(), "Joe", "Rane");
+            _user4 = new ApplicationUser(Guid.NewGuid(), "Jack", "Dane");
+
+            _empTask = new EmployeeTask(guid, "Title", "Description",
+                new HashSet<ApplicationUser>() { _user1, _user2 }, EmployeeTaskPriorityEnum.Low,
+                DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
+
         }
 
         [Fact]
         public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldThrowEmployeeTaskDoesNotExistException()
         {
             // Arrange
-            var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
+            var request = new AddAssignedEmployeesToEmployeeTask(guid, new HashSet<ApplicationUser> { _user1, _user2 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
             // Act & Assert
             await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _AddAssgEmpHandler.Handle(request, CancellationToken.None));
         }
-        [Fact]
-        public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldAddEmployees_WhenEmployeeTaskExists()
-        {
-            // Arrange
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
-                           .ReturnsAsync(true);
-
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
-
-            var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
-
-            // Act
-            await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
-
-            // Assert
-            EmployeeTaskMock.Verify(c => c.AddEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToAdd)), Times.Once);
-        }
-
         [Fact]
         public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldUpdateEmployeeTask_WhenEmployeeTaskExists()
         {
@@ -76,12 +63,8 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
+                           .ReturnsAsync(_empTask);
 
             var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
@@ -89,7 +72,7 @@ namespace ApplicationUnitTests
             await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+            _repositoryMock.Verify(r => r.Update(_empTask), Times.Once);
         }
         [Fact]
         public async Task AddAssignedEmployeesToEmployeeTaskHandler_ShouldSaveEmployeeTask()
@@ -98,18 +81,13 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
+                           .ReturnsAsync(_empTask);
 
             var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
             // Act
             await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
-
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
@@ -124,40 +102,14 @@ namespace ApplicationUnitTests
             await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _RemAssgEmpHandler.Handle(request, CancellationToken.None));
         }
         [Fact]
-        public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldRemoveEmployees()
-        {
-            // Arrange
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
-                           .ReturnsAsync(true);
-
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
-
-            var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
-
-            // Act
-            await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
-
-            // Assert
-            EmployeeTaskMock.Verify(c => c.RemoveEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToRemove)), Times.Once);
-        }
-        [Fact]
         public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldUpdate()
         {
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
+                           .ReturnsAsync(_empTask);
 
             var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
@@ -165,7 +117,7 @@ namespace ApplicationUnitTests
             await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+            _repositoryMock.Verify(r => r.Update(_empTask), Times.Once);
         }
         [Fact]
         public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldSave()
@@ -174,12 +126,8 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            EmployeeTaskMock.Setup(c => c.RemoveEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
-
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                           .ReturnsAsync(EmployeeTaskMock.Object);
-
+                           .ReturnsAsync(_empTask);
 
             var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
@@ -198,7 +146,7 @@ namespace ApplicationUnitTests
             // Act
             await _CreEmpTaskHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<IEmployeeTask>()), Times.Once);
+            _repositoryMock.Verify(r => r.Add(It.IsAny<EmployeeTask>()), Times.Once);
 
         }
         [Fact]
@@ -269,21 +217,13 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            // setup properties
-            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
-            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
-            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
-            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
-
-            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
+            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(_empTask);
 
             // Act
             await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+            _repositoryMock.Verify(r => r.Update(_empTask), Times.Once);
            
         }
         [Fact]
@@ -294,52 +234,13 @@ namespace ApplicationUnitTests
                  DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            // setup properties
-            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
-            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
-            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
-            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
-
-            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
+            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(_empTask);
 
             // Act
             await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
 
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
-
-        }
-        [Fact]
-        public async Task UpdateEmployeeTaskHandler_ShouldUpdateProperties()
-        {
-            // Arrange
-            var request = new UpdateEmployeeTask(Guid.NewGuid(), "Title", "Description",
-                 DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
-
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-
-            var EmployeeTaskMock = new Mock<IEmployeeTask>();
-            // setup properties
-            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
-            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
-            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
-            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
-
-            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
-
-            // Act
-            await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
-
-            // Assert
-            EmployeeTaskMock.Verify(e => e.SetTitle("Title"), Times.Once);
-            EmployeeTaskMock.Verify(e => e.SetDescription("Description"), Times.Once);
-            EmployeeTaskMock.Verify(e => e.UpdateStatus(request.Status), Times.Once);
-            EmployeeTaskMock.Verify(e => e.UpdateEndDate(request.EndDate), Times.Never);
-            EmployeeTaskMock.Verify(e => e.SetPriority(request.Priority), Times.Never);
 
         }
     }

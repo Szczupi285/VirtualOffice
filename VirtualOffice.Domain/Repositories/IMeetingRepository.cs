@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Interfaces;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Repositories
 {
     public interface IMeetingRepository
     {
-        Task<IMeeting> GetById(ScheduleItemId guid);
-        Task Add(IMeeting meeting);
-        Task Update(IMeeting meeting);
+        Task<Meeting> GetById(ScheduleItemId guid);
+        Task Add(Meeting meeting);
+        Task Update(Meeting meeting);
         Task Delete(ScheduleItemId guid);
-        Task<IEnumerable<IMeeting>> GetAllForUser(ApplicationUser userId);
-        Task<IEnumerable<IMeeting>> GetAllForUserFutureEvents(ApplicationUser userId);
-        Task<IEnumerable<IMeeting>> GetAllForUserByDate(ApplicationUser userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
+        Task<IEnumerable<Meeting>> GetAllForUser(ApplicationUser userId);
+        Task<IEnumerable<Meeting>> GetAllForUserFutureEvents(ApplicationUser userId);
+        Task<IEnumerable<Meeting>> GetAllForUserByDate(ApplicationUser userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
         Task SaveAsync(CancellationToken cancellationToken);
     }
 }

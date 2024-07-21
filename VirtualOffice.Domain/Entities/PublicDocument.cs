@@ -1,18 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
+﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.PublicDocumentEvents;
 using VirtualOffice.Domain.Exceptions.Document;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class PublicDocument : AbstractDocument, IPublicDocument
+    public class PublicDocument : AbstractDocument
     {
         //created with builder
 

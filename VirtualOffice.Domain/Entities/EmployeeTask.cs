@@ -2,11 +2,10 @@
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.EmployeeTask;
-using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class EmployeeTask : AbstractScheduleItem, IEmployeeTask, IComparable<EmployeeTask>
+    public class EmployeeTask : AbstractScheduleItem, IComparable<EmployeeTask>
     {
         public EmployeeTaskPriorityEnum _Priority {get; private set;}
         public EmployeeTaskStatusEnum _TaskStatus{ get; private set; } = EmployeeTaskStatusEnum.NotStarted;

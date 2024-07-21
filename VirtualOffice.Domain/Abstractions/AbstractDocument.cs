@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
 using VirtualOffice.Domain.Exceptions.Document;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Abstractions

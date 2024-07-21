@@ -1,15 +1,13 @@
 ﻿using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.DomainEvents;
 using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Exceptions.Organization;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
 {
 
-    public class Organization : AggregateRoot<OrganizationId>, IOrganization
+    public class Organization : AggregateRoot<OrganizationId>
     {
         public OrganizationName _name { get; private set; }
 

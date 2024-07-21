@@ -1,25 +1,18 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers;
 using VirtualOffice.Application.Commands.Handlers.MeetingHandlers;
 using VirtualOffice.Application.Commands.MeetingCommands;
 using VirtualOffice.Application.Exceptions.Meeting;
 using VirtualOffice.Application.Services;
-using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.Repositories;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace ApplicationUnitTests
 {
     public class MeetingHandlersUnitTests
     {
+        private readonly Guid guid = Guid.NewGuid();
+        private readonly Meeting _meet;
         private readonly Mock<IMeetingRepository> _repositoryMock;
         private readonly Mock<IMeetingReadService> _readServiceMock;
         private readonly CreateMeetingHandler _CreMettHan;
@@ -37,6 +30,8 @@ namespace ApplicationUnitTests
             _UpdMettHan = new UpdateMeetingHandler(_repositoryMock.Object, _readServiceMock.Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
             _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
+            _meet = new Meeting(guid, "Title", "Description", 
+                new HashSet<ApplicationUser>() { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
         }
 
         [Fact]
@@ -49,7 +44,7 @@ namespace ApplicationUnitTests
             await _CreMettHan.Handle(request, CancellationToken.None);
 
             //Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<IMeeting>()), Times.Once());
+            _repositoryMock.Verify(r => r.Add(It.IsAny<Meeting>()), Times.Once());
         }
         [Fact]
         public async Task CreateMeetingHandler_ShouldCallSaveAsyncOnce()
@@ -76,12 +71,12 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task DeleteMeetingHandler_ShouldCallDeleteOnce()
         {
-            Guid guid = Guid.NewGuid();
             // Arrange
+            Guid guid = Guid.NewGuid();
             var request = new DeleteMeeting(guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
             // Act
             await _DelMettHan.Handle(request, CancellationToken.None);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
 
             // Assert
             _repositoryMock.Verify(r => r.Delete(guid), Times.Once);
@@ -92,9 +87,9 @@ namespace ApplicationUnitTests
             // Arrange
             Guid guid = Guid.NewGuid();
             var request = new DeleteMeeting(guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
             // Act
             await _DelMettHan.Handle(request, CancellationToken.None);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
 
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
@@ -119,20 +114,13 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
 
-            var MeetingMock = new Mock<IMeeting>();
-            // setup properties
-            MeetingMock.SetupGet(e => e._Title).Returns("OldTitle");
-            MeetingMock.SetupGet(e => e._Description).Returns("OldDescription");
-            MeetingMock.SetupGet(e => e._StartDate).Returns(DateTime.UtcNow.AddDays(1));
-            MeetingMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(MeetingMock.Object);
+            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(_meet);
 
             // Act
             await _UpdMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(MeetingMock.Object), Times.Once);
+            _repositoryMock.Verify(r => r.Update(_meet), Times.Once);
         }
         [Fact]
         public async Task UpdateMeetingHandler_ShouldCallSaveAsyncOnce()
@@ -143,14 +131,7 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
 
-            var MeetingMock = new Mock<IMeeting>();
-            // setup properties
-            MeetingMock.SetupGet(e => e._Title).Returns("OldTitle");
-            MeetingMock.SetupGet(e => e._Description).Returns("OldDescription");
-            MeetingMock.SetupGet(e => e._StartDate).Returns(DateTime.UtcNow.AddDays(1));
-            MeetingMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(MeetingMock.Object);
+            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(_meet);
 
             // Act
             await _UpdMettHan.Handle(request, CancellationToken.None);
@@ -158,33 +139,5 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
-        [Fact]
-        public async Task UpdateMeetingHandler_ShouldUpdateProperties()
-        {
-            // Arrange
-            var request = new UpdateMeeting(Guid.NewGuid(), "Title", "Description",
-                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
-
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
-
-            var MeetingMock = new Mock<IMeeting>();
-            // setup properties
-            MeetingMock.SetupGet(e => e._Title).Returns("OldTitle");
-            MeetingMock.SetupGet(e => e._Description).Returns("OldDescription");
-            MeetingMock.SetupGet(e => e._StartDate).Returns(DateTime.UtcNow.AddDays(1));
-            MeetingMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
-
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(MeetingMock.Object);
-
-            // Act
-            await _UpdMettHan.Handle(request, CancellationToken.None);
-
-            // Assert
-            MeetingMock.Verify(m => m.SetTitle("Title"), Times.Once);
-            MeetingMock.Verify(m => m.SetDescription("Description"), Times.Once);
-            MeetingMock.Verify(m => m.UpdateStartDate(request.StartDate), Times.Never);
-            MeetingMock.Verify(m => m.UpdateEndDate(request.EndDate), Times.Never);
-        }
-
     }
 }

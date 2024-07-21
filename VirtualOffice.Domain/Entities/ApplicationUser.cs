@@ -1,11 +1,10 @@
 ﻿using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class ApplicationUser : IApplicationUser
+    public class ApplicationUser
     {
         public ApplicationUserId Id { get; }
 
