@@ -15,9 +15,9 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
     public class DeleteMeetingHandler : IRequestHandler<DeleteMeeting>
     {
         public IMeetingRepository _repository;
-        public IMeetingEventReadService _readService;
+        public IMeetingReadService _readService;
 
-        public DeleteMeetingHandler(IMeetingRepository repository, IMeetingEventReadService eventReadService)
+        public DeleteMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService)
         {
             _repository = repository;
             _readService = eventReadService;

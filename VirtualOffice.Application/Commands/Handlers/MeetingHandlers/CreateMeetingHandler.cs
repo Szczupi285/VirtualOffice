@@ -14,7 +14,6 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
         public CreateMeetingHandler(IMeetingRepository repository)
         {
             _repository = repository;
-            
         }
 
         public async Task Handle(CreateMeeting request, CancellationToken cancellationToken)

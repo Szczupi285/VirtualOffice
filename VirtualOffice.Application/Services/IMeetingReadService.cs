@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualOffice.Application.Services
 {
-    public interface IMeetingEventReadService
+    public interface IMeetingReadService
     {        
         Task<bool> ExistsByIdAsync(Guid id);
     }

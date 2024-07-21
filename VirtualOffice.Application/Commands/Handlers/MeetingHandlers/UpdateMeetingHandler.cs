@@ -9,9 +9,9 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
     public class UpdateMeetingHandler : IRequestHandler<UpdateMeeting>
     {
         public IMeetingRepository _repository;
-        public IMeetingEventReadService _readService;
+        public IMeetingReadService _readService;
 
-        public UpdateMeetingHandler(IMeetingRepository repository, IMeetingEventReadService eventReadService)
+        public UpdateMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService)
         {
             _repository = repository;
             _readService = eventReadService;
