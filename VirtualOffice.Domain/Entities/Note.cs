@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
+﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.NoteEvent;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class Note : AggregateRoot<NoteId>
+    public class Note : AggregateRoot<NoteId>, INote
     {
         public NoteTitle _title { get; private set; }
 

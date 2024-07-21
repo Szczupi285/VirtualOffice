@@ -1,7 +1,7 @@
 ﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
-namespace VirtualOffice.Domain.Abstractions
+namespace VirtualOffice.Domain.Interfaces
 {
     public interface IMeeting
     {

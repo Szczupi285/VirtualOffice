@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
+﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.MeetingEvent;
-using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
