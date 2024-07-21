@@ -9,10 +9,11 @@ using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>
+    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>, IAbstractScheduleItem
     {
         public ScheduleItemTitle _Title { get; private set; }
         public ScheduleItemDescription _Description { get; private set; }

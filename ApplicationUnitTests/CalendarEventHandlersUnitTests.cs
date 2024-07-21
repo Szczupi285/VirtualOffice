@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace ApplicationUnitTests
 {
-    public class CalendarEventHandlersTests
+    public class CalendarEventHandlersUnitTests
     {
 
         private readonly Mock<ICalendarEventRepository> _repositoryMock;
@@ -19,7 +19,7 @@ namespace ApplicationUnitTests
         private readonly ApplicationUser _user1;
         private readonly ApplicationUser _user2;
 
-        public CalendarEventHandlersTests()
+        public CalendarEventHandlersUnitTests()
         {
             _repositoryMock = new Mock<ICalendarEventRepository>();
             _readServiceMock = new Mock<ICalendarEventReadService>();
