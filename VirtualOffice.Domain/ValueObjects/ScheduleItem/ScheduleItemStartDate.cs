@@ -21,6 +21,14 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 
             Value = value;
         }
+        private static bool DateTimeEquals(DateTime dt1, DateTime dt2)
+        {
+            // Truncate milliseconds for both DateTime objects
+            DateTime dt1Truncated = dt1.AddTicks(-(dt1.Ticks % TimeSpan.TicksPerSecond));
+            DateTime dt2Truncated = dt2.AddTicks(-(dt2.Ticks % TimeSpan.TicksPerSecond));
+
+            return dt1Truncated == dt2Truncated;
+        }
 
         public static implicit operator DateTime(ScheduleItemStartDate startDate)
             => startDate.Value;
@@ -28,8 +36,8 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
         public static implicit operator ScheduleItemStartDate(DateTime startDate)
             => new(startDate);
 
-        public static bool operator ==(ScheduleItemStartDate startDate, DateTime value) => startDate.Value == value;
-        public static bool operator != (ScheduleItemStartDate startDate, DateTime value) => startDate.Value != value;
+        public static bool operator ==(ScheduleItemStartDate startDate, DateTime value) => DateTimeEquals(startDate.Value, value);
+        public static bool operator != (ScheduleItemStartDate startDate, DateTime value) => !DateTimeEquals(startDate.Value, value);
 
     }
 }

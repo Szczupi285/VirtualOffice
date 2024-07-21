@@ -18,6 +18,7 @@ namespace ApplicationUnitTests
         private readonly AddCalendarEventAssignedEmployeesHandler _AddCalEvHandler;
         private readonly RemoveCalendarEventAssignedEmployeesHandler _RemCalEvHandler;
         private readonly DeleteCalendarEventHandler _DelCalEvHandler;
+        private readonly UpdateCalendarEventHandler _UpdCalEvHandler;
         private readonly ApplicationUser _user1;
         private readonly ApplicationUser _user2;
 
@@ -28,6 +29,7 @@ namespace ApplicationUnitTests
             _AddCalEvHandler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
             _DelCalEvHandler = new DeleteCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object);
             _RemCalEvHandler = new RemoveCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
+            _UpdCalEvHandler = new UpdateCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
             _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
         }
@@ -52,8 +54,8 @@ namespace ApplicationUnitTests
             var calendarEventMock = new Mock<ICalendarEvent>();
             calendarEventMock.Setup(c => c.AddEmployeesRange(It.IsAny<ICollection<ApplicationUser>>()));
 
-           _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
-                          .ReturnsAsync(calendarEventMock.Object);
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+                           .ReturnsAsync(calendarEventMock.Object);
 
             var handler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
 
@@ -103,7 +105,6 @@ namespace ApplicationUnitTests
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
 
-
         [Fact]
         public async Task CreateCalendarEventHandler_ShouldCreateCalendarEventAndSave()
         {
@@ -116,7 +117,7 @@ namespace ApplicationUnitTests
 
             // Assert
             _repositoryMock.Verify(r => r.Add(It.IsAny<ICalendarEvent>()), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);    
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
         [Fact]
         public async Task DeleteCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistException()
@@ -140,11 +141,72 @@ namespace ApplicationUnitTests
             // Act
             await _DelCalEvHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Delete(Id),Times.Once);
+            _repositoryMock.Verify(r => r.Delete(Id), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
         }
-       
+        [Fact]
+        public async Task UpdateCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistException()
+        {
+            // Arrange
+            var request = new UpdateCalendarEvent(Guid.NewGuid(), "Title", "Description", DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
+            // Act & Assert
+            await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _UpdCalEvHandler.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdateCalendarEventHandler_ShouldCallUpdateAndSave()
+        {
+            // Arrange
+            var request = new UpdateCalendarEvent(Guid.NewGuid(), "Title", "Description", 
+                DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
 
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
+
+            var calendarEventMock = new Mock<ICalendarEvent>();
+            // setup properties
+            calendarEventMock.SetupGet(e => e._Title).Returns("OldTitle");
+            calendarEventMock.SetupGet(e => e._Description).Returns("OldDescription");
+            calendarEventMock.SetupGet(e => e._StartDate).Returns(DateTime.UtcNow.AddDays(1));
+            calendarEventMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
+
+            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(calendarEventMock.Object);
+
+            // Act
+            await _UpdCalEvHandler.Handle(request, CancellationToken.None);
+
+            // Asert
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.Update(calendarEventMock.Object), Times.Once);
+
+        }
+        [Fact]
+        public async Task UpdateCalendarEventHandler_ShoulUpdateProperties()
+        {
+            // Arrange
+            var request = new UpdateCalendarEvent(Guid.NewGuid(), "Title", "Description",
+                DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
+
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
+
+            var calendarEventMock = new Mock<ICalendarEvent>();
+            // setup properties
+            calendarEventMock.SetupGet(e => e._Title).Returns("OldTitle");
+            calendarEventMock.SetupGet(e => e._Description).Returns("OldDescription");
+            calendarEventMock.SetupGet(e => e._StartDate).Returns(DateTime.UtcNow.AddDays(1));
+            calendarEventMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
+
+            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(calendarEventMock.Object);
+
+            // Act
+            await _UpdCalEvHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            calendarEventMock.Verify(e => e.SetTitle("Title"), Times.Once);
+            calendarEventMock.Verify(e => e.SetDescription("Description"), Times.Once);
+            calendarEventMock.Verify(e => e.UpdateStartDate(request.StartDate), Times.Never);
+            calendarEventMock.Verify(e => e.UpdateEndDate(request.EndDate), Times.Never);
+
+        }
     }
 }
