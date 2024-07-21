@@ -2,33 +2,35 @@
 using VirtualOffice.Domain.DomainEvents;
 using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Exceptions.Organization;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
 {
 
-    public class Organization : AggregateRoot<OrganizationId>
+    public class Organization : AggregateRoot<OrganizationId>, IOrganization
     {
         public OrganizationName _name { get; private set; }
 
-        public OrganizationUserLimit _userLimit {
+        public OrganizationUserLimit _userLimit
+        {
             get
             {
-                if(_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
+                if (_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
                 {
                     return null!;
                 }
                 return (ushort)_subscription._subType;
             }
-        }  
+        }
 
-        public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); } 
+        public OrganizationUsedSlots _usedSlots { get => (ushort)_organizationUsers.Count(); }
 
         public ushort? _slotsLeft
         {
             get
-            { 
+            {
                 if (_userLimit is null)
                     return null;
                 else
@@ -37,7 +39,7 @@ namespace VirtualOffice.Domain.Entities
                     if (slotsLeft <= 0)
                         throw new OrganizationNotEnoughSlotsException();
                     else
-                       return (ushort)slotsLeft;
+                        return (ushort)slotsLeft;
                 }
             }
         }
@@ -52,11 +54,11 @@ namespace VirtualOffice.Domain.Entities
         public Subscription _subscription { get; private set; }
 
 
-        private bool _isUnlimited 
+        private bool _isUnlimited
         {
             get
             {
-                if(_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
+                if (_subscription._subType == Consts.SubscriptionTypeEnum.Unlimited)
                     return true;
                 return false;
             }
@@ -64,9 +66,9 @@ namespace VirtualOffice.Domain.Entities
 
         public Organization(OrganizationId id, OrganizationName name,
              HashSet<Office> offices, HashSet<ApplicationUser> organizationUsers
-            ,Subscription subscription)
+            , Subscription subscription)
         {
-            if(organizationUsers.Count == 0 )
+            if (organizationUsers.Count == 0)
                 throw new OrganizationUsersCollectionCannotBeEmptyException();
 
             Id = id;
@@ -77,10 +79,10 @@ namespace VirtualOffice.Domain.Entities
 
         }
 
-        public Office GetOfficeById(OfficeId id) 
+        public Office GetOfficeById(OfficeId id)
         {
             var office = _offices.FirstOrDefault(x => x.Id == id);
-            if(office is null)
+            if (office is null)
                 throw new OfficeHasNotBeenFoundException(id);
 
             return office;
@@ -89,7 +91,7 @@ namespace VirtualOffice.Domain.Entities
 
         public void AddOffice(Office office)
         {
-            if (office is null) 
+            if (office is null)
                 throw new ArgumentNullException("Office cannot be null");
             bool hasBeenAdded = _offices.Add(office);
 
@@ -98,7 +100,7 @@ namespace VirtualOffice.Domain.Entities
         }
         public void RemoveOffice(Office office)
         {
-            if(office is null)
+            if (office is null)
                 throw new ArgumentNullException("Office Cannot be null");
             else if (!_offices.Contains(office))
                 throw new OfficeHasNotBeenFoundException(office.Id);
@@ -119,7 +121,7 @@ namespace VirtualOffice.Domain.Entities
 
             bool HasBeenAdded = _organizationUsers.Add(user);
 
-            if(HasBeenAdded)
+            if (HasBeenAdded)
                 AddEvent(new UserAddedToOrganization(this, user));
         }
         public void AddRangeUsers(ICollection<ApplicationUser> users)
@@ -130,11 +132,11 @@ namespace VirtualOffice.Domain.Entities
             }
         }
 
-        public void RemoveUser(ApplicationUser user) 
-        { 
+        public void RemoveUser(ApplicationUser user)
+        {
             bool alreadyExists = _organizationUsers.Any(u => u.Id == user.Id);
 
-            
+
             if (alreadyExists && _organizationUsers.Count <= 1)
                 throw new CantRemoveOnlyUserException(user);
             else if (alreadyExists)
@@ -162,13 +164,13 @@ namespace VirtualOffice.Domain.Entities
                 throw new OfficeHasNotBeenFoundException(office.Id);
             else if (!_organizationUsers.Contains(user))
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
-            else if(office.AddMember(user))
+            else if (office.AddMember(user))
                 AddEvent(new UserAddedToOffice(this, office, user));
 
         }
         public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
         {
-            foreach(ApplicationUser user in users)
+            foreach (ApplicationUser user in users)
                 AddOfficeUser(user, office);
         }
 

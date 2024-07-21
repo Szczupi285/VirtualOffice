@@ -13,7 +13,7 @@ using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Abstractions
 {
-    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>, IAbstractScheduleItem
+    public abstract class AbstractScheduleItem : AggregateRoot<ScheduleItemId>
     {
         public ScheduleItemTitle _Title { get; private set; }
         public ScheduleItemDescription _Description { get; private set; }
