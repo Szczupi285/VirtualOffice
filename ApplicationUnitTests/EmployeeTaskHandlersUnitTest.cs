@@ -11,6 +11,7 @@ using VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers;
 using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.Repositories;
@@ -66,12 +67,11 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(EmployeeTaskMock.Object);
 
-            var handler = new AddAssignedEmployeesToEmployeeTaskHandler(_repositoryMock.Object, _readServiceMock.Object);
 
             var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
             // Act
-            await handler.Handle(request, CancellationToken.None);
+            await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
             EmployeeTaskMock.Verify(c => c.AddEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToAdd)), Times.Once);
@@ -92,7 +92,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task RemoveAssignedEmployeesFromEmployeeTaskHandler_ShouldRemoveEmployeesAndSave()
         {
-
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
@@ -103,17 +102,30 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(EmployeeTaskMock.Object);
 
-            var handler = new RemoveAssignedEmployeesFromEmployeeTaskHandler(_repositoryMock.Object, _readServiceMock.Object);
 
             var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
 
             // Act
-            await handler.Handle(request, CancellationToken.None);
+            await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
             EmployeeTaskMock.Verify(c => c.RemoveEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToRemove)), Times.Once);
             _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+        }
+        [Fact]
+        public async Task CreateEmployeeTaskHandler_ShouldCreateEmployeeTask()
+        {
+
+            // Arrange
+            var request = new CreateEmployeeTask("Title", "Desc", new HashSet<ApplicationUser>() { _user1, _user2 },
+                DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2), EmployeeTaskPriorityEnum.Low);
+            // Act
+            await _CreEmpTaskHandler.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Add(It.IsAny<IEmployeeTask>()), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+
         }
     }
 }
