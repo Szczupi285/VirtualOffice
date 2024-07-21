@@ -1,14 +1,6 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Commands.EmployeeTaskCommands;
-using VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers;
 using VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers;
-using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
@@ -256,6 +248,99 @@ namespace ApplicationUnitTests
 
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task UpdateEmployeeTaskHandler_ShouldThrowEmployeeTaskDoesNotExistsException()
+        {
+            // Arrange
+            var request = new UpdateEmployeeTask(Guid.NewGuid(), "Title", "Description",
+                DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<EmployeeTaskDoesNotExistsException>(() => _UpdEmpTaskHandler.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdateEmployeeTaskHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new UpdateEmployeeTask(Guid.NewGuid(), "Title", "Description",
+                 DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
+
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            // setup properties
+            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
+            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
+            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
+            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
+            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
+
+            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
+
+            // Act
+            await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.Update(EmployeeTaskMock.Object), Times.Once);
+           
+        }
+        [Fact]
+        public async Task UpdateEmployeeTaskHandler_ShouldCallSaveOnce()
+        {
+            // Arrange
+            var request = new UpdateEmployeeTask(Guid.NewGuid(), "Title", "Description",
+                 DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
+
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            // setup properties
+            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
+            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
+            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
+            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
+            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
+
+            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
+
+            // Act
+            await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+
+        }
+        [Fact]
+        public async Task UpdateEmployeeTaskHandler_ShouldUpdateProperties()
+        {
+            // Arrange
+            var request = new UpdateEmployeeTask(Guid.NewGuid(), "Title", "Description",
+                 DateTime.UtcNow.AddDays(2), EmployeeTaskStatusEnum.Done, EmployeeTaskPriorityEnum.Low);
+
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+
+            var EmployeeTaskMock = new Mock<IEmployeeTask>();
+            // setup properties
+            EmployeeTaskMock.SetupGet(e => e._Title).Returns("OldTitle");
+            EmployeeTaskMock.SetupGet(e => e._Description).Returns("OldDescription");
+            EmployeeTaskMock.SetupGet(e => e._EndDate).Returns(DateTime.UtcNow.AddDays(2));
+            EmployeeTaskMock.SetupGet(e => e._TaskStatus).Returns(EmployeeTaskStatusEnum.AwaitingReview);
+            EmployeeTaskMock.SetupGet(e => e._Priority).Returns(EmployeeTaskPriorityEnum.Low);
+
+            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(EmployeeTaskMock.Object);
+
+            // Act
+            await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
+
+            // Assert
+            EmployeeTaskMock.Verify(e => e.SetTitle("Title"), Times.Once);
+            EmployeeTaskMock.Verify(e => e.SetDescription("Description"), Times.Once);
+            EmployeeTaskMock.Verify(e => e.UpdateStatus(request.Status), Times.Once);
+            EmployeeTaskMock.Verify(e => e.UpdateEndDate(request.EndDate), Times.Never);
+            EmployeeTaskMock.Verify(e => e.SetPriority(request.Priority), Times.Never);
+
         }
     }
 }

@@ -181,7 +181,7 @@ namespace ApplicationUnitTests
 
         }
         [Fact]
-        public async Task UpdateCalendarEventHandler_ShoulUpdateProperties()
+        public async Task UpdateCalendarEventHandler_ShouldUpdateProperties()
         {
             // Arrange
             var request = new UpdateCalendarEvent(Guid.NewGuid(), "Title", "Description",
