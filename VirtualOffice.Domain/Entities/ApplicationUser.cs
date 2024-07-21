@@ -1,10 +1,11 @@
 ﻿using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.Interfaces;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class ApplicationUser
+    public class ApplicationUser : IApplicationUser
     {
         public ApplicationUserId Id { get; }
 
@@ -26,7 +27,7 @@ namespace VirtualOffice.Domain.Entities
             _Permissions = PermissionsEnum.None;
         }
 
-        public ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions) 
+        public ApplicationUser(Guid id, string name, string surname, PermissionsEnum permissions)
         {
             Id = id;
             _Name = name;
