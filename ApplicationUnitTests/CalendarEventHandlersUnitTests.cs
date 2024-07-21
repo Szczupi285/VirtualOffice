@@ -29,7 +29,7 @@ namespace ApplicationUnitTests
         }
 
         [Fact]
-        public async Task Handle_ShouldThrowCalendarEventDoesNotExistsException()
+        public async Task AddCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistsException()
         {
             // Arrange
             var request = new AddCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
@@ -39,7 +39,7 @@ namespace ApplicationUnitTests
             await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _handler.Handle(request, CancellationToken.None));
         }
         [Fact]
-        public async Task Handle_ShouldAddEmployeesAndSave_WhenCalendarEventExists()
+        public async Task AddCalendarEventHandler_ShouldAddEmployeesAndSave_WhenCalendarEventExists()
         {
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
@@ -61,6 +61,17 @@ namespace ApplicationUnitTests
             calendarEventMock.Verify(c => c.AddEmployeesRange(It.Is<ICollection<ApplicationUser>>(e => e == request.EmployeesToAdd)), Times.Once);
             _repositoryMock.Verify(r => r.Update(calendarEventMock.Object), Times.Once);
             _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+        }
+        [Fact]
+        public async Task CreateCalendarEventHandler_ShouldCreateCalendarEventAndSave()
+        {
+            var handler = new CreateCalendarEventHandler(_repositoryMock.Object);
+
+            var request = new CreateCalendarEvent("Title", "Desc", new HashSet<ApplicationUser> { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
+            
+            await handler.Handle(request, CancellationToken.None);
+            _repositoryMock.Verify(r => r.Add(It.IsAny<ICalendarEvent>()), Times.Once);
+            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);    
         }
        
 

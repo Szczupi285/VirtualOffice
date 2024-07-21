@@ -17,6 +17,6 @@ namespace VirtualOffice.Domain.Interfaces
         void SetContent(DocumentContent content);
         void SetTitle(DocumentTitle title);
         PrivateDocumentMemento SaveToMemento();
-        void RestoreFromMemento(PrivateDocumentMemento memento)
+        void RestoreFromMemento(PrivateDocumentMemento memento);
     }
 }

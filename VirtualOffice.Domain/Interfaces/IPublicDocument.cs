@@ -19,9 +19,6 @@ namespace VirtualOffice.Domain.Interfaces
         void DeleteAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths);
         void SetContent(DocumentContent content);
         void SetTitle(DocumentTitle title);
-        void AddCreationDate(ApplicationUserId applicationUserId);
-        void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead);
-        void AddEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite);
         void SettedCreationDate(ApplicationUserId userId);
         void AddEligibleForRead(ApplicationUserId eligibleForRead);
         void AddEligibleForWrite(ApplicationUserId eligibleForWrite);
