@@ -220,5 +220,41 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(x => x.SaveAsync(CancellationToken.None));
         }
+        [Fact]
+        public async Task DeleteOrganizationHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new DeleteOrganization(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _delOrgHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteOrganizationHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganization(OrgGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            // Act 
+            await _delOrgHand.Handle(request, CancellationToken.None);
+
+            // Assert 
+            _repositoryMock.Verify(r => r.Delete(OrgGuid), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteOrganizationHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganization(OrgGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            // Act 
+            await _delOrgHand.Handle(request, CancellationToken.None);
+
+            // Assert 
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
