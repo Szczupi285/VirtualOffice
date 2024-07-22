@@ -142,7 +142,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddOrganizationUsersHandler_ShouldCallUpdateOnce()
         {
-
             // Arrange
             var request = new AddOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
@@ -155,7 +154,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddOrganizationUsersHandler_ShouldCallSaveAsyncOnce()
         {
-
             // Arrange
             var request = new AddOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
@@ -164,6 +162,29 @@ namespace ApplicationUnitTests
             await _addOrgUsrHand.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task CreateOrganizationHandler_ShouldCallAddOnce()
+        {
+
+            // Arrange
+            var request = new CreateOrganization("Name", new Subscription(Guid.NewGuid(), DateTime.UtcNow.AddDays(1), SubscriptionTypeEnum.Trial, true), _user1);
+            // Act
+            await _creOrgHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Add(It.IsAny<Organization>()), Times.Once);
+
+        }
+        [Fact]
+        public async Task CreateOrganizationHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new CreateOrganization("Name", new Subscription(Guid.NewGuid(), DateTime.UtcNow.AddDays(1), SubscriptionTypeEnum.Trial, true), _user1);
+            // Act
+            await _creOrgHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+
         }
     }
 }
