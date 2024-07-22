@@ -5,10 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.OrganizationHandlers;
+using VirtualOffice.Application.Commands.OrganizationCommands;
+using VirtualOffice.Application.Exceptions.Organization;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
+using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace ApplicationUnitTests
 {
@@ -34,6 +37,8 @@ namespace ApplicationUnitTests
         {
             _repositoryMock = new Mock<IOrganizationRepository>();
             _readServiceMock = new Mock<IOrganizationReadService>();
+            _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
+            _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
 
             _organization = new Organization(Guid.NewGuid(), "Name", new HashSet<Office>(),
                 new HashSet<ApplicationUser>() { _user1, _user2 }, new Subscription(Guid.NewGuid(), DateTime.UtcNow.AddDays(1), SubscriptionTypeEnum.Trial, true));
@@ -47,8 +52,44 @@ namespace ApplicationUnitTests
             _delOrgOffUsrHand = new DeleteOrganizationOfficeUsersHandler(_repositoryMock.Object, _readServiceMock.Object);
             _delOrgUsrHand = new DeleteOrganizationUsersHandler(_repositoryMock.Object, _readServiceMock.Object);
             _updOrgNameHand = new UpdateOrganizationNameHandler(_repositoryMock.Object, _readServiceMock.Object);
-            _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
-            _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
+            
+        }
+
+        [Fact]
+        public async Task AddOfficeHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new AddOffice(Guid.NewGuid(), "Name", "Description", new HashSet<ApplicationUser>(){ _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _addOffHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task AddOfficeHandler_ShouldCallUpdateOnce()
+        {
+
+            // Arrange
+            var request = new AddOffice(Guid.NewGuid(), "Name", "Description", new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
+            // Act
+            await _addOffHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(It.IsAny<Organization>()), Times.Once);
+        }
+        [Fact]
+        public async Task AddOfficeHandler_ShouldCallSaveOnce()
+        {
+
+            // Arrange
+            var request = new AddOffice(Guid.NewGuid(), "Name", "Description", new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
+            // Act
+            await _addOffHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
     }
 }
