@@ -292,5 +292,41 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task DeleteOrganizationUsersHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new DeleteOrganizationUsers(Guid.NewGuid(), new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _delOrgUsrHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteOrganizationUsersHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _delOrgUsrHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_organization), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteOrganizationUsersHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _delOrgUsrHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
