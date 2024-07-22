@@ -256,5 +256,41 @@ namespace ApplicationUnitTests
             // Assert 
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task DeleteOrganizationOfficeUsersHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new DeleteOrganizationOfficeUsers(Guid.NewGuid(), Guid.NewGuid(), new HashSet<ApplicationUser>() { _user1});
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _delOrgOffUsrHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteOrganizationOfficeUsersHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganizationOfficeUsers(OrgGuid, OfficeGuid, new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _delOrgOffUsrHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_organization), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteOrganizationOfficeUsersHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeleteOrganizationOfficeUsers(OrgGuid, OfficeGuid, new HashSet<ApplicationUser>() { _user1 });
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _delOrgOffUsrHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
