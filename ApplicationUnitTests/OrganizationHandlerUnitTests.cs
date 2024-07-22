@@ -166,7 +166,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task CreateOrganizationHandler_ShouldCallAddOnce()
         {
-
             // Arrange
             var request = new CreateOrganization("Name", new Subscription(Guid.NewGuid(), DateTime.UtcNow.AddDays(1), SubscriptionTypeEnum.Trial, true), _user1);
             // Act
@@ -184,7 +183,42 @@ namespace ApplicationUnitTests
             await _creOrgHand.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteOfficeHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new DeleteOffice(OrgGuid, OfficeGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _delOffHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteOfficeHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new DeleteOffice(OrgGuid, OfficeGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            // Act
+            await _delOffHand.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(x => x.Update(_organization));
+        }
+        [Fact]
+        public async Task DeleteOfficeHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeleteOffice(OrgGuid, OfficeGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            // Act
+            await _delOffHand.Handle(request, CancellationToken.None);
+
+            // Assert
+            _repositoryMock.Verify(x => x.SaveAsync(CancellationToken.None));
         }
     }
 }
