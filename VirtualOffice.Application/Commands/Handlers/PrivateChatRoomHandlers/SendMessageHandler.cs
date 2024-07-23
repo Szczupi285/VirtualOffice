@@ -19,10 +19,10 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
         public IUserReadService _userReadService;
         public IUserRepository _userRepository;
 
-        public SendMessageHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService, IUserReadService userReadService, IUserRepository userRepository)
+        public SendMessageHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService readService, IUserRepository userRepository, IUserReadService userReadService)
         {
             _repository = repository;
-            _readService = noteReadService;
+            _readService = readService;
             _userReadService = userReadService;
             _userRepository = userRepository;
         }

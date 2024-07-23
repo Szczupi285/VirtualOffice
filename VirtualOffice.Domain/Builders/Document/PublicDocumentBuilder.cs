@@ -93,7 +93,6 @@ namespace VirtualOffice.Domain.Builders.Document
         /// <see cref="SetEligibleForRead(ICollection{ApplicationUserId})"/> <br/>
         /// <see cref="SetEligibleForWrite(ICollection{ApplicationUserId)"/> <br/>
         /// OPTIONAL: <br/>
-        /// <see cref="SetPreviousVersion(AbstractDocument)"/> <br/> 
         /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/> 
         /// </remarks>
         /// <returns>

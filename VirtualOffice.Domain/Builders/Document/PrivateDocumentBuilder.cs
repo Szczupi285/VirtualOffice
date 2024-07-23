@@ -58,7 +58,6 @@ namespace VirtualOffice.Domain.Builders.Document
         /// <see cref="SetTitle(string)"/> <br/>
         /// <see cref="SetContent(string)"/> <br/>
         /// OPTIONAL: <br/>
-        /// <see cref="SetPreviousVersion(AbstractDocument)"/> <br/> 
         /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/> 
         /// </remarks>
         /// <returns>
