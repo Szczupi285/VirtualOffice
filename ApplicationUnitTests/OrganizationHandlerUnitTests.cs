@@ -205,7 +205,7 @@ namespace ApplicationUnitTests
             await _delOffHand.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(x => x.Update(_organization));
+            _repositoryMock.Verify(x => x.Update(_organization), Times.Once);
         }
         [Fact]
         public async Task DeleteOfficeHandler_ShouldCallSaveAsyncOnce()
@@ -218,7 +218,7 @@ namespace ApplicationUnitTests
             await _delOffHand.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(x => x.SaveAsync(CancellationToken.None));
+            _repositoryMock.Verify(x => x.SaveAsync(CancellationToken.None), Times.Once);
         }
         [Fact]
         public async Task DeleteOrganizationHandler_ShouldThrowOrganizationDoesNotExistsException()

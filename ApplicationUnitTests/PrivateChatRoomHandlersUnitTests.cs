@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers;
 using VirtualOffice.Application.Commands.PrivateChatRoomCommands;
+using VirtualOffice.Application.Exceptions.PrivateChatRoom;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
@@ -23,6 +24,7 @@ namespace ApplicationUnitTests
         private readonly SendMessageHandler _sendMessHand;
         private readonly ApplicationUser _user1;
         private readonly ApplicationUser _user2;
+        private readonly Guid pcrGuid = Guid.NewGuid();
 
         public PrivateChatRoomHandlersUnitTests()
         {
@@ -45,7 +47,7 @@ namespace ApplicationUnitTests
             // Act
             await _crePriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<PrivateChatRoom>()));
+            _repositoryMock.Verify(r => r.Add(It.IsAny<PrivateChatRoom>()), Times.Once);
         }
         [Fact]
         public async Task CreatePrivateChatRoomHandler_ShouldCallSaveAsyncOnce()
@@ -55,7 +57,39 @@ namespace ApplicationUnitTests
             // Act
             await _crePriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None));
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task DeletePrivateChatRoomHandler_ShouldThrowPrivateChatRoomDoesNotExistException()
+        {
+
+            // Arrange
+            var request = new DeletePrivateChatRoom(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PrivateChatRoomDoesNotExistException>(() => _delPriChtRmHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeletePrivateChatRoomHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateChatRoom(pcrGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
+            // Act
+            await _delPriChtRmHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Delete(pcrGuid), Times.Once());
+        }
+        [Fact]
+        public async Task DeletePrivateChatRoomHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateChatRoom(pcrGuid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
+            // Act
+            await _delPriChtRmHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once());
         }
     }
 }
