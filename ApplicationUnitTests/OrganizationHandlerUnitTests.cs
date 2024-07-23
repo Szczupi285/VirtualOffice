@@ -328,5 +328,41 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task UpdateOrganizationNameHandler_ShouldThrowOrganizationDoesNotExistsException()
+        {
+            // Arrange
+            var request = new UpdateOrganizationName(Guid.NewGuid(), "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<OrganizationDoesNotExistsException>(() => _updOrgNameHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdateOrganizationNameHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new UpdateOrganizationName(OrgGuid, "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _updOrgNameHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_organization), Times.Once);
+        }
+        [Fact]
+        public async Task UpdateOrganizationNameHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new UpdateOrganizationName(OrgGuid, "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+
+            // Act
+            await _updOrgNameHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
