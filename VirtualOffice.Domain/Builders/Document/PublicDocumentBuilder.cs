@@ -13,7 +13,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders.Document
 {
-    internal class PublicDocumentBuilder : IDocumentBuilder
+    public class PublicDocumentBuilder : IDocumentBuilder
     {
         private PublicDocument _document = new PublicDocument();
 

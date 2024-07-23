@@ -358,7 +358,7 @@ namespace ApplicationUnitTests
             var request = new UpdateOrganizationName(OrgGuid, "NewName");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
             _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
-
+    
             // Act
             await _updOrgNameHand.Handle(request, CancellationToken.None);
             // Assert
