@@ -87,7 +87,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task CreatePrivateDocumentHandler_ShouldCallAddOnce()
         {
-
             // Arrange
             var request = new CreatePrivateDocument("content", "title", new List<DocumentFilePath>());
             // Act
@@ -98,7 +97,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task CreatePrivateDocumentHandler_ShouldCallSaveAsyncOnce()
         {
-
             // Arrange
             var request = new CreatePrivateDocument("content", "title", new List<DocumentFilePath>());
             // Act
@@ -106,6 +104,38 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
-
+        [Fact]
+        public async Task DeletePrivateDocumentAttachmentHandler_ShouldThrowPrivateDocumentDoesNotExistException()
+        {
+            // Arrange
+            var request = new DeletePrivateDocumentAttachment(Guid.NewGuid(), @"C:\newFolder\smth");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _delPrivDocAttHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeletePrivateDocumentAttachmentHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateDocumentAttachment(_guid, @"C:\FolderFilePath\");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            // Act
+            await _delPrivDocAttHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_privateDocument), Times.Once);
+        }
+        [Fact]
+        public async Task DeletePrivateDocumentAttachmentHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateDocumentAttachment(_guid, @"C:\FolderFilePath\");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            // Act
+            await _delPrivDocAttHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
