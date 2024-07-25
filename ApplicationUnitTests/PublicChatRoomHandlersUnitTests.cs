@@ -85,5 +85,26 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None));
         }
+        [Fact]
+        public async Task CreatePublicChatRoomHandler_ShouldCallAddOnce()
+        {
+            // Arrange
+            var request = new CreatePublicChatRoom(new HashSet<ApplicationUser>() { _user3, _user1 }, new SortedSet<Message>(), "NewChatName");
+            // Act
+            await _crePubChatRoomHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Add(It.IsAny<PublicChatRoom>()), Times.Once());
+        }
+        [Fact]
+        public async Task CreatePublicChatRoomHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new CreatePublicChatRoom(new HashSet<ApplicationUser>() { _user3 , _user1}, new SortedSet<Message>(), "NewChatName");
+            // Act
+            await _crePubChatRoomHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once());
+        }
+
     }
 }
