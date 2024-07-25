@@ -212,5 +212,39 @@ namespace ApplicationUnitTests
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
 
+        [Fact]
+        public async Task UpdatePublicDocumentTitleHandler_ShouldThrowPublicDocumentDoesNotExistException()
+        {
+            // Arrange
+            var request = new UpdatePublicDocumentTitle(Guid.NewGuid(), "newTitle");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PublicDocumentDoesNotExistException>(() => _updPubDocTitHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdatePublicDocumentTitleHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new UpdatePublicDocumentTitle(_guid, "newTitle");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            // Act 
+            await _updPubDocTitHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_publicDocument), Times.Once);
+        }
+        [Fact]
+        public async Task UpdatePublicDocumentTitleHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new UpdatePublicDocumentTitle(_guid, "newTitle");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            // Act 
+            await _updPubDocTitHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+
     }
 }
