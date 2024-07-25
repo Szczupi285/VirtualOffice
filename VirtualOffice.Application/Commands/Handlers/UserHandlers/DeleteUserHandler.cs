@@ -25,9 +25,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
         public async Task Handle(DeleteUser request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id))
-            {
                 throw new UserDoesNotExistException(request.Id);
-            }
 
             await _repository.Delete(request.Id);
             await _repository.SaveAsync(cancellationToken);

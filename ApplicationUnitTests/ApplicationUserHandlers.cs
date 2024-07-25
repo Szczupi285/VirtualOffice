@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.UserHandlers;
 using VirtualOffice.Application.Commands.UserCommands;
+using VirtualOffice.Application.Exceptions.ApplicationUser;
 using VirtualOffice.Application.Exceptions.PublicDocument;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
@@ -41,7 +42,7 @@ namespace ApplicationUnitTests
             // Act
             await _creUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(It.IsAny<ApplicationUser>()));
+            _repositoryMock.Verify(r => r.Add(It.IsAny<ApplicationUser>()), Times.Once);
         }
         [Fact]
         public async Task CreateUserHandler_ShouldCallSaveAsyncOnce()
@@ -51,8 +52,38 @@ namespace ApplicationUnitTests
             // Act
             await _creUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None));
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
-        
+        [Fact]
+        public async Task DeleteUserHandler_ShouldThrowUserDoesNotExistException()
+        {
+            // Arrange
+            var request = new DeleteUser(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<UserDoesNotExistException>(() => _delUserHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeleteUserHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeleteUser(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            // Act 
+            await _delUserHand.Handle(request, CancellationToken.None);
+            // Assert 
+            _repositoryMock.Verify(r => r.Delete(_user1.Id), Times.Once);
+        }
+        [Fact]
+        public async Task DeleteUserHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeleteUser(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            // Act 
+            await _delUserHand.Handle(request, CancellationToken.None);
+            // Assert 
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
