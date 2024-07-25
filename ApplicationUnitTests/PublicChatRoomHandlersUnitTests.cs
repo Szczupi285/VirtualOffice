@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers;
 using VirtualOffice.Application.Commands.PublicChatRoomCommands;
+using VirtualOffice.Application.Exceptions.ApplicationUser;
 using VirtualOffice.Application.Exceptions.PrivateChatRoom;
 using VirtualOffice.Application.Exceptions.PublicChatRoom;
 using VirtualOffice.Application.Services;
@@ -19,8 +20,8 @@ namespace ApplicationUnitTests
         private readonly Guid guid = Guid.NewGuid();
         private readonly Mock<IPublicChatRoomRepository> _repositoryMock;
         private readonly Mock<IPublicChatRoomReadService> _readServiceMock;
-        private readonly Mock<IUserReadService> _userReadService;
-        private readonly Mock<IUserRepository> _userRepository;
+        private readonly Mock<IUserReadService> _userReadServiceMock;
+        private readonly Mock<IUserRepository> _userRepositoryMock;
         private readonly AddChatParticipantsHandler _addChatPartHand;
         private readonly CreatePublicChatRoomHandler _crePubChatRoomHand;
         private readonly DeleteChatParticipantsHandler _delChatPartHand;
@@ -41,14 +42,14 @@ namespace ApplicationUnitTests
             _user4 = new ApplicationUser(Guid.NewGuid(), "Jennifer", "Koe");
             _repositoryMock = new Mock<IPublicChatRoomRepository>();
             _readServiceMock = new Mock<IPublicChatRoomReadService>();
-            _userRepository = new Mock<IUserRepository>();
-            _userReadService = new Mock<IUserReadService>();
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _userReadServiceMock = new Mock<IUserReadService>();
             _addChatPartHand = new AddChatParticipantsHandler(_repositoryMock.Object, _readServiceMock.Object);
             _crePubChatRoomHand = new CreatePublicChatRoomHandler(_repositoryMock.Object);
             _delChatPartHand = new DeleteChatParticipantsHandler(_repositoryMock.Object, _readServiceMock.Object);
             _delPubChatRoomHand = new DeletePublicChatRoomHandler(_repositoryMock.Object, _readServiceMock.Object);
             _sendPubMessHand = new SendPublicMessageHandler(_repositoryMock.Object, _readServiceMock.Object,
-                _userReadService.Object,  _userRepository.Object);
+                _userReadServiceMock.Object,  _userRepositoryMock.Object);
             _updPubChatRoomNameHand = new UpdatePublicChatRoomNameHandler(_repositoryMock.Object, _readServiceMock.Object);
             _publicChatRoom = new PublicChatRoom(guid, new HashSet<ApplicationUser>() {_user1, _user2, _user4 }, new SortedSet<Message>(), "ChatName");
         }
@@ -172,6 +173,57 @@ namespace ApplicationUnitTests
             await _delPubChatRoomHand.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once());
+        }
+        [Fact]
+        public async Task SendPublicMessageHandler_ShouldThrowPublicChatRoomDoesNotExistException()
+        {
+            // Arrange
+            var request = new SendPublicMessage(Guid.NewGuid(), Guid.NewGuid(), "content");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<PublicChatRoomDoesNotExistException>(() => _sendPubMessHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task SendPublicMessageHandler_ShouldThrowUserDoesNotExistException()
+        {
+            // Arrange
+            var request = new SendPublicMessage(guid, Guid.NewGuid(), "content");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+
+            // Act & Assert
+            await Assert.ThrowsAsync<UserDoesNotExistException>(() => _sendPubMessHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task SendPublicMessageHandler_ShouldCallUpdateOnce()
+        {
+
+            // Arrange
+            var request = new SendPublicMessage(guid, _user1.Id, "content");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(_user1.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_publicChatRoom);
+            _userRepositoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
+            // Act
+            await _sendPubMessHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_publicChatRoom), Times.Once);
+        }
+        [Fact]
+        public async Task SendPublicMessageHandler_ShouldCallSaveAsyncOnce()
+        {
+
+            // Arrange
+            var request = new SendPublicMessage(guid, _user1.Id, "content");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(_user1.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_publicChatRoom);
+            _userRepositoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
+            // Act
+            await _sendPubMessHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
     }
 }
