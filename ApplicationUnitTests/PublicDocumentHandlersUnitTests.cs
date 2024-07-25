@@ -147,6 +147,37 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task DeletePublicDocumentHandler_ShouldThrowPublicDocumentDoesNotExistException()
+        {
+            // Arrange
+            var request = new DeletePublicDocument(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PublicDocumentDoesNotExistException>(() => _delPubDocHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeletePublicDocumentHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeletePublicDocument(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            // Act 
+            await _delPubDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Delete(_guid), Times.Once);
+        }
+        [Fact]
+        public async Task DeletePublicDocumentHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeletePublicDocument(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            // Act 
+            await _delPubDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
 
     }
 }
