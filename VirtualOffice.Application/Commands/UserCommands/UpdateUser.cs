@@ -8,6 +8,6 @@ using VirtualOffice.Domain.Consts;
 
 namespace VirtualOffice.Application.Commands.UserCommands
 {
-    public record UpdateUser(Guid Id, string Name, string Surname, PermissionsEnum Permissions) : IRequest;
+    public record UpdateUser(Guid Id, string Name, string Surname) : IRequest;
     
 }

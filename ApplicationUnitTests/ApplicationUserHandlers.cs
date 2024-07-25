@@ -85,5 +85,38 @@ namespace ApplicationUnitTests
             // Assert 
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task UpdateUserHandler_ShouldThrowUserDoesNotExistException()
+        {
+            // Arrange
+            var request = new UpdateUser(Guid.NewGuid(), "NewName", "NewSurname");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<UserDoesNotExistException>(() => _UpdUserHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdateUserHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new UpdateUser(_guid, "NewName", "NewSurname");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_user1);
+            // Act
+            await _UpdUserHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_user1), Times.Once);
+        }
+        [Fact]
+        public async Task UpdateUserHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new UpdateUser(_guid, "NewName", "NewSurname");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_user1);
+            // Act
+            await _UpdUserHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
