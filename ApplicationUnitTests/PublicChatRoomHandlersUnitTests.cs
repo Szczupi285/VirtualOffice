@@ -198,7 +198,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task SendPublicMessageHandler_ShouldCallUpdateOnce()
         {
-
             // Arrange
             var request = new SendPublicMessage(guid, _user1.Id, "content");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
@@ -213,7 +212,6 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task SendPublicMessageHandler_ShouldCallSaveAsyncOnce()
         {
-
             // Arrange
             var request = new SendPublicMessage(guid, _user1.Id, "content");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
@@ -222,6 +220,39 @@ namespace ApplicationUnitTests
             _userRepositoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
             // Act
             await _sendPubMessHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task UpdatePublicChatRoomNameHandler_ShouldThrowPublicChatRoomDoesNotExistException()
+        {
+            // Arrange
+            var request = new UpdatePublicChatRoomName(Guid.NewGuid(), "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PublicChatRoomDoesNotExistException>(() => _updPubChatRoomNameHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task UpdatePublicChatRoomNameHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new UpdatePublicChatRoomName(guid, "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_publicChatRoom);
+            // Act
+            await _updPubChatRoomNameHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_publicChatRoom), Times.Once);
+        }
+        [Fact]
+        public async Task UpdatePublicChatRoomNameHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new UpdatePublicChatRoomName(guid, "NewName");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_publicChatRoom);
+            // Act
+            await _updPubChatRoomNameHand.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
