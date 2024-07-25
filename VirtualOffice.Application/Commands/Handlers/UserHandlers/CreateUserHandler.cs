@@ -23,7 +23,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
 
         public async Task Handle(CreateUser request, CancellationToken cancellationToken)
         {
-            ApplicationUser newUser = new(request.Id, request.Name, request.Surname, request.Permissions);
+            ApplicationUser newUser = new(Guid.NewGuid(), request.Name, request.Surname, request.Permissions);
 
             await _repository.Add(newUser);
             await _repository.SaveAsync(cancellationToken);

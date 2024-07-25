@@ -8,5 +8,5 @@ using VirtualOffice.Domain.Consts;
 
 namespace VirtualOffice.Application.Commands.UserCommands
 {
-    public record CreateUser(Guid Id, string Name, string Surname, PermissionsEnum Permissions) : IRequest;
+    public record CreateUser(string Name, string Surname, PermissionsEnum Permissions) : IRequest;
 }
