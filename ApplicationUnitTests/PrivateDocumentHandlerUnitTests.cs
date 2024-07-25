@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using VirtualOffice.Application.Commands.CreatePrivateDocumentCommands;
 using VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler;
 using VirtualOffice.Application.Commands.PrivateChatRoomCommands;
 using VirtualOffice.Application.Commands.PrivateDocumentCommands;
@@ -83,6 +84,28 @@ namespace ApplicationUnitTests
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
 
+        [Fact]
+        public async Task CreatePrivateDocumentHandler_ShouldCallAddOnce()
+        {
+
+            // Arrange
+            var request = new CreatePrivateDocument("content", "title", new List<DocumentFilePath>());
+            // Act
+            await _crePrivDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Add(It.IsAny<PrivateDocument>()), Times.Once);
+        }
+        [Fact]
+        public async Task CreatePrivateDocumentHandler_ShouldCallSaveAsyncOnce()
+        {
+
+            // Arrange
+            var request = new CreatePrivateDocument("content", "title", new List<DocumentFilePath>());
+            // Act
+            await _crePrivDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
 
     }
 }
