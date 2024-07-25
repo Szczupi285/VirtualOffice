@@ -12,6 +12,7 @@ using VirtualOffice.Domain.Builders.Document;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace ApplicationUnitTests
 {
@@ -87,6 +88,28 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
             // Act 
             await _addPubDocAttHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+        [Fact]
+        public async Task AddPublicDocumentHandler_ShouldCallAddOnce()
+        {
+            // Assert
+            var request = new AddPublicDocument("Cont", "Tit",_user1.Id, new HashSet<ApplicationUserId>() { _user1.Id},
+                new HashSet<ApplicationUserId>() { _user1.Id }, new List<DocumentFilePath>());
+            // Act 
+            await _addPubDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Add(It.IsAny<PublicDocument>()), Times.Once);
+        }
+        [Fact]
+        public async Task AddPublicDocumentHandler_ShouldSaveAsyncOnce()
+        {
+            // Assert
+            var request = new AddPublicDocument("Cont", "Tit", _user1.Id, new HashSet<ApplicationUserId>() { _user1.Id },
+                new HashSet<ApplicationUserId>() { _user1.Id }, new List<DocumentFilePath>());
+            // Act 
+            await _addPubDocHand.Handle(request, CancellationToken.None);
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
