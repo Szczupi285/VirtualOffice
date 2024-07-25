@@ -54,13 +54,14 @@ namespace ApplicationUnitTests
             builder.SetCreationDetails(Guid.NewGuid());
             builder.SetEligibleForRead(new HashSet<ApplicationUserId>() { _user1.Id, _user2.Id, _user3.Id });
             builder.SetEligibleForWrite(new HashSet<ApplicationUserId>() { _user2.Id, _user3.Id });
+            builder.SetAttachments(new HashSet<DocumentFilePath>() { @"C:\exampleFilePath\" });
             _publicDocument = builder.GetDocument();
         }
 
         [Fact]
         public async Task AddPublicDocumentAttachmentHandler_ShouldThrowPublicDocumentDoesNotExistException()
         {
-            // Assert
+            // Arrange
             var request = new AddPublicDocumentAttachment(Guid.NewGuid(), @"C:\SomeFold\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
 
@@ -70,7 +71,7 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddPublicDocumentAttachmentHandler_ShouldCallUpdateOnce()
         {
-            // Assert
+            // Arrange
             var request = new AddPublicDocumentAttachment(_guid, @"C:\SomeFold\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
             _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
@@ -82,7 +83,7 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddPublicDocumentAttachmentHandler_ShouldSaveAsyncOnce()
         {
-            // Assert
+            // Arrange
             var request = new AddPublicDocumentAttachment(_guid, @"C:\SomeFold\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
             _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
@@ -94,7 +95,7 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddPublicDocumentHandler_ShouldCallAddOnce()
         {
-            // Assert
+            // Arrange
             var request = new AddPublicDocument("Cont", "Tit",_user1.Id, new HashSet<ApplicationUserId>() { _user1.Id},
                 new HashSet<ApplicationUserId>() { _user1.Id }, new List<DocumentFilePath>());
             // Act 
@@ -105,7 +106,7 @@ namespace ApplicationUnitTests
         [Fact]
         public async Task AddPublicDocumentHandler_ShouldSaveAsyncOnce()
         {
-            // Assert
+            // Arrange
             var request = new AddPublicDocument("Cont", "Tit", _user1.Id, new HashSet<ApplicationUserId>() { _user1.Id },
                 new HashSet<ApplicationUserId>() { _user1.Id }, new List<DocumentFilePath>());
             // Act 
@@ -113,5 +114,39 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task DeletePublicDocumentAttachmentHandler_ShouldThrowPublicDocumentDoesNotExistException()
+        {
+            // Arrange
+            var request = new DeletePublicDocumentAttachment(Guid.NewGuid(), @"C:\FilePath\");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PublicDocumentDoesNotExistException>(() => _delPubDocAttHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeletePublicDocumentAttachmentHandler_ShouldCallUpdateOnce()
+        {
+            // Arrange
+            var request = new DeletePublicDocumentAttachment(_guid, @"C:\exampleFilePath\");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            // Act 
+            await _delPubDocAttHand.Handle(request, CancellationToken.None); 
+            // Assert
+            _repositoryMock.Verify(r => r.Update(_publicDocument), Times.Once);
+        }
+        [Fact]
+        public async Task DeletePublicDocumentAttachmentHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeletePublicDocumentAttachment(_guid, @"C:\exampleFilePath\");
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            // Act 
+            await _delPubDocAttHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
+
     }
 }
