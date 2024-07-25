@@ -137,5 +137,36 @@ namespace ApplicationUnitTests
             // Assert
             _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
         }
+        [Fact]
+        public async Task DeletePrivateDocumentHandler_ShouldThrowPrivateDocumentDoesNotExistException()
+        {
+            // Arrange
+            var request = new DeletePrivateDocument(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
+            // Act & Assert
+            await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _delPrivDocHand.Handle(request, CancellationToken.None));
+        }
+        [Fact]
+        public async Task DeletePrivateDocumentHandler_ShouldCallDeleteOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateDocument(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            // Act
+            await _delPrivDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.Delete(_guid), Times.Once);
+        }
+        [Fact]
+        public async Task DeletePrivateDocumentHandler_ShouldCallSaveAsyncOnce()
+        {
+            // Arrange
+            var request = new DeletePrivateDocument(_guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
+            // Act
+            await _delPrivDocHand.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+        }
     }
 }
