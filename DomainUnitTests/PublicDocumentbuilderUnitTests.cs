@@ -92,7 +92,6 @@ namespace DomainUnitTests
                 && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
-                && document._previousVersion is null
                 && document._attachmentFilePaths is null);
         }
         [Fact]
@@ -104,7 +103,6 @@ namespace DomainUnitTests
             documentBuilder.SetCreationDetails(creationUserId);
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
-            documentBuilder.SetPreviousVersion(previousVersion);
             PublicDocument document = documentBuilder.GetDocument();
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
@@ -113,7 +111,6 @@ namespace DomainUnitTests
                 && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
-                && document._previousVersion.Equals(previousVersion)
                 && document._attachmentFilePaths is null);
         }
         [Fact]
@@ -134,7 +131,6 @@ namespace DomainUnitTests
                 && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
-                && document._previousVersion is null
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
         [Fact]
@@ -147,7 +143,6 @@ namespace DomainUnitTests
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             PublicDocument document = documentBuilder.GetDocument();
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
@@ -156,7 +151,6 @@ namespace DomainUnitTests
                 && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
-                && document._previousVersion.Equals(previousVersion)
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
         [Fact]
@@ -168,7 +162,6 @@ namespace DomainUnitTests
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         [Fact]
@@ -180,7 +173,6 @@ namespace DomainUnitTests
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         [Fact]
@@ -192,7 +184,6 @@ namespace DomainUnitTests
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         [Fact]
@@ -204,7 +195,6 @@ namespace DomainUnitTests
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         [Fact]
@@ -216,7 +206,6 @@ namespace DomainUnitTests
             documentBuilder.SetCreationDetails(creationUserId);
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         [Fact]
@@ -228,7 +217,6 @@ namespace DomainUnitTests
             documentBuilder.SetCreationDetails(creationUserId);
             documentBuilder.SetEligibleForRead(eligibleForRead);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
         #endregion

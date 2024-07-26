@@ -56,7 +56,6 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._previousVersion is null
                 && document._attachmentFilePaths is null);
         }
         [Fact]
@@ -65,12 +64,10 @@ namespace DomainUnitTests
             documentBuilder.SetId(id);
             documentBuilder.SetTitle(title);
             documentBuilder.SetContent(content);
-            documentBuilder.SetPreviousVersion(previousVersion);
             PrivateDocument document = documentBuilder.GetDocument();
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._previousVersion.Equals(previousVersion)
                 && document._attachmentFilePaths is null);
         }
         [Fact]
@@ -84,7 +81,6 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._previousVersion is null
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
         [Fact]
@@ -94,12 +90,10 @@ namespace DomainUnitTests
             documentBuilder.SetTitle(title);
             documentBuilder.SetContent(content);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             PrivateDocument document = documentBuilder.GetDocument();
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._previousVersion.Equals(previousVersion)
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
 
@@ -109,7 +103,6 @@ namespace DomainUnitTests
             documentBuilder.SetTitle(title);
             documentBuilder.SetContent(content);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPrivateDocumentBuild>(() => documentBuilder.GetDocument());
         }
 
@@ -119,7 +112,6 @@ namespace DomainUnitTests
             documentBuilder.SetId(id);
             documentBuilder.SetContent(content);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPrivateDocumentBuild>(() => documentBuilder.GetDocument());
         }
 
@@ -129,7 +121,6 @@ namespace DomainUnitTests
             documentBuilder.SetId(id);
             documentBuilder.SetTitle(title);
             documentBuilder.SetAttachments(attachmentFilePaths);
-            documentBuilder.SetPreviousVersion(previousVersion);
             Assert.Throws<InvalidPrivateDocumentBuild>(() => documentBuilder.GetDocument());
         }
     }

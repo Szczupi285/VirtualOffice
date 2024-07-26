@@ -10,9 +10,10 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IUserRepository
     {
-        ApplicationUser GetById(ApplicationUserId id);
-        void Add(ApplicationUser user);
-        void Update(ApplicationUser user);
-        void Delete(ApplicationUserId id);
+        Task<ApplicationUser> GetById(ApplicationUserId id);
+        Task Add(ApplicationUser user);
+        Task Update(ApplicationUser user);
+        Task Delete(ApplicationUserId id);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
+﻿using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
-using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
@@ -23,7 +16,7 @@ namespace VirtualOffice.Domain.Abstractions
         {
             if (messages is null)
                 throw new ArgumentNullException($"{nameof(messages)} cannot be null");
-            else if(participants is null)
+            else if (participants is null)
                 throw new ArgumentNullException($"{nameof(participants)} cannot be null");
             else if (participants.Count < 2)
                 throw new InvalidChatRoomParticipantsException();

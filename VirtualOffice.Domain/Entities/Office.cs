@@ -20,7 +20,7 @@ namespace VirtualOffice.Domain.Entities
         // unlike in Organization situation, Office might not have any members/users assigned to it
         internal HashSet<ApplicationUser> _members { get; private set; }
 
-        internal Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
+        public Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
         { 
             Id= id;
             _officeName = name;
@@ -59,7 +59,7 @@ namespace VirtualOffice.Domain.Entities
             => _members.FirstOrDefault(u => u.Id == id) ?? throw new OfficeMemberNotFoundException(id.ToString());
 
         public ApplicationUser GetMemberBySurname(ApplicationUserSurname surname)
-            => _members.FirstOrDefault(u => u._surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
+            => _members.FirstOrDefault(u => u._Surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
 
         public ICollection<ApplicationUser> GetAllMembers() => _members;
 

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
+using VirtualOffice.Domain.Exceptions.Document;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Abstractions
@@ -17,8 +12,6 @@ namespace VirtualOffice.Domain.Abstractions
 
         public DocumentContent _content { get; private protected set; }
 
-        public AbstractDocument? _previousVersion { get; private protected set; }
-
         public ICollection<DocumentFilePath>? _attachmentFilePaths { get; private protected set; }
 
         internal void AddId(Guid id) => Id = id;
@@ -26,8 +19,6 @@ namespace VirtualOffice.Domain.Abstractions
         internal void AddTitle(string title) => _title = title;
 
         internal void AddContent(string content) => _content = content;
-
-        internal void AddPreviousVersion(AbstractDocument previousVersion) => _previousVersion = previousVersion;
 
         internal void AddAttachment(ICollection<DocumentFilePath> attachmentFilePaths) => _attachmentFilePaths = attachmentFilePaths;
 
@@ -42,16 +33,13 @@ namespace VirtualOffice.Domain.Abstractions
             _content = content;
             AddEvent(new DocumentContentSetted(this, content));
         }
-        public void SetPreviousVersion(AbstractDocument previousVersion)
-        {
-            _previousVersion = previousVersion;
-            AddEvent(new DocumentPreviousVersionSetted(this, previousVersion));
-        }
         public void AddNewAttachment(DocumentFilePath attachmentFilePath)
         {
-            if(_attachmentFilePaths is not null)
+
+            if (_attachmentFilePaths is not null)
             {
-                _attachmentFilePaths.Add(attachmentFilePath);
+                if (!_attachmentFilePaths.Contains(attachmentFilePath))
+                    _attachmentFilePaths.Add(attachmentFilePath);
             }
             else
                 _attachmentFilePaths = new List<DocumentFilePath>() { attachmentFilePath };
@@ -61,9 +49,31 @@ namespace VirtualOffice.Domain.Abstractions
 
         public void AddNewAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths)
         {
-            foreach(DocumentFilePath documentFilePath in documentFilePaths)
+            foreach (DocumentFilePath documentFilePath in documentFilePaths)
             {
                 AddNewAttachment(documentFilePath);
+            }
+        }
+
+        public void DeleteAttachment(DocumentFilePath attachmentFilePath)
+        {
+            if (_attachmentFilePaths != null)
+            {
+                if (!_attachmentFilePaths.Contains(attachmentFilePath))
+                {
+                    throw new InvalidDocumentFilePathException(attachmentFilePath);
+                }
+                _attachmentFilePaths.Remove(attachmentFilePath);
+
+                AddEvent(new AttachmentDeleted(this, attachmentFilePath));
+            }
+        }
+
+        public void DeleteAttachmentsRange(ICollection<DocumentFilePath> documentFilePaths)
+        {
+            foreach (DocumentFilePath documentFilePath in documentFilePaths)
+            {
+                DeleteAttachment(documentFilePath);
             }
         }
     }

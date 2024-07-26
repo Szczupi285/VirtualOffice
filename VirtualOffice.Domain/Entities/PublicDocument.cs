@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
+﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.PublicDocumentEvents;
 using VirtualOffice.Domain.Exceptions.Document;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
@@ -46,6 +41,24 @@ namespace VirtualOffice.Domain.Entities
         {
             _eligibleForWrite.Add(eligibleForWrite);
             AddEvent(new PublicDocumentAddedEligibleForWrite(this, eligibleForWrite));
+        }
+
+        public PublicDocumentMemento SaveToMemento()
+        {
+            return new PublicDocumentMemento(Id, _title, _content, _attachmentFilePaths, _creationDetails, _eligibleForRead, _eligibleForWrite);
+        }
+
+        public void RestoreFromMemento(PublicDocumentMemento memento)
+        {
+            // properies are not valdiated by add methods since they were already validated when the object was constructed and saved to memento
+
+            Id = memento.Id;
+            _title = memento._title;
+            _content = memento._content;
+            _attachmentFilePaths = memento._attachmentFilePaths;
+            _creationDetails = memento._creationDetails;
+            _eligibleForRead = memento._eligibleForRead;
+            _eligibleForWrite = memento._eligibleForWrite;
         }
     }
 }

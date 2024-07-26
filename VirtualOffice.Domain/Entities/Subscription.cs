@@ -37,7 +37,7 @@ namespace VirtualOffice.Domain.Entities
         public bool _isPayed { get; private set; } = false;
 
 
-        internal Subscription(SubscriptionId id, SubscriptionStartDate startDate, SubscriptionTypeEnum type, bool isPayed)
+        public Subscription(SubscriptionId id, SubscriptionStartDate startDate, SubscriptionTypeEnum type, bool isPayed)
         {
             Id = id;
             _subStartDate = startDate;

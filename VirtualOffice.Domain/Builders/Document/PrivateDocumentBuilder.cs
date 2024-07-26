@@ -10,7 +10,7 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Builders.Document
 {
-    internal class PrivateDocumentBuilder : IDocumentBuilder
+    public class PrivateDocumentBuilder : IDocumentBuilder
     {
         private PrivateDocument _document = new PrivateDocument();
 
@@ -41,12 +41,6 @@ namespace VirtualOffice.Domain.Builders.Document
             _document.AddId(id);
             IsIdSet = true;
         }
-
-        public void SetPreviousVersion(AbstractDocument previousVersion)
-        {
-            _document.AddPreviousVersion(previousVersion);
-        }
-
         public void SetTitle(string title)
         {
             _document.AddTitle(title);
@@ -64,7 +58,6 @@ namespace VirtualOffice.Domain.Builders.Document
         /// <see cref="SetTitle(string)"/> <br/>
         /// <see cref="SetContent(string)"/> <br/>
         /// OPTIONAL: <br/>
-        /// <see cref="SetPreviousVersion(AbstractDocument)"/> <br/> 
         /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/> 
         /// </remarks>
         /// <returns>

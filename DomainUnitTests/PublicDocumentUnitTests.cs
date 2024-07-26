@@ -31,6 +31,7 @@ namespace DomainUnitTests
             documentBuilder.SetCreationDetails(new ApplicationUserId(Guid.NewGuid()));
             documentBuilder.SetEligibleForRead(new List<ApplicationUserId> { new ApplicationUserId(Guid.NewGuid()) });
             documentBuilder.SetEligibleForWrite(new List<ApplicationUserId> { new ApplicationUserId(Guid.NewGuid()) });
+            documentBuilder.SetAttachments(new List<DocumentFilePath> { new DocumentFilePath(@"D:\file.txt") });
 
             return documentBuilder.GetDocument();
         }
@@ -82,38 +83,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentContentSetted>().Single();
             Assert.Equal("Content", Event.content);
         }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted_PublicDocumentShouldEqual()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-            Assert.Equal(publicDocument, Event.document);
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldRaiseDocumentPreviousVersionSetted_PreviousVersionShouldEqual()
-        {
-            PublicDocument publicDocument = BuildValidPublicDocument();
-            PublicDocument previousVersion = BuildValidPublicDocument();
-
-            publicDocument.SetPreviousVersion(previousVersion);
-
-            var Event = publicDocument.Events.OfType<DocumentPreviousVersionSetted>().Single();
-            Assert.Equal(previousVersion, Event.previousVersion);
-        }
+       
         [Fact]
         public void AddNewAttachment_ShouldRaiseNewAttachmentAdded()
         {
@@ -156,6 +126,32 @@ namespace DomainUnitTests
 
             var Events = publicDocument.Events.OfType<PublicDocumentSettedCreationDate>().ToList();
             Assert.Single(Events);
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseDeleteAttachment()
+        {
+            var publicDocument = BuildValidPublicDocument();
+
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_PublicDocumentShouldEqual()
+        {
+            var publicDocument = BuildValidPublicDocument();
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+            Assert.Equal(publicDocument, Event.document);
+        }
+        [Fact]
+        public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_AttachmentFilePathShouldEqual()
+        {
+            var publicDocument = BuildValidPublicDocument();
+            publicDocument.DeleteAttachment(@"D:\file.txt");
+
+            var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
+            Assert.Equal(@"D:\file.txt", Event.filePath);
         }
         [Fact]
         public void SettedCreationDate_ShouldRaiseEventPublicDocumentSettedCreationDate_PublicDocumentShouldEqual()
@@ -285,15 +281,6 @@ namespace DomainUnitTests
             _publicDocument.SetContent(newDescription);
 
             Assert.Equal(newDescription, _publicDocument._content);
-        }
-        [Fact]
-        public void SetPreviousVersion_ShouldSetPreviousVersion()
-        {
-            PublicDocument previousVersion = new PublicDocument();
-
-            _publicDocument.SetPreviousVersion(previousVersion);
-
-            Assert.Equal(previousVersion, _publicDocument._previousVersion);
         }
         [Fact]
         public void AddNewAttachment_ShouldAddAttachmentToList()

@@ -10,11 +10,12 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface INoteRepository
     {
-        Note GetById(NoteId guid);
-        void Add(Note note);
-        void Update(Note note);
-        void Delete(NoteId guid);
-        IEnumerable<Note> GetAllForUser(ApplicationUser userId);
-        IEnumerable<Note> GetAllSortedByTitleForUser(ApplicationUser userId);
+        Task<Note> GetById(NoteId guid);
+        Task Add(Note note);
+        Task Update(Note note);
+        Task Delete(NoteId guid);
+        Task<IEnumerable<Note>> GetAllForUser(ApplicationUser userId);
+        Task<IEnumerable<Note>> GetAllSortedByTitleForUser(ApplicationUser userId);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

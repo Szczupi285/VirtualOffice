@@ -12,15 +12,14 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IPrivateDocumentRepository
     {
-        PrivateDocument GetById(DocumentId guid);
-        PrivateDocument GetPreviousVersion(DocumentId guid);
-        void Add(PrivateDocument PrivateDocument);
-        void Update(PrivateDocument PrivateDocument);
-        void Delete(DocumentId guid);
-        IEnumerable<PrivateDocument> GetAllForUser(ApplicationUser userId);
-        IEnumerable<PrivateDocument> GetAllSortedForUser(ApplicationUser userId);
-        IEnumerable<PublicDocument> GetAllForUserByDate(ApplicationUserId userId, DocumentCreationDate date);
-
-
+        Task<PrivateDocument> GetById(DocumentId guid);
+        Task<PrivateDocument> GetPreviousVersion(DocumentId guid);
+        Task Add(PrivateDocument PrivateDocument);
+        Task Update(PrivateDocument PrivateDocument);
+        Task Delete(DocumentId guid);
+        Task<IEnumerable<PrivateDocument>> GetAllForUser(ApplicationUser userId);
+        Task<IEnumerable<PrivateDocument>> GetAllSortedForUser(ApplicationUser userId);
+        Task<IEnumerable<PublicDocument>> GetAllForUserByDate(ApplicationUserId userId, DocumentCreationDate date);
+        Task SaveAsync(CancellationToken cancellationToken);
     }
 }

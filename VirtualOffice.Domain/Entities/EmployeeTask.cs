@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
+﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
-using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
