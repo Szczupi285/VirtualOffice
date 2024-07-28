@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.DTO;
+using VirtualOffice.Domain.ValueObjects.Message;
 
 namespace VirtualOffice.Application.Queries.PublicChatRoom
 {
-    public class GetPublicChatRoomsForUser : IRequest<IEnumerable<PublicChatRoomDTO>>;
+    public record GetPublicChatRoomMessages(Guid PublicChatRoomId) : IRequest<IEnumerable<MessageDTO>>;
 }
