@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.CalendarEvent
 {
-    public record GetAllFutureCalendarEventsForUser(Guid UserId) : IRequest<IEnumerable<CalendarEventDTO>>;
+    public record GetCalendarEventsForUser(Guid UserId) : IRequest<IEnumerable<CalendarEventDTO>>;
 }
