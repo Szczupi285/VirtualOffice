@@ -16,7 +16,5 @@ namespace VirtualOffice.Application.DTO
         public string Status { get; }
         public DateTime _StartDate { get; }
         public DateTime _EndDate { get; }
-
-
     }
 }

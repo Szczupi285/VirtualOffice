@@ -1,5 +1,6 @@
 ﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.NoteEvent;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
@@ -10,13 +11,13 @@ namespace VirtualOffice.Domain.Entities
 
         public NoteContent _content { get; private set; }
 
-        public ApplicationUser _user { get; }
-        public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUser user)
+        public ApplicationUserId _userId { get; }
+        public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUserId userId)
         {
             Id = id;
             _title = title;
             _content = content;
-            _user = user;
+            _userId = userId;
         }
 
         public void EditContent(string content)

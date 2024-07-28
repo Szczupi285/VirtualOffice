@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.EmployeeTask
 {
-    public record GetAllEmployeeTasksForUser(Guid UserId) : IRequest<IEnumerable<EmployeeTaskDTO>>;
+    public record GetEmployeeTasksForUser(Guid UserId) : IRequest<IEnumerable<EmployeeTaskDTO>>;
 }

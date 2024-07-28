@@ -30,7 +30,7 @@ namespace ApplicationUnitTests
         public NoteHandlerUnitTest()
         {
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
-            _Note = new Note(guid, "Title", "Description", _user1);
+            _Note = new Note(guid, "Title", "Description", _user1.Id);
             _repositoryMock = new Mock<INoteRepository>();
             _readServiceMock = new Mock<INoteReadService>();
             _createNoteHandler = new CreateNoteHandler(_repositoryMock.Object);
@@ -42,7 +42,7 @@ namespace ApplicationUnitTests
         public async Task CreateNoteHandler_ShouldCallAddOnce()
         {
             // Arrange
-            var request = new CreateNote("Title", "Content", _user1);
+            var request = new CreateNote("Title", "Content", _user1.Id);
             // Act
             await _createNoteHandler.Handle(request, CancellationToken.None);
             // Assert
@@ -52,7 +52,7 @@ namespace ApplicationUnitTests
         public async Task CreateNoteHandler_ShouldCallSaveAsyncOnce()
         {
             // Arrange
-            var request = new CreateNote("Title", "Content", _user1);
+            var request = new CreateNote("Title", "Content", _user1.Id);
             // Act
             await _createNoteHandler.Handle(request, CancellationToken.None);
             // Assert

@@ -24,9 +24,9 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
         public async Task Handle(CreateNote request, CancellationToken cancellationToken)
         {
-            var(Title, Content, User) = request;
+            var(Title, Content, UserId) = request;
 
-            Note note = new(Guid.NewGuid(), Title, Content, User); 
+            Note note = new(Guid.NewGuid(), Title, Content, UserId); 
 
             await _repository.Add(note);
             await _repository.SaveAsync(cancellationToken);

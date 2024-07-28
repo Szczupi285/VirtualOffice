@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.NoteService;
 using VirtualOffice.Domain.Services;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace DomainUnitTests
@@ -13,16 +14,16 @@ namespace DomainUnitTests
     public class NoteServiceUnitTests
     {
         private NoteService _NoteService { get; set; }
-        private ApplicationUser User { get; set; }
+        private ApplicationUserId UserId { get; set; }
         private Guid _Id { get; set; } = Guid.NewGuid();
 
         public NoteServiceUnitTests()
         {
-            User = new ApplicationUser(Guid.NewGuid(), "name", "surname");
+            UserId = Guid.NewGuid();
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(_Id, title, content, User);
+            Note note = new Note(_Id, title, content, UserId);
             ICollection<Note> notes = new List<Note>();
             notes.Add(note);
             _NoteService = new NoteService(notes);
@@ -36,7 +37,7 @@ namespace DomainUnitTests
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(id, title, content, User);
+            Note note = new Note(id, title, content, UserId);
 
             _NoteService.AddNote(note);
 
@@ -48,7 +49,7 @@ namespace DomainUnitTests
             NoteTitle title = new NoteTitle("title");
             NoteContent content = new NoteContent("content");
 
-            Note note = new Note(_Id, title, content, User);
+            Note note = new Note(_Id, title, content, UserId);
 
             _NoteService.DeleteNote(_Id);
 
