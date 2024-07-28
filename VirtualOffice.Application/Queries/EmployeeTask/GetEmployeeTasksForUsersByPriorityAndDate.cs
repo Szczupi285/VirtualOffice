@@ -8,5 +8,6 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.EmployeeTask
 {
-    public record GetEmployeeTasksForUserByDate(Guid UserId, DateTime StartDate, DateTime EndDate) : IRequest<IEnumerable<EmployeeTaskDTO>>;
+    public record GetEmployeeTasksForUsersByPriorityAndDate(Guid UserId, DateTime StartDate, DateTime SndDate, string Priority) : IRequest<IEnumerable<EmployeeTaskDTO>>;
+    
 }
