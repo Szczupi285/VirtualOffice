@@ -8,8 +8,10 @@ namespace VirtualOffice.Application.DTO
 {
     public class PrivateDocumentDTO
     {
-        public Guid Id { get; init; }    
-
-        public string Title { get; init; }
+        public Guid Id { get; init; }
+        public string _title { get; init; }
+        public string _description { get; init; }
+        public List<string> _attachmentFilePaths { get; init; }
+        public DateTime _creationDate { get; init; }
     }
 }

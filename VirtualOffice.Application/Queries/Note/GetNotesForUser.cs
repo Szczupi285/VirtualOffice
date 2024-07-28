@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.Note
 {
-    public record GetAllNotesForUser(Guid UserId) : IRequest<IEnumerable<NoteDTO>>;
+    public record GetNotesForUser(Guid UserId) : IRequest<IEnumerable<NoteTitleDTO>>;
 }

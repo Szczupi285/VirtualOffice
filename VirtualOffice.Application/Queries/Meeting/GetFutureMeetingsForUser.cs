@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.Meeting
 {
-    public record GetFutureMeetingsForUser(Guid Id) : IRequest<IEnumerable<MeetingDTO>>;
+    public record GetFutureMeetingsForUser(Guid Id) : IRequest<IEnumerable<MeetingTitleDTO>>;
 }

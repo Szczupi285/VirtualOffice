@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.PrivateDocument
 {
-    public record GetPrivateDocumentsCreatedAfter(Guid UserId, DateTime DateTime) : IRequest<IEnumerable<PrivateDocumentDTO>>;
+    public record GetPrivateDocumentById(Guid PrivateDocumentId) : IRequest<PrivateDocumentDTO>;
 }

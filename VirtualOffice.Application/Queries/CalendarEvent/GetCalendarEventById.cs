@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.DTO;
 
-namespace VirtualOffice.Application.Queries.EmployeeTask
+namespace VirtualOffice.Application.Queries.CalendarEvent
 {
-    public record GetEmployeeTasksForUser(Guid UserId) : IRequest<IEnumerable<EmployeeTaskTitleDTO>>;
+    public record GetCalendarEventById(Guid CalendarEventId) : IRequest<CalendarEventDTO>;
 }

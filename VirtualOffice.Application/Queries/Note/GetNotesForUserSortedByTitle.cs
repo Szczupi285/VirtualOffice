@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.Note
 {
-    public record GetAllNotesForUserSortedByTitle(Guid UserId, string Title) : IRequest<IEnumerable<NoteDTO>>;
+    public record GetNotesForUserSortedByTitle(Guid UserId, string Title) : IRequest<IEnumerable<NoteTitleDTO>>;
 }

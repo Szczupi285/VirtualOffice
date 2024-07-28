@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO;
 
 namespace VirtualOffice.Application.Queries.EmployeeTask
 {
-    public record GetEmployeeTasksForUsersByPriority(Guid Id, string Priority) : IRequest<IEnumerable<EmployeeTaskDTO>>;
+    public record GetEmployeeTasksForUsersByPriority(Guid Id, string Priority) : IRequest<IEnumerable<EmployeeTaskTitleDTO>>;
 }

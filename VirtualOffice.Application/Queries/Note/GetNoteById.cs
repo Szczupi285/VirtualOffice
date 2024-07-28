@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.DTO;
 
-namespace VirtualOffice.Application.Queries.CalendarEvent
+namespace VirtualOffice.Application.Queries.Note
 {
-    public record GetCalendarEventById(Guid Id) : IRequest<CalendarEventDTO>;
+    public record GetNoteById(Guid NoteId) : IRequest<NoteDTO>;
 }
