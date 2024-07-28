@@ -8,12 +8,12 @@ namespace VirtualOffice.Application.DTO
 {
     public class MeetingDTO
     {
-        Guid Id { get; }
-        public string _Title { get; }
-        public string _Description { get; }
-        public List<ApplicationUserDTO> _AssignedEmployees { get; }
-        public DateTime _StartDate { get; }
-        public DateTime _EndDate { get; }
+        Guid Id { get; init; }
+        public string _Title { get; init; }
+        public string _Description { get; init; }
+        public List<ApplicationUserDTO> _AssignedEmployees { get; init; }
+        public DateTime _StartDate { get; init; }
+        public DateTime _EndDate { get; init; }
 
     }
 }

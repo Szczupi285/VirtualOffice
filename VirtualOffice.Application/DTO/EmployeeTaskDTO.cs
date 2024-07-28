@@ -8,13 +8,13 @@ namespace VirtualOffice.Application.DTO
 {
     public class EmployeeTaskDTO
     {
-        Guid Id { get; }
-        public string _Title { get; } 
-        public string _Description { get; } 
-        public List<ApplicationUserDTO> _AssignedEmployees { get; }
-        public string _Priority { get; } 
-        public string Status { get; }
-        public DateTime _StartDate { get; }
-        public DateTime _EndDate { get; }
+        Guid Id { get; init; }
+        public string _Title { get; init; } 
+        public string _Description { get; init; } 
+        public List<ApplicationUserDTO> _AssignedEmployees { get; init; }
+        public string _Priority { get; init; } 
+        public string Status { get; init; }
+        public DateTime _StartDate { get; init; }
+        public DateTime _EndDate { get; init; }
     }
 }

@@ -11,13 +11,13 @@ namespace VirtualOffice.Domain.Entities
 
         public NoteContent _content { get; private set; }
 
-        public ApplicationUserId _userId { get; }
+        public ApplicationUserId _createdBy { get; }
         public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUserId userId)
         {
             Id = id;
             _title = title;
             _content = content;
-            _userId = userId;
+            _createdBy = userId;
         }
 
         public void EditContent(string content)

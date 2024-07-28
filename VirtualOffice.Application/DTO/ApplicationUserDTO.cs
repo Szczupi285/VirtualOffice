@@ -9,8 +9,8 @@ namespace VirtualOffice.Application.DTO
 {
     public class ApplicationUserDTO
     {
-        Guid Id { get; }
-        public string _Name { get; }
-        public string _Surname { get; }
+        Guid Id { get; init; }
+        public string _Name { get; init; }
+        public string _Surname { get; init; }
     }
 }
