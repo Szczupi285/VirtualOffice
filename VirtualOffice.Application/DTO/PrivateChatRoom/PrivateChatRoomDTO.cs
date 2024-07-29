@@ -8,8 +8,8 @@ namespace VirtualOffice.Application.DTO.PrivateChatRoom
 {
     public class PrivateChatRoomDTO
     {
-        public Guid ChatRoomId { get; init; }
-        public string ChatParticipantName { get; init; }
-        public string ChatParticipantSurname { get; init; }
+        public Guid Id { get; init; }
+        public string _ChatParticipantName { get; init; }
+        public string _ChatParticipantSurname { get; init; }
     }
 }

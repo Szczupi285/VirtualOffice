@@ -7,7 +7,7 @@ using VirtualOffice.Application.DTO.ApplicationUser;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.CalendarEvent
 {
     public class CalendarEventDTO
     {

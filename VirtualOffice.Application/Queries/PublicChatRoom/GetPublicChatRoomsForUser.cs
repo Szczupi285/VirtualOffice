@@ -8,5 +8,5 @@ using VirtualOffice.Application.DTO.PublicChatRoom;
 
 namespace VirtualOffice.Application.Queries.PublicChatRoom
 {
-    public class GetPublicChatRoomsForUser : IRequest<IEnumerable<PublicChatRoomDTO>>;
+    public class GetPublicChatRoomsForUser : IRequest<IEnumerable<PublicChatRoomTitleDTO>>;
 }

@@ -9,6 +9,6 @@ namespace VirtualOffice.Application.DTO.PublicChatRoom
     public class PublicChatRoomTitleDTO
     {
         public Guid Id { get; init; }
-        public string Title { get; init; }
+        public string _Title { get; init; }
     }
 }

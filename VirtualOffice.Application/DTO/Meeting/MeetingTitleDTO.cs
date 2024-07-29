@@ -8,8 +8,8 @@ namespace VirtualOffice.Application.DTO.Meeting
 {
     public class MeetingTitleDTO
     {
-        public Guid Id { get; }
+        public Guid Id { get; init; }
 
-        public string Title { get; }
+        public string _Title { get; init; }
     }
 }

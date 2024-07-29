@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Application.DTO.ApplicationUser;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.Meeting
 {
     public class MeetingDTO
     {

@@ -14,7 +14,7 @@ namespace VirtualOffice.Application.DTO.EmployeeTask
         public string _Description { get; init; }
         public List<ApplicationUserDTO> _AssignedEmployees { get; init; }
         public string _Priority { get; init; }
-        public string Status { get; init; }
+        public string _Status { get; init; }
         public DateTime _StartDate { get; init; }
         public DateTime _EndDate { get; init; }
     }

@@ -10,6 +10,6 @@ namespace VirtualOffice.Application.DTO.PrivateDocument
     {
         public Guid Id { get; init; }
 
-        public string Title { get; init; }
+        public string _Title { get; init; }
     }
 }
