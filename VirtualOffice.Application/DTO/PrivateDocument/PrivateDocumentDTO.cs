@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.PrivateDocument
 {
     public class PrivateDocumentDTO
     {

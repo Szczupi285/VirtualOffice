@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.ApplicationUser
 {
     public class ApplicationUserDTO
     {

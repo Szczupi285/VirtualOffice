@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.EmployeeTask
 {
-    public class PublicChatRoomTitleDTO
+    public class EmployeeTaskTitleDTO
     {
         public Guid Id { get; init; }
         public string Title { get; init; }

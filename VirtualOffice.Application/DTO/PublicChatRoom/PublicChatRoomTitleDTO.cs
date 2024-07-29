@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.PublicChatRoom
 {
-    public class PrivateDocumentTitleDTO
+    public class PublicChatRoomTitleDTO
     {
-        public Guid Id { get; init; }    
-
+        public Guid Id { get; init; }
         public string Title { get; init; }
     }
 }

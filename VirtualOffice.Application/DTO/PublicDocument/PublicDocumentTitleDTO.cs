@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Application.DTO
+namespace VirtualOffice.Application.DTO.PublicDocument
 {
-    public class MeetingTitleDTO
+    public class PublicDocumentTitleDTO
     {
-        public Guid Id { get; }
-
+        Guid Id { get; }
         public string Title { get; }
     }
 }
