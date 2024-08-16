@@ -25,8 +25,8 @@ namespace VirtualOffice.Domain.Abstractions
                 Version++;
                 _versionIncremented = true;
 
-                _Events.Add(@event);
             }
+            _Events.Add(@event);
         }
         public void ClearEvents() => _Events.Clear();
         protected void IncrementVersion()
