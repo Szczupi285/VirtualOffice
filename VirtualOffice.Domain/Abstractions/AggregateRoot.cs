@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents;
+﻿using VirtualOffice.Domain.DomainEvents;
 
 namespace VirtualOffice.Domain.Abstractions
 {
@@ -17,18 +12,18 @@ namespace VirtualOffice.Domain.Abstractions
 
         private bool _versionIncremented;
 
-
         protected void AddEvent(IDomainEvent @event)
         {
-            if(!_Events.Any() && !_versionIncremented)
+            if (!_Events.Any() && !_versionIncremented)
             {
                 Version++;
                 _versionIncremented = true;
-
             }
             _Events.Add(@event);
         }
+
         public void ClearEvents() => _Events.Clear();
+
         protected void IncrementVersion()
         {
             if (_versionIncremented)

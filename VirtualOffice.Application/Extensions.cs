@@ -12,6 +12,10 @@ namespace VirtualOffice.Application
     {
         public static IServiceCollection AddServicesCollection(this IServiceCollection services)
         {
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+            }
             return services;
         }
 
