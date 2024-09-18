@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.Models
         public string Name { get; set; }
         public ushort UserLimit { get; set; }
         public List<OfficeReadModel> Offices { get; set; }
-        public List<UserReadModel> Users { get; set; }
+        public List<UserReadModel> Employees { get; set; }
         public SubscriptionReadModel Subscription { get; set; }
     }
 }
