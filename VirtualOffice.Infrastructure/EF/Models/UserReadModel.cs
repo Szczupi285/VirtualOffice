@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Infrastructure.Interfaces;
 
 namespace VirtualOffice.Infrastructure.EF.Models
 {
-    public class UserReadModel
+    public class UserReadModel : EntityId
     {
         public string Id { get; set; }
         public string Name { get; set; }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Consts;
+using VirtualOffice.Infrastructure.Interfaces;
 
 namespace VirtualOffice.Infrastructure.EF.Models
 {
-    public class EmployeeTaskReadModel
+    public class EmployeeTaskReadModel : EntityId
     {
         public string Id { get; set; }
         public int Version { get; set; }
