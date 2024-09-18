@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Domain.DomainEvents.OrganizationEvents
 {
     public record UserRemovedFromOffice(Organization organization, Office office, ApplicationUser User) : IDomainEvent;
-
 }

@@ -7,7 +7,7 @@ namespace VirtualOffice.Domain.Entities
 {
     public class CalendarEvent : AbstractScheduleItem
     {
-        public CalendarEvent(ScheduleItemId id, ScheduleItemTitle titile, ScheduleItemDescription eventDescription, 
+        public CalendarEvent(ScheduleItemId id, ScheduleItemTitle titile, ScheduleItemDescription eventDescription,
             HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
             : base(id, titile, eventDescription, assignedEmployees, startDate, endDate)
         {
@@ -21,7 +21,5 @@ namespace VirtualOffice.Domain.Entities
             _StartDate = startDate;
             AddEvent(new CalendarEventStartDateUpdated(this, startDate));
         }
-
-      
     }
 }

@@ -12,6 +12,7 @@ namespace VirtualOffice.Domain.Entities
         public NoteContent _content { get; private set; }
 
         public ApplicationUserId _createdBy { get; }
+
         public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUserId userId)
         {
             Id = id;
@@ -25,11 +26,11 @@ namespace VirtualOffice.Domain.Entities
             _content = content;
             AddEvent(new NoteContentChanged(this, content));
         }
+
         public void EditTitle(string title)
         {
             _title = title;
             AddEvent(new NoteTitleChanged(this, title));
         }
-
     }
 }

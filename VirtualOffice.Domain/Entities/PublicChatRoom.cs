@@ -1,14 +1,15 @@
 ﻿using VirtualOffice.Domain.Abstractions;
+using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ChatRoom;
-using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
 
 namespace VirtualOffice.Domain.Entities
 {
     public class PublicChatRoom : AbstractChatRoom
     {
         public PublicChatRoomName _Name { get; private set; }
+
         public PublicChatRoom(ChatRoomId id, HashSet<ApplicationUser> participants, SortedSet<Message> messages, PublicChatRoomName name) : base(id, participants, messages)
         {
             _Name = name;
@@ -22,16 +23,18 @@ namespace VirtualOffice.Domain.Entities
             _Participants.Add(participant);
             AddEvent(new ChatRoomParticipantAdded(this, participant));
         }
+
         public void AddRangeParticipants(ICollection<ApplicationUser> participants)
         {
-            foreach(var participant in participants)
+            foreach (var participant in participants)
             {
                 AddParticipant(participant);
             }
         }
+
         public void RemoveParticipant(ApplicationUser participant)
         {
-            if(participant is null)
+            if (participant is null)
                 throw new ArgumentNullException(nameof(participant));
             else if (!_Participants.Contains(participant))
                 throw new UserIsNotAParticipantOfThisChatException(participant.Id);
@@ -42,6 +45,7 @@ namespace VirtualOffice.Domain.Entities
             _Participants.Remove(participant);
             AddEvent(new ChatRoomParticipantRemoved(this, participant));
         }
+
         public void RemoveRangeParticipants(ICollection<ApplicationUser> participants)
         {
             foreach (var participant in participants)
@@ -55,6 +59,5 @@ namespace VirtualOffice.Domain.Entities
             _Name = name;
             AddEvent(new ChatRoomNameSetted(this, _Name));
         }
-        
     }
 }

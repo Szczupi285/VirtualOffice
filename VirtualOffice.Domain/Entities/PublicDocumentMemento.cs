@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+﻿using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Entities
@@ -20,9 +14,6 @@ namespace VirtualOffice.Domain.Entities
         public ICollection<ApplicationUserId> _eligibleForRead { get; }
 
         public ICollection<ApplicationUserId> _eligibleForWrite { get; }
-
-
-       
 
         public PublicDocumentMemento(Guid id, string title, string content, ICollection<DocumentFilePath>? attachmentFilePaths,
             (DocumentCreationDate, ApplicationUserId) creationDetails, ICollection<ApplicationUserId> eligibleForRead, ICollection<ApplicationUserId> eligibleForWrite)

@@ -12,16 +12,16 @@ namespace VirtualOffice.Domain.Entities
 
         public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
 
-        public ICollection<ApplicationUserId> _eligibleForRead {  get; private set; }
+        public ICollection<ApplicationUserId> _eligibleForRead { get; private set; }
 
-        public ICollection<ApplicationUserId> _eligibleForWrite {  get; private set; }
-
+        public ICollection<ApplicationUserId> _eligibleForWrite { get; private set; }
 
         internal void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = (DateTime.UtcNow, applicationUserId);
 
         // at least one user must be eligible for read while creating the document
         internal void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)
             => _eligibleForRead = eligibleForRead.Count >= 1 ? eligibleForRead : throw new InvalidEligibleForReadException();
+
         // at least one user must be eligible for write while creating the document
         internal void AddEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite)
             => _eligibleForWrite = eligibleForWrite.Count >= 1 ? eligibleForWrite : throw new InvalidEligibleForWriteException();
@@ -37,6 +37,7 @@ namespace VirtualOffice.Domain.Entities
             _eligibleForRead.Add(eligibleForRead);
             AddEvent(new PublicDocumentAddedEligibleForRead(this, eligibleForRead));
         }
+
         public void AddEligibleForWrite(ApplicationUserId eligibleForWrite)
         {
             _eligibleForWrite.Add(eligibleForWrite);

@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Consts;
+﻿using VirtualOffice.Domain.Consts;
 
 namespace VirtualOffice.Domain.Builders.Permission
 {
     public static class PermissionDirector
     {
-
         public static PermissionsEnum ConstructEmployee()
         {
             PermissionBuilder builder = new PermissionBuilder();
@@ -48,7 +42,6 @@ namespace VirtualOffice.Domain.Builders.Permission
             builder.SetCanShareDocumentsToWholeOrganization();
             builder.SetCanDeletePublicDocuments();
             builder.SetCanAddEventToOrganizationCalendar();
-            
 
             return builder.GetPermissions();
         }
@@ -102,7 +95,6 @@ namespace VirtualOffice.Domain.Builders.Permission
             builder.SetCanHandleSubscriptions();
 
             return builder.GetPermissions();
-
         }
     }
 }

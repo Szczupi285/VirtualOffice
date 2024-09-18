@@ -1,10 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.ValueObjects.Message;
+﻿using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Entities
@@ -20,7 +14,6 @@ namespace VirtualOffice.Domain.Entities
         public DateTime SendDate => _dateTimeProvider.UtcNow();
         public MessageContent Content => _content;
 
-
         public Message(MessageId id, ApplicationUser sender, MessageContent content)
         {
             Id = id;
@@ -28,6 +21,7 @@ namespace VirtualOffice.Domain.Entities
             _content = content;
             _dateTimeProvider = new DateTimeProvider();
         }
+
         protected Message(MessageId id, ApplicationUser sender, MessageContent content, IDateTimeProvider dateTimeProvider)
         {
             Id = id;
@@ -42,7 +36,5 @@ namespace VirtualOffice.Domain.Entities
                 throw new ArgumentNullException();
             return other.SendDate.CompareTo(this.SendDate);
         }
-
-       
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.Subscription;
+﻿using VirtualOffice.Domain.Exceptions.Subscription;
 
 namespace VirtualOffice.Domain.ValueObjects.Subscription
 {
@@ -17,7 +12,6 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
                 throw new SubscriptionFeeEitherTooLowOrToHigh(subscriptionFee);
 
             Value = subscriptionFee;
-
         }
         public static implicit operator decimal(SubscriptionFee subscriptionFee)
             => subscriptionFee.Value;

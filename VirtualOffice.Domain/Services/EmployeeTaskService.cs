@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
 using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Services
 {
     public class EmployeeTaskService : AbstractScheduleItemService<EmployeeTask>
     {
-        
         public EmployeeTaskService(HashSet<EmployeeTask> scheduleItems) : base(scheduleItems)
         {
         }
@@ -58,7 +51,6 @@ namespace VirtualOffice.Domain.Services
         /// <returns>An immutable sorted set of employee tasks assigned to the specified users.</returns>
         public ImmutableSortedSet<EmployeeTask> GetAllEmployeeTasksForUsersGroup(ICollection<ApplicationUser> users)
         {
-
             return _ScheduleItems.Where(task => users.Any(user => task._AssignedEmployees.Contains(user)))
              .OrderByDescending(task => task._Priority)
              .ToImmutableSortedSet();
@@ -120,7 +112,6 @@ namespace VirtualOffice.Domain.Services
         public HashSet<EmployeeTask> GetEmployeeTasksByPriority(ApplicationUser user, EmployeeTaskPriorityEnum priority)
             => _ScheduleItems.Where(task => task._AssignedEmployees.Contains(user) && task._Priority == priority).ToHashSet();
 
-
         /// <summary>
         /// Retrieves an immutable sorted set of overdue employee tasks assigned to the specified user.
         /// </summary>
@@ -131,7 +122,7 @@ namespace VirtualOffice.Domain.Services
         /// </returns>
         /// <remarks>
         /// This method filters the collection of employee tasks to include only those assigned to the specified user
-        /// and having an end date earlier than the current UTC time, and the task status is not 'Done'. 
+        /// and having an end date earlier than the current UTC time, and the task status is not 'Done'.
         /// It then sorts these tasks based on their priority before converting them into an immutable sorted set.
         /// </remarks>
         /// <returns>An immutable sorted set of overdue employee tasks assigned to the specified user.</returns>
@@ -143,6 +134,7 @@ namespace VirtualOffice.Domain.Services
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
+
         /// <summary>
         /// Retrieves an immutable sorted set of current employee tasks assigned to the specified user.
         /// </summary>
@@ -187,9 +179,5 @@ namespace VirtualOffice.Domain.Services
                 .OrderByDescending(task => task._Priority)
                 .ToImmutableSortedSet();
         }
-
-
-
-
     }
 }

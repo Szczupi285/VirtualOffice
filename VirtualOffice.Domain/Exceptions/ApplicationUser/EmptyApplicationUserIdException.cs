@@ -4,7 +4,7 @@ namespace VirtualOffice.Domain.Exceptions.ApplicationUser
 {
     public class EmptyApplicationUserIdException : VirtualOfficeException
     {
-        public EmptyApplicationUserIdException() 
+        public EmptyApplicationUserIdException()
             : base("ApplicationUser Id cannot be empty")
         {
         }

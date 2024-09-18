@@ -5,7 +5,6 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 {
     public sealed record ApplicationUserSurname : AbstractRecordName
     {
-
         public ApplicationUserSurname(string value) : base(value, 35, new EmptyApplicationUserSurnameException(), new TooLongApplicationUserSurnameException(value))
         {
             // We don't allow abbreviations in surname as we do in name
@@ -15,6 +14,5 @@ namespace VirtualOffice.Domain.ValueObjects.ApplicationUser
 
         public static implicit operator ApplicationUserSurname(string surname)
             => new(surname);
-
     }
 }

@@ -22,5 +22,4 @@ namespace VirtualOffice.Domain.Entities
             _creationDate = memento._creationDate;
         }
     }
-    
 }

@@ -37,6 +37,5 @@ namespace VirtualOffice.Domain.Abstractions
 
         public ApplicationUser GetParticipantById(ApplicationUserId id)
             => _Participants.FirstOrDefault(u => u.Id == id) ?? throw new ChatRoomParticipantNotFoundException(id.ToString());
-
     }
 }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.BuilderExceptions;
 using VirtualOffice.Domain.ValueObjects.Document;
 
@@ -17,12 +11,12 @@ namespace VirtualOffice.Domain.Builders.Document
         private bool IsIdSet = false;
         private bool IsContentSet = false;
         private bool IsTitleSet = false;
-        
 
         public PrivateDocumentBuilder()
         {
             Reset();
         }
+
         public void Reset() => _document = new PrivateDocument();
 
         public void SetAttachments(ICollection<DocumentFilePath> attachmentFilePaths)
@@ -41,24 +35,24 @@ namespace VirtualOffice.Domain.Builders.Document
             _document.AddId(id);
             IsIdSet = true;
         }
+
         public void SetTitle(string title)
         {
             _document.AddTitle(title);
             IsTitleSet = true;
         }
 
-
         /// <summary>
-        /// Builds a private document object based on the set properties. 
+        /// Builds a private document object based on the set properties.
         /// </summary>
         /// <remarks>
         /// This method constructs a private document instance using the mandatory and optional properties that has been set previously.<br/>
         /// MANDATORY: <br/>
-        /// <see cref="SetId(Guid)"/> <br/> 
+        /// <see cref="SetId(Guid)"/> <br/>
         /// <see cref="SetTitle(string)"/> <br/>
         /// <see cref="SetContent(string)"/> <br/>
         /// OPTIONAL: <br/>
-        /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/> 
+        /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/>
         /// </remarks>
         /// <returns>
         /// A <see cref="PrivateDocument"/> object representing the constructed private document.
@@ -78,9 +72,7 @@ namespace VirtualOffice.Domain.Builders.Document
             {
                 Reset();
                 throw new InvalidPrivateDocumentBuild(IsIdSet, IsTitleSet, IsContentSet);
-
             }
-
         }
     }
 }

@@ -33,9 +33,9 @@ namespace VirtualOffice.Domain.Abstractions
             _content = content;
             AddEvent(new DocumentContentSetted(this, content));
         }
+
         public void AddNewAttachment(DocumentFilePath attachmentFilePath)
         {
-
             if (_attachmentFilePaths is not null)
             {
                 if (!_attachmentFilePaths.Contains(attachmentFilePath))

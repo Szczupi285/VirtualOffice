@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.BuilderExceptions;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Document;
@@ -74,6 +66,7 @@ namespace VirtualOffice.Domain.Builders.Document
             _document.AddEligibleForRead(eligibleForRead);
             IsEligibleForReadSet = true;
         }
+
         public void SetEligibleForWrite(ICollection<ApplicationUserId> eligibleForWrite)
         {
             _document.AddEligibleForWrite(eligibleForWrite);
@@ -81,19 +74,19 @@ namespace VirtualOffice.Domain.Builders.Document
         }
 
         /// <summary>
-        /// Builds a public document object based on the set properties. 
+        /// Builds a public document object based on the set properties.
         /// </summary>
         /// <remarks>
         /// This method constructs a public document instance using the mandatory and optional properties that has been set previously.<br/>
         /// MANDATORY: <br/>
-        /// <see cref="SetId(Guid)"/> <br/> 
+        /// <see cref="SetId(Guid)"/> <br/>
         /// <see cref="SetTitle(string)"/> <br/>
         /// <see cref="SetContent(string)"/> <br/>
         /// <see cref="SetCreationDetails(ApplicationUserId)"/> <br/>
         /// <see cref="SetEligibleForRead(ICollection{ApplicationUserId})"/> <br/>
         /// <see cref="SetEligibleForWrite(ICollection{ApplicationUserId)"/> <br/>
         /// OPTIONAL: <br/>
-        /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/> 
+        /// <see cref="SetAttachments(ICollection{DocumentFilePath})"/> <br/>
         /// </remarks>
         /// <returns>
         /// A <see cref="PublicDocument"/> object representing the constructed public document.
@@ -103,7 +96,7 @@ namespace VirtualOffice.Domain.Builders.Document
         /// </exception>
         public PublicDocument GetDocument()
         {
-            if(IsIdSet && IsTitleSet && IsContentSet
+            if (IsIdSet && IsTitleSet && IsContentSet
                 && IsCreationDetailsSet && IsEligibleForReadSet
                 && IsEligibleForWriteSet)
             {
@@ -117,7 +110,6 @@ namespace VirtualOffice.Domain.Builders.Document
                 throw new InvalidPublicDocumentBuild(IsIdSet, IsTitleSet, IsContentSet,
                     IsCreationDetailsSet, IsEligibleForReadSet, IsEligibleForWriteSet);
             }
-            
         }
     }
 }

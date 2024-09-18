@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Shared.Abstractions.Exceptions;
+﻿using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.BuilderExceptions
 {
@@ -15,6 +10,5 @@ namespace VirtualOffice.Domain.Exceptions.BuilderExceptions
                   $"Title Set Status: {isTitleSet}\n" +
                   $"Content Set Status: {isContentSet}\n")
         { }
-        
     }
 }

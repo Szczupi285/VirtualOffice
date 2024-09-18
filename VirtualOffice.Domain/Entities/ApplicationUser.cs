@@ -1,6 +1,5 @@
 ﻿using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.Abstractions;
 
 namespace VirtualOffice.Domain.Entities
 {
@@ -35,7 +34,7 @@ namespace VirtualOffice.Domain.Entities
         }
 
         public void EditName(ApplicationUserName name) => _Name = name;
-        public void EditSurname(ApplicationUserSurname surname) => _Surname = surname;
 
+        public void EditSurname(ApplicationUserSurname surname) => _Surname = surname;
     }
 }

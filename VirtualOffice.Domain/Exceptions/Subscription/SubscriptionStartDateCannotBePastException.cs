@@ -4,7 +4,8 @@ namespace VirtualOffice.Domain.Exceptions.Subscription
 {
     public class SubscriptionStartDateCannotBePastException : VirtualOfficeException
     {
-        DateTime _startDate;
+        private DateTime _startDate;
+
         public SubscriptionStartDateCannotBePastException(DateTime startDate) : base($"SubscriptionStartDate: '{startDate}' cannot be in the past.")
         {
             _startDate = startDate;

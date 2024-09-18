@@ -1,8 +1,8 @@
-﻿using VirtualOffice.Domain.Entities;
-using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
-using VirtualOffice.Domain.DomainEvents.ScheduleItem;
+﻿using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.Abstractions
 {
@@ -11,8 +11,10 @@ namespace VirtualOffice.Domain.Abstractions
         public ScheduleItemTitle _Title { get; private set; }
         public ScheduleItemDescription _Description { get; private set; }
         public HashSet<ApplicationUser> _AssignedEmployees { get; private set; }
+
         // start date is not set to default Utc.Now because it will be avalible to create tasks that are supposed to be started in the future
         public ScheduleItemStartDate _StartDate { get; private protected set; }
+
         public ScheduleItemEndDate _EndDate { get; private protected set; }
 
         protected AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
@@ -34,6 +36,7 @@ namespace VirtualOffice.Domain.Abstractions
             _Title = title;
             AddEvent(new ScheduleItemTitleSetted(this, title));
         }
+
         public void SetDescription(string description)
         {
             _Description = description;
@@ -47,6 +50,7 @@ namespace VirtualOffice.Domain.Abstractions
             if (HasBeenAdded)
                 AddEvent(new EmployeeAddedToScheduleItem(this, user));
         }
+
         public void AddEmployeesRange(ICollection<ApplicationUser> users)
         {
             foreach (var user in users)
@@ -60,7 +64,6 @@ namespace VirtualOffice.Domain.Abstractions
 
             _AssignedEmployees.Remove(user);
             AddEvent(new EmployeeRemovedFromScheduleItem(this, user));
-
         }
 
         public void RemoveEmployeesRange(ICollection<ApplicationUser> users)
@@ -68,6 +71,7 @@ namespace VirtualOffice.Domain.Abstractions
             foreach (var user in users)
                 RemoveEmployee(user);
         }
+
         public void UpdateEndDate(DateTime endDate)
         {
             if (endDate <= _StartDate)

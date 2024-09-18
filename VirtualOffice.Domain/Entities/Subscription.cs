@@ -14,28 +14,31 @@ namespace VirtualOffice.Domain.Entities
         public SubscriptionTypeEnum _subType { get; private set; }
 
         public SubscriptionFee _subscriptionFee // must be decimal due to taxes
-        { 
+        {
             get
             {
                 switch (_subType)
                 {
                     case SubscriptionTypeEnum.Basic:
                         return new SubscriptionFee(100);
+
                     case SubscriptionTypeEnum.Enterprise:
                         return new SubscriptionFee(200);
+
                     case SubscriptionTypeEnum.Premium:
                         return new SubscriptionFee(350);
+
                     case SubscriptionTypeEnum.Unlimited:
                         return new SubscriptionFee(600);
+
                     default:
                         return new SubscriptionFee(0);
                 }
             }
             private set { }
-        } 
+        }
 
         public bool _isPayed { get; private set; } = false;
-
 
         public Subscription(SubscriptionId id, SubscriptionStartDate startDate, SubscriptionTypeEnum type, bool isPayed)
         {

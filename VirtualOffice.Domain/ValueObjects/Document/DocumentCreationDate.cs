@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.Document;
-using VirtualOffice.Domain.Exceptions.Subscription;
-using VirtualOffice.Domain.ValueObjects.Subscription;
+﻿using VirtualOffice.Domain.Exceptions.Document;
 
 namespace VirtualOffice.Domain.ValueObjects.Document
 {
@@ -20,7 +13,6 @@ namespace VirtualOffice.Domain.ValueObjects.Document
             else
                 throw new DocumentCreationDateCannotBeEitherPastOrFutureException(value);
         }
-
 
         public static implicit operator DateTime(DocumentCreationDate startDate)
             => startDate.Value;

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.Organization;
+﻿using VirtualOffice.Domain.Exceptions.Organization;
 
 namespace VirtualOffice.Domain.ValueObjects.Organization
 {
@@ -26,6 +19,5 @@ namespace VirtualOffice.Domain.ValueObjects.Organization
 
         public static implicit operator OrganizationUsedSlots(ushort userLimit)
             => new(userLimit);
-
     }
 }

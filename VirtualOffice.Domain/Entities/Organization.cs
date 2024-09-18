@@ -6,7 +6,6 @@ using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace VirtualOffice.Domain.Entities
 {
-
     public class Organization : AggregateRoot<OrganizationId>
     {
         public OrganizationName _name { get; private set; }
@@ -44,13 +43,12 @@ namespace VirtualOffice.Domain.Entities
 
         public HashSet<Office> _offices { get; private set; }
 
-        // consider this relation since office already contains 
+        // consider this relation since office already contains
         // users list, but we would have to check distinct users every time
         // we add user to office. Since one user may be a member of many offices
         public HashSet<ApplicationUser> _organizationUsers { get; private set; }
 
         public Subscription _subscription { get; private set; }
-
 
         private bool _isUnlimited
         {
@@ -74,7 +72,6 @@ namespace VirtualOffice.Domain.Entities
             _offices = offices;
             _organizationUsers = organizationUsers;
             _subscription = subscription;
-
         }
 
         public Office GetOfficeById(OfficeId id)
@@ -86,7 +83,6 @@ namespace VirtualOffice.Domain.Entities
             return office;
         }
 
-
         public void AddOffice(Office office)
         {
             if (office is null)
@@ -96,6 +92,7 @@ namespace VirtualOffice.Domain.Entities
             if (hasBeenAdded)
                 AddEvent(new OfficeAdded(this, office));
         }
+
         public void RemoveOffice(Office office)
         {
             if (office is null)
@@ -106,6 +103,7 @@ namespace VirtualOffice.Domain.Entities
             _offices.Remove(office);
             AddEvent(new OfficeRemoved(this, office));
         }
+
         public void SetName(string name)
         {
             _name = name;
@@ -122,6 +120,7 @@ namespace VirtualOffice.Domain.Entities
             if (HasBeenAdded)
                 AddEvent(new UserAddedToOrganization(this, user));
         }
+
         public void AddRangeUsers(ICollection<ApplicationUser> users)
         {
             foreach (ApplicationUser user in users)
@@ -134,7 +133,6 @@ namespace VirtualOffice.Domain.Entities
         {
             bool alreadyExists = _organizationUsers.Any(u => u.Id == user.Id);
 
-
             if (alreadyExists && _organizationUsers.Count <= 1)
                 throw new CantRemoveOnlyUserException(user);
             else if (alreadyExists)
@@ -144,9 +142,8 @@ namespace VirtualOffice.Domain.Entities
             }
             else
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
-
-
         }
+
         public void RemoveRangeUsers(ICollection<ApplicationUser> users)
         {
             foreach (ApplicationUser user in users)
@@ -154,6 +151,7 @@ namespace VirtualOffice.Domain.Entities
                 RemoveUser(user);
             }
         }
+
         internal bool IsUnlimited() => _isUnlimited;
 
         public void AddOfficeUser(ApplicationUser user, Office office)
@@ -164,8 +162,8 @@ namespace VirtualOffice.Domain.Entities
                 throw new UserIsNotAMemberOfThisOrganization(user.Id);
             else if (office.AddMember(user))
                 AddEvent(new UserAddedToOffice(this, office, user));
-
         }
+
         public void AddRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
         {
             foreach (ApplicationUser user in users)
@@ -174,7 +172,6 @@ namespace VirtualOffice.Domain.Entities
 
         public void RemoveOfficeUser(ApplicationUser user, Office office)
         {
-
             if (!_offices.Contains(office))
                 throw new OfficeHasNotBeenFoundException(office.Id);
             else if (!_organizationUsers.Contains(user))
@@ -182,7 +179,6 @@ namespace VirtualOffice.Domain.Entities
 
             if (office.RemoveMember(user))
                 AddEvent(new UserRemovedFromOffice(this, office, user));
-
         }
 
         public void RemoveRangeOfficeUsers(ICollection<ApplicationUser> users, Office office)
@@ -190,6 +186,5 @@ namespace VirtualOffice.Domain.Entities
             foreach (ApplicationUser user in users)
                 RemoveOfficeUser(user, office);
         }
-
     }
 }

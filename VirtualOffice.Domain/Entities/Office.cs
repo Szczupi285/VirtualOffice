@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.Reflection.Metadata.Ecma335;
-using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.Exceptions.Office;
+﻿using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Office;
 
@@ -16,23 +13,24 @@ namespace VirtualOffice.Domain.Entities
         public OfficeDescription _description { get; private set; }
 
         // private ActivityLog _activityLog;
-        
+
         // unlike in Organization situation, Office might not have any members/users assigned to it
         internal HashSet<ApplicationUser> _members { get; private set; }
 
-        public Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members) 
-        { 
-            Id= id;
+        public Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members)
+        {
+            Id = id;
             _officeName = name;
             _description = description;
-           
+
             _members = members;
         }
 
         public void SetName(OfficeName name) => _officeName = name;
+
         public void SetDescription(OfficeDescription description) => _description = description;
 
-        internal bool AddMember(ApplicationUser user) 
+        internal bool AddMember(ApplicationUser user)
         {
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
@@ -43,7 +41,7 @@ namespace VirtualOffice.Domain.Entities
             return true;
         }
 
-        internal bool RemoveMember(ApplicationUser user) 
+        internal bool RemoveMember(ApplicationUser user)
         {
             bool alreadyExists = _members.Any(i => i.Id == user.Id);
 
@@ -52,7 +50,6 @@ namespace VirtualOffice.Domain.Entities
 
             _members.Remove(user);
             return true;
-            
         }
 
         public ApplicationUser GetMemberById(ApplicationUserId id)
@@ -62,8 +59,5 @@ namespace VirtualOffice.Domain.Entities
             => _members.FirstOrDefault(u => u._Surname == surname) ?? throw new OfficeMemberNotFoundException(surname);
 
         public ICollection<ApplicationUser> GetAllMembers() => _members;
-
     }
-    
 }
-

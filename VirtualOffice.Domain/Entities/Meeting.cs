@@ -12,6 +12,7 @@ namespace VirtualOffice.Domain.Entities
             : base(id, title, description, assignedEmployees, startDate, endDate)
         {
         }
+
         public void UpdateStartDate(DateTime newStartDate)
         {
             if (newStartDate > _EndDate)
@@ -19,9 +20,10 @@ namespace VirtualOffice.Domain.Entities
             _StartDate = newStartDate;
             AddEvent(new MeetingStartDateUpdated(this, newStartDate));
         }
+
         public void RescheduleMeeting(DateTime newStartDate, DateTime newEndDate)
         {
-            if(newStartDate > newEndDate)
+            if (newStartDate > newEndDate)
                 throw new EndDateCannotBeBeforeStartDate(newStartDate, newEndDate);
             _EndDate = newEndDate;
             _StartDate = newStartDate;

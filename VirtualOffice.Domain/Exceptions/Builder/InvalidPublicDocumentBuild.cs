@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Shared.Abstractions.Exceptions;
+﻿using VirtualOffice.Shared.Abstractions.Exceptions;
 
 namespace VirtualOffice.Domain.Exceptions.BuilderExceptions
 {
@@ -18,6 +13,5 @@ namespace VirtualOffice.Domain.Exceptions.BuilderExceptions
                   $"EligibleForRead Set Status: {isEligibleForReadSet}\n" +
                   $"EligibleForWrite Set Status: {isEligibleForWriteSet}\n")
         { }
-        
     }
 }

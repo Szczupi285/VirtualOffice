@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VIrtualOffice.Domain.Exceptions.ScheduleItem;
+﻿using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 {
@@ -36,4 +31,3 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
         public static bool operator !=(ScheduleItemEndDate startDate, DateTime value) => !DateTimeEquals(startDate.Value, value);
     }
 }
-
