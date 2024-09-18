@@ -24,7 +24,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
                 ReadDatabaseSettings.Value.DatabaseName);
 
             _employeesCollection = mongoDatabase.GetCollection<UserReadModel>(
-                ReadDatabaseSettings.Value.BooksCollectionName);
+                ReadDatabaseSettings.Value.EmployeesCollectionName);
         }
 
         public async Task<List<UserReadModel>> GetAsync() =>
