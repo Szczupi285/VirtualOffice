@@ -15,7 +15,7 @@ namespace VirtualOffice.Domain.Entities
         // private ActivityLog _activityLog;
 
         // unlike in Organization situation, Office might not have any members/users assigned to it
-        internal HashSet<ApplicationUser> _members { get; private set; }
+        public HashSet<ApplicationUser> _members { get; private set; }
 
         public Office(OfficeId id, OfficeName name, OfficeDescription description, HashSet<ApplicationUser> members)
         {
