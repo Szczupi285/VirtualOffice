@@ -8,7 +8,7 @@ using VirtualOffice.Infrastructure.Interfaces;
 
 namespace VirtualOffice.Infrastructure.EF.Models
 {
-    public class UserReadModel : EntityId
+    public class EmployeeReadModel : EntityId
     {
         public string Id { get; set; }
         public string Name { get; set; }

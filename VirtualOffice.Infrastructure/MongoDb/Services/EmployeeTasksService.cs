@@ -10,9 +10,9 @@ using VirtualOffice.Infrastructure.EF.Models.ReadDatabaseSettings;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    public class EmployeeTaskService : AbstractModelService<EmployeeTaskReadModel>
+    public class EmployeeTasksService : AbstractModelService<EmployeeTaskReadModel>
     {
-        public EmployeeTaskService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
+        public EmployeeTasksService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.EmployeeTasksCollectionName)
         {
         }

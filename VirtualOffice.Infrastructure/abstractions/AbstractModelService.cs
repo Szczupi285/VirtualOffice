@@ -9,13 +9,13 @@ using VirtualOffice.Infrastructure.EF.Models.ReadDatabaseSettings;
 using VirtualOffice.Infrastructure.EF.Models;
 using VirtualOffice.Infrastructure.Interfaces;
 
-namespace VirtualOffice.Infrastructure.MongoDb.Services
+namespace VirtualOffice.Infrastructure.abstractions
 {
-    public abstract class MongoDbService<T> where T : class, EntityId
+    public abstract class AbstractModelService<T> where T : class, EntityId
     {
         private readonly IMongoCollection<T> _Collection;
 
-        public MongoDbService(
+        public AbstractModelService(
             IOptions<ReadDatabaseSettings> ReadDatabaseSettings,
             string collectionName)
         {
@@ -32,7 +32,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.Find(_ => true).ToListAsync();
 
         public async Task<T?> GetAsync(string id) =>
-            await _Collection.Find(x => (x.Id == id)).FirstOrDefaultAsync();
+            await _Collection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
         public async Task CreateAsync(T newUserReadModel) =>
             await _Collection.InsertOneAsync(newUserReadModel);

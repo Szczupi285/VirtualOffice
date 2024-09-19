@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.Models
         public int Version { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<UserReadModel> AssignedEmployees { get; set; }
+        public List<EmployeeReadModel> AssignedEmployees { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
     }

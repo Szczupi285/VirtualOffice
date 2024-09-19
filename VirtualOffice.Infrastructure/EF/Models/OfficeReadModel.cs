@@ -12,6 +12,6 @@ namespace VirtualOffice.Infrastructure.EF.Models
         public string Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<UserReadModel> Employees { get; set; }
+        public List<EmployeeReadModel> Employees { get; set; }
     }
 }
