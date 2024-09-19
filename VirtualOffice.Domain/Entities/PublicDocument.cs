@@ -10,13 +10,15 @@ namespace VirtualOffice.Domain.Entities
     {
         //created with builder
 
-        public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
+        //public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
+
+        public DocumentCreationDetails _creationDetails { get; private set; }
 
         public ICollection<ApplicationUserId> _eligibleForRead { get; private set; }
 
         public ICollection<ApplicationUserId> _eligibleForWrite { get; private set; }
 
-        internal void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = (DateTime.UtcNow, applicationUserId);
+        internal void AddCreationDate(ApplicationUserId applicationUserId) => _creationDetails = new(DateTime.UtcNow, applicationUserId);
 
         // at least one user must be eligible for read while creating the document
         internal void AddEligibleForRead(ICollection<ApplicationUserId> eligibleForRead)

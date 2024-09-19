@@ -9,14 +9,14 @@ namespace VirtualOffice.Domain.Entities
         public string _title { get; }
         public string _content { get; }
         public ICollection<DocumentFilePath>? _attachmentFilePaths { get; }
-        public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; }
+        public DocumentCreationDetails _creationDetails { get; }
 
         public ICollection<ApplicationUserId> _eligibleForRead { get; }
 
         public ICollection<ApplicationUserId> _eligibleForWrite { get; }
 
         public PublicDocumentMemento(Guid id, string title, string content, ICollection<DocumentFilePath>? attachmentFilePaths,
-            (DocumentCreationDate, ApplicationUserId) creationDetails, ICollection<ApplicationUserId> eligibleForRead, ICollection<ApplicationUserId> eligibleForWrite)
+            DocumentCreationDetails creationDetails, ICollection<ApplicationUserId> eligibleForRead, ICollection<ApplicationUserId> eligibleForWrite)
         {
             Id = id;
             _title = title;

@@ -19,62 +19,68 @@ namespace DomainUnitTests
 {
     public class PublicDocumentBuilderUnitTests
     {
-        PublicDocument _publicDocument {  get; set; }
+        private PublicDocument _publicDocument { get; set; }
 
-        PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
-        Guid id = Guid.NewGuid();
-        string content = "Sample content";
-        string title = "Sample title";
-        ApplicationUserId creationUserId = Guid.NewGuid();
-        List<ApplicationUserId> eligibleForRead = new List<ApplicationUserId> { Guid.NewGuid()};
-        List<ApplicationUserId> eligibleForWrite = new List<ApplicationUserId> { Guid.NewGuid() };
-        List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath(@"C:\") };
-        AbstractDocument previousVersion = new PublicDocument();
-
-       
+        private PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
+        private Guid id = Guid.NewGuid();
+        private string content = "Sample content";
+        private string title = "Sample title";
+        private ApplicationUserId creationUserId = Guid.NewGuid();
+        private List<ApplicationUserId> eligibleForRead = new List<ApplicationUserId> { Guid.NewGuid() };
+        private List<ApplicationUserId> eligibleForWrite = new List<ApplicationUserId> { Guid.NewGuid() };
+        private List<DocumentFilePath> attachmentFilePaths = new List<DocumentFilePath> { new DocumentFilePath(@"C:\") };
+        private AbstractDocument previousVersion = new PublicDocument();
 
         #region properties
+
         [Fact]
         public void PublicDocumentBuilder_NoPropertiesSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyIdSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetId(id);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyContentSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetContent(content);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyTitleSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetTitle(title);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyCreationDetailsSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetCreationDetails(creationUserId);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyEligibleForReadSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetEligibleForRead(eligibleForRead);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_OnlyEligibleForWriteSet_ShouldThrowInvalidPublicDocumentBuild()
         {
             documentBuilder.SetEligibleForWrite(eligibleForWrite);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_ValidBuildOnlyMandatoryProperties_PropertiesShouldEqual()
         {
@@ -88,12 +94,13 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._creationDetails.Item2.Equals(creationUserId)
-                && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
+                && document._creationDetails.UserId.Equals(creationUserId)
+                && document._creationDetails.DocumentCreationDate.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
                 && document._attachmentFilePaths is null);
         }
+
         [Fact]
         public void PublicDocumentBuilder_ValidBuildPreviousVersionSetted_PropertiesShouldEqual()
         {
@@ -107,12 +114,13 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._creationDetails.Item2.Equals(creationUserId)
-                && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
+                && document._creationDetails.UserId.Equals(creationUserId)
+                && document._creationDetails.DocumentCreationDate.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
                 && document._attachmentFilePaths is null);
         }
+
         [Fact]
         public void PublicDocumentBuilder_ValidBuildAttachmentsSetted_PropertiesShouldEqual()
         {
@@ -127,12 +135,13 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._creationDetails.Item2.Equals(creationUserId)
-                && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
+                && document._creationDetails.UserId.Equals(creationUserId)
+                && document._creationDetails.DocumentCreationDate.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
+
         [Fact]
         public void PublicDocumentBuilder_ValidBuildAllPropertiesSetted_PropertiesShouldEqual()
         {
@@ -147,12 +156,13 @@ namespace DomainUnitTests
             Assert.True(document.Id.Equals(id)
                 && document._title.Equals(title)
                 && document._content.Equals(content)
-                && document._creationDetails.Item2.Equals(creationUserId)
-                && document._creationDetails.Item1.Value.Date.Equals(DateTime.UtcNow.Date)
+                && document._creationDetails.UserId.Equals(creationUserId)
+                && document._creationDetails.DocumentCreationDate.Value.Date.Equals(DateTime.UtcNow.Date)
                 && document._eligibleForWrite.Equals(eligibleForWrite)
                 && document._eligibleForRead.Equals(eligibleForRead)
                 && document._attachmentFilePaths.Equals(attachmentFilePaths));
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildIdMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -164,6 +174,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildTitleMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -175,6 +186,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildContentMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -186,6 +198,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildCreationDetailsMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -197,6 +210,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildEligibleForReadMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -208,6 +222,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
+
         [Fact]
         public void PublicDocumentBuilder_InvalidBuildEligibleForWriteMissing_ShouldThrowInvalidPublicDocumentBuild()
         {
@@ -219,7 +234,7 @@ namespace DomainUnitTests
             documentBuilder.SetAttachments(attachmentFilePaths);
             Assert.Throws<InvalidPublicDocumentBuild>(() => documentBuilder.GetDocument());
         }
-        #endregion
 
+        #endregion properties
     }
 }

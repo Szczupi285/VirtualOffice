@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.ChatRoom;
 using VirtualOffice.Domain.ValueObjects.Document;
 using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Domain.ValueObjects.Note;
@@ -280,6 +281,10 @@ namespace VirtualOffice.Infrastructure.EF
                     p => p.Value,
                     p => new DocumentId(p));
 
+                entity.Property(e => e._title).HasConversion(
+                    p => p.Value,
+                    p => new DocumentTitle(p));
+
                 entity.Property(e => e._content).HasConversion(
                     p => p.Value,
                     p => new DocumentContent(p));
@@ -295,6 +300,93 @@ namespace VirtualOffice.Infrastructure.EF
                         .HasConversion(
                          p => p,
                          p => new DocumentFilePath(p));
+                });
+            });
+
+            builder.Entity<PublicChatRoom>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new ChatRoomId(p));
+
+                entity.Property(e => e._Name).HasConversion(
+                    p => p.Value,
+                    p => new PublicChatRoomName(p));
+
+                entity.HasMany(e => e._Participants)
+                 .WithMany();
+
+                entity.HasMany(e => e._Messages)
+                .WithMany();
+            });
+
+            builder.Entity<PublicDocument>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new DocumentId(p));
+
+                entity.Property(e => e._title).HasConversion(
+                   p => p.Value,
+                   p => new DocumentTitle(p));
+
+                entity.Property(e => e._content).HasConversion(
+                    p => p.Value,
+                    p => new DocumentContent(p));
+
+                entity.OwnsMany(e => e._attachmentFilePaths, a =>
+                {
+                    a.Property(fp => fp.Value)
+                        .HasColumnName("FilePath")
+                        .HasConversion(
+                         p => p,
+                         p => new DocumentFilePath(p));
+                });
+
+                // since for document access premission reasons we need only userId
+                // we don't create relationship with ApplicationUser entity since name, surname etc..
+                // wouldn't be usefull in this scenario
+                entity.OwnsMany(e => e._eligibleForRead, a =>
+                {
+                    a.ToTable("PublicDocumentEligibleForRead");
+
+                    a.Property(e => e.Value)
+                        .HasColumnName("UserId")
+                        .HasConversion(
+                            v => v,
+                            v => new ApplicationUserId(v));
+                });
+
+                entity.OwnsMany(e => e._eligibleForWrite, a =>
+                {
+                    a.ToTable("PublicDocumentEligibleForWrite");
+
+                    a.Property(e => e.Value)
+                    .HasColumnName("UserId")
+                    .HasConversion(
+                        v => v,
+                        v => new ApplicationUserId(v));
+                });
+
+                entity.OwnsOne(e => e._creationDetails, a =>
+                {
+                    a.ToTable("DocumentCreationDetails");
+
+                    a.Property(p => p.DocumentCreationDate)
+                        .HasColumnName("CreationDate")
+                        .HasConversion(
+                        cd => cd.Value,
+                        cd => new DocumentCreationDate(cd));
+
+                    a.Property(p => p.UserId)
+                        .HasColumnName("CreatedByUserId")
+                        .HasConversion(
+                        u => u.Value,
+                        u => new ApplicationUserId(u));
                 });
             });
         }

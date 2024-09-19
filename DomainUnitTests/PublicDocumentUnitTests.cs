@@ -14,9 +14,9 @@ namespace DomainUnitTests
 {
     public class PublicDocumentUnitTests
     {
-        PublicDocument _publicDocument { get; set; }
+        private PublicDocument _publicDocument { get; set; }
 
-        PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
+        private PublicDocumentBuilder documentBuilder = new PublicDocumentBuilder();
 
         public PublicDocumentUnitTests()
         {
@@ -35,15 +35,17 @@ namespace DomainUnitTests
 
             return documentBuilder.GetDocument();
         }
+
         #region events
+
         [Fact]
         public void SetTitle_ShouldRaiseDocumentTitleSetted()
         {
-
             PublicDocument publicDocument = BuildValidPublicDocument();
             publicDocument.SetTitle("Title");
             var Event = publicDocument.Events.OfType<DocumentTitleSetted>().Single();
         }
+
         [Fact]
         public void SetTitle_ShouldRaiseDocumentTitleSetted_PublicDocumentShouldEqual()
         {
@@ -52,6 +54,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentTitleSetted>().Single();
             Assert.Equal(publicDocument, Event.document);
         }
+
         [Fact]
         public void SetTitle_ShouldRaiseDocumentTitleSetted_TitleShouldEqual()
         {
@@ -60,6 +63,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentTitleSetted>().Single();
             Assert.Equal("Title", Event.title);
         }
+
         [Fact]
         public void SetContent_ShouldRaiseDocumentContentSetted()
         {
@@ -67,6 +71,7 @@ namespace DomainUnitTests
             publicDocument.SetContent("Content");
             var Event = publicDocument.Events.OfType<DocumentContentSetted>().Single();
         }
+
         [Fact]
         public void SetContent_ShouldRaiseDocumentContentSetted_PublicDocumentShouldEqual()
         {
@@ -75,6 +80,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentContentSetted>().Single();
             Assert.Equal(publicDocument, Event.document);
         }
+
         [Fact]
         public void SetContent_ShouldRaiseDocumentContentSetted_DescriptionShouldEqual()
         {
@@ -83,7 +89,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<DocumentContentSetted>().Single();
             Assert.Equal("Content", Event.content);
         }
-       
+
         [Fact]
         public void AddNewAttachment_ShouldRaiseNewAttachmentAdded()
         {
@@ -94,6 +100,7 @@ namespace DomainUnitTests
 
             var Event = publicDocument.Events.OfType<NewAttachmentAdded>().Single();
         }
+
         [Fact]
         public void AddNewAttachment_ShouldRaiseNewAttachmentAdded_PublicDocumentShouldEqual()
         {
@@ -105,6 +112,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<NewAttachmentAdded>().Single();
             Assert.Equal(publicDocument, Event.document);
         }
+
         [Fact]
         public void AddNewAttachment_ShouldRaiseNewAttachmentAdded_AttachmentFilePathShouldEqual()
         {
@@ -116,6 +124,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<NewAttachmentAdded>().Single();
             Assert.Equal(attachmentFilePath, Event.filePath);
         }
+
         [Fact]
         public void SettedCreationDate_ShouldRaiseEventPublicDocumentSettedCreationDate()
         {
@@ -127,6 +136,7 @@ namespace DomainUnitTests
             var Events = publicDocument.Events.OfType<PublicDocumentSettedCreationDate>().ToList();
             Assert.Single(Events);
         }
+
         [Fact]
         public void DeleteAttachment_ShouldRaiseDeleteAttachment()
         {
@@ -135,6 +145,7 @@ namespace DomainUnitTests
             publicDocument.DeleteAttachment(@"D:\file.txt");
             var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
         }
+
         [Fact]
         public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_PublicDocumentShouldEqual()
         {
@@ -144,6 +155,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
             Assert.Equal(publicDocument, Event.document);
         }
+
         [Fact]
         public void DeleteAttachment_ShouldRaiseNewAttachmentAdded_AttachmentFilePathShouldEqual()
         {
@@ -153,6 +165,7 @@ namespace DomainUnitTests
             var Event = publicDocument.Events.OfType<AttachmentDeleted>().Single();
             Assert.Equal(@"D:\file.txt", Event.filePath);
         }
+
         [Fact]
         public void SettedCreationDate_ShouldRaiseEventPublicDocumentSettedCreationDate_PublicDocumentShouldEqual()
         {
@@ -167,6 +180,7 @@ namespace DomainUnitTests
             var createdEvent = Events.Single();
             Assert.Equal(publicDocument, createdEvent.document);
         }
+
         [Fact]
         public void SettedCreationDate_ShouldRaiseEventPublicDocumentSettedCreationDate_CreationDetailsShouldEqual()
         {
@@ -178,10 +192,11 @@ namespace DomainUnitTests
             var Events = publicDocument.Events.OfType<PublicDocumentSettedCreationDate>().ToList();
             Assert.Single(Events);
 
-            Assert.Equal(DateTime.UtcNow.Date, publicDocument._creationDetails.Item1.Value.Date);
+            Assert.Equal(DateTime.UtcNow.Date, publicDocument._creationDetails.DocumentCreationDate.Value.Date);
             var createdEvent = Events.Single();
             Assert.Equal(userId, createdEvent.userId);
         }
+
         [Fact]
         public void AddEligibleForRead_ShouldRaisePublicDocumentAddedEligibleForRead()
         {
@@ -193,6 +208,7 @@ namespace DomainUnitTests
             var Events = publicDocument.Events.OfType<PublicDocumentAddedEligibleForRead>().ToList();
             Assert.Single(Events);
         }
+
         [Fact]
         public void AddEligibleForRead_ShouldRaisePublicDocumentAddedEligibleForRead_PublicDocumentShouldEqual()
         {
@@ -207,6 +223,7 @@ namespace DomainUnitTests
             var addedEvent = Events.Single();
             Assert.Equal(publicDocument, addedEvent.document);
         }
+
         [Fact]
         public void AddEligibleForRead_ShouldRaisePublicDocumentAddedEligibleForRead_UserIdShouldEqual()
         {
@@ -221,6 +238,7 @@ namespace DomainUnitTests
             var addedEvent = Events.Single();
             Assert.Equal(userId, addedEvent.userId);
         }
+
         [Fact]
         public void AddEligibleForWrite_ShouldRaisePublicDocumentAddedEligibleForWriteEvent()
         {
@@ -232,6 +250,7 @@ namespace DomainUnitTests
             var Events = publicDocument.Events.OfType<PublicDocumentAddedEligibleForWrite>().ToList();
             Assert.Single(Events);
         }
+
         [Fact]
         public void AddEligibleForWrite_ShouldRaisePublicDocumentAddedEligibleForWriteEvent_PublicDocumentShouldEqual()
         {
@@ -246,6 +265,7 @@ namespace DomainUnitTests
             var addedEvent = Events.Single();
             Assert.Equal(publicDocument, addedEvent.document);
         }
+
         [Fact]
         public void AddEligibleForWrite_ShouldRaisePublicDocumentAddedEligibleForWriteEvent_UserIdShouldEqual()
         {
@@ -260,19 +280,21 @@ namespace DomainUnitTests
             var addedEvent = Events.Single();
             Assert.Equal(userId, addedEvent.userId);
         }
-        #endregion
+
+        #endregion events
 
         #region methods
+
         [Fact]
         public void EditTitle_ShouldSetTitle()
         {
-
             string newTitle = "New Title";
 
             _publicDocument.SetTitle(newTitle);
 
             Assert.Equal(newTitle, _publicDocument._title);
         }
+
         [Fact]
         public void EditDescription_ShouldSetContent()
         {
@@ -282,6 +304,7 @@ namespace DomainUnitTests
 
             Assert.Equal(newDescription, _publicDocument._content);
         }
+
         [Fact]
         public void AddNewAttachment_ShouldAddAttachmentToList()
         {
@@ -292,6 +315,7 @@ namespace DomainUnitTests
             Assert.NotNull(_publicDocument._attachmentFilePaths);
             Assert.Contains(attachmentFilePath, _publicDocument._attachmentFilePaths);
         }
+
         [Fact]
         public void AddNewAttachmentsRange_ShouldAddAllAttachmentsToList()
         {
@@ -310,6 +334,7 @@ namespace DomainUnitTests
                 Assert.Contains(attachmentFilePath, _publicDocument._attachmentFilePaths);
             }
         }
+
         [Fact]
         public void SettedCreationDate_ShouldSetCreationDate()
         {
@@ -319,9 +344,10 @@ namespace DomainUnitTests
             publicDocument.SettedCreationDate(userId);
 
             var creationDetails = publicDocument._creationDetails;
-            Assert.Equal(userId, creationDetails.Item2);
-            Assert.Equal(DateTime.UtcNow, creationDetails.Item1, TimeSpan.FromSeconds(1)); // Allowing 1 second tolerance
+            Assert.Equal(userId, creationDetails.UserId);
+            Assert.Equal(DateTime.UtcNow, creationDetails.DocumentCreationDate, TimeSpan.FromSeconds(1)); // Allowing 1 second tolerance
         }
+
         [Fact]
         public void AddEligibleForRead_ShouldAddUserToEligibleForReadList()
         {
@@ -332,6 +358,7 @@ namespace DomainUnitTests
 
             Assert.Contains(userId, publicDocument._eligibleForRead);
         }
+
         [Fact]
         public void AddEligibleForWrite_ShouldAddUserToEligibleForWriteList()
         {
@@ -342,6 +369,7 @@ namespace DomainUnitTests
 
             Assert.Contains(userId, publicDocument._eligibleForWrite);
         }
-        #endregion
+
+        #endregion methods
     }
 }
