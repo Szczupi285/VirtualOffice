@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.ValueObjects.Document;
+using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Domain.ValueObjects.Note;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
@@ -206,14 +209,15 @@ namespace VirtualOffice.Infrastructure.EF
                     p => new OrganizationName(p));
 
                 entity.HasMany(e => e._offices)
-                .WithOne();
+                    .WithOne();
 
                 entity.HasMany(e => e._organizationUsers)
-                .WithOne();
+                    .WithOne();
 
                 entity.HasOne(e => e._subscription)
-                .WithOne();
+                    .WithOne();
             });
+
             builder.Entity<Subscription>(entity =>
             {
                 entity.HasKey(e => e.Id);
@@ -233,6 +237,65 @@ namespace VirtualOffice.Infrastructure.EF
                 entity.Property(e => e._subscriptionFee).HasConversion(
                     p => p.Value,
                     p => new SubscriptionFee(p));
+            });
+
+            builder.Entity<PrivateChatRoom>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new ChatRoomId(p));
+
+                entity.HasMany(e => e._Participants)
+                 .WithMany();
+
+                entity.HasMany(e => e._Messages)
+                .WithMany();
+            });
+
+            builder.Entity<Message>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new MessageId(p));
+
+                entity.Property(e => e.Content).HasConversion(
+                    p => p.Value,
+                    p => new MessageContent(p));
+
+                entity.HasOne(e => e.Sender)
+                .WithMany()
+                .HasForeignKey("SentByUserId")
+                .IsRequired();
+            });
+
+            builder.Entity<PrivateDocument>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new DocumentId(p));
+
+                entity.Property(e => e._content).HasConversion(
+                    p => p.Value,
+                    p => new DocumentContent(p));
+
+                entity.Property(e => e._creationDate).HasConversion(
+                    p => p.Value,
+                    p => new DocumentCreationDate(p));
+
+                entity.OwnsMany(e => e._attachmentFilePaths, a =>
+                {
+                    a.Property(fp => fp.Value)
+                        .HasColumnName("FilePath")
+                        .HasConversion(
+                         p => p,
+                         p => new DocumentFilePath(p));
+                });
             });
         }
     }
