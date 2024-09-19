@@ -4,7 +4,7 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 {
     public sealed record ScheduleItemDescription
     {
-        string Value { get; }
+        public string Value { get; }
         public ScheduleItemDescription(string value)
         {
             if (value is null)
