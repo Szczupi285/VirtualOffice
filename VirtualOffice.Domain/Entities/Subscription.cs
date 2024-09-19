@@ -7,9 +7,9 @@ namespace VirtualOffice.Domain.Entities
     {
         public SubscriptionId Id { get; }
 
-        internal SubscriptionStartDate _subStartDate;
+        public SubscriptionStartDate _subStartDate;
 
-        internal SubscriptionEndDate _subEndDate;
+        public SubscriptionEndDate _subEndDate;
 
         public SubscriptionTypeEnum _subType { get; private set; }
 
@@ -49,8 +49,11 @@ namespace VirtualOffice.Domain.Entities
             _isPayed = isPayed;
         }
 
+        // calculate new fee and make isPayed to false
         public void UpdateSubType(SubscriptionTypeEnum subType) => _subType = subType;
 
         public void Pay() => _isPayed = true;
+
+        // todo: write logic to extend subscription and in that case calculate new fee and make isPayed to false
     }
 }

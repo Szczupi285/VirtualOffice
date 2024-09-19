@@ -10,7 +10,9 @@ using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Note;
 using VirtualOffice.Domain.ValueObjects.Office;
+using VirtualOffice.Domain.ValueObjects.Organization;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 using VirtualOffice.Infrastructure.Identity;
 
 namespace VirtualOffice.Infrastructure.EF
@@ -185,6 +187,52 @@ namespace VirtualOffice.Infrastructure.EF
 
                 entity.HasMany(e => e._members)
                    .WithMany();
+            });
+
+            builder.Entity<Organization>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Ignore(e => e._usedSlots);
+                entity.Ignore(e => e._slotsLeft);
+                entity.Ignore(e => e._userLimit);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new OrganizationId(p));
+
+                entity.Property(e => e._name).HasConversion(
+                    p => p.Value,
+                    p => new OrganizationName(p));
+
+                entity.HasMany(e => e._offices)
+                .WithOne();
+
+                entity.HasMany(e => e._organizationUsers)
+                .WithOne();
+
+                entity.HasOne(e => e._subscription)
+                .WithOne();
+            });
+            builder.Entity<Subscription>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionId(p));
+
+                entity.Property(e => e._subStartDate).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionStartDate(p));
+
+                entity.Property(e => e._subEndDate).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionEndDate(p));
+
+                entity.Property(e => e._subscriptionFee).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionFee(p));
             });
         }
     }
