@@ -340,10 +340,10 @@ namespace VirtualOffice.Infrastructure.EF
 
                 entity.OwnsMany(e => e._attachmentFilePaths, a =>
                 {
-                    a.Property(fp => fp.Value)
+                    a.Property(e => e)
                         .HasColumnName("FilePath")
                         .HasConversion(
-                         p => p,
+                         p => p.Value,
                          p => new DocumentFilePath(p));
                 });
 
@@ -354,39 +354,39 @@ namespace VirtualOffice.Infrastructure.EF
                 {
                     a.ToTable("PublicDocumentEligibleForRead");
 
-                    a.Property(e => e.Value)
+                    a.Property(e => e)
                         .HasColumnName("UserId")
                         .HasConversion(
-                            v => v,
-                            v => new ApplicationUserId(v));
+                            p => p.Value,
+                            p => new ApplicationUserId(p));
                 });
 
                 entity.OwnsMany(e => e._eligibleForWrite, a =>
                 {
                     a.ToTable("PublicDocumentEligibleForWrite");
 
-                    a.Property(e => e.Value)
+                    a.Property(e => e)
                     .HasColumnName("UserId")
                     .HasConversion(
-                        v => v,
-                        v => new ApplicationUserId(v));
+                        p => p.Value,
+                        p => new ApplicationUserId(p));
                 });
 
                 entity.OwnsOne(e => e._creationDetails, a =>
                 {
                     a.ToTable("DocumentCreationDetails");
 
-                    a.Property(p => p.DocumentCreationDate)
+                    a.Property(e => e.DocumentCreationDate)
                         .HasColumnName("CreationDate")
                         .HasConversion(
-                        cd => cd.Value,
-                        cd => new DocumentCreationDate(cd));
+                        p => p.Value,
+                        p => new DocumentCreationDate(p));
 
-                    a.Property(p => p.UserId)
+                    a.Property(e => e.UserId)
                         .HasColumnName("CreatedByUserId")
                         .HasConversion(
-                        u => u.Value,
-                        u => new ApplicationUserId(u));
+                        p => p.Value,
+                        p => new ApplicationUserId(p));
                 });
             });
         }
