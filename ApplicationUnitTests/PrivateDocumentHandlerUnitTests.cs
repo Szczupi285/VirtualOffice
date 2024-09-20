@@ -58,10 +58,10 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _addPrivDocAttHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task AddPrivateDocumentAttachmentHandler_ShouldCallUpdateOnce()
         {
-
             // Arrange
             var request = new AddPrivateDocumentAttachment(_guid, @"C:\newFolder\smth");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
@@ -69,19 +69,7 @@ namespace ApplicationUnitTests
             // Act
             await _addPrivDocAttHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(_privateDocument), Times.Once);
-        }
-        [Fact]
-        public async Task AddPrivateDocumentAttachmentHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new AddPrivateDocumentAttachment(_guid, @"C:\newFolder\smth");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
-            // Act
-            await _addPrivDocAttHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_privateDocument), Times.Once);
         }
 
         [Fact]
@@ -92,18 +80,9 @@ namespace ApplicationUnitTests
             // Act
             await _crePrivDocHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<PrivateDocument>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<PrivateDocument>()), Times.Once);
         }
-        [Fact]
-        public async Task CreatePrivateDocumentHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new CreatePrivateDocument("content", "title", new List<DocumentFilePath>());
-            // Act
-            await _crePrivDocHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task DeletePrivateDocumentAttachmentHandler_ShouldThrowPrivateDocumentDoesNotExistException()
         {
@@ -113,6 +92,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _delPrivDocAttHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeletePrivateDocumentAttachmentHandler_ShouldCallUpdateOnce()
         {
@@ -123,20 +103,9 @@ namespace ApplicationUnitTests
             // Act
             await _delPrivDocAttHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(_privateDocument), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_privateDocument), Times.Once);
         }
-        [Fact]
-        public async Task DeletePrivateDocumentAttachmentHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new DeletePrivateDocumentAttachment(_guid, @"C:\FolderFilePath\");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
-            // Act
-            await _delPrivDocAttHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task DeletePrivateDocumentHandler_ShouldThrowPrivateDocumentDoesNotExistException()
         {
@@ -146,6 +115,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _delPrivDocHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeletePrivateDocumentHandler_ShouldCallDeleteOnce()
         {
@@ -155,19 +125,9 @@ namespace ApplicationUnitTests
             // Act
             await _delPrivDocHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Delete(_guid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_guid), Times.Once);
         }
-        [Fact]
-        public async Task DeletePrivateDocumentHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new DeletePrivateDocument(_guid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            // Act
-            await _delPrivDocHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task UpdatePrivateDocumentContentHandler_ShouldThrowPrivateDocumentDoesNotExistException()
         {
@@ -177,6 +137,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _updPrivDocConHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdatePrivateDocumentContentHandler_ShouldCallUpdateOnce()
         {
@@ -186,21 +147,10 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _updPrivDocConHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.Update(_privateDocument), Times.Once);
+            // Assert
+            _repositoryMock.Verify(r => r.UpdateAsync(_privateDocument), Times.Once);
         }
-        [Fact]
-        public async Task UpdatePrivateDocumentContentHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new UpdatePrivateDocumentContent(_guid, "newContent");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
-            // Act
-            await _updPrivDocConHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task UpdatePrivateDocumentTitleHandler_ShouldThrowPrivateDocumentDoesNotExistException()
         {
@@ -210,6 +160,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateDocumentDoesNotExistException>(() => _updPrivDocTitHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdatePrivateDocumentTitleHandler_ShouldCallUpdateOnce()
         {
@@ -219,20 +170,8 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _updPrivDocTitHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.Update(_privateDocument), Times.Once);
-        }
-        [Fact]
-        public async Task UpdatePrivateDocumentTitleHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new UpdatePrivateDocumentTitle(_guid, "newContent");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
-            // Act
-            await _updPrivDocTitHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            // Assert
+            _repositoryMock.Verify(r => r.UpdateAsync(_privateDocument), Times.Once);
         }
     }
 }

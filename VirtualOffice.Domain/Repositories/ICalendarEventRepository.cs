@@ -8,18 +8,18 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<CalendarEvent> GetById(ScheduleItemId guid);
 
-        Task Add(CalendarEvent calendarEvent);
+        Task<CalendarEvent> GetById(ScheduleItemId guid, CancellationToken cancellationToken);
 
-        Task Update(CalendarEvent calendarEvent);
+        Task AddAsync(CalendarEvent calendarEvent);
 
-        Task Delete(ScheduleItemId guid);
+        Task AddAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken);
 
-        Task<IEnumerable<CalendarEvent>> GetAllForUser(ApplicationUserId userId);
+        Task DeleteAsync(CalendarEvent calendarEvent);
 
-        Task<IEnumerable<CalendarEvent>> GetAllForUserFutureEvents(ApplicationUserId userId);
+        Task DeleteAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken);
 
-        Task<IEnumerable<CalendarEvent>> GetAllForUserByDate(ApplicationUserId userId, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate);
+        Task UpdateAsync(CalendarEvent calendarEvent);
 
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task UpdateAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken);
     }
 }

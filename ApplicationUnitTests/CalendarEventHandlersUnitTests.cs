@@ -49,27 +49,28 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _AddCalEvHandler.Handle(request, CancellationToken.None));
         }
+
         [Fact]
-        public async Task AddCalendarEventAssignedEmployeesHandler_ShouldAddEmployeesAndSave_WhenCalendarEventExists()
+        public async Task AddCalendarEventAssignedEmployeesHandler_ShouldAddEmployees_WhenCalendarEventExists()
         {
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
-            
+
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(calEv);
 
             var handler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
 
-            var request = new AddCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> {_user2 });
+            var request = new AddCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> { _user2 });
 
             // Act
             await handler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(calEv), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(calEv), Times.Once);
         }
+
         [Fact]
         public async Task RemoveCalendarEventAssignedEmployeesHandler_ShouldThrowCalendarEventDoesNotExistException()
         {
@@ -80,8 +81,9 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _RemCalEvHandler.Handle(request, CancellationToken.None));
         }
+
         [Fact]
-        public async Task RemoveCalendarEventAssignedEmployeesHandler_ShouldRemoveCalendarEventEmployeesAndSave()
+        public async Task RemoveCalendarEventAssignedEmployeesHandler_ShouldRemoveCalendarEventEmployees()
         {
             // Arrange
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
@@ -90,18 +92,17 @@ namespace ApplicationUnitTests
             _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(calEv);
 
-            var request = new RemoveCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1});
+            var request = new RemoveCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1 });
 
             // Act
             await _RemCalEvHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(calEv), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(calEv), Times.Once);
         }
 
         [Fact]
-        public async Task CreateCalendarEventHandler_ShouldCreateCalendarEventAndSave()
+        public async Task CreateCalendarEventHandler_ShouldCreateCalendarEvent()
         {
             // Arrange
             var handler = new CreateCalendarEventHandler(_repositoryMock.Object);
@@ -111,34 +112,33 @@ namespace ApplicationUnitTests
             await handler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<CalendarEvent>()), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<CalendarEvent>()), Times.Once);
         }
+
         [Fact]
         public async Task DeleteCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistException()
         {
-
             // Arrange
-            var request = new DeleteCalendarEvent(guid);
+            var request = new DeleteCalendarEvent(calEv);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
             // Act & Assert
             await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _DelCalEvHandler.Handle(request, CancellationToken.None));
-
         }
+
         [Fact]
-        public async Task DeleteCalendarEventHandler_ShouldDeleteCalendarEventAndSave()
+        public async Task DeleteCalendarEventHandler_ShouldDeleteCalendarEvent()
         {
             // Arrange
-            
-            var request = new DeleteCalendarEvent(guid);
+
+            var request = new DeleteCalendarEvent(calEv);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
             // Act
             await _DelCalEvHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Delete(guid), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(calEv), Times.Once);
         }
+
         [Fact]
         public async Task UpdateCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistException()
         {
@@ -149,11 +149,12 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<CalendarEventDoesNotExistException>(() => _UpdCalEvHandler.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdateCalendarEventHandler_ShouldCallUpdateAndSave()
         {
             // Arrange
-            var request = new UpdateCalendarEvent(guid, "Title", "Description", 
+            var request = new UpdateCalendarEvent(guid, "Title", "Description",
                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
 
@@ -163,8 +164,7 @@ namespace ApplicationUnitTests
             await _UpdCalEvHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(calEv), Times.Once);
-            _repositoryMock.Verify(r => r.SaveAsync(It.IsAny<CancellationToken>()), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(calEv), Times.Once);
         }
     }
 }

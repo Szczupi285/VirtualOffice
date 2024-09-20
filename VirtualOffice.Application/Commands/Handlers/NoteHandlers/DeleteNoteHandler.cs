@@ -24,11 +24,10 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
         public async Task Handle(DeleteNote request, CancellationToken cancellationToken)
         {
-            if(!await _readService.ExistsByIdAsync(request.Id))
+            if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new NoteDoesNoteExistsException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

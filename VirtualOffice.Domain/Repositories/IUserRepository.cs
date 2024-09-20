@@ -7,12 +7,10 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<ApplicationUser> GetById(ApplicationUserId id);
 
-        Task Add(ApplicationUser user);
+        Task AddAsync(ApplicationUser user);
 
-        Task Update(ApplicationUser user);
+        Task UpdateAsync(ApplicationUser user);
 
-        Task Delete(ApplicationUserId id);
-
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task DeleteAsync(ApplicationUserId id);
     }
 }

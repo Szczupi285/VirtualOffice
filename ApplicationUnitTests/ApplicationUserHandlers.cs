@@ -34,6 +34,7 @@ namespace ApplicationUnitTests
             _delUserHand = new DeleteUserHandler(_repositoryMock.Object, _readServiceMock.Object);
             _UpdUserHand = new UpdateUserHandler(_repositoryMock.Object, _readServiceMock.Object);
         }
+
         [Fact]
         public async Task CreateUserHandler_ShouldCallAddOnce()
         {
@@ -42,18 +43,9 @@ namespace ApplicationUnitTests
             // Act
             await _creUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<ApplicationUser>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<ApplicationUser>()), Times.Once);
         }
-        [Fact]
-        public async Task CreateUserHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new CreateUser("Name", "Surname", PermissionsEnum.None);
-            // Act
-            await _creUserHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task DeleteUserHandler_ShouldThrowUserDoesNotExistException()
         {
@@ -63,28 +55,19 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<UserDoesNotExistException>(() => _delUserHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeleteUserHandler_ShouldCallDeleteOnce()
         {
             // Arrange
             var request = new DeleteUser(_guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            // Act 
+            // Act
             await _delUserHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.Delete(_user1.Id), Times.Once);
+            // Assert
+            _repositoryMock.Verify(r => r.DeleteAsync(_user1.Id), Times.Once);
         }
-        [Fact]
-        public async Task DeleteUserHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new DeleteUser(_guid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            // Act 
-            await _delUserHand.Handle(request, CancellationToken.None);
-            // Assert 
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task UpdateUserHandler_ShouldThrowUserDoesNotExistException()
         {
@@ -94,6 +77,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<UserDoesNotExistException>(() => _UpdUserHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdateUserHandler_ShouldCallUpdateOnce()
         {
@@ -104,19 +88,7 @@ namespace ApplicationUnitTests
             // Act
             await _UpdUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(_user1), Times.Once);
-        }
-        [Fact]
-        public async Task UpdateUserHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new UpdateUser(_guid, "NewName", "NewSurname");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_user1);
-            // Act
-            await _UpdUserHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_user1), Times.Once);
         }
     }
 }

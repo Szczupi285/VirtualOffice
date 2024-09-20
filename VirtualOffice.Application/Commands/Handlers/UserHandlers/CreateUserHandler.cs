@@ -25,9 +25,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
         {
             ApplicationUser newUser = new(Guid.NewGuid(), request.Name, request.Surname, request.Permissions);
 
-            await _repository.Add(newUser);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.AddAsync(newUser);
         }
     }
 }

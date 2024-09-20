@@ -35,10 +35,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             if (meeting._EndDate != EndDate)
                 meeting.UpdateEndDate(EndDate);
 
-            await _repository.Update(meeting);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(meeting);
         }
-
     }
 }

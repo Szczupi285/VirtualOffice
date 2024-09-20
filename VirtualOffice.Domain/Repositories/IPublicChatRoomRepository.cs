@@ -8,14 +8,10 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<PublicChatRoom> GetById(ChatRoomId guid);
 
-        Task Add(PublicChatRoom chatRoom);
+        Task AddAsync(PublicChatRoom chatRoom);
 
-        Task Update(PublicChatRoom chatRoom);
+        Task UpdateAsync(PublicChatRoom chatRoom);
 
-        Task Delete(ChatRoomId id);
-
-        Task<IEnumerable<PublicChatRoom>> GetAllByUserId(ApplicationUserId id);
-
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task DeleteAsync(ChatRoomId id);
     }
 }

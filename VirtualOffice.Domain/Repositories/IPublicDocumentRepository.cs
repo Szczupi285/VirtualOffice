@@ -8,20 +8,10 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<PublicDocument> GetById(DocumentId guid);
 
-        Task<PublicDocument> GetPreviousVersion(DocumentId guid);
+        Task AddAsync(PublicDocument PublicDocument);
 
-        Task Add(PublicDocument PublicDocument);
+        Task UpdateAsync(PublicDocument PublicDocument);
 
-        Task Update(PublicDocument PublicDocument);
-
-        Task Delete(DocumentId guid);
-
-        Task<IEnumerable<PublicDocument>> GetAllForUser(ApplicationUserId userId);
-
-        Task<IEnumerable<PublicDocument>> GetAllSortedForUser(ApplicationUserId userId);
-
-        Task<IEnumerable<PublicDocument>> GetAllForUserByDate(ApplicationUserId userId, DocumentCreationDate date);
-
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task DeleteAsync(DocumentId guid);
     }
 }

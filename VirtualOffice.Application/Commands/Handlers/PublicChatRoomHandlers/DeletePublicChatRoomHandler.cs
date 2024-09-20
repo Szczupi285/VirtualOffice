@@ -25,11 +25,10 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
 
         public async Task Handle(DeletePublicChatRoom request, CancellationToken cancellationToken)
         {
-            if(!await _readService.ExistsByIdAsync(request.Id))
+            if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PublicChatRoomDoesNotExistException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

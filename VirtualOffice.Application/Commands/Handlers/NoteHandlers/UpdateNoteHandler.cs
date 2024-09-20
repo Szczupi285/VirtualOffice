@@ -26,7 +26,6 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
         {
             var (Id, Title, Content) = request;
 
-
             if (!await _readService.ExistsByIdAsync(Id))
                 throw new NoteDoesNoteExistsException(Id);
 
@@ -34,11 +33,10 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
             if (note._title != Title)
                 note.EditTitle(Title);
-            if(note._content != Content)
+            if (note._content != Content)
                 note.EditContent(Content);
 
-            await _repository.Update(note);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(note);
         }
     }
 }

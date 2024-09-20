@@ -27,8 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new UserDoesNotExistException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

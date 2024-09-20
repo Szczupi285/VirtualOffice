@@ -14,20 +14,15 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
         public CreateCalendarEventHandler(ICalendarEventRepository repository)
         {
             _repository = repository;
-            
         }
 
         public async Task Handle(CreateCalendarEvent request, CancellationToken cancellationToken)
         {
             var (Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
-            
+
             CalendarEvent calEv = new CalendarEvent(Guid.NewGuid(), Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
-            await _repository.Add(calEv);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.AddAsync(calEv);
         }
-
-
     }
 }

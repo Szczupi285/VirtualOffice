@@ -20,8 +20,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
         {
             PublicChatRoom pcr = new(Guid.NewGuid(), request.Participants, request.Messages, request.Name);
 
-            await _repository.Add(pcr);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.AddAsync(pcr);
         }
     }
 }

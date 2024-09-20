@@ -19,7 +19,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
     public class CreatePrivateDocumentHandler : IRequestHandler<CreatePrivateDocument>
     {
-        IPrivateDocumentRepository _repository;
+        private IPrivateDocumentRepository _repository;
 
         public CreatePrivateDocumentHandler(IPrivateDocumentRepository repository)
         {
@@ -28,16 +28,14 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 
         public async Task Handle(CreatePrivateDocument request, CancellationToken cancellationToken)
         {
-
             PrivateDocumentBuilder documentBuilder = new PrivateDocumentBuilder();
-            
+
             documentBuilder.SetId(Guid.NewGuid());
             documentBuilder.SetContent(request.Content);
             documentBuilder.SetAttachments(request.FilePaths);
             documentBuilder.SetTitle(request.Title);
 
-            await _repository.Add(documentBuilder.GetDocument());
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.AddAsync(documentBuilder.GetDocument());
         }
     }
 }

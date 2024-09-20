@@ -14,7 +14,6 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
     public class CreatePrivateChatRoomHandler : IRequestHandler<CreatePrivateChatRoom>
     {
-
         public IPrivateChatRoomRepository _repository;
 
         public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository)
@@ -26,9 +25,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
         {
             PrivateChatRoom pcr = new(Guid.NewGuid(), request.Participants, request.Messages);
 
-            await _repository.Add(pcr);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.AddAsync(pcr);
         }
     }
-    
 }

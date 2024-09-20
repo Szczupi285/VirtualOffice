@@ -18,14 +18,11 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(CreateEmployeeTask request, CancellationToken cancellationToken)
         {
-
             var (title, eventDescription, assignedEmployees, startDate, endDate, priority) = request;
 
             EmployeeTask empTask = new EmployeeTask(Guid.NewGuid(), title, eventDescription, assignedEmployees, priority, startDate, endDate);
 
-            await _repository.Add(empTask);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.AddAsync(empTask);
         }
     }
 }

@@ -31,8 +31,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
 
             pcr.AddRangeParticipants(request.Participants);
 
-            await _repository.Update(pcr);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(pcr);
         }
     }
 }

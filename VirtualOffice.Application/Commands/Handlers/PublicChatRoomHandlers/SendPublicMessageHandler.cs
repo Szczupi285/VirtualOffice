@@ -34,15 +34,12 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
             if (!await _userReadService.ExistsByIdAsync(request.UserId))
                 throw new UserDoesNotExistException(request.UserId);
 
-
             var pcr = await _repository.GetById(request.ChatRoomId);
             var user = await _userRepository.GetById(request.UserId);
 
             pcr.SendMessage(user, request.Content);
 
-            await _repository.Update(pcr);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(pcr);
         }
     }
 }

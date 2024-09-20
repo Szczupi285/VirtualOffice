@@ -14,16 +14,13 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
     public class AddOrganizationOfficeUsersHandler : IRequestHandler<AddOrganizationOfficeUsers>
     {
-
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
-       
 
         public AddOrganizationOfficeUsersHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {
             _repository = repository;
             _readService = readService;
-            
         }
 
         public async Task Handle(AddOrganizationOfficeUsers request, CancellationToken cancellationToken)
@@ -34,10 +31,8 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             var org = await _repository.GetById(request.OrganizationId);
             var office = org.GetOfficeById(request.OfficeId);
 
-
             org.AddRangeOfficeUsers(request.Users, office);
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(org);
         }
     }
 }

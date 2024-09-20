@@ -13,7 +13,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
     public class DeleteOrganizationUsersHandler : IRequest<DeleteOrganizationUsers>
     {
-
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
 
@@ -31,8 +30,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             var org = await _repository.GetById(request.Id);
 
             org.RemoveRangeUsers(request.Users);
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(org);
         }
     }
 }

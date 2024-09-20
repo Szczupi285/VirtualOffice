@@ -14,7 +14,6 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 {
     public class CreateNoteHandler : IRequestHandler<CreateNote>
     {
-
         public INoteRepository _repository;
 
         public CreateNoteHandler(INoteRepository repository)
@@ -24,12 +23,11 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
         public async Task Handle(CreateNote request, CancellationToken cancellationToken)
         {
-            var(Title, Content, UserId) = request;
+            var (Title, Content, UserId) = request;
 
-            Note note = new(Guid.NewGuid(), Title, Content, UserId); 
+            Note note = new(Guid.NewGuid(), Title, Content, UserId);
 
-            await _repository.Add(note);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.AddAsync(note);
         }
     }
 }

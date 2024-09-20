@@ -46,18 +46,9 @@ namespace ApplicationUnitTests
             // Act
             await _createNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<Note>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Note>()), Times.Once);
         }
-        [Fact]
-        public async Task CreateNoteHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new CreateNote("Title", "Content", _user1.Id);
-            // Act
-            await _createNoteHandler.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
+
         [Fact]
         public async Task DeleteNoteHandler_ShouldThrowNoteDoesNoteExistsException()
         {
@@ -68,29 +59,19 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<NoteDoesNoteExistsException>(() => _deleteNoteHandler.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeleteNoteHandler_ShouldCallDeleteOnce()
         {
+            // Arrange
+            var request = new DeleteNote(Guid.NewGuid());
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            // Act
+            await _deleteNoteHandler.Handle(request, CancellationToken.None);
+            // Assert
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<NoteId>()), Times.Once);
+        }
 
-            // Arrange
-            var request = new DeleteNote(Guid.NewGuid());
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            // Act
-            await _deleteNoteHandler.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.Delete(It.IsAny<NoteId>()), Times.Once);
-        }
-        [Fact]
-        public async Task DeleteNoteHandler_ShouldCallSaveOnce()
-        {
-            // Arrange
-            var request = new DeleteNote(Guid.NewGuid());
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            // Act
-            await _deleteNoteHandler.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
         [Fact]
         public async Task UpdateNoteHandler_ShouldThrowNoteDoesNoteExistsException()
         {
@@ -101,6 +82,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<NoteDoesNoteExistsException>(() => _updateNoteHandler.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdateNoteHandler_ShouldCallUpdateOnce()
         {
@@ -111,19 +93,7 @@ namespace ApplicationUnitTests
             // Act
             await _updateNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(_Note), Times.Once);
-        }
-        [Fact]
-        public async Task UpdateNoteHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new UpdateNote(guid, "Title", "Content");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_Note);
-            // Act
-            await _updateNoteHandler.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_Note), Times.Once);
         }
     }
 }

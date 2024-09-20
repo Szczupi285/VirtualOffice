@@ -7,18 +7,10 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<Organization> GetById(OrganizationId guid);
 
-        Task Add(Organization organization);
+        Task AddAsync(Organization organization);
 
-        Task Update(Organization organization);
+        Task UpdateAsync(Organization organization);
 
-        Task Delete(OrganizationId guid);
-
-        Task<IEnumerable<Office>> GetOffices(OrganizationId organizationId);
-
-        Task<IEnumerable<ApplicationUser>> GetUsers(OrganizationId organizationId);
-
-        Task<IEnumerable<Subscription>> GetSubscriptions(OrganizationId organizationId);
-
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task DeleteAsync(OrganizationId guid);
     }
 }

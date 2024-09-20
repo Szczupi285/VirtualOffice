@@ -13,7 +13,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
     public class DeleteOrganizationHandler : IRequestHandler<DeleteOrganization>
     {
-
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
 
@@ -28,8 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new OrganizationDoesNotExistsException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

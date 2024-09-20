@@ -22,11 +22,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
 
             Meeting meeting = new Meeting(Guid.NewGuid(), Title, Description, AssignedEmployees, StartDate, EndDate);
 
-            await _repository.Add(meeting);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.AddAsync(meeting);
         }
-
-
     }
 }

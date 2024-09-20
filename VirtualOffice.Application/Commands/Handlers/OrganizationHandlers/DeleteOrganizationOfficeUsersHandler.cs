@@ -27,14 +27,12 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
         {
             if (!await _OrgReadService.ExistsByIdAsync(request.OrganizationId))
                 throw new OrganizationDoesNotExistsException(request.OrganizationId);
-           
+
             var org = await _repository.GetById(request.OrganizationId);
             var office = org.GetOfficeById(request.OfficeId);
 
-
             org.RemoveRangeOfficeUsers(request.Users, office);
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(org);
         }
     }
 }

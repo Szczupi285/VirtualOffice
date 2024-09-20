@@ -19,13 +19,10 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(DeleteEmployeeTask request, CancellationToken cancellationToken)
         {
-
             if (!await _readService.ExistsByIdAsync(request.Guid))
                 throw new EmployeeTaskDoesNotExistsException(request.Guid);
 
-            await _repository.Delete(request.Guid);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.DeleteAsync(request.Guid);
         }
     }
 }

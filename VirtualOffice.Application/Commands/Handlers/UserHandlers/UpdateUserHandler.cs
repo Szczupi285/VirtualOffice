@@ -30,15 +30,14 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
 
             var user = await _repository.GetById(Id);
 
-            // we update only changed properties rather than whole object 
+            // we update only changed properties rather than whole object
             // beacuse changing the name to the same name would raise an event.
-            if (user._Name != Name) 
+            if (user._Name != Name)
                 user.EditName(Name);
-            if(user._Surname != Surname)
+            if (user._Surname != Surname)
                 user.EditSurname(Surname);
 
-            await _repository.Update(user);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(user);
         }
     }
 }

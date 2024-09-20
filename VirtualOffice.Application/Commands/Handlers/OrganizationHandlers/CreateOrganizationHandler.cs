@@ -13,7 +13,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
     public class CreateOrganizationHandler : IRequestHandler<CreateOrganization>
     {
-
         public IOrganizationRepository _repository;
 
         public CreateOrganizationHandler(IOrganizationRepository repository)
@@ -23,11 +22,10 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 
         public async Task Handle(CreateOrganization request, CancellationToken cancellationToken)
         {
-            var(OrganizationName, Subscription, User) = request;
+            var (OrganizationName, Subscription, User) = request;
 
             Organization org = new(Guid.NewGuid(), OrganizationName, new HashSet<Office>(), new HashSet<ApplicationUser> { User }, Subscription);
-            await _repository.Add(org);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.AddAsync(org);
         }
     }
 }

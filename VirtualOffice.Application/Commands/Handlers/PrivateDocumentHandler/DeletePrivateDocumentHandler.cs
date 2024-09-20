@@ -13,8 +13,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
     public class DeletePrivateDocumentHandler : IRequestHandler<DeletePrivateDocument>
     {
-        IPrivateDocumentRepository _repository;
-        IPrivateDocumentReadService _readService;
+        private IPrivateDocumentRepository _repository;
+        private IPrivateDocumentReadService _readService;
 
         public DeletePrivateDocumentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
@@ -24,12 +24,10 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 
         public async Task Handle(DeletePrivateDocument request, CancellationToken cancellationToken)
         {
-
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

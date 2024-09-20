@@ -26,8 +26,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
             var calEv = await _repository.GetById(Id);
 
-
-            // we update only changed properties rather than whole object 
+            // we update only changed properties rather than whole object
             // beacuse changing the title to the same title would raise an event.
             if (calEv._Title != Title)
                 calEv.SetTitle(Title);
@@ -38,11 +37,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             if (calEv._EndDate != EndDate)
                 calEv.UpdateEndDate(EndDate);
 
-            await _repository.Update(calEv);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(calEv);
         }
-
-
     }
 }

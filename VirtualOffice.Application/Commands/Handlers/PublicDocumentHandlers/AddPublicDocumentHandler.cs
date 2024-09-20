@@ -16,8 +16,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
         public IPublicDocumentRepository _repository;
         public IPublicDocumentReadService _readService;
 
-        public AddPublicDocumentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService) 
-        { 
+        public AddPublicDocumentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
+        {
             _repository = repository;
             _readService = readService;
         }
@@ -34,9 +34,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 
             var pubDoc = builder.GetDocument();
 
-            await _repository.Add(pubDoc);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.AddAsync(pubDoc);
         }
     }
 }

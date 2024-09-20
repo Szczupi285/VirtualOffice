@@ -13,8 +13,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
     public class UpdatePublicDocumentContentHandler : IRequestHandler<UpdatePublicDocumentContent>
     {
-        IPublicDocumentRepository _repository;
-        IPublicDocumentReadService _readService;
+        private IPublicDocumentRepository _repository;
+        private IPublicDocumentReadService _readService;
 
         public UpdatePublicDocumentContentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {
@@ -30,8 +30,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
             var pubDoc = await _repository.GetById(request.Id);
             pubDoc.SetContent(request.Content);
 
-            await _repository.Update(pubDoc);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(pubDoc);
         }
     }
 }

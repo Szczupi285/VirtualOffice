@@ -7,16 +7,10 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<Note> GetById(NoteId guid);
 
-        Task Add(Note note);
+        Task AddAsync(Note note);
 
-        Task Update(Note note);
+        Task UpdateAsync(Note note);
 
-        Task Delete(NoteId guid);
-
-        Task<IEnumerable<Note>> GetAllForUser(ApplicationUser userId);
-
-        Task<IEnumerable<Note>> GetAllSortedByTitleForUser(ApplicationUser userId);
-
-        Task SaveAsync(CancellationToken cancellationToken);
+        Task DeleteAsync(NoteId guid);
     }
 }

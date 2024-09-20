@@ -8,8 +8,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
     public class AddPublicDocumentAttachmentHandler : IRequestHandler<AddPublicDocumentAttachment>
     {
-        IPublicDocumentRepository _repository;
-        IPublicDocumentReadService _readService;
+        private IPublicDocumentRepository _repository;
+        private IPublicDocumentReadService _readService;
 
         public AddPublicDocumentAttachmentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {
@@ -25,8 +25,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
             var pubDoc = await _repository.GetById(request.Id);
             pubDoc.AddNewAttachment(request.AttachmentFilePath);
 
-            await _repository.Update(pubDoc);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(pubDoc);
         }
     }
 }

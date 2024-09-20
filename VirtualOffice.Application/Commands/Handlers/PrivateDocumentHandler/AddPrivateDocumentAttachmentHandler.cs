@@ -13,8 +13,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
     public class AddPrivateDocumentAttachmentHandler : IRequestHandler<AddPrivateDocumentAttachment>
     {
-        IPrivateDocumentRepository _repository;
-        IPrivateDocumentReadService _readService;
+        private IPrivateDocumentRepository _repository;
+        private IPrivateDocumentReadService _readService;
 
         public AddPrivateDocumentAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
@@ -30,8 +30,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
             var privDoc = await _repository.GetById(request.Id);
             privDoc.AddNewAttachment(request.AttachmentFilePath);
 
-            await _repository.Update(privDoc);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(privDoc);
         }
     }
 }

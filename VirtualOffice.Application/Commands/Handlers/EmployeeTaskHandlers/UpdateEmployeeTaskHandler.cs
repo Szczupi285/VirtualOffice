@@ -19,7 +19,6 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(UpdateEmployeeTask request, CancellationToken cancellationToken)
         {
-
             var (id, title, description, endDate, status, priority) = request;
 
             if (!await _readService.ExistsByIdAsync(id))
@@ -27,7 +26,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
             var empTask = await _repository.GetById(id);
 
-            // we update only changed properties rather than whole object 
+            // we update only changed properties rather than whole object
             // beacuse changing the title to the same title would raise an event.
             if (empTask._Title != title)
                 empTask.SetTitle(title);
@@ -40,9 +39,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             if (empTask._Priority != priority)
                 empTask.SetPriority(priority);
 
-            await _repository.Update(empTask);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(empTask);
         }
     }
 }

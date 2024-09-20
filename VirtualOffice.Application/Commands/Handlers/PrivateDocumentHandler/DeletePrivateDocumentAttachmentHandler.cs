@@ -13,8 +13,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
 {
     public class DeletePrivateDocumentAttachmentHandler : IRequestHandler<DeletePrivateDocumentAttachment>
     {
-        IPrivateDocumentRepository _repository;
-        IPrivateDocumentReadService _readService;
+        private IPrivateDocumentRepository _repository;
+        private IPrivateDocumentReadService _readService;
 
         public DeletePrivateDocumentAttachmentHandler(IPrivateDocumentRepository repository, IPrivateDocumentReadService readService)
         {
@@ -30,8 +30,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
             var privDoc = await _repository.GetById(request.Id);
             privDoc.DeleteAttachment(request.AttachmentFilePath);
 
-            await _repository.Update(privDoc);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(privDoc);
         }
     }
 }

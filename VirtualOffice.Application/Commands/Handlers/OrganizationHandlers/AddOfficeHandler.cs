@@ -14,7 +14,6 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
     public class AddOfficeHandler : IRequestHandler<AddOffice>
     {
-
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
 
@@ -33,10 +32,8 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 
             Office office = new(Guid.NewGuid(), request.Name, request.Description, request.Members);
             org.AddOffice(office);
-            
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
-            
+
+            await _repository.UpdateAsync(org);
         }
     }
 }

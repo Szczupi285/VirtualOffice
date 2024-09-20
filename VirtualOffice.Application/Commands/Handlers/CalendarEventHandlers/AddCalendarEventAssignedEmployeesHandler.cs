@@ -24,9 +24,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
             var calEv = await _repository.GetById(request.Guid);
             calEv.AddEmployeesRange(request.EmployeesToAdd);
-            await _repository.Update(calEv);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.UpdateAsync(calEv);
         }
-      
     }
 }

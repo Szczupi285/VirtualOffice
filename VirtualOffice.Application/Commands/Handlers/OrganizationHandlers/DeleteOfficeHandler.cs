@@ -33,9 +33,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             Office office = org.GetOfficeById(request.OfficeId);
             org.RemoveOffice(office);
 
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(org);
         }
     }
 }

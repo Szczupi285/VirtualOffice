@@ -23,14 +23,14 @@ namespace ApplicationUnitTests
 
         public MeetingHandlersUnitTests()
         {
-            _repositoryMock = new Mock<IMeetingRepository>();   
+            _repositoryMock = new Mock<IMeetingRepository>();
             _readServiceMock = new Mock<IMeetingReadService>();
             _CreMettHan = new CreateMeetingHandler(_repositoryMock.Object);
             _DelMettHan = new DeleteMeetingHandler(_repositoryMock.Object, _readServiceMock.Object);
             _UpdMettHan = new UpdateMeetingHandler(_repositoryMock.Object, _readServiceMock.Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
             _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
-            _meet = new Meeting(guid, "Title", "Description", 
+            _meet = new Meeting(guid, "Title", "Description",
                 new HashSet<ApplicationUser>() { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
         }
 
@@ -39,35 +39,25 @@ namespace ApplicationUnitTests
         {
             // Arrange
             var request = new CreateMeeting("Title", "Desc", new HashSet<ApplicationUser>() { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
-            
-            // Act
-            await _CreMettHan.Handle(request, CancellationToken.None);
-
-            //Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<Meeting>()), Times.Once());
-        }
-        [Fact]
-        public async Task CreateMeetingHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new CreateMeeting("Title", "Desc", new HashSet<ApplicationUser>() { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
 
             // Act
             await _CreMettHan.Handle(request, CancellationToken.None);
 
             //Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Meeting>()), Times.Once());
         }
+
         [Fact]
         public async Task DeleteMeetingHandler_ShouldThrowMeetingDoesNotExistException()
         {
-            // Arrange 
+            // Arrange
             var request = new DeleteMeeting(Guid.NewGuid());
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
             // Act & Assert
             await Assert.ThrowsAsync<MeetingDoesNotExistException>(() => _DelMettHan.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeleteMeetingHandler_ShouldCallDeleteOnce()
         {
@@ -79,21 +69,9 @@ namespace ApplicationUnitTests
             await _DelMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Delete(guid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(guid), Times.Once);
         }
-        [Fact]
-        public async Task DeleteMeetingHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            Guid guid = Guid.NewGuid();
-            var request = new DeleteMeeting(guid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
-            // Act
-            await _DelMettHan.Handle(request, CancellationToken.None);
 
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
-        }
         [Fact]
         public async Task UpdateMeetingHandler_ShouldThrowMeetingDoesNotExistsException()
         {
@@ -105,6 +83,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<MeetingDoesNotExistException>(() => _UpdMettHan.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task UpdateMeetingHandler_ShouldCallUpdateOnce()
         {
@@ -120,24 +99,7 @@ namespace ApplicationUnitTests
             await _UpdMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.Update(_meet), Times.Once);
-        }
-        [Fact]
-        public async Task UpdateMeetingHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new UpdateMeeting(Guid.NewGuid(), "Title", "Description",
-                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
-
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
-
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(_meet);
-
-            // Act
-            await _UpdMettHan.Handle(request, CancellationToken.None);
-
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_meet), Times.Once);
         }
     }
 }

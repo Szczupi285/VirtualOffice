@@ -38,41 +38,31 @@ namespace ApplicationUnitTests
             _userReadServiceMock = new Mock<IUserReadService>();
             _crePriChtRmHand = new CreatePrivateChatRoomHandler(_repositoryMock.Object);
             _delPriChtRmHand = new DeletePrivateChatRoomHandler(_repositoryMock.Object, _readServiceMock.Object);
-            _sendMessHand = new SendMessageHandler(_repositoryMock.Object, _readServiceMock.Object,_userRepostoryMock.Object, _userReadServiceMock.Object);
+            _sendMessHand = new SendMessageHandler(_repositoryMock.Object, _readServiceMock.Object, _userRepostoryMock.Object, _userReadServiceMock.Object);
             _pcr = new PrivateChatRoom(pcrGuid, new HashSet<ApplicationUser>() { _user1, _user2 }, new SortedSet<Message>());
-            
         }
 
         [Fact]
         public async Task CreatePrivateChatRoomHandler_ShouldCallAddOnce()
         {
             // Arrange
-            var request = new CreatePrivateChatRoom(new HashSet<ApplicationUser>() {_user1, _user2 }, new SortedSet<Message>());
-            // Act
-            await _crePriChtRmHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.Add(It.IsAny<PrivateChatRoom>()), Times.Once);
-        }
-        [Fact]
-        public async Task CreatePrivateChatRoomHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
             var request = new CreatePrivateChatRoom(new HashSet<ApplicationUser>() { _user1, _user2 }, new SortedSet<Message>());
             // Act
             await _crePriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<PrivateChatRoom>()), Times.Once);
         }
+
         [Fact]
         public async Task DeletePrivateChatRoomHandler_ShouldThrowPrivateChatRoomDoesNotExistException()
         {
-
             // Arrange
             var request = new DeletePrivateChatRoom(Guid.NewGuid());
             _readServiceMock.Setup(s => s.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
             // Act & Assert
             await Assert.ThrowsAsync<PrivateChatRoomDoesNotExistException>(() => _delPriChtRmHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task DeletePrivateChatRoomHandler_ShouldCallDeleteOnce()
         {
@@ -82,19 +72,9 @@ namespace ApplicationUnitTests
             // Act
             await _delPriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Delete(pcrGuid), Times.Once());
+            _repositoryMock.Verify(r => r.DeleteAsync(pcrGuid), Times.Once());
         }
-        [Fact]
-        public async Task DeletePrivateChatRoomHandler_ShouldCallSaveAsyncOnce()
-        {
-            // Arrange
-            var request = new DeletePrivateChatRoom(pcrGuid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
-            // Act
-            await _delPriChtRmHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once());
-        }
+
         [Fact]
         public async Task SendMessageHandler_ShouldThrowPrivateChatRoomDoesNotExistException()
         {
@@ -104,6 +84,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<PrivateChatRoomDoesNotExistException>(() => _sendMessHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task SendMessageHandler_ShouldThrowUserDoesNotExistException()
         {
@@ -115,6 +96,7 @@ namespace ApplicationUnitTests
             // Act & Assert
             await Assert.ThrowsAsync<UserDoesNotExistException>(() => _sendMessHand.Handle(request, CancellationToken.None));
         }
+
         [Fact]
         public async Task SendMessageHandler_ShouldCallUpdateOnce()
         {
@@ -126,27 +108,10 @@ namespace ApplicationUnitTests
 
             _repositoryMock.Setup(r => r.GetById(pcrGuid)).ReturnsAsync(_pcr);
             _userRepostoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
-            // Act 
+            // Act
             await _sendMessHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.Update(_pcr), Times.Once);
-        }
-        [Fact]
-        public async Task SendMessageHandler_ShouldCallSaveAsyncOnce()
-        {
-
-            // Arrange
-            var request = new SendMessage(pcrGuid, _user1.Id, "content");
-
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
-            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(_user1.Id)).ReturnsAsync(true);
-
-            _repositoryMock.Setup(r => r.GetById(pcrGuid)).ReturnsAsync(_pcr);
-            _userRepostoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
-            // Act 
-            await _sendMessHand.Handle(request, CancellationToken.None);
-            // Assert
-            _repositoryMock.Verify(r => r.SaveAsync(CancellationToken.None), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_pcr), Times.Once);
         }
     }
 }

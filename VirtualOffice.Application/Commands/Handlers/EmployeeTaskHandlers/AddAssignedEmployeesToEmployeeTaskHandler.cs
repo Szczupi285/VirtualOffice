@@ -19,16 +19,13 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(AddAssignedEmployeesToEmployeeTask request, CancellationToken cancellationToken)
         {
-
             if (!await _readService.ExistsByIdAsync(request.Guid))
                 throw new EmployeeTaskDoesNotExistsException(request.Guid);
 
             var calEv = await _repository.GetById(request.Guid);
             calEv.AddEmployeesRange(request.EmployeesToAdd);
 
-            await _repository.Update(calEv);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(calEv);
         }
     }
 }

@@ -14,8 +14,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
     public class DeletePublicDocumentHandler : IRequestHandler<DeletePublicDocument>
     {
-        IPublicDocumentRepository _repository;
-        IPublicDocumentReadService _readService;
+        private IPublicDocumentRepository _repository;
+        private IPublicDocumentReadService _readService;
 
         public DeletePublicDocumentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {
@@ -28,8 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PublicDocumentDoesNotExistException(request.Id);
 
-            await _repository.Delete(request.Id);
-            await _repository.SaveAsync(cancellationToken);
+            await _repository.DeleteAsync(request.Id);
         }
     }
 }

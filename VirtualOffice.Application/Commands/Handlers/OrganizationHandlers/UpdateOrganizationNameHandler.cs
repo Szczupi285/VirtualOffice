@@ -12,10 +12,8 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-
     public class UpdateOrganizationNameHandler : IRequestHandler<UpdateOrganizationName>
     {
-
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
 
@@ -34,9 +32,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 
             org.SetName(request.Name);
 
-            await _repository.Update(org);
-            await _repository.SaveAsync(cancellationToken);
-
+            await _repository.UpdateAsync(org);
         }
     }
 }
