@@ -30,6 +30,9 @@ namespace VirtualOffice.Domain.Entities
             _dateTimeProvider = dateTimeProvider;
         }
 
+        private Message()
+        { }
+
         public int CompareTo(Message? other)
         {
             if (other == null)

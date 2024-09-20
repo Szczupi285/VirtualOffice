@@ -3,9 +3,13 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Entities
 {
+    // object created using Builder
     public class PrivateDocument : AbstractDocument
     {
         public DocumentCreationDate _creationDate { get; private set; } = DateTime.UtcNow;
+
+        public PrivateDocument()
+        { }
 
         public PrivateDocumentMemento SaveToMemento()
         {

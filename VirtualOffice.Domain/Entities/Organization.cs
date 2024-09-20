@@ -74,6 +74,9 @@ namespace VirtualOffice.Domain.Entities
             _subscription = subscription;
         }
 
+        private Organization()
+        { }
+
         public Office GetOfficeById(OfficeId id)
         {
             var office = _offices.FirstOrDefault(x => x.Id == id);

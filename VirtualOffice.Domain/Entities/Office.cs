@@ -26,6 +26,9 @@ namespace VirtualOffice.Domain.Entities
             _members = members;
         }
 
+        private Office()
+        { }
+
         public void SetName(OfficeName name) => _officeName = name;
 
         public void SetDescription(OfficeDescription description) => _description = description;

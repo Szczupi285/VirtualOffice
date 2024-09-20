@@ -49,6 +49,9 @@ namespace VirtualOffice.Domain.Entities
             _isPayed = isPayed;
         }
 
+        private Subscription()
+        { }
+
         // calculate new fee and make isPayed to false
         public void UpdateSubType(SubscriptionTypeEnum subType) => _subType = subType;
 

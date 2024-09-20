@@ -53,7 +53,6 @@ namespace VirtualOffice.Infrastructure.EF
                 new PrivateDocumentConfiguration(),
                 new PublicChatRoomConfiguration(),
                 new PublicDocumentConfiguration(),
-                new SubscriptionConfiguration(),
             };
 
             foreach (var config in configuration)

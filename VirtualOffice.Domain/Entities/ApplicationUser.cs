@@ -33,6 +33,9 @@ namespace VirtualOffice.Domain.Entities
             _Permissions = permissions;
         }
 
+        private ApplicationUser()
+        { }
+
         public void EditName(ApplicationUserName name) => _Name = name;
 
         public void EditSurname(ApplicationUserSurname surname) => _Surname = surname;

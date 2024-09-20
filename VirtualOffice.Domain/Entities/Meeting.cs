@@ -13,6 +13,9 @@ namespace VirtualOffice.Domain.Entities
         {
         }
 
+        private Meeting()
+        { }
+
         public void UpdateStartDate(DateTime newStartDate)
         {
             if (newStartDate > _EndDate)

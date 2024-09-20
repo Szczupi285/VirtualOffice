@@ -18,6 +18,9 @@ namespace VirtualOffice.Domain.Entities
             _Priority = priority;
         }
 
+        private EmployeeTask()
+        { }
+
         public void SetPriority(EmployeeTaskPriorityEnum priority)
         {
             _Priority = priority;

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.Organization;
+using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace VirtualOffice.Infrastructure.EF.Config
 {
@@ -29,8 +30,26 @@ namespace VirtualOffice.Infrastructure.EF.Config
             builder.HasMany(e => e._organizationUsers)
                 .WithOne();
 
-            builder.HasOne(e => e._subscription)
-                .WithOne();
+            builder.OwnsOne(e => e._subscription, a =>
+            {
+                a.ToTable("Subscriptions");
+
+                a.Property(e => e.Id).HasConversion(
+                    p => p.Value,
+                      p => new SubscriptionId(p));
+
+                a.Property(e => e._subStartDate).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionStartDate(p));
+
+                a.Property(e => e._subEndDate).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionEndDate(p));
+
+                a.Property(e => e._subscriptionFee).HasConversion(
+                    p => p.Value,
+                    p => new SubscriptionFee(p));
+            });
         }
     }
 }

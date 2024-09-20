@@ -15,6 +15,9 @@ namespace VirtualOffice.Domain.Entities
             _Name = name;
         }
 
+        private PublicChatRoom()
+        { }
+
         // we don't check for duplicates since it's a hashSet
         public void AddParticipant(ApplicationUser participant)
         {

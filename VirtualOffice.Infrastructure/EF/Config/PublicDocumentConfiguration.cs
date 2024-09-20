@@ -26,10 +26,10 @@ namespace VirtualOffice.Infrastructure.EF.Config
 
             builder.OwnsMany(e => e._attachmentFilePaths, a =>
             {
-                a.Property(e => e)
+                a.Property(e => e.Value)
                     .HasColumnName("FilePath")
                     .HasConversion(
-                     p => p.Value,
+                     p => p,
                      p => new DocumentFilePath(p));
             });
 
@@ -40,10 +40,10 @@ namespace VirtualOffice.Infrastructure.EF.Config
             {
                 a.ToTable("PublicDocumentEligibleForRead");
 
-                a.Property(e => e)
+                a.Property(e => e.Value)
                     .HasColumnName("UserId")
                     .HasConversion(
-                        p => p.Value,
+                        p => p,
                         p => new ApplicationUserId(p));
             });
 
@@ -51,10 +51,10 @@ namespace VirtualOffice.Infrastructure.EF.Config
             {
                 a.ToTable("PublicDocumentEligibleForWrite");
 
-                a.Property(e => e)
+                a.Property(e => e.Value)
                 .HasColumnName("UserId")
                 .HasConversion(
-                    p => p.Value,
+                    p => p,
                     p => new ApplicationUserId(p));
             });
 

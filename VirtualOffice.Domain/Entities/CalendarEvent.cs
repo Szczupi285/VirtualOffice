@@ -13,6 +13,9 @@ namespace VirtualOffice.Domain.Entities
         {
         }
 
+        private CalendarEvent()
+        { }
+
         public void UpdateStartDate(DateTime startDate)
         {
             if (_EndDate <= startDate)

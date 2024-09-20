@@ -11,5 +11,8 @@ namespace VirtualOffice.Domain.Entities
             if (participants.Count != 2)
                 throw new InvalidPrivateRoomParticipantsException();
         }
+
+        private PrivateChatRoom()
+        { }
     }
 }

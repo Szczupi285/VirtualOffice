@@ -21,6 +21,9 @@ namespace VirtualOffice.Domain.Entities
             _createdBy = userId;
         }
 
+        private Note()
+        { }
+
         public void EditContent(string content)
         {
             _content = content;

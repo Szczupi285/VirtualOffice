@@ -25,6 +25,9 @@ namespace VirtualOffice.Domain.Abstractions
             _Messages = messages;
         }
 
+        protected AbstractChatRoom()
+        { }
+
         public void SendMessage(ApplicationUser sender, string content)
         {
             if (!_Participants.Contains(sender))

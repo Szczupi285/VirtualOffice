@@ -6,11 +6,11 @@ using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Entities
 {
+    //created with builder
     public class PublicDocument : AbstractDocument
     {
-        //created with builder
-
-        //public ValueTuple<DocumentCreationDate, ApplicationUserId> _creationDetails { get; private set; }
+        public PublicDocument()
+        { }
 
         public DocumentCreationDetails _creationDetails { get; private set; }
 

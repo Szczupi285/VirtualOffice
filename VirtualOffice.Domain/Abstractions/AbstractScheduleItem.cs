@@ -31,6 +31,9 @@ namespace VirtualOffice.Domain.Abstractions
             _EndDate = endDate;
         }
 
+        protected AbstractScheduleItem()
+        { }
+
         public void SetTitle(string title)
         {
             _Title = title;
