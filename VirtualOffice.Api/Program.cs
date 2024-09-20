@@ -1,6 +1,5 @@
-using Microsoft.Extensions.Configuration;
 using VirtualOffice.Infrastructure;
-using VirtualOffice.Infrastructure.EF.Models;
+using VirtualOffice.Infrastructure.EF;
 using VirtualOffice.Infrastructure.EF.Models.ReadDatabaseSettings;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +14,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddServicesCollection();
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddSqlServer(builder.Configuration);
 
 var app = builder.Build();
 

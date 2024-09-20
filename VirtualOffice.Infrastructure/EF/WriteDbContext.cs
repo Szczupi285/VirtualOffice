@@ -38,34 +38,28 @@ namespace VirtualOffice.Infrastructure.EF
         {
             base.OnModelCreating(builder);
 
-            var AppUserConfig = new ApplicationUserConfiguration();
-            var AppIdentityUserConfig = new AppIdentityUserConfiguration();
-            var CalendarEventConfig = new CalendarEventConfiguration();
-            var EmployeeTaskConfig = new EmployeeTaskConfiguration();
-            var MeetingConfig = new MeetingConfiguration();
-            var MessageConfig = new MessageConfiguration();
-            var NoteConfig = new NoteConfiguration();
-            var OfficeConfig = new OfficeConfiguration();
-            var OrganizationConfig = new OrganizationConfiguration();
-            var PrivateChatRoomConfig = new PrivateChatRoomConfiguration();
-            var PrivateDocumentConfig = new PrivateDocumentConfiguration();
-            var PublicChatRoomConfig = new PublicChatRoomConfiguration();
-            var PublicDocumentConfig = new PublicDocumentConfiguration();
-            var SubscriptionConfig = new SubscriptionConfiguration();
+            var configuration = new object[]
+            {
+                new ApplicationUserConfiguration(),
+                new AppIdentityUserConfiguration(),
+                new CalendarEventConfiguration(),
+                new EmployeeTaskConfiguration(),
+                new MeetingConfiguration(),
+                new MessageConfiguration(),
+                new NoteConfiguration(),
+                new OfficeConfiguration(),
+                new OrganizationConfiguration(),
+                new PrivateChatRoomConfiguration(),
+                new PrivateDocumentConfiguration(),
+                new PublicChatRoomConfiguration(),
+                new PublicDocumentConfiguration(),
+                new SubscriptionConfiguration(),
+            };
 
-            builder.ApplyConfiguration(AppUserConfig);
-            builder.ApplyConfiguration(AppIdentityUserConfig);
-            builder.ApplyConfiguration(CalendarEventConfig);
-            builder.ApplyConfiguration(EmployeeTaskConfig);
-            builder.ApplyConfiguration(MeetingConfig);
-            builder.ApplyConfiguration(MessageConfig);
-            builder.ApplyConfiguration(NoteConfig);
-            builder.ApplyConfiguration(OfficeConfig);
-            builder.ApplyConfiguration(OrganizationConfig);
-            builder.ApplyConfiguration(PrivateChatRoomConfig);
-            builder.ApplyConfiguration(PrivateDocumentConfig);
-            builder.ApplyConfiguration(PublicChatRoomConfig);
-            builder.ApplyConfiguration(PublicDocumentConfig);
-            builder.ApplyConfiguration(SubscriptionConfig);
+            foreach (var config in configuration)
+            {
+                builder.ApplyConfiguration((dynamic)config);
+            }
         }
     }
+}
