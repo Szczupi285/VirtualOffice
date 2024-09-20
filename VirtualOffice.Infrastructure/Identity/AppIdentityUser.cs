@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Infrastructure.Identity
 {
     public class AppIdentityUser : IdentityUser<Guid>
     {
-        public Guid ApplicationUserId { get; set; }
+        public ApplicationUserId ApplicationUserId { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
 
         public AppIdentityUser()

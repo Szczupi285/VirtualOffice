@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Infrastructure.Identity;
 
 namespace VirtualOffice.Infrastructure.EF.Config
@@ -12,6 +13,10 @@ namespace VirtualOffice.Infrastructure.EF.Config
             .WithOne()
             .HasForeignKey<AppIdentityUser>(e => e.ApplicationUserId)
             .IsRequired();
+
+            builder.Property(e => e.ApplicationUserId).HasConversion(
+                p => p.Value,
+                p => new ApplicationUserId(p)).HasColumnName("EmployeeId");
         }
     }
 }

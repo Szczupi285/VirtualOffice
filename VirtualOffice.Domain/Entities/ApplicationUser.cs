@@ -17,8 +17,6 @@ namespace VirtualOffice.Domain.Entities
 
         // private Settings _settings;
 
-        // private Roles _roles;
-
         public ApplicationUser(Guid id, string name, string surname)
         {
             Id = id;
