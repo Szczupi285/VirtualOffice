@@ -1,9 +1,11 @@
-﻿using VirtualOffice.Domain.Consts;
+﻿using VirtualOffice.Domain.Builders.Permission;
+using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.Interfaces;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 
 namespace VirtualOffice.Domain.Entities
 {
-    public class ApplicationUser
+    public class ApplicationUser : IUser
     {
         public ApplicationUserId Id { get; }
 
@@ -11,7 +13,7 @@ namespace VirtualOffice.Domain.Entities
 
         public ApplicationUserSurname _Surname { get; private set; }
 
-        private PermissionsEnum _Permissions;
+        public PermissionsEnum _Permissions { get; private set; }
 
         // private Settings _settings;
 
@@ -39,5 +41,15 @@ namespace VirtualOffice.Domain.Entities
         public void EditName(ApplicationUserName name) => _Name = name;
 
         public void EditSurname(ApplicationUserSurname surname) => _Surname = surname;
+
+        public void SetAsEmployee() => _Permissions = PermissionDirector.ConstructEmployee();
+
+        public void SetAsTeamLeader() => _Permissions = PermissionDirector.ConstructTeamLeader();
+
+        public void SetAsManager() => _Permissions = PermissionDirector.ConstructManager();
+
+        public void SetAsAdministrator() => _Permissions = PermissionDirector.ConstructAdministrator();
+
+        public void SetAsMainAdministrator() => _Permissions = PermissionDirector.ConstuctMainAdministator();
     }
 }
