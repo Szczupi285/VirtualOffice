@@ -1,0 +1,38 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+
+namespace VirtualOffice.Infrastructure.EF.Config
+{
+    internal sealed class MeetingConfiguration : IEntityTypeConfiguration<Meeting>
+    {
+        public void Configure(EntityTypeBuilder<Meeting> builder)
+        {
+            builder.HasKey(e => e.Id);
+
+            builder.Property(e => e.Id).HasConversion(
+                p => p.Value,
+                p => new ScheduleItemId(p));
+
+            builder.Property(e => e._Title).HasConversion(
+                p => p.Value,
+                p => new ScheduleItemTitle(p));
+
+            builder.Property(e => e._Description).HasConversion(
+               p => p.Value,
+               p => new ScheduleItemDescription(p));
+
+            builder.Property(e => e._StartDate).HasConversion(
+                p => p.Value,
+                p => new ScheduleItemStartDate(p));
+
+            builder.Property(e => e._EndDate).HasConversion(
+                p => p.Value,
+                p => new ScheduleItemEndDate(p));
+
+            builder.HasMany(e => e._AssignedEmployees)
+                .WithMany();
+        }
+    }
+}
