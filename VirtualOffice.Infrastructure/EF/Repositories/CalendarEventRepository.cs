@@ -39,7 +39,7 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
 
         public async Task AddAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
         {
-            await _dbContext.CalendarEvents.AddAsync(calendarEvent);
+            await _dbContext.CalendarEvents.AddAsync(calendarEvent, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 

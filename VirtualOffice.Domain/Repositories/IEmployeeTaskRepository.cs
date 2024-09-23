@@ -9,10 +9,18 @@ namespace VirtualOffice.Domain.Repositories
     {
         Task<EmployeeTask> GetById(ScheduleItemId guid);
 
+        Task<EmployeeTask> GetById(ScheduleItemId guid, CancellationToken cancellationToken);
+
         Task AddAsync(EmployeeTask employeeTask);
+
+        Task AddAsync(EmployeeTask employeeTask, CancellationToken cancellationToken);
+
+        Task DeleteAsync(EmployeeTask employeeTask);
+
+        Task DeleteAsync(EmployeeTask employeeTask, CancellationToken cancellationToken);
 
         Task UpdateAsync(EmployeeTask employeeTask);
 
-        Task DeleteAsync(ScheduleItemId guidid);
+        Task UpdateAsync(EmployeeTask employeeTask, CancellationToken cancellationToken);
     }
 }
