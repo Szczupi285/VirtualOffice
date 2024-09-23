@@ -89,8 +89,8 @@ namespace ApplicationUnitTests
         {
             // Arrange
             var request = new UpdateNote(guid, "Title", "Content");
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(guid)).ReturnsAsync(_Note);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_Note);
             // Act
             await _updateNoteHandler.Handle(request, CancellationToken.None);
             // Assert

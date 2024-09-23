@@ -62,23 +62,22 @@ namespace ApplicationUnitTests
         public async Task DeleteMeetingHandler_ShouldCallDeleteOnce()
         {
             // Arrange
-            Guid guid = Guid.NewGuid();
             var request = new DeleteMeeting(guid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_meet);
             // Act
             await _DelMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Meeting>()), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_meet), Times.Once);
         }
 
         [Fact]
         public async Task UpdateMeetingHandler_ShouldThrowMeetingDoesNotExistsException()
         {
             // Arrange
-            Guid guid = Guid.NewGuid();
             var request = new UpdateMeeting(guid, "Title", "Desc", DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(false);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(false);
 
             // Act & Assert
             await Assert.ThrowsAsync<MeetingDoesNotExistException>(() => _UpdMettHan.Handle(request, CancellationToken.None));
@@ -88,12 +87,12 @@ namespace ApplicationUnitTests
         public async Task UpdateMeetingHandler_ShouldCallUpdateOnce()
         {
             // Arrange
-            var request = new UpdateMeeting(Guid.NewGuid(), "Title", "Description",
+            var request = new UpdateMeeting(guid, "Title", "Description",
                  DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
 
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Guid)).ReturnsAsync(_meet);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_meet);
 
             // Act
             await _UpdMettHan.Handle(request, CancellationToken.None);
