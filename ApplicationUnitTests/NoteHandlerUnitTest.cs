@@ -64,12 +64,13 @@ namespace ApplicationUnitTests
         public async Task DeleteNoteHandler_ShouldCallDeleteOnce()
         {
             // Arrange
-            var request = new DeleteNote(Guid.NewGuid());
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            var request = new DeleteNote(guid);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(guid)).ReturnsAsync(_Note);
             // Act
             await _deleteNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Note>()), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_Note), Times.Once);
         }
 
         [Fact]
