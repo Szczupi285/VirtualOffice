@@ -68,11 +68,12 @@ namespace ApplicationUnitTests
         {
             // Arrange
             var request = new DeletePrivateChatRoom(pcrGuid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_pcr);
             // Act
             await _delPriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<PrivateChatRoom>()), Times.Once());
+            _repositoryMock.Verify(r => r.DeleteAsync(_pcr), Times.Once());
         }
 
         [Fact]
@@ -91,7 +92,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new SendMessage(pcrGuid, _user1.Id, "content");
 
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.ChatRoomId)).ReturnsAsync(true);
             _userReadServiceMock.Setup(us => us.ExistsByIdAsync(Guid.NewGuid())).ReturnsAsync(false);
             // Act & Assert
             await Assert.ThrowsAsync<UserDoesNotExistException>(() => _sendMessHand.Handle(request, CancellationToken.None));
@@ -103,11 +104,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new SendMessage(pcrGuid, _user1.Id, "content");
 
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
-            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(_user1.Id)).ReturnsAsync(true);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.ChatRoomId)).ReturnsAsync(true);
+            _userReadServiceMock.Setup(us => us.ExistsByIdAsync(request.UserId)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(pcrGuid)).ReturnsAsync(_pcr);
-            _userRepostoryMock.Setup(ur => ur.GetByIdAsync(_user1.Id)).ReturnsAsync(_user1);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.ChatRoomId)).ReturnsAsync(_pcr);
+            _userRepostoryMock.Setup(ur => ur.GetByIdAsync(request.UserId)).ReturnsAsync(_user1);
             // Act
             await _sendMessHand.Handle(request, CancellationToken.None);
             // Assert
