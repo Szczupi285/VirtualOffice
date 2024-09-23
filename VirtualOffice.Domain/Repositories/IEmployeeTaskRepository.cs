@@ -7,9 +7,9 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IEmployeeTaskRepository
     {
-        Task<EmployeeTask> GetById(ScheduleItemId guid);
+        Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid);
 
-        Task<EmployeeTask> GetById(ScheduleItemId guid, CancellationToken cancellationToken);
+        Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken);
 
         Task AddAsync(EmployeeTask employeeTask);
 

@@ -5,12 +5,20 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IMeetingRepository
     {
-        Task<Meeting> GetById(ScheduleItemId guid);
+        Task<Meeting> GetByIdAsync(ScheduleItemId guid);
+
+        Task<Meeting> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken);
 
         Task AddAsync(Meeting meeting);
 
+        Task AddAsync(Meeting meeting, CancellationToken cancellationToken);
+
         Task UpdateAsync(Meeting meeting);
 
-        Task DeleteAsync(ScheduleItemId guid);
+        Task UpdateAsync(Meeting meeting, CancellationToken cancellationToken);
+
+        Task DeleteAsync(Meeting meeting);
+
+        Task DeleteAsync(Meeting meeting, CancellationToken cancellationToken);
     }
 }

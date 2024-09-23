@@ -6,12 +6,20 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IPrivateDocumentRepository
     {
-        Task<PrivateDocument> GetById(DocumentId guid);
+        Task<PrivateDocument> GetByIdAsync(DocumentId guid);
 
-        Task AddAsync(PrivateDocument PrivateDocument);
+        Task<PrivateDocument> GetByIdAsync(DocumentId guid, CancellationToken cancellationToken);
 
-        Task UpdateAsync(PrivateDocument PrivateDocument);
+        Task AddAsync(PrivateDocument privateDocument);
 
-        Task DeleteAsync(DocumentId guid);
+        Task AddAsync(PrivateDocument privateDocument, CancellationToken cancellationToken);
+
+        Task UpdateAsync(PrivateDocument privateDocument);
+
+        Task UpdateAsync(PrivateDocument privateDocument, CancellationToken cancellationToken);
+
+        Task DeleteAsync(PrivateDocument privateDocument);
+
+        Task DeleteAsync(PrivateDocument privateDocument, CancellationToken cancellationToken);
     }
 }

@@ -6,12 +6,20 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IPrivateChatRoomRepository
     {
-        Task<PrivateChatRoom> GetById(ChatRoomId guid);
+        Task<PrivateChatRoom> GetByIdAsync(ChatRoomId guid);
+
+        Task<PrivateChatRoom> GetByIdAsync(ChatRoomId guid, CancellationToken cancellationToken);
 
         Task AddAsync(PrivateChatRoom chatRoom);
 
+        Task AddAsync(PrivateChatRoom chatRoom, CancellationToken cancellationToken);
+
         Task UpdateAsync(PrivateChatRoom chatRoom);
 
-        Task DeleteAsync(ChatRoomId id);
+        Task UpdateAsync(PrivateChatRoom chatRoom, CancellationToken cancellationToken);
+
+        Task DeleteAsync(PrivateChatRoom chatRoom);
+
+        Task DeleteAsync(PrivateChatRoom chatRoom, CancellationToken cancellationToken);
     }
 }

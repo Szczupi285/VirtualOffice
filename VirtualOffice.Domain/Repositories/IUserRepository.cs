@@ -5,12 +5,20 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<ApplicationUser> GetById(ApplicationUserId id);
+        Task<ApplicationUser> GetByIdAsync(ApplicationUserId id);
+
+        Task<ApplicationUser> GetByIdAsync(ApplicationUserId id, CancellationToken cancellationToken);
 
         Task AddAsync(ApplicationUser user);
 
+        Task AddAsync(ApplicationUser user, CancellationToken cancellationToken);
+
         Task UpdateAsync(ApplicationUser user);
 
-        Task DeleteAsync(ApplicationUserId id);
+        Task UpdateAsync(ApplicationUser user, CancellationToken cancellationToken);
+
+        Task DeleteAsync(ApplicationUser user);
+
+        Task DeleteAsync(ApplicationUser user, CancellationToken cancellationToken);
     }
 }

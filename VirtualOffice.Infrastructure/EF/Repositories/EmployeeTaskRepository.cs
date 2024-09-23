@@ -15,12 +15,12 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<EmployeeTask> GetById(ScheduleItemId guid)
+        public async Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid)
             => await _dbContext.EmployeeTasks
             .Include(c => c._AssignedEmployees)
             .FirstOrDefaultAsync(c => c.Id == guid) ?? throw new EmployeeTaskNotFoundException(guid);
 
-        public async Task<EmployeeTask> GetById(ScheduleItemId guid, CancellationToken cancellationToken)
+        public async Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken)
              => await _dbContext.EmployeeTasks
             .Include(c => c._AssignedEmployees)
             .FirstOrDefaultAsync(c => c.Id == guid, cancellationToken) ?? throw new EmployeeTaskNotFoundException(guid);
