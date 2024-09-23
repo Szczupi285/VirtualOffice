@@ -6,9 +6,9 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface ICalendarEventRepository
     {
-        Task<CalendarEvent> GetById(ScheduleItemId guid);
+        Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid);
 
-        Task<CalendarEvent> GetById(ScheduleItemId guid, CancellationToken cancellationToken);
+        Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken);
 
         Task AddAsync(CalendarEvent calendarEvent);
 
