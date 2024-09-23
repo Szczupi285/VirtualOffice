@@ -17,8 +17,8 @@ namespace VirtualOffice.Domain.Repositories
 
         Task UpdateAsync(Note note, CancellationToken cancellationToken);
 
-        Task DeleteAsync(NoteId guid);
+        Task DeleteAsync(Note note);
 
-        Task DeleteAsync(NoteId guid, CancellationToken cancellationToken);
+        Task DeleteAsync(Note note, CancellationToken cancellationToken);
     }
 }
