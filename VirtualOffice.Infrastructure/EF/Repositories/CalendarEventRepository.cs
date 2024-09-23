@@ -45,13 +45,13 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
 
         public async Task DeleteAsync(CalendarEvent calendarEvent)
         {
-            _dbContext.Remove(calendarEvent);
+            _dbContext.CalendarEvents.Remove(calendarEvent);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
         {
-            _dbContext.Remove(calendarEvent);
+            _dbContext.CalendarEvents.Remove(calendarEvent);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
