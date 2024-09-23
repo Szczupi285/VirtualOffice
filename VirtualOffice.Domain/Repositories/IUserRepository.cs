@@ -5,9 +5,9 @@ namespace VirtualOffice.Domain.Repositories
 {
     public interface IUserRepository
     {
-        Task<ApplicationUser> GetByIdAsync(ApplicationUserId id);
+        Task<ApplicationUser> GetByIdAsync(ApplicationUserId guid);
 
-        Task<ApplicationUser> GetByIdAsync(ApplicationUserId id, CancellationToken cancellationToken);
+        Task<ApplicationUser> GetByIdAsync(ApplicationUserId guid, CancellationToken cancellationToken);
 
         Task AddAsync(ApplicationUser user);
 
