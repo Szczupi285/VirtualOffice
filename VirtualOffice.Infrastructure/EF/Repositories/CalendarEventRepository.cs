@@ -21,12 +21,12 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<CalendarEvent> GetById(ScheduleItemId guid)
+        public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid)
            => await _dbContext.CalendarEvents.
            Include(c => c._AssignedEmployees)
            .FirstOrDefaultAsync(c => c.Id == guid) ?? throw new CalendarEventNotFoundException(guid);
 
-        public async Task<CalendarEvent> GetById(ScheduleItemId guid, CancellationToken cancellationToken)
+        public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken)
             => await _dbContext.CalendarEvents.
             Include(c => c._AssignedEmployees)
             .FirstOrDefaultAsync(c => c.Id == guid, cancellationToken) ?? throw new CalendarEventNotFoundException(guid);
