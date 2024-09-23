@@ -24,7 +24,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             if (!await _readService.ExistsByIdAsync(Id))
                 throw new MeetingDoesNotExistException(Id);
 
-            var meeting = await _repository.GetById(Id);
+            var meeting = await _repository.GetByIdAsync(Id);
 
             if (meeting._Title != Title)
                 meeting.SetTitle(Title);

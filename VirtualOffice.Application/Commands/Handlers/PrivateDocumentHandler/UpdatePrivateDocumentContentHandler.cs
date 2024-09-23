@@ -27,7 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);
 
-            var privDoc = await _repository.GetById(request.Id);
+            var privDoc = await _repository.GetByIdAsync(request.Id);
             privDoc.SetContent(request.Content);
 
             await _repository.UpdateAsync(privDoc);

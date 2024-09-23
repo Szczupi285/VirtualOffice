@@ -27,7 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PublicDocumentDoesNotExistException(request.Id);
 
-            var pubDoc = await _repository.GetById(request.Id);
+            var pubDoc = await _repository.GetByIdAsync(request.Id);
             pubDoc.SetContent(request.Content);
 
             await _repository.UpdateAsync(pubDoc);

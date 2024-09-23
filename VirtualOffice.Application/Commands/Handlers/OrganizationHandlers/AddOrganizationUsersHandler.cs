@@ -27,7 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new OrganizationDoesNotExistsException(request.Id);
 
-            var org = await _repository.GetById(request.Id);
+            var org = await _repository.GetByIdAsync(request.Id);
 
             org.AddRangeUsers(request.Users);
             await _repository.UpdateAsync(org);

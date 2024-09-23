@@ -27,7 +27,7 @@ namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PublicChatRoomDoesNotExistException(request.Id);
 
-            var pcr = await _repository.GetById(request.Id);
+            var pcr = await _repository.GetByIdAsync(request.Id);
 
             pcr.AddRangeParticipants(request.Participants);
 

@@ -29,7 +29,7 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
             if (!await _readService.ExistsByIdAsync(Id))
                 throw new NoteDoesNoteExistsException(Id);
 
-            var note = await _repository.GetById(Id);
+            var note = await _repository.GetByIdAsync(Id);
 
             if (note._title != Title)
                 note.EditTitle(Title);

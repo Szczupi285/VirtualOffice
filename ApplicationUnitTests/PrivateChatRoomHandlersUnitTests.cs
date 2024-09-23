@@ -72,7 +72,7 @@ namespace ApplicationUnitTests
             // Act
             await _delPriChtRmHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(pcrGuid), Times.Once());
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<PrivateChatRoom>()), Times.Once());
         }
 
         [Fact]
@@ -106,8 +106,8 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(pcrGuid)).ReturnsAsync(true);
             _userReadServiceMock.Setup(us => us.ExistsByIdAsync(_user1.Id)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(pcrGuid)).ReturnsAsync(_pcr);
-            _userRepostoryMock.Setup(ur => ur.GetById(_user1.Id)).ReturnsAsync(_user1);
+            _repositoryMock.Setup(r => r.GetByIdAsync(pcrGuid)).ReturnsAsync(_pcr);
+            _userRepostoryMock.Setup(ur => ur.GetByIdAsync(_user1.Id)).ReturnsAsync(_user1);
             // Act
             await _sendMessHand.Handle(request, CancellationToken.None);
             // Assert

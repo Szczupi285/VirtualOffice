@@ -62,6 +62,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteUser(_guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_user1);
             // Act
             await _delUserHand.Handle(request, CancellationToken.None);
             // Assert

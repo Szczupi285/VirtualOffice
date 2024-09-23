@@ -65,7 +65,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddPrivateDocumentAttachment(_guid, @"C:\newFolder\smth");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _addPrivDocAttHand.Handle(request, CancellationToken.None);
             // Assert
@@ -99,7 +99,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeletePrivateDocumentAttachment(_guid, @"C:\FolderFilePath\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _delPrivDocAttHand.Handle(request, CancellationToken.None);
             // Assert
@@ -125,7 +125,7 @@ namespace ApplicationUnitTests
             // Act
             await _delPrivDocHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_guid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<PrivateDocument>()), Times.Once);
         }
 
         [Fact]
@@ -144,7 +144,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdatePrivateDocumentContent(_guid, "newContent");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _updPrivDocConHand.Handle(request, CancellationToken.None);
             // Assert
@@ -167,7 +167,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdatePrivateDocumentTitle(_guid, "newContent");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_privateDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_privateDocument);
             // Act
             await _updPrivDocTitHand.Handle(request, CancellationToken.None);
             // Assert

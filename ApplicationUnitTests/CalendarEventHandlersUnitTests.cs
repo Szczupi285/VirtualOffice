@@ -57,7 +57,7 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(calEv);
 
             var handler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
@@ -89,7 +89,7 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(calEv);
 
             var request = new RemoveCalendarEventAssignedEmployees(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1 });
@@ -158,7 +158,7 @@ namespace ApplicationUnitTests
                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(calEv);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Guid)).ReturnsAsync(calEv);
 
             // Act
             await _UpdCalEvHandler.Handle(request, CancellationToken.None);

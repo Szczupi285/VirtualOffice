@@ -75,7 +75,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddPublicDocumentAttachment(_guid, @"C:\SomeFold\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_publicDocument);
             // Act
             await _addPubDocAttHand.Handle(request, CancellationToken.None);
             // Assert
@@ -110,7 +110,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeletePublicDocumentAttachment(_guid, @"C:\exampleFilePath\");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_publicDocument);
             // Act
             await _delPubDocAttHand.Handle(request, CancellationToken.None);
             // Assert
@@ -136,7 +136,7 @@ namespace ApplicationUnitTests
             // Act
             await _delPubDocHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_guid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<PublicDocument>()), Times.Once);
         }
 
         [Fact]
@@ -155,7 +155,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdatePublicDocumentContent(_guid, "newContent");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_publicDocument);
             // Act
             await _updPubDocContHand.Handle(request, CancellationToken.None);
             // Assert
@@ -178,7 +178,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdatePublicDocumentTitle(_guid, "newTitle");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(_guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(_guid)).ReturnsAsync(_publicDocument);
+            _repositoryMock.Setup(r => r.GetByIdAsync(_guid)).ReturnsAsync(_publicDocument);
             // Act
             await _updPubDocTitHand.Handle(request, CancellationToken.None);
             // Assert

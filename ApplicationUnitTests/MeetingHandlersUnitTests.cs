@@ -69,7 +69,7 @@ namespace ApplicationUnitTests
             await _DelMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(guid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Meeting>()), Times.Once);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Guid)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(request.Guid)).ReturnsAsync(_meet);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Guid)).ReturnsAsync(_meet);
 
             // Act
             await _UpdMettHan.Handle(request, CancellationToken.None);

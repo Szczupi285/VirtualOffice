@@ -28,7 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new UserDoesNotExistException(request.Id);
 
-            var user = await _repository.GetById(Id);
+            var user = await _repository.GetByIdAsync(Id);
 
             // we update only changed properties rather than whole object
             // beacuse changing the name to the same name would raise an event.

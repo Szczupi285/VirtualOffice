@@ -28,7 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             if (!await _OrgReadService.ExistsByIdAsync(request.OrganizationId))
                 throw new OrganizationDoesNotExistsException(request.OrganizationId);
 
-            var org = await _repository.GetById(request.OrganizationId);
+            var org = await _repository.GetByIdAsync(request.OrganizationId);
             var office = org.GetOfficeById(request.OfficeId);
 
             org.RemoveRangeOfficeUsers(request.Users, office);

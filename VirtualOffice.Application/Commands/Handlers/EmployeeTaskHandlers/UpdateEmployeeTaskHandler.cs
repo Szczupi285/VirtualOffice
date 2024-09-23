@@ -24,7 +24,7 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
             if (!await _readService.ExistsByIdAsync(id))
                 throw new EmployeeTaskDoesNotExistsException(id);
 
-            var empTask = await _repository.GetById(id);
+            var empTask = await _repository.GetByIdAsync(id);
 
             // we update only changed properties rather than whole object
             // beacuse changing the title to the same title would raise an event.

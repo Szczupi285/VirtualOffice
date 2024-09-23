@@ -74,7 +74,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddOffice(Guid.NewGuid(), "Name", "Description", new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
             // Act
             await _addOffHand.Handle(request, CancellationToken.None);
             // Assert
@@ -98,7 +98,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddOrganizationOfficeUsers(OrgGuid, OfficeGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<OrganizationId>())).ReturnsAsync(_organization);
             // Act
             await _addOrgOffUsrHand.Handle(request, CancellationToken.None);
             // Assert
@@ -122,7 +122,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(OrgGuid)).ReturnsAsync(_organization);
             // Act
             await _addOrgUsrHand.Handle(request, CancellationToken.None);
             // Assert
@@ -157,7 +157,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteOffice(OrgGuid, OfficeGuid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(OrgGuid)).ReturnsAsync(_organization);
             // Act
             await _delOffHand.Handle(request, CancellationToken.None);
 
@@ -187,7 +187,7 @@ namespace ApplicationUnitTests
             await _delOrgHand.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(OrgGuid), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Organization>()), Times.Once);
         }
 
         [Fact]
@@ -207,7 +207,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteOrganizationOfficeUsers(OrgGuid, OfficeGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(OrgGuid)).ReturnsAsync(_organization);
 
             // Act
             await _delOrgOffUsrHand.Handle(request, CancellationToken.None);
@@ -232,7 +232,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteOrganizationUsers(OrgGuid, new HashSet<ApplicationUser>() { _user1 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(OrgGuid)).ReturnsAsync(_organization);
 
             // Act
             await _delOrgUsrHand.Handle(request, CancellationToken.None);
@@ -257,7 +257,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdateOrganizationName(OrgGuid, "NewName");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(OrgGuid)).ReturnsAsync(_organization);
+            _repositoryMock.Setup(r => r.GetByIdAsync(OrgGuid)).ReturnsAsync(_organization);
 
             // Act
             await _updOrgNameHand.Handle(request, CancellationToken.None);

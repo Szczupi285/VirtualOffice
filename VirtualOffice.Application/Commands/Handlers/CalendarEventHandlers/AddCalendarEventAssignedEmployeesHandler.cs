@@ -22,7 +22,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             if (!await _readService.ExistsByIdAsync(request.Guid))
                 throw new CalendarEventDoesNotExistException(request.Guid);
 
-            var calEv = await _repository.GetById(request.Guid);
+            var calEv = await _repository.GetByIdAsync(request.Guid);
             calEv.AddEmployeesRange(request.EmployeesToAdd);
             await _repository.UpdateAsync(calEv);
         }

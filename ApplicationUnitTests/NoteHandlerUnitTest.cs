@@ -69,7 +69,7 @@ namespace ApplicationUnitTests
             // Act
             await _deleteNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<NoteId>()), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<Note>()), Times.Once);
         }
 
         [Fact]
@@ -89,7 +89,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdateNote(guid, "Title", "Content");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetById(guid)).ReturnsAsync(_Note);
+            _repositoryMock.Setup(r => r.GetByIdAsync(guid)).ReturnsAsync(_Note);
             // Act
             await _updateNoteHandler.Handle(request, CancellationToken.None);
             // Assert

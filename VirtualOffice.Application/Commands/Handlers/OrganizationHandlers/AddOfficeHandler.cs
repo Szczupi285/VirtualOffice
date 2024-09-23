@@ -28,7 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             if (!await _readService.ExistsByIdAsync(request.OrganizationId))
                 throw new OrganizationDoesNotExistsException(request.OrganizationId);
 
-            var org = await _repository.GetById(request.OrganizationId);
+            var org = await _repository.GetByIdAsync(request.OrganizationId);
 
             Office office = new(Guid.NewGuid(), request.Name, request.Description, request.Members);
             org.AddOffice(office);

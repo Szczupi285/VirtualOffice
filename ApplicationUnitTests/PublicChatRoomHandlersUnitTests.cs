@@ -130,8 +130,10 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeletePublicChatRoom(_publicChatRoom.Id);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(guid)).ReturnsAsync(_publicChatRoom);
             // Act
             await _delPubChatRoomHand.Handle(request, CancellationToken.None);
+
             // Assert
             _repositoryMock.Verify(r => r.DeleteAsync(_publicChatRoom), Times.Once());
         }

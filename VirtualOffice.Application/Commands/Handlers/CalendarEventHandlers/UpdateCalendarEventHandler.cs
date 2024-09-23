@@ -24,7 +24,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             if (!await _readService.ExistsByIdAsync(Id))
                 throw new CalendarEventDoesNotExistException(Id);
 
-            var calEv = await _repository.GetById(Id);
+            var calEv = await _repository.GetByIdAsync(Id);
 
             // we update only changed properties rather than whole object
             // beacuse changing the title to the same title would raise an event.

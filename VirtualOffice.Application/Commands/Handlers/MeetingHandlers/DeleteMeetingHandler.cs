@@ -25,10 +25,10 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 
         public async Task Handle(DeleteMeeting request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.Guid))
-                throw new MeetingDoesNotExistException(request.Guid);
+            if (!await _readService.ExistsByIdAsync(request.Id))
+                throw new MeetingDoesNotExistException(request.Id);
 
-            var entity = await _repository.GetByIdAsync(request.Guid);
+            var entity = await _repository.GetByIdAsync(request.Id);
             await _repository.DeleteAsync(entity);
         }
     }

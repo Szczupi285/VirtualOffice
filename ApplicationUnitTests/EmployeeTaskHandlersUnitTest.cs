@@ -63,7 +63,7 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(_empTask);
 
             var request = new AddAssignedEmployeesToEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
@@ -93,7 +93,7 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>()))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(It.IsAny<ScheduleItemId>()))
+            _repositoryMock.Setup(r => r.GetByIdAsync(It.IsAny<ScheduleItemId>()))
                            .ReturnsAsync(_empTask);
 
             var request = new RemoveAssignedEmployeesFromEmployeeTask(Guid.NewGuid(), new HashSet<ApplicationUser> { _user1, _user2 });
@@ -139,7 +139,7 @@ namespace ApplicationUnitTests
             await _DelEmpTaskHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<ScheduleItemId>()), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(It.IsAny<EmployeeTask>()), Times.Once);
         }
 
         [Fact]
@@ -163,7 +163,7 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetById(request.Id)).ReturnsAsync(_empTask);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_empTask);
 
             // Act
             await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
