@@ -65,8 +65,8 @@ namespace ApplicationUnitTests
         {
             // Arrange
             var request = new DeleteNote(guid);
-            _readServiceMock.Setup(s => s.ExistsByIdAsync(guid)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(guid)).ReturnsAsync(_Note);
+            _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_Note);
             // Act
             await _deleteNoteHandler.Handle(request, CancellationToken.None);
             // Assert

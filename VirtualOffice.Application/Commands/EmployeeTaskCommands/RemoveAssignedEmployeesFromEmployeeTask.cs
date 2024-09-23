@@ -3,6 +3,5 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Commands.EmployeeTaskCommands
 {
-    public record RemoveAssignedEmployeesFromEmployeeTask(Guid Guid, HashSet<ApplicationUser> EmployeesToRemove) : IRequest;
-
+    public record RemoveAssignedEmployeesFromEmployeeTask(Guid Id, HashSet<ApplicationUser> EmployeesToRemove) : IRequest;
 }

@@ -19,10 +19,10 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(RemoveAssignedEmployeesFromEmployeeTask request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.Guid))
-                throw new EmployeeTaskDoesNotExistsException(request.Guid);
+            if (!await _readService.ExistsByIdAsync(request.Id))
+                throw new EmployeeTaskDoesNotExistsException(request.Id);
 
-            var calEv = await _repository.GetByIdAsync(request.Guid);
+            var calEv = await _repository.GetByIdAsync(request.Id);
             calEv.RemoveEmployeesRange(request.EmployeesToRemove);
             await _repository.UpdateAsync(calEv);
         }
