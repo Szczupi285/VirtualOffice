@@ -1,10 +1,4 @@
-﻿using Amazon.Runtime.Internal;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Repositories;
 using VirtualOffice.Domain.Repositories;
