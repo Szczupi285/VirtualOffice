@@ -18,8 +18,8 @@ namespace VirtualOffice.Domain.Repositories
 
         Task UpdateAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken);
 
-        Task DeleteAsync(PublicChatRoom PublicChatRoom);
+        Task DeleteAsync(PublicChatRoom chatRoom);
 
-        Task DeleteAsync(PublicChatRoom PublicChatRoom, CancellationToken cancellationToken);
+        Task DeleteAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken);
     }
 }
