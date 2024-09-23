@@ -2,5 +2,5 @@
 
 namespace VirtualOffice.Application.Commands.MeetingCommands
 {
-    public record DeleteMeeting(Guid Guid) : IRequest;
+    public record DeleteMeeting(Guid Id) : IRequest;
 }

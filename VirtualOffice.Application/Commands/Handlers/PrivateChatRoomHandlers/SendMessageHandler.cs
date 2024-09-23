@@ -34,8 +34,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
             if (!await _userReadService.ExistsByIdAsync(request.UserId))
                 throw new UserDoesNotExistException(request.UserId);
 
-            var pcr = await _repository.GetById(request.ChatRoomId);
-            var user = await _userRepository.GetById(request.UserId);
+            var pcr = await _repository.GetByIdAsync(request.ChatRoomId);
+            var user = await _userRepository.GetByIdAsync(request.UserId);
 
             pcr.SendMessage(user, request.Content);
 

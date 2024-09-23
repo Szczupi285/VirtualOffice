@@ -27,7 +27,8 @@ namespace VirtualOffice.Application.Commands.Handlers.PrivateDocumentHandler
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new PrivateDocumentDoesNotExistException(request.Id);
 
-            await _repository.DeleteAsync(request.Id);
+            var entity = await _repository.GetByIdAsync(request.Id);
+            await _repository.DeleteAsync(entity);
         }
     }
 }

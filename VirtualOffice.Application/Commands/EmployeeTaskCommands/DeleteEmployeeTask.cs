@@ -2,6 +2,5 @@
 
 namespace VirtualOffice.Application.Commands.EmployeeTaskCommands
 {
-    public record DeleteEmployeeTask(Guid Guid) : IRequest;
-    
+    public record DeleteEmployeeTask(Guid Id) : IRequest;
 }

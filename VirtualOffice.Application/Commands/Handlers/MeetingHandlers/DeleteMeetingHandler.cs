@@ -28,7 +28,8 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             if (!await _readService.ExistsByIdAsync(request.Guid))
                 throw new MeetingDoesNotExistException(request.Guid);
 
-            await _repository.DeleteAsync(request.Guid);
+            var entity = await _repository.GetByIdAsync(request.Guid);
+            await _repository.DeleteAsync(entity);
         }
     }
 }
