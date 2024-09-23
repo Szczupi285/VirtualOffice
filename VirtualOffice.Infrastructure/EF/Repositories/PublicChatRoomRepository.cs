@@ -25,13 +25,13 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             => await _dbContext.PublicChatRooms
             .Include(pcr => pcr._Participants)
             .Include(pcr => pcr._Messages)
-            .FirstOrDefaultAsync(pcr => pcr.Id == guid) ?? throw new PrivateChatRoomNotFoundException(guid);
+            .FirstOrDefaultAsync(pcr => pcr.Id == guid) ?? throw new PublicChatRoomNotFoundException(guid);
 
         public async Task<PublicChatRoom> GetByIdAsync(ChatRoomId guid, CancellationToken cancellationToken)
          => await _dbContext.PublicChatRooms
             .Include(pcr => pcr._Participants)
             .Include(pcr => pcr._Messages)
-            .FirstOrDefaultAsync(pcr => pcr.Id == guid, cancellationToken) ?? throw new PrivateChatRoomNotFoundException(guid);
+            .FirstOrDefaultAsync(pcr => pcr.Id == guid, cancellationToken) ?? throw new PublicChatRoomNotFoundException(guid);
 
         public async Task AddAsync(PublicChatRoom chatRoom)
         {
