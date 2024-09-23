@@ -19,10 +19,11 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
         public async Task Handle(DeleteCalendarEvent request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.CalendarEvent.Id))
-                throw new CalendarEventDoesNotExistException(request.CalendarEvent.Id);
+            if (!await _readService.ExistsByIdAsync(request.Id))
+                throw new CalendarEventDoesNotExistException(request.Id);
 
-            await _repository.DeleteAsync(request.CalendarEvent);
+            var entity = await _repository.GetByIdAsync(request.Id);
+            await _repository.DeleteAsync(entity);
         }
     }
 }

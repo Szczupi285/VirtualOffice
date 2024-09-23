@@ -19,10 +19,10 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
         public async Task Handle(RemoveCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.Guid))
-                throw new CalendarEventDoesNotExistException(request.Guid);
+            if (!await _readService.ExistsByIdAsync(request.Id))
+                throw new CalendarEventDoesNotExistException(request.Id);
 
-            var calEv = await _repository.GetByIdAsync(request.Guid);
+            var calEv = await _repository.GetByIdAsync(request.Id);
             calEv.RemoveEmployeesRange(request.EmployeesToRemove);
             await _repository.UpdateAsync(calEv);
         }

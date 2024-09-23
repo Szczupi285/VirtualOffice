@@ -134,6 +134,7 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteEmployeeTask(guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_empTask);
 
             // Act
             await _DelEmpTaskHandler.Handle(request, CancellationToken.None);
