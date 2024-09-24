@@ -26,4 +26,8 @@
     <ProjectReference Include="..\VirtualOffice.Application\VirtualOffice.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Ef.Migrations\" />
+  </ItemGroup>
+
 </Project>

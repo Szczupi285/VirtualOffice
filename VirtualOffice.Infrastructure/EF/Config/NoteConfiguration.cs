@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Infrastructure.EF.Config
@@ -25,7 +26,7 @@ namespace VirtualOffice.Infrastructure.EF.Config
 
             builder.HasOne<ApplicationUser>()
             .WithMany()
-            .HasForeignKey("CreatedByUserId")
+            .HasForeignKey(e => e._createdBy)
             .IsRequired();
         }
     }
