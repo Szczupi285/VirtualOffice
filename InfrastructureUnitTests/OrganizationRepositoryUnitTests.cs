@@ -94,7 +94,7 @@ namespace InfrastructureUnitTests
             Assert.Equal(_data[0]._organizationUsers, _users);
         }
 
-        // this unit test purpose is checking if GetByIdAsync properly load office and officeMembers
+        // this unit test purpose is checking if GetByIdAsync properly include office and officeMembers
         [Fact]
         public async Task GetByIdAsync_OfficeUsersShouldEqual()
         {
