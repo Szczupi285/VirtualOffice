@@ -125,17 +125,17 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(org);
             // Assert
-            Assert.True(_dbContext.Organizations.Contains(org));
+            Assert.Contains(org, _dbContext.Organizations);
         }
 
         [Fact]
         public async Task AddAsync_OrganizationDeleted_ShouldNotContain()
         {
             // Act
-            Assert.True(_dbContext.Organizations.Contains(_data[0]));
+            Assert.Contains(_data[0], _dbContext.Organizations);
             await _repository.DeleteAsync(_data[0]);
             // Assert
-            Assert.False(_dbContext.Organizations.Contains(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.Organizations);
         }
 
         [Fact]
@@ -151,9 +151,9 @@ namespace InfrastructureUnitTests
             await _repository.UpdateAsync(org);
 
             // Assert
-            bool contain = _dbContext.Organizations.First(x => x.Id == org.Id)
-                ._organizationUsers.Contains(newUser);
-            Assert.True(contain);
+            var foundOrg = _dbContext.Organizations.First(x => x.Id == org.Id);
+
+            Assert.Contains(newUser, foundOrg._organizationUsers);
         }
 
         [Fact]
@@ -169,9 +169,8 @@ namespace InfrastructureUnitTests
             await _repository.UpdateAsync(org);
 
             // Assert
-            bool contain = _dbContext.Organizations.First(x => x.Id == org.Id)
-                ._offices.Contains(newOffice);
-            Assert.True(contain);
+            var foundOrg = _dbContext.Organizations.First(x => x.Id == org.Id);
+            Assert.Contains(newOffice, foundOrg._offices);
         }
     }
 }

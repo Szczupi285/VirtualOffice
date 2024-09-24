@@ -109,7 +109,7 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(doc);
             // Assert
-            Assert.True(_dbContext.PublicDocuments.Contains(doc));
+            Assert.Contains(doc, _dbContext.PublicDocuments);
         }
 
         [Fact]
@@ -118,7 +118,7 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.DeleteAsync(_data[0]);
             // Assert
-            Assert.False(_dbContext.PublicDocuments.Contains(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.PublicDocuments);
         }
 
         [Fact]
@@ -129,10 +129,10 @@ namespace InfrastructureUnitTests
             document.AddEligibleForWrite(_guid2);
             // Act
             await _repository.UpdateAsync(document);
+            var foundDoc = _dbContext.PublicDocuments
+                .First(x => x.Id.Value == _pdGuid1);
             // Assert
-            Assert.True(_dbContext.PublicDocuments
-                .First(x => x.Id.Value == _pdGuid1)._eligibleForWrite
-                .Contains(_guid2));
+            Assert.Contains(new ApplicationUserId(_guid2), foundDoc._eligibleForWrite);
         }
     }
 }

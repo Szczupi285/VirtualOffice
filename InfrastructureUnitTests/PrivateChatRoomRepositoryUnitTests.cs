@@ -92,17 +92,17 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(temp);
             // Assert
-            Assert.True(_dbContext.PrivateChatRooms.Contains(temp));
+            Assert.Contains(temp, _dbContext.PrivateChatRooms);
         }
 
         [Fact]
         public async Task RemoveAsync_ExistingPrivateChatRoom_ShouldNotContain()
         {
             // Act
-            Assert.True(_dbContext.PrivateChatRooms.Contains(_data[0]));
+            Assert.Contains(_data[0], _dbContext.PrivateChatRooms);
             await _repository.DeleteAsync(_data[0]);
             // Assert
-            Assert.False(_dbContext.PrivateChatRooms.Contains(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.PrivateChatRooms);
         }
 
         [Fact]

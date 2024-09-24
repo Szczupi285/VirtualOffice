@@ -78,17 +78,17 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(note);
             // Assert
-            Assert.True(await _dbContext.Notes.ContainsAsync(note));
+            Assert.Contains(note, _dbContext.Notes);
         }
 
         [Fact]
         public async Task RemoveAsync_Note_ShouldNotContain()
         {
             // Act
-            Assert.True(await _dbContext.Notes.ContainsAsync(_data[0]));
+            Assert.Contains(_data[0], _dbContext.Notes);
             await _repository.DeleteAsync(_data[0]);
             // Assert
-            Assert.False(await _dbContext.Notes.ContainsAsync(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.Notes);
         }
 
         [Fact]

@@ -90,7 +90,7 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(Meeting);
             // Assert
-            Assert.True(await _dbContext.Meetings.ContainsAsync(Meeting));
+            Assert.Contains(Meeting, _dbContext.Meetings);
         }
 
         [Fact]
@@ -99,10 +99,10 @@ namespace InfrastructureUnitTests
             // Arrange
 
             // Act
-            Assert.True(await _dbContext.Meetings.ContainsAsync(_data[0]));
+            Assert.Contains(_data[0], _dbContext.Meetings);
             await _repository.DeleteAsync(_data[0]);
             // Assert
-            Assert.False(await _dbContext.Meetings.ContainsAsync(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.Meetings);
         }
 
         [Fact]

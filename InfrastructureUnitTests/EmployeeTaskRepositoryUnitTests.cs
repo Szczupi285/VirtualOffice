@@ -16,8 +16,8 @@ namespace InfrastructureUnitTests
         private readonly WriteDbContext _dbContext;
         private readonly EmployeeTaskRepository _repository;
         private readonly Guid _empTaskGuid1;
-        private readonly Guid __empTaskGuid2;
-        private readonly Guid __empTaskGuid3;
+        private readonly Guid _empTaskGuid2;
+        private readonly Guid _empTaskGuid3;
         private readonly Guid _guid1;
         private readonly Guid _guid2;
         private readonly Guid _guid3;
@@ -29,8 +29,8 @@ namespace InfrastructureUnitTests
         public EmployeeTaskRepositoryUnitTests()
         {
             _empTaskGuid1 = Guid.NewGuid();
-            __empTaskGuid2 = Guid.NewGuid();
-            __empTaskGuid3 = Guid.NewGuid();
+            _empTaskGuid2 = Guid.NewGuid();
+            _empTaskGuid3 = Guid.NewGuid();
 
             _guid1 = Guid.NewGuid();
             _guid2 = Guid.NewGuid();
@@ -41,13 +41,13 @@ namespace InfrastructureUnitTests
 
             _data = new List<EmployeeTask>
             {
-                new EmployeeTask(_empTaskGuid1, "title", "description",
+                new EmployeeTask(_empTaskGuid1, "titleOne", "descriptionOne",
                 new HashSet<ApplicationUser> { _user1, _user2 }, EmployeeTaskPriorityEnum.Low, DateTime.UtcNow.AddHours(5), DateTime.UtcNow.AddHours(8)),
 
-                new EmployeeTask(__empTaskGuid2, "title", "description",
+                new EmployeeTask(_empTaskGuid2, "titleTwo", "descriptionTwo",
                 new HashSet<ApplicationUser> { _user2, _user3 }, EmployeeTaskPriorityEnum.Low,DateTime.UtcNow.AddHours(5), DateTime.UtcNow.AddHours(8)),
 
-                new EmployeeTask(__empTaskGuid3, "title", "description",
+                new EmployeeTask(_empTaskGuid3, "titleThree", "descriptionThree",
                 new HashSet<ApplicationUser> { _user3, _user1 }, EmployeeTaskPriorityEnum.Low,DateTime.UtcNow.AddHours(5), DateTime.UtcNow.AddHours(8)),
             };
 
@@ -90,19 +90,18 @@ namespace InfrastructureUnitTests
             // Act
             await _repository.AddAsync(EmpTask);
             // Assert
-            Assert.True(await _dbContext.EmployeeTasks.ContainsAsync(EmpTask));
+            Assert.Contains(EmpTask, _dbContext.EmployeeTasks);
         }
 
         [Fact]
-        public async Task RemoveAsync_EmployeeTask_ShouldNotContain()
+        public async Task DeleteAsync_EmployeeTask_ShouldNotContain()
         {
-            // Arrange
-
             // Act
-            Assert.True(await _dbContext.EmployeeTasks.ContainsAsync(_data[0]));
+            Assert.Contains(_data[0], _dbContext.EmployeeTasks);
             await _repository.DeleteAsync(_data[0]);
+            Thread.Sleep(100);
             // Assert
-            Assert.False(await _dbContext.EmployeeTasks.ContainsAsync(_data[0]));
+            Assert.DoesNotContain(_data[0], _dbContext.EmployeeTasks);
         }
 
         [Fact]
