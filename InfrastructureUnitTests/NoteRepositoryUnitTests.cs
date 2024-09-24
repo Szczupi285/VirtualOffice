@@ -47,7 +47,6 @@ namespace InfrastructureUnitTests
 
             _dbContext = new WriteDbContext(options);
             _repository = new NoteRepository(_dbContext);
-            _dbContext.Employees.AddRange(_user1, _user2, _user3);
             _dbContext.Notes.AddRange(_data[0], _data[1], _data[2]);
             _dbContext.SaveChanges();
         }
