@@ -26,7 +26,6 @@ namespace VirtualOffice.Infrastructure.EF
         public DbSet<Note> Notes { get; set; }
         public DbSet<Organization> Organizations { get; set; }
         public DbSet<PrivateChatRoom> PrivateChatRooms { get; set; }
-        public DbSet<PrivateDocument> PrivateDocuments { get; set; }
         public DbSet<PublicChatRoom> PublicChatRooms { get; set; }
         public DbSet<PublicDocument> PublicDocuments { get; set; }
 
@@ -50,7 +49,6 @@ namespace VirtualOffice.Infrastructure.EF
                 new OfficeConfiguration(),
                 new OrganizationConfiguration(),
                 new PrivateChatRoomConfiguration(),
-                new PrivateDocumentConfiguration(),
                 new PublicChatRoomConfiguration(),
                 new PublicDocumentConfiguration(),
             };

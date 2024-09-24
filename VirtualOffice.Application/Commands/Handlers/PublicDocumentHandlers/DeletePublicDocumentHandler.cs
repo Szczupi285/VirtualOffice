@@ -1,11 +1,5 @@
 ﻿using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.PublicDocumentCommands;
-using VirtualOffice.Application.Exceptions.PrivateDocument;
 using VirtualOffice.Application.Exceptions.PublicDocument;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;

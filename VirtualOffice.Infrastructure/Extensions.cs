@@ -17,7 +17,6 @@ namespace VirtualOffice.Infrastructure
             services.AddSingleton<OfficesService>();
             services.AddSingleton<OrganizationsService>();
             services.AddSingleton<PrivateChatRoomsService>();
-            services.AddSingleton<PrivateDocumentsService>();
             services.AddSingleton<PublicChatRoomsService>();
             services.AddSingleton<PublicDocumentsService>();
 
