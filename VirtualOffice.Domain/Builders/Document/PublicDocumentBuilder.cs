@@ -96,6 +96,8 @@ namespace VirtualOffice.Domain.Builders.Document
         /// </exception>
         public PublicDocument GetDocument()
         {
+            // consider not requiring EligibleForWrite/Read and when these values are not given,
+            // just assign user from creationDetails as default
             if (IsIdSet && IsTitleSet && IsContentSet
                 && IsCreationDetailsSet && IsEligibleForReadSet
                 && IsEligibleForWriteSet)
