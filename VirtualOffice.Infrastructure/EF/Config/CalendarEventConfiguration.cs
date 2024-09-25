@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Reflection.Emit;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
@@ -30,6 +31,9 @@ namespace VirtualOffice.Infrastructure.EF.Config
             builder.Property(e => e._EndDate).HasConversion(
                 p => p.Value,
                 p => new ScheduleItemEndDate(p));
+
+            builder.Property(e => e.Version)
+            .IsConcurrencyToken();
 
             builder.HasMany(e => e._AssignedEmployees)
                 .WithMany();

@@ -15,6 +15,9 @@ namespace VirtualOffice.Infrastructure.EF.Config
                 p => p.Value,
                 p => new ChatRoomId(p));
 
+            builder.Property(e => e.Version)
+            .IsConcurrencyToken();
+
             builder.HasMany(e => e._Participants)
              .WithMany();
 

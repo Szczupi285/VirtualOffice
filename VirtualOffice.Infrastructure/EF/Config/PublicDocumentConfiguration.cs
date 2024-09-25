@@ -33,6 +33,9 @@ namespace VirtualOffice.Infrastructure.EF.Config
                      p => new DocumentFilePath(p));
             });
 
+            builder.Property(e => e.Version)
+            .IsConcurrencyToken();
+
             // since for document access premission reasons we need only userId
             // we don't create relationship with ApplicationUser entity since name, surname etc..
             // wouldn't be usefull in this scenario

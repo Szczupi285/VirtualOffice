@@ -30,6 +30,9 @@ namespace VirtualOffice.Infrastructure.EF.Config
             builder.HasMany(e => e._organizationUsers)
                 .WithOne();
 
+            builder.Property(e => e.Version)
+            .IsConcurrencyToken();
+
             builder.OwnsOne(e => e._subscription, a =>
             {
                 a.ToTable("Subscriptions");
