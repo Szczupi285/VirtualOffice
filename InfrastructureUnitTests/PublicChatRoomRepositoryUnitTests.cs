@@ -47,7 +47,7 @@ namespace InfrastructureUnitTests
 
             // setup in memory db
             var options = new DbContextOptionsBuilder<WriteDbContext>()
-             .UseInMemoryDatabase(databaseName: "Test")
+             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
              .Options;
 
             _dbContext = new WriteDbContext(options);
@@ -112,7 +112,7 @@ namespace InfrastructureUnitTests
             var pcr = await _repository.GetByIdAsync(_pcrGuid1);
             pcr.SendMessage(_user1, "NewMessage");
             await _repository.UpdateAsync(pcr);
-            var result = await _dbContext.PublicChatRooms.FirstAsync(x => x.Id.Value == _pcrGuid1);
+            var result = _dbContext.PublicChatRooms.First(x => x.Id.Value == _pcrGuid1);
             // Assert
             Assert.Single(result._Messages);
         }

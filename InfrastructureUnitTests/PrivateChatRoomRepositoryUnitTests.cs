@@ -12,8 +12,8 @@ namespace InfrastructureUnitTests
 {
     public class PrivateChatRoomRepositoryUnitTests
     {
-        private readonly WriteDbContext _dbContext;
-        private readonly PrivateChatRoomRepository _repository;
+        private WriteDbContext _dbContext;
+        private PrivateChatRoomRepository _repository;
         private readonly Guid _pcrGuid1;
         private readonly Guid _pcrGuid2;
         private readonly Guid _pcrGuid3;
@@ -37,7 +37,6 @@ namespace InfrastructureUnitTests
             _user1 = new(_guid1, "NameOne", "SurnameOne");
             _user2 = new(_guid2, "NameTwo", "SurnameTwo");
             _user3 = new(_guid3, "NameThree", "SurnameThree");
-            Message message = new(Guid.NewGuid(), _user1, "TextMessage");
 
             _data = new List<PrivateChatRoom>
             {
@@ -47,7 +46,7 @@ namespace InfrastructureUnitTests
 
             // setup in memory db
             var options = new DbContextOptionsBuilder<WriteDbContext>()
-             .UseInMemoryDatabase(databaseName: "Test")
+             .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
              .Options;
 
             _dbContext = new WriteDbContext(options);
@@ -106,14 +105,15 @@ namespace InfrastructureUnitTests
         }
 
         [Fact]
-        public async Task UpdateAsync_ExistingPrivateChatRoom_ShouldAddMessages()
+        public async Task UpdateAsync_ExistingPrivateChatRoom_ShouldContainSingleMessage()
         {
-            // Act
+            // Arrange
             var pcr = await _repository.GetByIdAsync(_pcrGuid1);
+            // Act
             pcr.SendMessage(_user1, "NewMessage");
             await _repository.UpdateAsync(pcr);
-            var result = await _dbContext.PrivateChatRooms.FirstAsync(x => x.Id.Value == _pcrGuid1);
             // Assert
+            var result = await _repository.GetByIdAsync(_pcrGuid1);
             Assert.Single(result._Messages);
         }
     }

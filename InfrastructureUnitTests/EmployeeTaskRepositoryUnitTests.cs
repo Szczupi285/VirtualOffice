@@ -99,9 +99,8 @@ namespace InfrastructureUnitTests
             // Act
             Assert.Contains(_data[0], _dbContext.EmployeeTasks);
             await _repository.DeleteAsync(_data[0]);
-            Thread.Sleep(100);
             // Assert
-            Assert.DoesNotContain(_data[0], _dbContext.EmployeeTasks);
+            Assert.False(await _dbContext.EmployeeTasks.ContainsAsync(_data[0]));
         }
 
         [Fact]

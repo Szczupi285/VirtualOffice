@@ -19,12 +19,14 @@ namespace DomainUnitTests
     public class MessageUnitTests
     {
         #region MessageId
+
         [Fact]
         public void EmptyMessageId_ShouldReturnEmptyMessageIdException()
         {
             Assert.Throws<EmptyMessageIdException>(()
                 => new MessageId(Guid.Empty));
         }
+
         [Fact]
         public void ValidMessageId_ValidGuidToMessageIdConversion_ShouldEqual()
         {
@@ -34,28 +36,28 @@ namespace DomainUnitTests
 
             Assert.Equal(id.Value, guid);
         }
+
         [Fact]
         public void ValidMessageId_ValidMessageIdToGuidConversionShouldEqual()
         {
-
             MessageId id = new MessageId(Guid.NewGuid());
 
             Guid guid = id;
             Assert.Equal(id.Value, guid);
-
         }
+
         [Fact]
         public void ValidMessageId_GuidToValidMessageIdConversionShouldEqual()
         {
-
             MessageId id = new MessageId(Guid.NewGuid());
 
             Guid guid = id;
-
         }
-        #endregion
+
+        #endregion MessageId
 
         #region MessageContent
+
         [Fact]
         public void ValidMessageContent_ValidMessageContentToStringConversionShouldEqual()
         {
@@ -64,6 +66,7 @@ namespace DomainUnitTests
 
             Assert.Equal(test, title);
         }
+
         [Fact]
         public void ValidMessageContent_StringToValidMessageContentConversionShouldEqual()
         {
@@ -71,16 +74,19 @@ namespace DomainUnitTests
             MessageContent title = test;
             Assert.Equal(test, title);
         }
+
         [Fact]
         public void NullMessageContent_ShouldThrowEmptyMessageContentException()
         {
             Assert.Throws<EmptyMessageContentException>(() => new MessageContent(null));
         }
+
         [Fact]
         public void EmptyMessageContent_ShouldThrowEmptyMessageContentException()
         {
             Assert.Throws<EmptyMessageContentException>(() => new MessageContent(""));
         }
+
         [Fact]
         public void TooLongMessageContent_ShouldThrowTooLongMessageContentException()
         {
@@ -88,20 +94,22 @@ namespace DomainUnitTests
             Assert.Throws<TooLongMessageContentException>(
                 () => new MessageContent(invalidString));
         }
+
         [Fact]
         public void MaxCharactersMessageContent_ShouldNotThrowException()
         {
             string validString = new string('a', 500);
             new MessageContent(validString);
         }
+
         [Fact]
         public void MinCharactersMessageContent_ShouldNotThrowException()
         {
             string validString = new string('a', 1);
             new MessageContent(validString);
-
         }
-        #endregion
+
+        #endregion MessageContent
 
         #region SendDate
 
@@ -114,6 +122,7 @@ namespace DomainUnitTests
             long roundedUtcNow = DateTime.UtcNow.Ticks / TimeSpan.TicksPerMinute;
             Assert.Equal(roundedUtcNow, roundedSendDate);
         }
+
         [Fact]
         public void SendDate_CallsOnce_UtcNow()
         {
@@ -130,9 +139,11 @@ namespace DomainUnitTests
             Assert.Equal(currentTime, result);
             mockDateTimeProvider.Verify(m => m.UtcNow(), Times.Once);
         }
-        #endregion
+
+        #endregion SendDate
 
         #region CompareTo
+
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsNegative()
         {
@@ -145,6 +156,7 @@ namespace DomainUnitTests
 
             Assert.Equal(-1, message1.CompareTo(message2));
         }
+
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsPositive()
         {
@@ -159,6 +171,7 @@ namespace DomainUnitTests
 
             Assert.Equal(1, message1.CompareTo(message2));
         }
+
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsZero()
         {
@@ -170,8 +183,9 @@ namespace DomainUnitTests
             var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
             var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
 
-            Assert.Equal(0 ,message1.CompareTo(message2));
+            Assert.Equal(0, message1.CompareTo(message2));
         }
+
         [Fact]
         public void CompareTo_Null_ShouldThrowArgumentNullException()
         {
@@ -186,6 +200,6 @@ namespace DomainUnitTests
             Assert.Throws<ArgumentNullException>(() => message1.CompareTo(null));
         }
 
-        #endregion
+        #endregion CompareTo
     }
 }
