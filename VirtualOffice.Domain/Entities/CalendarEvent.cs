@@ -16,6 +16,21 @@ namespace VirtualOffice.Domain.Entities
         private CalendarEvent()
         { }
 
+        public CalendarEvent Clone()
+        {
+            return new CalendarEvent(
+                Id,
+                _Title,
+                _Description,
+                new HashSet<ApplicationUser>(_AssignedEmployees), // Deep copy of assigned employees
+                _StartDate,
+                _EndDate
+            )
+            {
+                Version = Version // Copy the version to maintain consistency for concurrency checks
+            };
+        }
+
         public void UpdateStartDate(DateTime startDate)
         {
             if (_EndDate <= startDate)
