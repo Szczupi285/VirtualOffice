@@ -57,13 +57,33 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
 
         public async Task UpdateAsync(CalendarEvent calendarEvent)
         {
-            _dbContext.CalendarEvents.Update(calendarEvent);
+            var currentEntity = _dbContext.CalendarEvents
+               .SingleOrDefault(e => e.Id == calendarEvent.Id)
+               ?? throw new CalendarEventNotFoundException(calendarEvent.Id);
+
+            // Version is incremented when we call AddEvent which happens in every method that modifies aggregate root.
+            // So we subtract 1 from Version of our updated entity since it already has been incremented while modifying the properties.
+            // No matter how many properties and how many times we change them, Version can be incremented only by one.
+            if (currentEntity.Version != calendarEvent.Version - 1)
+                throw new DbUpdateConcurrencyException($"This aggregate root has been modified since it was retrived");
+
+            _dbContext.Entry(currentEntity).CurrentValues.SetValues(calendarEvent);
             await _dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
         {
-            _dbContext.CalendarEvents.Update(calendarEvent);
+            var currentEntity = _dbContext.CalendarEvents
+                .SingleOrDefault(e => e.Id == calendarEvent.Id)
+                ?? throw new CalendarEventNotFoundException(calendarEvent.Id);
+
+            // Version is incremented when we call AddEvent which happens in every method that modifies aggregate root.
+            // So we subtract 1 from Version of our updated entity since it already has been incremented while modifying the properties.
+            // No matter how many properties and how many times we change them, Version can be incremented only by one.
+            if (currentEntity.Version != calendarEvent.Version - 1)
+                throw new DbUpdateConcurrencyException($"This aggregate root has been modified since it was retrived");
+
+            _dbContext.Entry(currentEntity).CurrentValues.SetValues(calendarEvent);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
