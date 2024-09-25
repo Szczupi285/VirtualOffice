@@ -56,8 +56,8 @@ namespace VirtualOffice.Domain.Entities
             DateTime thisRoundedDate = RoundToNearestSecond(this.SendDate);
             DateTime otherRoundedDate = RoundToNearestSecond(other.SendDate);
 
-            int dateComparison = thisRoundedDate.CompareTo(otherRoundedDate);
-
+            int dateComparison = otherRoundedDate.CompareTo(thisRoundedDate);
+            // we have to compare by Id, to threat Messages with same date as different.
             var value = dateComparison != 0 ? dateComparison : other.Id.Value.CompareTo(this.Id.Value);
             return value;
         }

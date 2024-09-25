@@ -175,13 +175,14 @@ namespace DomainUnitTests
         [Fact]
         public void CompareTo_EarlierSendDate_ReturnsZero()
         {
+            Guid guid = Guid.NewGuid();
             var sender1 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             var sender2 = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             Mock<IDateTimeProvider> mockDateTimeProvider = new Mock<IDateTimeProvider>();
             Mock<IDateTimeProvider> mockDateTimeProvider1 = new Mock<IDateTimeProvider>();
             mockDateTimeProvider.Setup(c => c.UtcNow()).Returns(DateTime.UtcNow.AddDays(-7));
-            var message1 = new TestableMessage(Guid.NewGuid(), sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
-            var message2 = new TestableMessage(Guid.NewGuid(), sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
+            var message1 = new TestableMessage(guid, sender1, new MessageContent("Hello World 1"), mockDateTimeProvider.Object);
+            var message2 = new TestableMessage(guid, sender2, new MessageContent("Hello World 2"), mockDateTimeProvider.Object);
 
             Assert.Equal(0, message1.CompareTo(message2));
         }
