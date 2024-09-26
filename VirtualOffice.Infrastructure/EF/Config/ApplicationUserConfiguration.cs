@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Infrastructure.Identity;
 
 namespace VirtualOffice.Infrastructure.EF.Config
 {

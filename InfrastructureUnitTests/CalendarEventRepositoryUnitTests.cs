@@ -1,13 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Moq;
-using System.Xml;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Interfaces;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 using VirtualOffice.Infrastructure.EF;
 using VirtualOffice.Infrastructure.EF.Repositories;
-using ZstdSharp.Unsafe;
 
 namespace InfrastructureUnitTests
 {

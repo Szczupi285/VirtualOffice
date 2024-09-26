@@ -1,13 +1,6 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.ValueObjects.Office;
-using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace DomainUnitTests
 {
@@ -145,7 +138,7 @@ namespace DomainUnitTests
         {
             ApplicationUser member = new ApplicationUser(Guid.NewGuid(), "name", "surname");
             _office.AddMember(member);
-            
+
             Assert.Contains(member, _office._members);
         }
 
@@ -172,7 +165,7 @@ namespace DomainUnitTests
             ApplicationUser user2 = new ApplicationUser(guid2, "name", "surname");
             ApplicationUser user3 = new ApplicationUser(guid3, "name", "surname");
 
-           
+
             _office.AddMember(user1);
             _office.AddMember(user1);
             _office.AddMember(user1);
@@ -263,11 +256,11 @@ namespace DomainUnitTests
 
             ICollection<ApplicationUser> members = _office.GetAllMembers();
 
-            foreach(var  member in members)
+            foreach (var member in members)
             {
                 Assert.Contains(member, users);
             }
-            
+
         }
 
         #endregion

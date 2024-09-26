@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
+﻿using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
-using VirtualOffice.Domain.Exceptions.Office;
 
 namespace DomainUnitTests
 {
     public class PrivateChatRoomUnitTests
     {
-         private HashSet<ApplicationUser> _Participants;
-         private SortedSet<Message> _Messages = new SortedSet<Message>();
-         private ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
-         private ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
-         private ApplicationUser UserNotAdded = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
-         private PrivateChatRoom _ChatRoom;
+        private HashSet<ApplicationUser> _Participants;
+        private SortedSet<Message> _Messages = new SortedSet<Message>();
+        private ApplicationUser user = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+        private ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+        private ApplicationUser UserNotAdded = new ApplicationUser(Guid.NewGuid(), "Name", "Surname");
+        private PrivateChatRoom _ChatRoom;
 
         public PrivateChatRoomUnitTests()
         {

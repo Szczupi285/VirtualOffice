@@ -1,9 +1,4 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.OrganizationHandlers;
 using VirtualOffice.Application.Commands.OrganizationCommands;
 using VirtualOffice.Application.Exceptions.Organization;
@@ -11,7 +6,6 @@ using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
-using VirtualOffice.Domain.ValueObjects.Organization;
 
 namespace ApplicationUnitTests
 {

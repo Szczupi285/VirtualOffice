@@ -1,13 +1,7 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers;
 using VirtualOffice.Application.Commands.PublicChatRoomCommands;
 using VirtualOffice.Application.Exceptions.ApplicationUser;
-using VirtualOffice.Application.Exceptions.PrivateChatRoom;
 using VirtualOffice.Application.Exceptions.PublicChatRoom;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;

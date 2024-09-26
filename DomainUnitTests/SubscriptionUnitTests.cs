@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Consts;
+﻿using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Subscription;
 using VirtualOffice.Domain.ValueObjects.Subscription;
-using Xunit.Sdk;
 
 
 namespace DomainUnitTests
@@ -94,8 +88,8 @@ namespace DomainUnitTests
         public void SubscriptionEndDate_LessThanOperator_CompareLessThan_ReturnsTrue()
         {
             // Arrange
-            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32)); 
-            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45)); 
+            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32));
+            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45));
 
             // Act & Assert
             Assert.True(endDate1 < endDate2);
@@ -105,8 +99,8 @@ namespace DomainUnitTests
         public void SubscriptionEndDate_GreaterThanOperator_CompareGreaterThan_ReturnsTrue()
         {
             // Arrange
-            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45)); 
-            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32)); 
+            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45));
+            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32));
 
             // Act & Assert
             Assert.True(endDate1 > endDate2);
@@ -116,8 +110,8 @@ namespace DomainUnitTests
         public void SubscriptionEndDate_LessThanOrEqualOperator_CompareLessThanOrEqualTo_ReturnsTrue()
         {
             // Arrange
-            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32)); 
-            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45)); 
+            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32));
+            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45));
 
             // Act & Assert
             Assert.True(endDate1 <= endDate2);
@@ -127,8 +121,8 @@ namespace DomainUnitTests
         public void SubscriptionEndDate_GreaterThanOrEqualOperator_CompareGreaterThanOrEqualTo_ReturnsTrue()
         {
             // Arrange
-            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45)); 
-            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32)); 
+            SubscriptionEndDate endDate1 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(45));
+            SubscriptionEndDate endDate2 = new SubscriptionEndDate(DateTime.UtcNow.AddDays(32));
 
             // Act & Assert
             Assert.True(endDate1 >= endDate2);
@@ -267,7 +261,7 @@ namespace DomainUnitTests
         #region SubscriptionFee
 
         static SubscriptionId id = new SubscriptionId(Guid.NewGuid());
-        static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);        
+        static SubscriptionStartDate startDate = new SubscriptionStartDate(DateTime.UtcNow);
         static bool isPayed = false;
 
         [Fact]

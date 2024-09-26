@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Builders.Document;
+﻿using VirtualOffice.Domain.Builders.Document;
 using VirtualOffice.Domain.DomainEvents.AbstractDocumentEvents;
 using VirtualOffice.Domain.DomainEvents.PublicDocumentEvents;
 using VirtualOffice.Domain.Entities;

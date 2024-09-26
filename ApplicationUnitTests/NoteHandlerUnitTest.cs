@@ -1,18 +1,10 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.Commands.Handlers.NoteHandlers;
 using VirtualOffice.Application.Commands.NoteCommands;
-using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Exceptions.Note;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
-using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace ApplicationUnitTests
 {

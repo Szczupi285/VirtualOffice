@@ -1,16 +1,8 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
+﻿using VirtualOffice.Domain.DomainEvents.AbstractChatRoomEvents;
 using VirtualOffice.Domain.DomainEvents.PublicChatRoomEvents;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoom;
-using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 using VirtualOffice.Domain.ValueObjects.ChatRoom;
-using static Xunit.Assert;
 
 namespace DomainUnitTests
 {
@@ -208,7 +200,7 @@ namespace DomainUnitTests
         [Fact]
         public void AddParticipantsRange_ParticipantsAdded()
         {
-            _ChatRoom.AddRangeParticipants(new List<ApplicationUser>() { userNotAdded1, userNotAdded2});
+            _ChatRoom.AddRangeParticipants(new List<ApplicationUser>() { userNotAdded1, userNotAdded2 });
             Assert.Contains(user, _ChatRoom._Participants);
         }
         [Fact]
@@ -226,7 +218,7 @@ namespace DomainUnitTests
         [Fact]
         public void RemoveParticipant_NotAParticipant_ShouldThrowUserIsNotAParticipantOfThisChat()
         {
-            Assert.Throws<UserIsNotAParticipantOfThisChatException>(() => _ChatRoom.RemoveParticipant(userNotAdded1)); 
+            Assert.Throws<UserIsNotAParticipantOfThisChatException>(() => _ChatRoom.RemoveParticipant(userNotAdded1));
         }
         [Fact]
         public void RemoveParticipant_LastParticipant_ChatRoomCannotBeEmpty()

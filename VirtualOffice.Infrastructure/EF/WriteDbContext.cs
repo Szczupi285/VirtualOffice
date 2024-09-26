@@ -2,16 +2,6 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.ChatRoom;
-using VirtualOffice.Domain.ValueObjects.Document;
-using VirtualOffice.Domain.ValueObjects.Message;
-using VirtualOffice.Domain.ValueObjects.Note;
-using VirtualOffice.Domain.ValueObjects.Office;
-using VirtualOffice.Domain.ValueObjects.Organization;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
-using VirtualOffice.Domain.ValueObjects.Subscription;
 using VirtualOffice.Infrastructure.EF.Config;
 using VirtualOffice.Infrastructure.Identity;
 

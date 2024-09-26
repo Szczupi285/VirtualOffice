@@ -1,13 +1,6 @@
 ﻿using DomainUnitTests.Utilities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.ChatRoomService;
-using VirtualOffice.Domain.ValueObjects.AbstractChatRoom;
 
 namespace DomainUnitTests
 {
@@ -28,7 +21,7 @@ namespace DomainUnitTests
             participants.Add(user);
             participants.Add(user1);
             _Participants = participants;
-            _chatRoom = new TestChatRoom(_chatRoomId ,_Participants, _Messages);
+            _chatRoom = new TestChatRoom(_chatRoomId, _Participants, _Messages);
             _chatRooms = new HashSet<TestChatRoom>();
             _chatRoomService = new TestChatRoomService(_chatRooms);
         }
@@ -44,7 +37,7 @@ namespace DomainUnitTests
         public void DeleteChatRoom_ShouldRemoveChatRoom()
         {
             _chatRooms.Add(_chatRoom);
-            Assert.Contains (_chatRoom, _chatRooms);
+            Assert.Contains(_chatRoom, _chatRooms);
             _chatRoomService.DeleteChatRoom(_chatRoomId);
             Assert.DoesNotContain(_chatRoom, _chatRooms);
         }
@@ -86,7 +79,7 @@ namespace DomainUnitTests
             _chatRooms.Add(testChat);
             var result = _chatRoomService.GetChatRoomsForUser(UserNotAdded);
             Assert.Empty(result);
-           
+
         }
     }
 }

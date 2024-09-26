@@ -1,7 +1,7 @@
-﻿using VirtualOffice.Domain.Entities;
-using VirtualOffice.Infrastructure.EF.Repositories;
+﻿using Microsoft.EntityFrameworkCore;
+using VirtualOffice.Domain.Entities;
 using VirtualOffice.Infrastructure.EF;
-using Microsoft.EntityFrameworkCore;
+using VirtualOffice.Infrastructure.EF.Repositories;
 
 namespace InfrastructureUnitTests
 {

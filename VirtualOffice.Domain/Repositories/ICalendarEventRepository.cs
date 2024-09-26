@@ -1,5 +1,4 @@
 ﻿using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Domain.Repositories

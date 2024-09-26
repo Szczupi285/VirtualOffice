@@ -1,18 +1,9 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Consts;
+﻿using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.DomainEvents.OrganizationEvents;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Exceptions.Office;
 using VirtualOffice.Domain.Exceptions.Organization;
 using VirtualOffice.Domain.ValueObjects.Office;
 using VirtualOffice.Domain.ValueObjects.Organization;
-using VirtualOffice.Domain.ValueObjects.Subscription;
 
 namespace DomainUnitTests
 {
@@ -31,9 +22,9 @@ namespace DomainUnitTests
             UserNotAdded = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
             Office = new Office(Guid.NewGuid(), "OfficeName", "Description", new HashSet<ApplicationUser> { User });
             OfficeNotAdded = new Office(Guid.NewGuid(), "OfficeNameOne", "DescriptionOne", new HashSet<ApplicationUser> { User });
-            Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow,SubscriptionTypeEnum.Trial, true);
+            Subscription subscription = new Subscription(Guid.NewGuid(), DateTime.UtcNow, SubscriptionTypeEnum.Trial, true);
             _Org = new Organization(Guid.NewGuid(), "Name", new HashSet<Office> { Office },
-                new HashSet<ApplicationUser>(){ User, UserNotAddedToOffice }, subscription);
+                new HashSet<ApplicationUser>() { User, UserNotAddedToOffice }, subscription);
         }
 
         #region Events
@@ -110,7 +101,7 @@ namespace DomainUnitTests
         {
             _Org.AddUser(User);
             var Event = _Org.Events.OfType<UserAddedToOrganization>().SingleOrDefault();
-            
+
             Assert.Null(Event);
         }
         [Fact]
@@ -293,7 +284,7 @@ namespace DomainUnitTests
 
             Assert.Null(org._userLimit);
         }
-        
+
         [Fact]
         public void OrganiazationUserLimitGetSubTypeTrial()
         {
@@ -451,7 +442,7 @@ namespace DomainUnitTests
             Guid guid1 = Guid.NewGuid();
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
-            
+
             Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
             new HashSet<ApplicationUser> { new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
 
@@ -492,7 +483,7 @@ namespace DomainUnitTests
             Subscription subscription = new Subscription(guid1, DateTime.UtcNow, SubscriptionTypeEnum.Unlimited, true);
             Guid guid2 = Guid.NewGuid();
             Guid guid3 = Guid.NewGuid();
-            
+
             Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
             new HashSet<ApplicationUser> { new ApplicationUser(guid3, "Name", "surname"),
             new ApplicationUser(Guid.NewGuid(), "Name", "surname") }, subscription);
@@ -521,7 +512,7 @@ namespace DomainUnitTests
             HashSet<ApplicationUser> usersToRemove = new HashSet<ApplicationUser>()
             {
                 user1,
-                user2, 
+                user2,
                 user3,
                 user4,
             };
@@ -534,7 +525,7 @@ namespace DomainUnitTests
                 user2,
                 user3,
                 user4,
-            }, 
+            },
             subscription);
 
             uint usersPreRem = org._usedSlots;
@@ -605,7 +596,7 @@ namespace DomainUnitTests
 
             Assert.Contains(user, org._organizationUsers);
         }
-        
+
         [Fact]
         public void AddUser_WhenNotEnoughtSlots_ShouldThrowException()
         {
@@ -724,8 +715,8 @@ namespace DomainUnitTests
             };
 
             Organization org = new Organization(guid2, "Organization", new HashSet<Office> { },
-            new HashSet<ApplicationUser> 
-            { 
+            new HashSet<ApplicationUser>
+            {
                 new ApplicationUser(Guid.NewGuid(), "Name", "surname"),
                 user1,
                 user2,
@@ -733,7 +724,7 @@ namespace DomainUnitTests
                 user4,
             }, subscription);
 
-          
+
 
             org.RemoveRangeUsers(usersToRemove);
 
@@ -760,7 +751,7 @@ namespace DomainUnitTests
         public void AddOfficeUser_ValidData_ShouldAddUser()
         {
             _Org.AddOfficeUser(UserNotAddedToOffice, Office);
-            Assert.Contains(UserNotAddedToOffice, Office._members); 
+            Assert.Contains(UserNotAddedToOffice, Office._members);
         }
         [Fact]
         public void AddRangeOfficeUsers_ValidData_ShouldAddUsers()
@@ -801,4 +792,3 @@ namespace DomainUnitTests
         #endregion
     }
 }
-                                

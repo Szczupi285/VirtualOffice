@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Abstractions;
-using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
+﻿using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 using VirtualOffice.Domain.Entities;
@@ -45,7 +39,7 @@ namespace DomainUnitTests
         {
             _CalendarEvent.SetTitle("Title");
             var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
-            Assert.Equal(_CalendarEvent ,Event.abstractScheduleItem);
+            Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted_TitleShouldEqual()
@@ -412,7 +406,7 @@ namespace DomainUnitTests
         [Fact]
         public void EditTitle_SetsTitle()
         {
-           
+
             string newTitle = "New Title";
 
             _CalendarEvent.SetTitle(newTitle);
@@ -468,7 +462,7 @@ namespace DomainUnitTests
             {
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname")
-           
+
             };
 
             _CalendarEvent.AddEmployeesRange(users);
@@ -505,7 +499,7 @@ namespace DomainUnitTests
 
             };
             _CalendarEvent.AddEmployeesRange(users);
-          
+
             _CalendarEvent.RemoveEmployeesRange(users);
 
             foreach (var user in users)

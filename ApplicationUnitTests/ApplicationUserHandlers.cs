@@ -1,13 +1,7 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Application.Commands.Handlers.UserHandlers;
 using VirtualOffice.Application.Commands.UserCommands;
 using VirtualOffice.Application.Exceptions.ApplicationUser;
-using VirtualOffice.Application.Exceptions.PublicDocument;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;

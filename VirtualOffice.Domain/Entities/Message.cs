@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using System.Xml.Linq;
-using VirtualOffice.Domain.ValueObjects.Message;
+﻿using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Shared;
 
 namespace VirtualOffice.Domain.Entities

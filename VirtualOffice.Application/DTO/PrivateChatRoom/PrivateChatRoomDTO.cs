@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VirtualOffice.Application.DTO.PrivateChatRoom
+﻿namespace VirtualOffice.Application.DTO.PrivateChatRoom
 {
     public class PrivateChatRoomDTO
     {

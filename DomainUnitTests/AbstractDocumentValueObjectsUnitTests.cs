@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Exceptions.Document;
-using VirtualOffice.Domain.Exceptions.Note;
+﻿using VirtualOffice.Domain.Exceptions.Document;
 using VirtualOffice.Domain.ValueObjects.Document;
-using VirtualOffice.Domain.ValueObjects.Note;
-using Xunit;
 
 namespace DomainUnitTests
 {

@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using VirtualOffice.Application.Commands.PublicChatRoomCommands;
-using VirtualOffice.Application.Exceptions.PublicChatRoom;
-using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 

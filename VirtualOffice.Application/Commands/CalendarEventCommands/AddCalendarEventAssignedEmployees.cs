@@ -1,5 +1,5 @@
-﻿using VirtualOffice.Domain.Entities;
-using MediatR;
+﻿using MediatR;
+using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Commands.CalendarEventCommands
 {

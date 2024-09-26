@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using VirtualOffice.Application.Commands.MeetingCommands;
-using VirtualOffice.Application.Exceptions.Meeting;
-using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
 

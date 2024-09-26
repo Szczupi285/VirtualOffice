@@ -11,8 +11,8 @@ namespace DomainUnitTests
 {
     public class EmployeeTaskServiceUnitTests
     {
-        private EmployeeTaskService service {  get; set; }
-        
+        private EmployeeTaskService service { get; set; }
+
         private EmployeeTask _Task1 { get; set; }
         private EmployeeTask _Task2 { get; set; }
         private EmployeeTask _Task3 { get; set; }
@@ -34,8 +34,8 @@ namespace DomainUnitTests
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
             _ApplicationUser4 = user4;
-            HashSet<ApplicationUser> applicationUsers1 = new HashSet<ApplicationUser>() {user1, user2 };
-            HashSet<ApplicationUser> applicationUsers2 = new HashSet<ApplicationUser>() {user3 };
+            HashSet<ApplicationUser> applicationUsers1 = new HashSet<ApplicationUser>() { user1, user2 };
+            HashSet<ApplicationUser> applicationUsers2 = new HashSet<ApplicationUser>() { user3 };
 
             // Intance 1
             Guid task1Guid = Guid.NewGuid();
@@ -86,8 +86,8 @@ namespace DomainUnitTests
 
             _Task4 = new EmployeeTask(task4Id, task4Title, task4Description, assignedEmployees4, priority4, startDate4, endDate4);
 
-            service = new EmployeeTaskService(new HashSet<EmployeeTask> {_Task1, _Task2, _Task3});
-            
+            service = new EmployeeTaskService(new HashSet<EmployeeTask> { _Task1, _Task2, _Task3 });
+
         }
 
         [Fact]
@@ -114,7 +114,7 @@ namespace DomainUnitTests
         {
             service.DeleteScheduleItem(_Task1);
 
-            Assert.DoesNotContain(_Task1, service._ScheduleItems); 
+            Assert.DoesNotContain(_Task1, service._ScheduleItems);
         }
         [Fact]
         public void DeleteScheduleItem_RemovesTaskFromList_ShouldReturnTrue()
@@ -158,8 +158,8 @@ namespace DomainUnitTests
         {
             var resultTasks = service.GetAllEmployeeTasks(_ApplicationUser1);
 
-            Assert.True(resultTasks[0] ==  _Task1);
-            Assert.True(resultTasks[1] ==  _Task2);
+            Assert.True(resultTasks[0] == _Task1);
+            Assert.True(resultTasks[1] == _Task2);
         }
 
         [Fact]
@@ -181,7 +181,7 @@ namespace DomainUnitTests
         [Fact]
         public void GetAllEmployeeTasksForUsersGroup_ReturnsEmptySetForNonAssignedUser()
         {
-            var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser4});
+            var resultTasks = service.GetAllEmployeeTasksForUsersGroup(new List<ApplicationUser>() { _ApplicationUser4 });
             Assert.Empty(resultTasks);
         }
         [Fact]
@@ -284,7 +284,7 @@ namespace DomainUnitTests
             Assert.Contains(_Task1, resultTasks);
             Assert.Contains(_Task2, resultTasks);
         }
-        
+
         [Fact]
         public void GetEmployeeTasksByPriority_ReturnsTasksWithPriorityUrgent()
         {
@@ -421,7 +421,7 @@ namespace DomainUnitTests
 
             var resultTasks = service.GetCurrentTasks(_ApplicationUser1);
 
-            Assert.Contains(_Task1,resultTasks);
+            Assert.Contains(_Task1, resultTasks);
             Assert.Contains(_Task2, resultTasks);
         }
         [Fact]

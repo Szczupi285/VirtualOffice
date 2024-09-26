@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
+﻿using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.NoteService;
 using VirtualOffice.Domain.Services;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
@@ -66,7 +61,7 @@ namespace DomainUnitTests
         public void EditNoteContent_ShouldUpdateNoteContent()
         {
             NoteContent content = new NoteContent("updatedContent");
-            
+
             _NoteService.EditNoteContent(_Id, content);
             Note note = _NoteService.GetNoteById(_Id);
             Assert.Equal("updatedContent", note._content);

@@ -1,18 +1,9 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
-using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.Consts;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
-using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
+﻿using VirtualOffice.Domain.DomainEvents.MeetingEvent;
 using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
-using VirtualOffice.Domain.DomainEvents.MeetingEvent;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace DomainUnitTests
 {
@@ -480,7 +471,7 @@ namespace DomainUnitTests
         {
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             _Meeting.AddEmployee(user4);
-            Assert.Contains(user4,_Meeting._AssignedEmployees);
+            Assert.Contains(user4, _Meeting._AssignedEmployees);
         }
         [Fact]
         public void AddEmployeesRange_UserNotAssignedPreviously_ListShouldContainUsers()

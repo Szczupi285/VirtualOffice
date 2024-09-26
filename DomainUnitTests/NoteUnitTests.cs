@@ -1,15 +1,7 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.DomainEvents.NoteEvent;
+﻿using VirtualOffice.Domain.DomainEvents.NoteEvent;
 using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.Exceptions.ApplicationUser;
 using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.ApplicationUser;
-using VirtualOffice.Domain.ValueObjects.Message;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace DomainUnitTests
@@ -21,7 +13,7 @@ namespace DomainUnitTests
 
         public NoteUnitTests()
         {
-            UserId = Guid.NewGuid();    
+            UserId = Guid.NewGuid();
             _Note = new Note(Guid.NewGuid(), "title", "content", UserId);
         }
         #region noteId
@@ -114,7 +106,7 @@ namespace DomainUnitTests
         [Fact]
         public void NullNoteTitle_ShouldThrowEmptyNoteTitleException()
         {
-            Assert.Throws <EmptyNoteTitleException> (() => new NoteTitle(null));
+            Assert.Throws<EmptyNoteTitleException>(() => new NoteTitle(null));
         }
         [Fact]
         public void EmptyNoteTitle_ShouldThrowEmptyNoteTitleException()
@@ -171,6 +163,6 @@ namespace DomainUnitTests
         }
         #endregion
 
-      
+
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Builders.Permission;
+﻿using VirtualOffice.Domain.Builders.Permission;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Services;
 

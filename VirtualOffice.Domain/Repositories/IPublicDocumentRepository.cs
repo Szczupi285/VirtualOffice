@@ -1,5 +1,4 @@
 ﻿using VirtualOffice.Domain.Entities;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
 using VirtualOffice.Domain.ValueObjects.Document;
 
 namespace VirtualOffice.Domain.Repositories

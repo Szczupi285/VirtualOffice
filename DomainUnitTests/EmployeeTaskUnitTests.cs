@@ -1,17 +1,10 @@
-﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Entities;
-using VIrtualOffice.Domain.Exceptions.ScheduleItem;
-using VirtualOffice.Domain.Consts;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+﻿using VirtualOffice.Domain.Consts;
+using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 using VirtualOffice.Domain.DomainEvents.ScheduleItem;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
-using Microsoft.VisualBasic;
-using VirtualOffice.Domain.DomainEvents.EmployeeTask;
+using VirtualOffice.Domain.Entities;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace DomainUnitTests
 {
@@ -26,10 +19,10 @@ namespace DomainUnitTests
         public EmployeeTaskUnitTests()
         {
 
-            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne" , "SurnameOne");
-            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo" , "SurnameTwo");
-            ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree" , "SurnameThree");
-            ApplicationUser userNotAdded = new ApplicationUser(Guid.NewGuid(), "NameFour" , "SurnameFour");
+            ApplicationUser user1 = new ApplicationUser(Guid.NewGuid(), "NameOne", "SurnameOne");
+            ApplicationUser user2 = new ApplicationUser(Guid.NewGuid(), "NameTwo", "SurnameTwo");
+            ApplicationUser user3 = new ApplicationUser(Guid.NewGuid(), "NameThree", "SurnameThree");
+            ApplicationUser userNotAdded = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             _ApplicationUser = user1;
             _ApplicationUser2 = user2;
             _ApplicationUser3 = user3;
@@ -482,7 +475,7 @@ namespace DomainUnitTests
             ApplicationUser user4 = new ApplicationUser(Guid.NewGuid(), "NameFour", "SurnameFour");
             ApplicationUser user5 = new ApplicationUser(Guid.NewGuid(), "NameFive", "SurnameFive");
             ApplicationUser user6 = new ApplicationUser(Guid.NewGuid(), "NameSix", "SurnameSix");
-            List<ApplicationUser> usersList = new List<ApplicationUser>() {user4, user5, user6 };
+            List<ApplicationUser> usersList = new List<ApplicationUser>() { user4, user5, user6 };
             _EmployeeTask.AddEmployeesRange(usersList);
             Assert.True(_EmployeeTask._AssignedEmployees.Contains(user4) &&
                 _EmployeeTask._AssignedEmployees.Contains(user5) &&
@@ -492,9 +485,9 @@ namespace DomainUnitTests
         [Fact]
         public void RemoveEmployee_EmployeeIsAlreadyAssigned_ShouldRemoveEmployee()
         {
-            Assert.Contains(_ApplicationUser,_EmployeeTask._AssignedEmployees);
+            Assert.Contains(_ApplicationUser, _EmployeeTask._AssignedEmployees);
             _EmployeeTask.RemoveEmployee(_ApplicationUser);
-            Assert.DoesNotContain(_ApplicationUser,_EmployeeTask._AssignedEmployees);
+            Assert.DoesNotContain(_ApplicationUser, _EmployeeTask._AssignedEmployees);
         }
         [Fact]
         public void RemoveEmployee_EmployeeNotAssigned_ShouldThrowUserIsNotAssignedToThisScheduleItemException()

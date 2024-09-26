@@ -1,10 +1,4 @@
 ﻿using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Services;
 using VirtualOffice.Domain.ValueObjects.ScheduleItem;
@@ -167,7 +161,7 @@ namespace DomainUnitTests
         {
             Mock<IDateTimeProvider> mock = new Mock<IDateTimeProvider>();
             mock.Setup(x => x.UtcNow()).Returns(DateTime.UtcNow.AddMonths(1));
-            var serviceInTheFuture = new MeetingService(new HashSet<Meeting> { _Meeting1, _Meeting2, _Meeting3}, mock.Object);
+            var serviceInTheFuture = new MeetingService(new HashSet<Meeting> { _Meeting1, _Meeting2, _Meeting3 }, mock.Object);
             var result = serviceInTheFuture.GetAllEmployeeMeetings(_ApplicationUser1);
             Assert.Empty(result);
         }

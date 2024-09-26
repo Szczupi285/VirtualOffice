@@ -6,7 +6,6 @@ using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
-using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace ApplicationUnitTests
 {

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Domain.Builders.Permission;
+﻿using VirtualOffice.Domain.Builders.Permission;
 using VirtualOffice.Domain.Consts;
 
 namespace DomainUnitTests
@@ -48,7 +43,7 @@ namespace DomainUnitTests
             var permissions = PermissionDirector.ConstructAdministrator();
 
             Assert.Equal(PermissionsEnum.CanAddEmployeeTask | PermissionsEnum.CanAddToOffice |
-                            PermissionsEnum.CanCreateOffices| PermissionsEnum.CanAddToOrganization |
+                            PermissionsEnum.CanCreateOffices | PermissionsEnum.CanAddToOrganization |
                             PermissionsEnum.CanCreateMeeting | PermissionsEnum.CanSendMassMessages |
                             PermissionsEnum.CanDeleteFromOffice | PermissionsEnum.CanDeleteFromOrganization |
                             PermissionsEnum.CanAddPermissions | PermissionsEnum.CanShareDocumentsToWholeOffice |

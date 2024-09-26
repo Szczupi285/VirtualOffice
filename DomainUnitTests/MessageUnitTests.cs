@@ -1,17 +1,8 @@
 ﻿using DomainUnitTests.Utilities;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Message;
-using VirtualOffice.Domain.Exceptions.Note;
 using VirtualOffice.Domain.ValueObjects.Message;
-using VirtualOffice.Domain.ValueObjects.Note;
 using VirtualOffice.Shared;
 
 namespace DomainUnitTests
