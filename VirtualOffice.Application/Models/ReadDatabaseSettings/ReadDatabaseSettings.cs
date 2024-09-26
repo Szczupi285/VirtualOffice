@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace VirtualOffice.Infrastructure.EF.Models.ReadDatabaseSettings
+﻿namespace VirtualOffice.Application.Models.ReadDatabaseSettings
 {
     public class ReadDatabaseSettings
     {

@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VirtualOffice.Infrastructure.Interfaces
+namespace VirtualOffice.Application.DbEvents
 {
-    public interface EntityId
+    internal interface IDbEvent
     {
-        string Id { get; set; }
     }
 }

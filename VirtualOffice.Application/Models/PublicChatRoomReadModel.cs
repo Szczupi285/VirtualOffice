@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VirtualOffice.Infrastructure.Interfaces;
+﻿using VirtualOffice.Application.Interfaces;
 
-namespace VirtualOffice.Infrastructure.EF.Models
+namespace VirtualOffice.Application.Models
 {
     public class PublicChatRoomReadModel : EntityId
     {

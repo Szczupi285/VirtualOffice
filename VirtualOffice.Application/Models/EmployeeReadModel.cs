@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Domain.Consts;
-using VirtualOffice.Infrastructure.Interfaces;
 
-namespace VirtualOffice.Infrastructure.EF.Models
+namespace VirtualOffice.Application.Models
 {
     public class EmployeeReadModel : EntityId
     {

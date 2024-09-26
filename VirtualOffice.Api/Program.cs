@@ -1,6 +1,6 @@
+using VirtualOffice.Application.Models.ReadDatabaseSettings;
 using VirtualOffice.Infrastructure;
 using VirtualOffice.Infrastructure.EF;
-using VirtualOffice.Infrastructure.EF.Models.ReadDatabaseSettings;
 
 var builder = WebApplication.CreateBuilder(args);
 
