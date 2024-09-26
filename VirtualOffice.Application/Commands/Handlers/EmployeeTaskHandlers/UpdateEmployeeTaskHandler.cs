@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.Exceptions.EmployeeTask;
 using VirtualOffice.Application.Services;
@@ -10,6 +11,8 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;
+        private const int _maxRetryAttempts = 3;
+        private int _retryCount = 0;
 
         public UpdateEmployeeTaskHandler(IEmployeeTaskRepository repository, IEmployeeTaskReadService readService)
         {
@@ -19,27 +22,46 @@ namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 
         public async Task Handle(UpdateEmployeeTask request, CancellationToken cancellationToken)
         {
-            var (id, title, description, endDate, status, priority) = request;
+            while (_retryCount < _maxRetryAttempts)
+            {
+                try
+                {
+                    var (id, title, description, endDate, status, priority) = request;
 
-            if (!await _readService.ExistsByIdAsync(id))
-                throw new EmployeeTaskDoesNotExistsException(id);
+                    if (!await _readService.ExistsByIdAsync(id))
+                        throw new EmployeeTaskDoesNotExistsException(id);
 
-            var empTask = await _repository.GetByIdAsync(id);
+                    var empTask = await _repository.GetByIdAsync(id);
 
-            // we update only changed properties rather than whole object
-            // beacuse changing the title to the same title would raise an event.
-            if (empTask._Title != title)
-                empTask.SetTitle(title);
-            if (empTask._Description != description)
-                empTask.SetDescription(description);
-            if (empTask._EndDate != endDate)
-                empTask.UpdateEndDate(endDate);
-            if (empTask._TaskStatus != status)
-                empTask.UpdateStatus(status);
-            if (empTask._Priority != priority)
-                empTask.SetPriority(priority);
+                    // we update only changed properties rather than whole object
+                    // beacuse changing the title to the same title would raise an event.
+                    if (empTask._Title != title)
+                        empTask.SetTitle(title);
+                    if (empTask._Description != description)
+                        empTask.SetDescription(description);
+                    if (empTask._EndDate != endDate)
+                        empTask.UpdateEndDate(endDate);
+                    if (empTask._TaskStatus != status)
+                        empTask.UpdateStatus(status);
+                    if (empTask._Priority != priority)
+                        empTask.SetPriority(priority);
 
-            await _repository.UpdateAsync(empTask);
+                    await _repository.UpdateAsync(empTask);
+
+                    break;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    _retryCount++;
+
+                    // rethrowing exception after max attempts
+                    if (_retryCount >= _maxRetryAttempts)
+                        throw;
+
+                    // wait for certain ammount of time between entries;
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                }
+            }
         }
     }
 }

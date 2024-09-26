@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,8 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
     {
         public INoteRepository _repository;
         public INoteReadService _readService;
+        private const int _maxRetryAttempts = 3;
+        private int _retryCount = 0;
 
         public UpdateNoteHandler(INoteRepository repository, INoteReadService noteReadService)
         {
@@ -24,19 +27,38 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
         public async Task Handle(UpdateNote request, CancellationToken cancellationToken)
         {
-            var (Id, Title, Content) = request;
+            while (_retryCount < _maxRetryAttempts)
+            {
+                try
+                {
+                    var (Id, Title, Content) = request;
 
-            if (!await _readService.ExistsByIdAsync(Id))
-                throw new NoteDoesNoteExistsException(Id);
+                    if (!await _readService.ExistsByIdAsync(Id))
+                        throw new NoteDoesNoteExistsException(Id);
 
-            var note = await _repository.GetByIdAsync(Id);
+                    var note = await _repository.GetByIdAsync(Id);
 
-            if (note._title != Title)
-                note.EditTitle(Title);
-            if (note._content != Content)
-                note.EditContent(Content);
+                    if (note._title != Title)
+                        note.EditTitle(Title);
+                    if (note._content != Content)
+                        note.EditContent(Content);
 
-            await _repository.UpdateAsync(note);
+                    await _repository.UpdateAsync(note);
+
+                    break;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    _retryCount++;
+
+                    // rethrowing exception after max attempts
+                    if (_retryCount >= _maxRetryAttempts)
+                        throw;
+
+                    // wait for certain ammount of time between entries;
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
     {
         public IOrganizationRepository _repository;
         public IOrganizationReadService _readService;
+        private const int _maxRetryAttempts = 3;
+        private int _retryCount = 0;
 
         public UpdateOrganizationNameHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {
@@ -25,14 +28,33 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 
         public async Task Handle(UpdateOrganizationName request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.OrganizationId))
-                throw new OrganizationDoesNotExistsException(request.OrganizationId);
+            while (_retryCount < _maxRetryAttempts)
+            {
+                try
+                {
+                    if (!await _readService.ExistsByIdAsync(request.OrganizationId))
+                        throw new OrganizationDoesNotExistsException(request.OrganizationId);
 
-            var org = await _repository.GetByIdAsync(request.OrganizationId);
+                    var org = await _repository.GetByIdAsync(request.OrganizationId);
 
-            org.SetName(request.Name);
+                    org.SetName(request.Name);
 
-            await _repository.UpdateAsync(org);
+                    await _repository.UpdateAsync(org);
+
+                    break;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    _retryCount++;
+
+                    // rethrowing exception after max attempts
+                    if (_retryCount >= _maxRetryAttempts)
+                        throw;
+
+                    // wait for certain ammount of time between entries;
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                }
+            }
         }
     }
 }

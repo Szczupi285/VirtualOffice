@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Application.Commands.MeetingCommands;
 using VirtualOffice.Application.Exceptions.Meeting;
 using VirtualOffice.Application.Services;
@@ -10,6 +11,8 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
     {
         public IMeetingRepository _repository;
         public IMeetingReadService _readService;
+        private const int _maxRetryAttempts = 3;
+        private int _retryCount = 0;
 
         public UpdateMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService)
         {
@@ -19,23 +22,42 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 
         public async Task Handle(UpdateMeeting request, CancellationToken cancellationToken)
         {
-            var (Id, Title, Description, StartDate, EndDate) = request;
+            while (_retryCount < _maxRetryAttempts)
+            {
+                try
+                {
+                    var (Id, Title, Description, StartDate, EndDate) = request;
 
-            if (!await _readService.ExistsByIdAsync(Id))
-                throw new MeetingDoesNotExistException(Id);
+                    if (!await _readService.ExistsByIdAsync(Id))
+                        throw new MeetingDoesNotExistException(Id);
 
-            var meeting = await _repository.GetByIdAsync(Id);
+                    var meeting = await _repository.GetByIdAsync(Id);
 
-            if (meeting._Title != Title)
-                meeting.SetTitle(Title);
-            if (meeting._Description != Description)
-                meeting.SetDescription(Description);
-            if (meeting._StartDate != StartDate)
-                meeting.UpdateStartDate(StartDate);
-            if (meeting._EndDate != EndDate)
-                meeting.UpdateEndDate(EndDate);
+                    if (meeting._Title != Title)
+                        meeting.SetTitle(Title);
+                    if (meeting._Description != Description)
+                        meeting.SetDescription(Description);
+                    if (meeting._StartDate != StartDate)
+                        meeting.UpdateStartDate(StartDate);
+                    if (meeting._EndDate != EndDate)
+                        meeting.UpdateEndDate(EndDate);
 
-            await _repository.UpdateAsync(meeting);
+                    await _repository.UpdateAsync(meeting);
+
+                    break;
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    _retryCount++;
+
+                    // rethrowing exception after max attempts
+                    if (_retryCount >= _maxRetryAttempts)
+                        throw;
+
+                    // wait for certain ammount of time between entries;
+                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                }
+            }
         }
     }
 }
