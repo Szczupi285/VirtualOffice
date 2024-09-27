@@ -2,5 +2,6 @@
 {
     public interface IEvent
     {
+        public string GetRoutingKey();
     }
 }
