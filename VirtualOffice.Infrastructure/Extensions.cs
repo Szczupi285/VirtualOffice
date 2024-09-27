@@ -18,7 +18,44 @@ namespace VirtualOffice.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            // ReadDbServices
+
+            services.AddReadServices();
+            services.AddWriteDbRepositories();
+            services.AddReadDbServices();
+            services.ConfigureMassTransit(configuration);
+            return services;
+
+        }
+
+        private static IServiceCollection AddReadServices(this IServiceCollection services)
+        {
+            services.AddTransient<ICalendarEventReadService, CalendarEventReadService>();
+            services.AddTransient<IEmployeeTaskReadService, EmployeeTaskReadService>();
+            services.AddTransient<IMeetingReadService, MeetingReadService>();
+            services.AddTransient<INoteReadService, NoteReadService>();
+            services.AddTransient<IOrganizationReadService, OrganizationReadService>();
+            services.AddTransient<IPrivateChatRoomReadService, PrivateChatRoomReadService>();
+            services.AddTransient<IPublicChatRoomReadService, PublicChatRoomReadService>();
+            services.AddTransient<IPublicDocumentReadService, PublicDocumentReadService>();
+            services.AddTransient<IUserReadService, UserReadService>();
+
+            return services;
+        }
+        private static IServiceCollection AddWriteDbRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
+            services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
+            services.AddScoped<IMeetingRepository, MeetingRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IPrivateChatRoomRepository, PrivateChatRoomRepository>();
+            services.AddScoped<IPublicChatRoomRepository, PublicChatRoomRepository>();
+            services.AddScoped<IPublicDocumentRepository, PublicDocumentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            return services;
+        }
+        private static IServiceCollection AddReadDbServices(this IServiceCollection services)
+        {
             services.AddSingleton<EmployeesService>();
             services.AddSingleton<CalendarEventsService>();
             services.AddSingleton<EmployeeTasksService>();
@@ -30,27 +67,11 @@ namespace VirtualOffice.Infrastructure
             services.AddSingleton<PublicChatRoomsService>();
             services.AddSingleton<PublicDocumentsService>();
 
-            // WriteDbRepositories
-            services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
-            services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
-            services.AddScoped<IMeetingRepository, MeetingRepository>();
-            services.AddScoped<INoteRepository, NoteRepository>();
-            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
-            services.AddScoped<IPrivateChatRoomRepository, PrivateChatRoomRepository>();
-            services.AddScoped<IPublicChatRoomRepository, PublicChatRoomRepository>();
-            services.AddScoped<IPublicDocumentRepository, PublicDocumentRepository>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            return services;
+        }
 
-            // ReadServices
-            services.AddScoped<ICalendarEventReadService, CalendarEventReadService>();
-            services.AddScoped<IEmployeeTaskReadService, EmployeeTaskReadService>();
-            services.AddScoped<IMeetingReadService, MeetingReadService>();
-            services.AddScoped<INoteReadService, NoteReadService>();
-            services.AddScoped<IOrganizationReadService, OrganizationReadService>();
-            services.AddScoped<IPrivateChatRoomReadService, PrivateChatRoomReadService>();
-            services.AddScoped<IPublicChatRoomReadService, PublicChatRoomReadService>();
-            services.AddScoped<IPublicDocumentReadService, PublicDocumentReadService>();
-            services.AddScoped<IUserReadService, UserReadService>();
+        private static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
+        {
 
             // fetch data from appsettings.json
             services.Configure<RabbitMQSettings>(
@@ -58,7 +79,6 @@ namespace VirtualOffice.Infrastructure
 
             services.AddSingleton(s
             => s.GetRequiredService<IOptions<RabbitMQSettings>>().Value);
-
 
             services.AddMassTransit(c =>
             {
