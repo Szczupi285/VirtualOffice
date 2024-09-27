@@ -4,7 +4,7 @@
     {
         // IEvent must be a class because of publish<T> method of
         // IPublishEndpoint requires a reference type
-        Task PublisAsync<IEvent>(IEvent message,
-            CancellationToken cancellationToken = default) where IEvent : class;
+        Task PublishAsync<T>(T message,
+            CancellationToken cancellationToken = default) where T : class;
     }
 }

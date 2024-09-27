@@ -25,12 +25,15 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
         public async Task Handle(CreateCalendarEvent request, CancellationToken cancellationToken)
         {
             var (Title, EventDescription, AssignedEmployees, StartDate, EndDate) = request;
+            Guid guid = Guid.NewGuid();
 
-            CalendarEvent calEv = new CalendarEvent(Guid.NewGuid(), Title, EventDescription, AssignedEmployees, StartDate, EndDate);
+            CalendarEvent calEv = new CalendarEvent(guid, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
-            await _eventBus.PublisAsync(new CalendarEventCreatedEvent
+            await _repository.AddAsync(calEv);
+
+            await _eventBus.PublishAsync(new CalendarEventCreatedEvent
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = guid.ToString(),
                 Title = request.Title,
                 Description = request.Description,
                 AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(request.AssignedEmployees),
@@ -38,8 +41,6 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                 EndDate = request.EndDate,
             }
             , cancellationToken);
-
-            await _repository.AddAsync(calEv);
         }
     }
 }

@@ -12,8 +12,11 @@ namespace VirtualOffice.Infrastructure.RabbitMQ
             _publishEndpoint = publishEndpoint;
         }
 
-        public Task PublisAsync<IEvent>(IEvent message, CancellationToken cancellationToken = default)
-            where IEvent : class
-            => _publishEndpoint.Publish<IEvent>(message, cancellationToken);
+        public Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
+            where T : class
+            => _publishEndpoint.Publish(message, x =>
+            {
+                x.SetRoutingKey("CalendarEventCreated");
+            }, cancellationToken);
     }
 }

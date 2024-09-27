@@ -59,6 +59,7 @@ namespace VirtualOffice.Infrastructure
             services.AddSingleton(s
             => s.GetRequiredService<IOptions<RabbitMQSettings>>().Value);
 
+
             services.AddMassTransit(c =>
             {
                 c.SetKebabCaseEndpointNameFormatter();
@@ -67,11 +68,17 @@ namespace VirtualOffice.Infrastructure
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
+
                     RabbitMQSettings settings = context.GetRequiredService<RabbitMQSettings>();
                     configurator.Host(new Uri(settings.Host), h =>
                     {
                         h.Username(settings.Username);
                         h.Password(settings.Password);
+                    });
+                    configurator.ReceiveEndpoint("calendar-event-created", e =>
+                    {
+                        e.ConfigureConsumer<CalendarEventCreatedEventConsumer>(context);
+                        e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventCreated");
                     });
                 });
             });
