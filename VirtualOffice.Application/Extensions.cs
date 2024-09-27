@@ -11,6 +11,9 @@ namespace VirtualOffice.Application
             {
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
             }
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             return services;
         }
 
