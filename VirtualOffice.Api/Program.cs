@@ -1,3 +1,4 @@
+using VirtualOffice.Application;
 using VirtualOffice.Application.Models.ReadDatabaseSettings;
 using VirtualOffice.Infrastructure;
 using VirtualOffice.Infrastructure.EF;
@@ -16,6 +17,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddSqlServer(builder.Configuration);
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

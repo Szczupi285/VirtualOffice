@@ -4,6 +4,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using VirtualOffice.Application.Interfaces;
+using VirtualOffice.Application.Services;
+using VirtualOffice.Domain.Repositories;
+using VirtualOffice.Infrastructure.EF.ReadServices;
+using VirtualOffice.Infrastructure.EF.Repositories;
 using VirtualOffice.Infrastructure.MongoDb.Services;
 using VirtualOffice.Infrastructure.RabbitMQ;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers;
@@ -14,6 +18,7 @@ namespace VirtualOffice.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
+            // ReadDbServices
             services.AddSingleton<EmployeesService>();
             services.AddSingleton<CalendarEventsService>();
             services.AddSingleton<EmployeeTasksService>();
@@ -24,6 +29,28 @@ namespace VirtualOffice.Infrastructure
             services.AddSingleton<PrivateChatRoomsService>();
             services.AddSingleton<PublicChatRoomsService>();
             services.AddSingleton<PublicDocumentsService>();
+
+            // WriteDbRepositories
+            services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
+            services.AddScoped<IEmployeeTaskRepository, EmployeeTaskRepository>();
+            services.AddScoped<IMeetingRepository, MeetingRepository>();
+            services.AddScoped<INoteRepository, NoteRepository>();
+            services.AddScoped<IOrganizationRepository, OrganizationRepository>();
+            services.AddScoped<IPrivateChatRoomRepository, PrivateChatRoomRepository>();
+            services.AddScoped<IPublicChatRoomRepository, PublicChatRoomRepository>();
+            services.AddScoped<IPublicDocumentRepository, PublicDocumentRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+
+            // ReadServices
+            services.AddScoped<ICalendarEventReadService, CalendarEventReadService>();
+            services.AddScoped<IEmployeeTaskReadService, EmployeeTaskReadService>();
+            services.AddScoped<IMeetingReadService, MeetingReadService>();
+            services.AddScoped<INoteReadService, NoteReadService>();
+            services.AddScoped<IOrganizationReadService, OrganizationReadService>();
+            services.AddScoped<IPrivateChatRoomReadService, PrivateChatRoomReadService>();
+            services.AddScoped<IPublicChatRoomReadService, PublicChatRoomReadService>();
+            services.AddScoped<IPublicDocumentReadService, PublicDocumentReadService>();
+            services.AddScoped<IUserReadService, UserReadService>();
 
             // fetch data from appsettings.json
             services.Configure<RabbitMQSettings>(

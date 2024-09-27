@@ -5,7 +5,7 @@ namespace VirtualOffice.Application
 {
     public static class Extensions
     {
-        public static IServiceCollection AddServicesCollection(this IServiceCollection services)
+        public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
