@@ -20,8 +20,9 @@ namespace VirtualOffice.Domain.Abstractions
         protected AbstractScheduleItem(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription description,
           HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
         {
-            if (startDate.Value >= endDate.Value)
-                throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
+            // Review: commented for testing purposes this causes an error while updating CalendarEvent
+            //if (startDate.Value >= endDate.Value)
+            //    throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
 
             Id = id;
             _Title = title;

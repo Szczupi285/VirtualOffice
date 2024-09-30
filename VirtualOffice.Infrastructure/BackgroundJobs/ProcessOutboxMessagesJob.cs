@@ -35,7 +35,7 @@ namespace VirtualOffice.Infrastructure.BackgroundJobs
                     // handle debugging
                     IDomainEvent? domainEvent = JsonConvert.DeserializeObject<IDomainEvent>(msg.Content, new JsonSerializerSettings
                     {
-                        TypeNameHandling = TypeNameHandling.All
+                        TypeNameHandling = TypeNameHandling.All,
                     });
 
                     msg.ProcessedOnUtc = DateTime.UtcNow;
@@ -45,7 +45,6 @@ namespace VirtualOffice.Infrastructure.BackgroundJobs
                 {
                     Console.WriteLine("error");
                 }
-
             }
             await _dbContext.SaveChangesAsync();
         }

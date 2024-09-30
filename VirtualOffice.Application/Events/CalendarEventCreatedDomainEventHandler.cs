@@ -22,7 +22,7 @@ namespace VirtualOffice.Application.Events
         {
             await _eventBus.PublishAsync(new CalendarEventCreatedIntegrationEvent
             {
-                Id = notification.ToString(),
+                Id = notification.Id.Value.ToString(),
                 Title = notification.Title,
                 Description = notification.Description,
                 AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.AssignedEmployees),

@@ -39,10 +39,11 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                         calEv.SetTitle(Title);
                     if (calEv._Description != EventDescription)
                         calEv.SetDescription(EventDescription);
-                    if (calEv._StartDate != StartDate)
-                        calEv.UpdateStartDate(StartDate);
                     if (calEv._EndDate != EndDate)
                         calEv.UpdateEndDate(EndDate);
+                    if (calEv._StartDate != StartDate)
+                        calEv.UpdateStartDate(StartDate);
+
 
                     await _repository.UpdateAsync(calEv);
 

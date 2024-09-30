@@ -24,12 +24,12 @@ namespace VirtualOffice.Application.Events
         {
             await _eventBus.PublishAsync(new CalendarEventStartDateUpdatedIntegrationEvent
             {
-                Id = notification.calendarEvent.Id.ToString(),
-                Title = notification.calendarEvent._Title,
-                Description = notification.calendarEvent._Description,
-                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.calendarEvent._AssignedEmployees),
-                StartDate = notification.calendarEvent._StartDate,
-                EndDate = notification.calendarEvent._EndDate,
+                Id = notification.Id.ToString(),
+                Title = notification.Title,
+                Description = notification.Description,
+                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.AssignedEmployees),
+                StartDate = notification.StartDate,
+                EndDate = notification.EndDate,
             }
             , cancellationToken);
         }

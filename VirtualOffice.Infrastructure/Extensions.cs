@@ -87,6 +87,7 @@ namespace VirtualOffice.Infrastructure
                 c.SetKebabCaseEndpointNameFormatter();
 
                 c.AddConsumer<CalendarEventCreatedEventConsumer>();
+                c.AddConsumer<CalendarEventStartDateUpdatedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -100,6 +101,8 @@ namespace VirtualOffice.Infrastructure
                     {
                         e.ConfigureConsumer<CalendarEventCreatedEventConsumer>(context);
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventCreated");
+                        e.ConfigureConsumer<CalendarEventStartDateUpdatedConsumer>(context);
+                        e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventUpdated");
                     });
                 });
             });
