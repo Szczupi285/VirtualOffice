@@ -1,3 +1,4 @@
+using MediatR;
 using Moq;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers;
@@ -104,7 +105,7 @@ namespace ApplicationUnitTests
         public async Task CreateCalendarEventHandler_ShouldCreateCalendarEvent()
         {
             // Arrange
-            var handler = new CreateCalendarEventHandler(_repositoryMock.Object);
+            var handler = new CreateCalendarEventHandler(_repositoryMock.Object, new Mock<IMediator>().Object);
 
             var request = new CreateCalendarEvent("Title", "Desc", new HashSet<ApplicationUser> { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             // Act

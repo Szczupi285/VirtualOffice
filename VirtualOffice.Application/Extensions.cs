@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using VirtualOffice.Application.Interceptors;
 
 namespace VirtualOffice.Application
 {
@@ -13,6 +14,7 @@ namespace VirtualOffice.Application
             }
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddSingleton<ConvertDomainEventsToOutboxMessagesInterceptor>();
 
             return services;
         }

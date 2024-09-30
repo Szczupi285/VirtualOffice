@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Quartz;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
+using VirtualOffice.Infrastructure.BackgroundJobs;
 using VirtualOffice.Infrastructure.EF.ReadServices;
 using VirtualOffice.Infrastructure.EF.Repositories;
 using VirtualOffice.Infrastructure.MongoDb.Services;
@@ -18,13 +20,12 @@ namespace VirtualOffice.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddReadServices();
             services.AddWriteDbRepositories();
             services.AddReadDbServices();
             services.ConfigureMassTransit(configuration);
+            services.AddBackgroudJob();
             return services;
-
         }
 
         private static IServiceCollection AddReadServices(this IServiceCollection services)
@@ -41,6 +42,7 @@ namespace VirtualOffice.Infrastructure
 
             return services;
         }
+
         private static IServiceCollection AddWriteDbRepositories(this IServiceCollection services)
         {
             services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
@@ -54,6 +56,7 @@ namespace VirtualOffice.Infrastructure
             services.AddScoped<IUserRepository, UserRepository>();
             return services;
         }
+
         private static IServiceCollection AddReadDbServices(this IServiceCollection services)
         {
             services.AddSingleton<EmployeesService>();
@@ -72,7 +75,6 @@ namespace VirtualOffice.Infrastructure
 
         private static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
         {
-
             // fetch data from appsettings.json
             services.Configure<RabbitMQSettings>(
                 configuration.GetSection("RabbitMQ"));
@@ -88,7 +90,6 @@ namespace VirtualOffice.Infrastructure
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
-
                     RabbitMQSettings settings = context.GetRequiredService<RabbitMQSettings>();
                     configurator.Host(new Uri(settings.Host), h =>
                     {
@@ -104,6 +105,23 @@ namespace VirtualOffice.Infrastructure
             });
             services.AddTransient<IEventBus, EventBus>();
 
+            return services;
+        }
+
+        private static IServiceCollection AddBackgroudJob(this IServiceCollection services)
+        {
+            services.AddQuartz(cfg =>
+            {
+                var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+
+                cfg.AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(trigger =>
+                    trigger.ForJob(jobKey)
+                    .WithSimpleSchedule(schedule =>
+                    schedule.WithIntervalInSeconds(5)
+                    .RepeatForever()));
+            });
+            services.AddQuartzHostedService();
             return services;
         }
 

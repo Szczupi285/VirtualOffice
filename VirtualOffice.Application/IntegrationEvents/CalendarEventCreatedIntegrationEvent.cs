@@ -3,7 +3,7 @@ using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Application.Events
 {
-    public class CalendarEventCreatedEvent : CalendarEventReadModel, IEvent
+    public class CalendarEventCreatedIntegrationEvent : CalendarEventReadModel, IEvent
     {
         public string GetRoutingKey()
             => "CalendarEventCreated";
