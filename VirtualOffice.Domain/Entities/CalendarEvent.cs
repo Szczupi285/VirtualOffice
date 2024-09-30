@@ -23,7 +23,7 @@ namespace VirtualOffice.Domain.Entities
                 throw new EndDateCannotBeBeforeStartDate(_EndDate, startDate);
 
             _StartDate = startDate;
-            AddEvent(new CalendarEventStartDateUpdated(this, startDate));
+            AddEvent(new CalendarEventStartDateUpdated(this));
         }
     }
 }
