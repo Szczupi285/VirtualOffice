@@ -14,7 +14,7 @@ namespace VirtualOffice.Domain.Entities
             AddEvent(new CalendarEventCreated(id, titile, eventDescription, assignedEmployees, startDate, endDate));
         }
 
-        private CalendarEvent()
+        public CalendarEvent()
         { }
 
         public void UpdateStartDate(DateTime startDate)

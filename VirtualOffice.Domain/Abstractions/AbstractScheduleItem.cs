@@ -21,8 +21,8 @@ namespace VirtualOffice.Domain.Abstractions
           HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
         {
             // Review: commented for testing purposes this causes an error while updating CalendarEvent
-            //if (startDate.Value >= endDate.Value)
-            //    throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
+            if (startDate.Value >= endDate.Value)
+                throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
 
             Id = id;
             _Title = title;
