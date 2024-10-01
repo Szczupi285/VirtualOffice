@@ -31,7 +31,7 @@ namespace VirtualOffice.Infrastructure.abstractions
         public async Task CreateAsync(T newUserReadModel) =>
             await _Collection.InsertOneAsync(newUserReadModel);
 
-        public async Task UpdateAsync(string id, T updatedUserReadModel) =>
+        public virtual async Task UpdateAsync(string id, T updatedUserReadModel) =>
             await _Collection.ReplaceOneAsync(x => x.Id == id, updatedUserReadModel);
 
         public async Task RemoveAsync(string id) =>

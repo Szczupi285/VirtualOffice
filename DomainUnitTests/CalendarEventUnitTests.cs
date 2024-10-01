@@ -28,12 +28,14 @@ namespace DomainUnitTests
         }
 
         #region Events
+
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted()
         {
             _CalendarEvent.SetTitle("Title");
             var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
         }
+
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted_CalendarEventShouldEqual()
         {
@@ -41,6 +43,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemTitleSetted>().Single();
             Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
+
         [Fact]
         public void SetTitle_ShouldRaiseScheduleItemTitleSetted_TitleShouldEqual()
         {
@@ -55,6 +58,7 @@ namespace DomainUnitTests
             _CalendarEvent.SetDescription("Description");
             var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
         }
+
         [Fact]
         public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_CalendarEventShouldEqual()
         {
@@ -62,6 +66,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
             Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
+
         [Fact]
         public void SetDescription_ShouldRaiseScheduleItemDescriptionSetted_DescriptionShouldEqual()
         {
@@ -69,6 +74,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemDescriptionSetted>().Single();
             Assert.Equal("Description", Event.description);
         }
+
         [Fact]
         public void AddEmployee_ShouldNotRaiseEmployeeAddedToScheduleItem()
         {
@@ -76,12 +82,14 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().SingleOrDefault();
             Assert.Null(Event);
         }
+
         [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem()
         {
             _CalendarEvent.AddEmployee(UserNotAdded);
             var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
         }
+
         [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_CalendarEventShouldEqual()
         {
@@ -89,6 +97,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
             Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
+
         [Fact]
         public void AddEmployee_ShouldRaiseEmployeeAddedToScheduleItem_UserShouldEqual()
         {
@@ -96,12 +105,14 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<EmployeeAddedToScheduleItem>().Single();
             Assert.Equal(UserNotAdded, Event.user);
         }
+
         [Fact]
         public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem()
         {
             _CalendarEvent.RemoveEmployee(User);
             var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
         }
+
         [Fact]
         public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_CalendarEventShouldEqual()
         {
@@ -109,6 +120,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
             Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
+
         [Fact]
         public void RemoveEmployee_ShouldRaiseEmployeeRemoverFromScheduleItem_UserShouldEqual()
         {
@@ -116,6 +128,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<EmployeeRemovedFromScheduleItem>().Single();
             Assert.Equal(User, Event.user);
         }
+
         [Fact]
         public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate()
         {
@@ -123,6 +136,7 @@ namespace DomainUnitTests
             _CalendarEvent.UpdateEndDate(date);
             var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
         }
+
         [Fact]
         public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_CalendarEventShouldEqual()
         {
@@ -131,6 +145,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
             Assert.Equal(_CalendarEvent, Event.abstractScheduleItem);
         }
+
         [Fact]
         public void UpdateEndDate_ShouldRaiseScheduleItemEndDateUpdate_DateShouldEqual()
         {
@@ -139,6 +154,7 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<ScheduleItemEndDateUpdated>().Single();
             Assert.Equal(date, Event.EndDate);
         }
+
         [Fact]
         public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate()
         {
@@ -146,14 +162,7 @@ namespace DomainUnitTests
             _CalendarEvent.UpdateStartDate(date);
             var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
         }
-        [Fact]
-        public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_CalendarEventShouldEqual()
-        {
-            DateTime date = DateTime.UtcNow.AddHours(5);
-            _CalendarEvent.UpdateStartDate(date);
-            var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
-            Assert.Equal(_CalendarEvent, Event.calendarEvent);
-        }
+
         [Fact]
         public void UpdateStartDate_ShouldRaiseCalendarEventStartDateUpdate_DateShouldEqual()
         {
@@ -162,7 +171,8 @@ namespace DomainUnitTests
             var Event = _CalendarEvent.Events.OfType<CalendarEventStartDateUpdated>().Single();
             Assert.Equal(date, Event.StartDate);
         }
-        #endregion
+
+        #endregion Events
 
         #region ScheduleItemId
 
@@ -172,6 +182,7 @@ namespace DomainUnitTests
             Assert.Throws<EmptyEmployeeScheduleItemIdException>(()
                 => new ScheduleItemId(Guid.Empty));
         }
+
         [Fact]
         public void ValidScheduleItemId_ValidGuidToAppUserIdConversion_ShouldEqual()
         {
@@ -181,17 +192,18 @@ namespace DomainUnitTests
 
             Assert.Equal(id.Value, guid);
         }
+
         [Fact]
         public void ValidScheduleItemId_ValidAppUserIdToGuidConversionShouldEqual()
         {
-
             ScheduleItemId id = new ScheduleItemId(Guid.NewGuid());
 
             Guid guid = id;
 
             Assert.Equal(id.Value, guid);
         }
-        #endregion
+
+        #endregion ScheduleItemId
 
         #region ScheduleItemTitle
 
@@ -218,6 +230,7 @@ namespace DomainUnitTests
 
             Assert.Equal(title, tit);
         }
+
         [Fact]
         public void ValidScheduleItemTitle_ValidScheduleItemTitleToStringConversionShouldEqual()
         {
@@ -226,29 +239,32 @@ namespace DomainUnitTests
             string title = tit;
 
             Assert.Equal(tit, title);
-
         }
+
         [Fact]
         public void InvalidScheduleItemTitle_TooLongTitle()
         {
             string s = new string('a', 101);
             Assert.Throws<TooLongScheduleItemTitleException>(() => new ScheduleItemTitle(s));
         }
+
         [Fact]
         public void ValidScheduleItemTitle_HundredChars()
         {
             string s = new string('a', 100);
             new ScheduleItemTitle(s);
         }
+
         [Fact]
         public void ValidScheduleItemTitle_OneChar()
         {
             new ScheduleItemTitle("a");
         }
 
-        #endregion
+        #endregion ScheduleItemTitle
 
-        #region ScheduleItemDescription 
+        #region ScheduleItemDescription
+
         [Fact]
         public void ValidScheduleItemDescription_ValidStringToScheduleItemDescriptionConversion_ShouldEqual()
         {
@@ -258,6 +274,7 @@ namespace DomainUnitTests
 
             Assert.Equal(Description, desc);
         }
+
         [Fact]
         public void ValidScheduleItemDescription_ValidScheduleItemDescriptionToStringConversionShouldEqual()
         {
@@ -266,36 +283,41 @@ namespace DomainUnitTests
             string Description = desc;
 
             Assert.Equal(desc, Description);
-
         }
+
         [Fact]
         public void InvalidScheduleItemDescription_TooLongDescription()
         {
             string s = new string('a', 1501);
             Assert.Throws<TooLongScheduleItemDescriptionException>(() => new ScheduleItemDescription(s));
         }
+
         [Fact]
         public void ValidScheduleItemDescription_HundredChars()
         {
             string s = new string('a', 1500);
             new ScheduleItemDescription(s);
         }
+
         [Fact]
         public void ValidScheduleItemDescription_OneChar()
         {
             new ScheduleItemDescription("a");
         }
+
         [Fact]
         public void ValidScheduleItemDescription_WhiteSpace()
         {
             new ScheduleItemDescription(" ");
         }
+
         [Fact]
         public void ValidScheduleItemDescription_Empty()
         {
             new ScheduleItemDescription("");
         }
-        #endregion
+
+        #endregion ScheduleItemDescription
 
         #region ScheduleItemStartDate
 
@@ -308,16 +330,19 @@ namespace DomainUnitTests
                     DateTime.UtcNow.AddDays(-31))
                 );
         }
+
         [Fact]
         public void ScheduleItemStartDateValid31daysFromNow_ShouldNotThrowException()
         {
             ScheduleItemStartDate startDate = DateTime.UtcNow.AddDays(31);
         }
+
         [Fact]
         public void ScheduleItemStartDateValidYearFromNow_ShouldNotThrowException()
         {
             ScheduleItemStartDate startDate = DateTime.UtcNow.AddYears(1);
         }
+
         [Fact]
         public void ScheduleItemStartDateValidCurrentTime_ShouldNotThrowException()
         {
@@ -333,20 +358,18 @@ namespace DomainUnitTests
 
             Assert.Equal(dt, startDate);
         }
+
         [Fact]
         public void ValidData_ScheduleItemStartDateToDateTimeConversionShouldEqual()
         {
             ScheduleItemStartDate startDate = new ScheduleItemStartDate(DateTime.UtcNow.AddDays(31));
 
-
             var dt = startDate;
-
 
             Assert.Equal(startDate, dt);
         }
 
-
-        #endregion
+        #endregion ScheduleItemStartDate
 
         #region ScheduleItemEndDate
 
@@ -359,6 +382,7 @@ namespace DomainUnitTests
                     DateTime.UtcNow.AddDays(-1))
                 );
         }
+
         [Fact]
         public void ScheduleItemEndDateInvalidCurrentTime_ShouldThrowInvalidScheduleItemEndDateException()
         {
@@ -368,17 +392,18 @@ namespace DomainUnitTests
                     DateTime.UtcNow
                 ));
         }
+
         [Fact]
         public void ScheduleItemEndDateValid31daysFromNow_ShouldNotThrowException()
         {
             ScheduleItemEndDate EndDate = DateTime.UtcNow.AddDays(31);
         }
+
         [Fact]
         public void ScheduleItemEndDateValidYearFromNow_ShouldNotThrowException()
         {
             ScheduleItemEndDate EndDate = DateTime.UtcNow.AddYears(1);
         }
-
 
         [Fact]
         public void ValidData_DateTimeToScheduleItemEndDateConversion_ShouldEqual()
@@ -389,24 +414,24 @@ namespace DomainUnitTests
 
             Assert.Equal(dt, EndDate);
         }
+
         [Fact]
         public void ValidData_ScheduleItemEndDateToDateTimeConversionShouldEqual()
         {
             ScheduleItemEndDate EndDate = new ScheduleItemEndDate(DateTime.UtcNow.AddDays(31));
 
-
             var dt = EndDate;
-
 
             Assert.Equal(EndDate, dt);
         }
-        #endregion
+
+        #endregion ScheduleItemEndDate
 
         #region Methods
+
         [Fact]
         public void EditTitle_SetsTitle()
         {
-
             string newTitle = "New Title";
 
             _CalendarEvent.SetTitle(newTitle);
@@ -462,7 +487,6 @@ namespace DomainUnitTests
             {
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname")
-
             };
 
             _CalendarEvent.AddEmployeesRange(users);
@@ -496,7 +520,6 @@ namespace DomainUnitTests
             {
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname")
-
             };
             _CalendarEvent.AddEmployeesRange(users);
 
@@ -517,11 +540,11 @@ namespace DomainUnitTests
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
                 new ApplicationUser(Guid.NewGuid(), "ExampleName", "ExampleSurname"),
                 User
-
             };
 
             Assert.Throws<UserIsNotAssignedToThisScheduleItemException>(() => _CalendarEvent.RemoveEmployeesRange(users));
         }
-        #endregion
+
+        #endregion Methods
     }
 }

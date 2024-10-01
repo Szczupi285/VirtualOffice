@@ -31,5 +31,12 @@ namespace VirtualOffice.Api
             var command = new UpdateCalendarEvent(id, request.Title, request.Description, DateTime.Now.AddDays(1), DateTime.Now.AddDays(2));
             await _mediator.Send(command);
         }
+
+        [HttpPatch("UpdateTitle/{id}")]
+        public async Task UpdateCalendarEventTitle(Guid id, [FromBody] string title)
+        {
+            var command = new UpdateCalendarEventTitle(id, title);
+            await _mediator.Send(command);
+        }
     }
 }
