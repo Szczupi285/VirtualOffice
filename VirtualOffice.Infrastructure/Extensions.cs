@@ -18,13 +18,11 @@ namespace VirtualOffice.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-
             services.AddReadServices();
             services.AddWriteDbRepositories();
             services.AddReadDbServices();
             services.ConfigureMassTransit(configuration);
             return services;
-
         }
 
         private static IServiceCollection AddReadServices(this IServiceCollection services)
@@ -41,6 +39,7 @@ namespace VirtualOffice.Infrastructure
 
             return services;
         }
+
         private static IServiceCollection AddWriteDbRepositories(this IServiceCollection services)
         {
             services.AddScoped<ICalendarEventRepository, CalendarEventRepository>();
@@ -52,8 +51,10 @@ namespace VirtualOffice.Infrastructure
             services.AddScoped<IPublicChatRoomRepository, PublicChatRoomRepository>();
             services.AddScoped<IPublicDocumentRepository, PublicDocumentRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IOutboxMessageRepository, OutboxMessageRepository>();
             return services;
         }
+
         private static IServiceCollection AddReadDbServices(this IServiceCollection services)
         {
             services.AddSingleton<EmployeesService>();
@@ -72,7 +73,6 @@ namespace VirtualOffice.Infrastructure
 
         private static IServiceCollection ConfigureMassTransit(this IServiceCollection services, IConfiguration configuration)
         {
-
             // fetch data from appsettings.json
             services.Configure<RabbitMQSettings>(
                 configuration.GetSection("RabbitMQ"));
@@ -88,7 +88,6 @@ namespace VirtualOffice.Infrastructure
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
-
                     RabbitMQSettings settings = context.GetRequiredService<RabbitMQSettings>();
                     configurator.Host(new Uri(settings.Host), h =>
                     {

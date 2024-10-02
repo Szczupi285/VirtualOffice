@@ -7,11 +7,11 @@ namespace VirtualOffice.Domain.Entities
 {
     public class CalendarEvent : AbstractScheduleItem
     {
-        public CalendarEvent(ScheduleItemId id, ScheduleItemTitle titile, ScheduleItemDescription eventDescription,
+        public CalendarEvent(ScheduleItemId id, ScheduleItemTitle title, ScheduleItemDescription eventDescription,
             HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
-            : base(id, titile, eventDescription, assignedEmployees, startDate, endDate)
+            : base(id, title, eventDescription, assignedEmployees, startDate, endDate)
         {
-            AddEvent(new CalendarEventCreated(this));
+            AddEvent(new CalendarEventCreated(id, title, eventDescription, assignedEmployees.ToList(), startDate, endDate));
         }
 
         private CalendarEvent()
