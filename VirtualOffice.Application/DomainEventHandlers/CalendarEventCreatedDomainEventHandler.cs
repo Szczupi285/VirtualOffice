@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MediatR;
+using VirtualOffice.Application.Events;
 using VirtualOffice.Application.Interfaces;
+using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers
@@ -20,7 +22,17 @@ namespace VirtualOffice.Application.DomainEventHandlers
 
         public async Task Handle(CalendarEventCreated notification, CancellationToken cancellationToken)
         {
-            await _outboxMessageRepository.AddOutboxMessageAsync(notification);
+            CalendarEventCreatedEvent integrationEvent = new CalendarEventCreatedEvent
+            {
+                Id = notification.Id.ToString(),
+                Title = notification.Title,
+                Description = notification.Description,
+                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.AssignedEmployees),
+                StartDate = notification.StartDate,
+                EndDate = notification.EndDate,
+            };
+
+            await _outboxMessageRepository.AddOutboxMessageAsync(integrationEvent);
             // await _eventBus.PublishAsync(new CalendarEventCreatedEvent
             // {
             //     Id = notification.CalendarEvent.Id.Value.ToString(),

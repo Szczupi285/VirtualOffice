@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using Quartz;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
@@ -22,6 +23,7 @@ namespace VirtualOffice.Infrastructure
             services.AddWriteDbRepositories();
             services.AddReadDbServices();
             services.ConfigureMassTransit(configuration);
+            services.AddBackgroudJobs();
             return services;
         }
 
@@ -103,6 +105,22 @@ namespace VirtualOffice.Infrastructure
             });
             services.AddTransient<IEventBus, EventBus>();
 
+            return services;
+        }
+
+        private static IServiceCollection AddBackgroudJobs(this IServiceCollection services)
+        {
+            services.AddQuartz(cfg =>
+            {
+                var jobKey = new JobKey(nameof(ProcessOutboxMessagesJob));
+                cfg.AddJob<ProcessOutboxMessagesJob>(jobKey)
+                .AddTrigger(trigger =>
+                    trigger.ForJob(jobKey)
+                    .WithSimpleSchedule(schedule =>
+                    schedule.WithIntervalInSeconds(5)
+                    .RepeatForever()));
+            });
+            services.AddQuartzHostedService();
             return services;
         }
 

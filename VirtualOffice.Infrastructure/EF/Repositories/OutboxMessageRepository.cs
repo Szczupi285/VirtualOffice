@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Outbox;
-using VirtualOffice.Domain.DomainEvents;
 
 namespace VirtualOffice.Infrastructure.EF.Repositories
 {
@@ -14,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddOutboxMessageAsync(IDomainEvent domainEvent)
+        public async Task AddOutboxMessageAsync(IEvent domainEvent)
         {
             DateTime dateTime = DateTime.UtcNow;
             await _dbContext.OutboxMessages.AddAsync(
