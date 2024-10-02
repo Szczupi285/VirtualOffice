@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using VirtualOffice.Application.Outbox;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Infrastructure.EF.Config;
 using VirtualOffice.Infrastructure.Identity;
@@ -18,6 +19,7 @@ namespace VirtualOffice.Infrastructure.EF
         public DbSet<PrivateChatRoom> PrivateChatRooms { get; set; }
         public DbSet<PublicChatRoom> PublicChatRooms { get; set; }
         public DbSet<PublicDocument> PublicDocuments { get; set; }
+        public DbSet<OutboxMessage> OutboxMessages { get; set; }
 
         public WriteDbContext(DbContextOptions<WriteDbContext> options) : base(options)
         {
