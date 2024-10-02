@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using VirtualOffice.Application.DomainEventHandlers;
+using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 
 namespace VirtualOffice.Application
 {
@@ -11,7 +14,7 @@ namespace VirtualOffice.Application
             {
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
             }
-
+            services.AddScoped<INotificationHandler<CalendarEventCreated>, CalendarEventCreatedDomainEventHandler>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             return services;

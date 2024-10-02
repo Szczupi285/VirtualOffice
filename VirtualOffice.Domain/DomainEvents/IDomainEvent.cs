@@ -1,6 +1,8 @@
-﻿namespace VirtualOffice.Domain.DomainEvents
+﻿using MediatR;
+
+namespace VirtualOffice.Domain.DomainEvents
 {
-    public interface IDomainEvent
+    public interface IDomainEvent : INotification
     {
     }
 }

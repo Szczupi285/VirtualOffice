@@ -2,5 +2,5 @@
 
 namespace VirtualOffice.Domain.DomainEvents.CalendarEventEvents
 {
-    public record CalendarEventCreated(CalendarEvent Calendar) : IDomainEvent;
+    public record CalendarEventCreated(CalendarEvent CalendarEvent) : IDomainEvent;
 }
