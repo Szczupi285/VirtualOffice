@@ -1,7 +1,9 @@
+using AutoMapper;
 using Moq;
 using VirtualOffice.Application.Commands.CalendarEventCommands;
 using VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers;
 using VirtualOffice.Application.Exceptions.CalendarEvent;
+using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Repositories;
@@ -104,7 +106,7 @@ namespace ApplicationUnitTests
         public async Task CreateCalendarEventHandler_ShouldCreateCalendarEvent()
         {
             // Arrange
-            var handler = new CreateCalendarEventHandler(_repositoryMock.Object);
+            var handler = new CreateCalendarEventHandler(_repositoryMock.Object, new Mock<IEventBus>().Object, new Mock<IMapper>().Object);
 
             var request = new CreateCalendarEvent("Title", "Desc", new HashSet<ApplicationUser> { _user1, _user2 }, DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             // Act
