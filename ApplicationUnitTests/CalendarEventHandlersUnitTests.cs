@@ -18,7 +18,7 @@ namespace ApplicationUnitTests
         private readonly AddCalendarEventAssignedEmployeesHandler _AddCalEvHandler;
         private readonly RemoveCalendarEventAssignedEmployeesHandler _RemCalEvHandler;
         private readonly DeleteCalendarEventHandler _DelCalEvHandler;
-        private readonly UpdateCalendarEventHandler _UpdCalEvHandler;
+        private readonly UpdateCalendarEventTitleHandler _UpdCalEvHandler;
         private readonly ApplicationUser _user1;
         private readonly ApplicationUser _user2;
         private readonly ApplicationUser _user3;
@@ -31,7 +31,7 @@ namespace ApplicationUnitTests
             _AddCalEvHandler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
             _DelCalEvHandler = new DeleteCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object);
             _RemCalEvHandler = new RemoveCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
-            _UpdCalEvHandler = new UpdateCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object);
+            _UpdCalEvHandler = new UpdateCalendarEventTitleHandler(_repositoryMock.Object, _readServiceMock.Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
             _user2 = new ApplicationUser(Guid.NewGuid(), "Jane", "Roe");
             _user3 = new ApplicationUser(Guid.NewGuid(), "Joe", "Rane");

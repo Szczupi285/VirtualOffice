@@ -37,7 +37,7 @@ namespace VirtualOffice.Domain.Abstractions
         public void SetTitle(string title)
         {
             _Title = title;
-            AddEvent(new ScheduleItemTitleSetted(this, title));
+            AddEvent(new ScheduleItemTitleSetted(this, title, GetType()));
         }
 
         public void SetDescription(string description)

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Application.Services;
+using VirtualOffice.Domain.ValueObjects.ScheduleItem;
 
 namespace VirtualOffice.Infrastructure.EF.ReadServices
 {
@@ -14,7 +15,8 @@ namespace VirtualOffice.Infrastructure.EF.ReadServices
 
         public async Task<bool> ExistsByIdAsync(Guid id)
         {
-            return await _dbContext.CalendarEvents.AnyAsync(e => e.Id.Value == id);
+            // temporary? implementing IEquatable also requires to impelement IConvertible.
+            return await _dbContext.CalendarEvents.AnyAsync(e => e.Id == new ScheduleItemId(id));
         }
     }
 }

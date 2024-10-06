@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddOutboxMessageAsync(IEvent domainEvent)
+        public async Task AddOutboxMessageAsync(IEvent integrationEvent)
         {
             DateTime dateTime = DateTime.UtcNow;
             await _dbContext.OutboxMessages.AddAsync(
@@ -21,9 +21,9 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
                 {
                     Id = Guid.NewGuid(),
                     OccuredOnUtc = dateTime,
-                    Type = domainEvent.GetType().Name,
+                    Type = integrationEvent.GetType().Name,
                     Content = JsonConvert.SerializeObject(
-                        domainEvent,
+                        integrationEvent,
                         // Store type of the object that was serialized
                         // that will allow us to deserialize json into IDomain object
                         new JsonSerializerSettings

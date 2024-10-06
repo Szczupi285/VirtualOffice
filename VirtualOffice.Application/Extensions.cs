@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies;
 
 namespace VirtualOffice.Application
 {
@@ -12,6 +13,10 @@ namespace VirtualOffice.Application
                 services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
             }
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            // Even thought the strategy factory is stateless, which means we could reigster it as singleton,
+            // it consumes scoped IOutboxMessageRepository which is not allowed
+            // because it could hold onto this repository beyond its lifetime
+            services.AddScoped<ScheduleItemTitleSettedStrategyFactory>();
 
             return services;
         }
