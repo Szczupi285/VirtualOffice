@@ -25,11 +25,11 @@ namespace VirtualOffice.Infrastructure.EF.Config
 
             builder.Property(e => e._StartDate).HasConversion(
                 p => p.Value,
-                p => new ScheduleItemStartDate(p));
+                p => ScheduleItemStartDate.CreateWithoutValidation(p));
 
             builder.Property(e => e._EndDate).HasConversion(
                 p => p.Value,
-                p => new ScheduleItemEndDate(p));
+                p => ScheduleItemEndDate.CreateWithoutValidation(p));
 
             builder.Property(e => e.Version)
             .IsConcurrencyToken();

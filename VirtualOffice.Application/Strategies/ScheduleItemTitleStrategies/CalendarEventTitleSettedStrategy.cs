@@ -21,7 +21,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies
         {
             CalendarEventTitleUpdated integrationEvent = new CalendarEventTitleUpdated
             {
-                Id = notification.abstractScheduleItem.Id.ToString(),
+                Id = notification.abstractScheduleItem.Id.Value.ToString(),
                 Title = notification.abstractScheduleItem._Title,
                 Description = notification.abstractScheduleItem._Description,
                 AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.abstractScheduleItem._AssignedEmployees),

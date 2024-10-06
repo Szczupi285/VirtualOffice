@@ -15,6 +15,23 @@ namespace VirtualOffice.Domain.ValueObjects.ScheduleItem
 
             Value = value;
         }
+        private ScheduleItemStartDate(DateTime value, bool validate)
+        {
+            if (!validate)
+                Value = value;
+            else
+            {
+                if (value < DateTime.UtcNow.AddMinutes(-1))
+                    throw new ScheduleItemStartDateCannotBePastException(value);
+
+                Value = value;
+            }
+        }
+        public static ScheduleItemStartDate CreateWithoutValidation(DateTime value)
+        {
+            return new ScheduleItemStartDate(value, false);
+        }
+
         private static bool DateTimeEquals(DateTime dt1, DateTime dt2)
         {
             // Truncate milliseconds for both DateTime objects
