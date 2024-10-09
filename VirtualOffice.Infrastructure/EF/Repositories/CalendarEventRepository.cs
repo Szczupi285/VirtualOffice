@@ -16,26 +16,26 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
         }
 
         public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken = default)
-           => await _dbContext.CalendarEvents.
-           Include(c => c._AssignedEmployees)
-           .FirstOrDefaultAsync(c => c.Id == guid) ?? throw new CalendarEventNotFoundException(guid);
+            => await _dbContext.CalendarEvents.
+            Include(c => c._AssignedEmployees)
+            .FirstOrDefaultAsync(c => c.Id == guid, cancellationToken) ?? throw new CalendarEventNotFoundException(guid);
 
         public async Task AddAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
-            await _dbContext.CalendarEvents.AddAsync(calendarEvent);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.CalendarEvents.AddAsync(calendarEvent, cancellationToken);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task DeleteAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
             _dbContext.CalendarEvents.Remove(calendarEvent);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
         public async Task UpdateAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
             _dbContext.CalendarEvents.Update(calendarEvent);
-            await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

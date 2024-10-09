@@ -15,47 +15,24 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid)
-            => await _dbContext.EmployeeTasks
-            .Include(e => e._AssignedEmployees)
-            .FirstOrDefaultAsync(c => c.Id == guid) ?? throw new EmployeeTaskNotFoundException(guid);
-
-        public async Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken)
+        public async Task<EmployeeTask> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken = default)
              => await _dbContext.EmployeeTasks
             .Include(e => e._AssignedEmployees)
             .FirstOrDefaultAsync(c => c.Id == guid, cancellationToken) ?? throw new EmployeeTaskNotFoundException(guid);
 
-        public async Task AddAsync(EmployeeTask employeeTask)
-        {
-            await _dbContext.EmployeeTasks.AddAsync(employeeTask);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task AddAsync(EmployeeTask employeeTask, CancellationToken cancellationToken)
+        public async Task AddAsync(EmployeeTask employeeTask, CancellationToken cancellationToken = default)
         {
             await _dbContext.EmployeeTasks.AddAsync(employeeTask, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(EmployeeTask employeeTask)
-        {
-            _dbContext.EmployeeTasks.Remove(employeeTask);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(EmployeeTask employeeTask, CancellationToken cancellationToken)
+        public async Task DeleteAsync(EmployeeTask employeeTask, CancellationToken cancellationToken = default)
         {
             _dbContext.EmployeeTasks.Remove(employeeTask);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(EmployeeTask employeeTask)
-        {
-            _dbContext.EmployeeTasks.Update(employeeTask);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(EmployeeTask employeeTask, CancellationToken cancellationToken)
+        public async Task UpdateAsync(EmployeeTask employeeTask, CancellationToken cancellationToken = default)
         {
             _dbContext.EmployeeTasks.Update(employeeTask);
             await _dbContext.SaveChangesAsync(cancellationToken);
