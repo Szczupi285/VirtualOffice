@@ -43,7 +43,7 @@ namespace VirtualOffice.Domain.Abstractions
         public void SetDescription(string description)
         {
             _Description = description;
-            AddEvent(new ScheduleItemDescriptionSetted(this, description));
+            AddEvent(new ScheduleItemDescriptionSetted(this, description, GetType()));
         }
 
         public void AddEmployee(ApplicationUser user)

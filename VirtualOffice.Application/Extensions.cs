@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies;
 using VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies;
 
 namespace VirtualOffice.Application
@@ -17,6 +18,7 @@ namespace VirtualOffice.Application
             // it consumes scoped IOutboxMessageRepository which is not allowed
             // because it could hold onto this repository beyond its lifetime
             services.AddScoped<ScheduleItemTitleSettedStrategyFactory>();
+            services.AddScoped<ScheduleItemDescriptionSettedStrategyFactory>();
 
             return services;
         }

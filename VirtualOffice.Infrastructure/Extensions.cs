@@ -88,6 +88,7 @@ namespace VirtualOffice.Infrastructure
 
                 c.AddConsumer<CalendarEventCreatedEventConsumer>();
                 c.AddConsumer<CalendarEventTitleUpdatedConsumer>();
+                c.AddConsumer<CalendarEventDescriptionUpdatedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -97,6 +98,7 @@ namespace VirtualOffice.Infrastructure
                         h.Username(settings.Username);
                         h.Password(settings.Password);
                     });
+                    // to do: write the configs more nicely
                     configurator.ReceiveEndpoint("calendar-event-created", e =>
                     {
                         e.ConfigureConsumer<CalendarEventCreatedEventConsumer>(context);
@@ -105,6 +107,8 @@ namespace VirtualOffice.Infrastructure
                     configurator.ReceiveEndpoint("calendar-event-updated", e =>
                     {
                         e.ConfigureConsumer<CalendarEventTitleUpdatedConsumer>(context);
+                        e.ConfigureConsumer<CalendarEventDescriptionUpdatedConsumer>(context);
+
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventUpdated");
                     });
                 });
@@ -123,7 +127,7 @@ namespace VirtualOffice.Infrastructure
                 .AddTrigger(trigger =>
                     trigger.ForJob(jobKey)
                     .WithSimpleSchedule(schedule =>
-                    schedule.WithIntervalInSeconds(5)
+                    schedule.WithIntervalInSeconds(30)
                     .RepeatForever()));
             });
             services.AddQuartzHostedService();

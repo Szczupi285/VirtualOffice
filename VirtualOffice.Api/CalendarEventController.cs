@@ -25,10 +25,18 @@ namespace VirtualOffice.Api
             Created();
         }
 
-        [HttpPatch]
-        public async Task UpdateCalendarEventTitle([FromBody] UpdateCalendarEventTitle request)
+        [HttpPatch("Update/{id}/Title")]
+        public async Task UpdateCalendarEventTitle(Guid id, string title)
         {
-            var command = new UpdateCalendarEventTitle(request.Id, request.Title);
+            var command = new UpdateCalendarEventTitle(id, title);
+            await _mediator.Send(command);
+            Ok();
+        }
+
+        [HttpPatch("Update/{id}/Description")]
+        public async Task UpdateCalendarEventDescription(Guid id, string description)
+        {
+            var command = new UpdateCalendarEventDescription(id, description);
             await _mediator.Send(command);
             Ok();
         }
