@@ -103,7 +103,7 @@ namespace ApplicationUnitTests
             _userReadServiceMock.Setup(us => us.ExistsByIdAsync(request.UserId)).ReturnsAsync(true);
 
             _repositoryMock.Setup(r => r.GetByIdAsync(request.ChatRoomId, default)).ReturnsAsync(_pcr);
-            _userRepostoryMock.Setup(ur => ur.GetByIdAsync(request.UserId)).ReturnsAsync(_user1);
+            _userRepostoryMock.Setup(ur => ur.GetByIdAsync(request.UserId, default)).ReturnsAsync(_user1);
             // Act
             await _sendMessHand.Handle(request, CancellationToken.None);
             // Assert

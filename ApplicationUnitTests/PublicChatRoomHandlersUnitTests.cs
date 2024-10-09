@@ -164,7 +164,7 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.ChatRoomId)).ReturnsAsync(true);
             _userReadServiceMock.Setup(us => us.ExistsByIdAsync(request.UserId)).ReturnsAsync(true);
             _repositoryMock.Setup(r => r.GetByIdAsync(request.ChatRoomId, default)).ReturnsAsync(_publicChatRoom);
-            _userRepositoryMock.Setup(ur => ur.GetByIdAsync(request.UserId)).ReturnsAsync(_user1);
+            _userRepositoryMock.Setup(ur => ur.GetByIdAsync(request.UserId, default)).ReturnsAsync(_user1);
             // Act
             await _sendPubMessHand.Handle(request, CancellationToken.None);
             // Assert

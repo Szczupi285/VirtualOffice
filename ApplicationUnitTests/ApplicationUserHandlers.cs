@@ -37,7 +37,7 @@ namespace ApplicationUnitTests
             // Act
             await _creUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<ApplicationUser>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<ApplicationUser>(), default), Times.Once);
         }
 
         [Fact]
@@ -56,11 +56,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteUser(_guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_user1);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_user1);
             // Act
             await _delUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_user1), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_user1, default), Times.Once);
         }
 
         [Fact]
@@ -79,11 +79,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdateUser(_guid, "NewName", "NewSurname");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_user1);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_user1);
             // Act
             await _UpdUserHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_user1), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_user1, default), Times.Once);
         }
     }
 }
