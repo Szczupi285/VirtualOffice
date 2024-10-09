@@ -66,11 +66,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new AddChatParticipants(guid, new HashSet<ApplicationUser>() { _user3 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_publicChatRoom);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_publicChatRoom);
             // Act
             await _addChatPartHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom));
+            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom, default));
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace ApplicationUnitTests
             // Act
             await _crePubChatRoomHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<PublicChatRoom>()), Times.Once());
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<PublicChatRoom>(), default), Times.Once());
         }
 
         [Fact]
@@ -101,11 +101,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteChatParticipants(guid, new HashSet<ApplicationUser>() { _user2 });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_publicChatRoom);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_publicChatRoom);
             // Act
             await _delChatPartHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom), Times.Once());
+            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom, default), Times.Once());
         }
 
         [Fact]
@@ -125,12 +125,12 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeletePublicChatRoom(_publicChatRoom.Id);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_publicChatRoom);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_publicChatRoom);
             // Act
             await _delPubChatRoomHand.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_publicChatRoom), Times.Once());
+            _repositoryMock.Verify(r => r.DeleteAsync(_publicChatRoom, default), Times.Once());
         }
 
         [Fact]
@@ -163,12 +163,12 @@ namespace ApplicationUnitTests
             var request = new SendPublicMessage(guid, _user1.Id, "content");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.ChatRoomId)).ReturnsAsync(true);
             _userReadServiceMock.Setup(us => us.ExistsByIdAsync(request.UserId)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.ChatRoomId)).ReturnsAsync(_publicChatRoom);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.ChatRoomId, default)).ReturnsAsync(_publicChatRoom);
             _userRepositoryMock.Setup(ur => ur.GetByIdAsync(request.UserId)).ReturnsAsync(_user1);
             // Act
             await _sendPubMessHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom, default), Times.Once);
         }
 
         [Fact]
@@ -187,11 +187,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdatePublicChatRoomName(guid, "NewName");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_publicChatRoom);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_publicChatRoom);
             // Act
             await _updPubChatRoomNameHand.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_publicChatRoom, default), Times.Once);
         }
     }
 }

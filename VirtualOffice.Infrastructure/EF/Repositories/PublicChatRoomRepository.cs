@@ -15,49 +15,25 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<PublicChatRoom> GetByIdAsync(ChatRoomId guid)
-            => await _dbContext.PublicChatRooms
-            .Include(pcr => pcr._Participants)
-            .Include(pcr => pcr._Messages)
-            .FirstOrDefaultAsync(pcr => pcr.Id == guid) ?? throw new PublicChatRoomNotFoundException(guid);
-
-        public async Task<PublicChatRoom> GetByIdAsync(ChatRoomId guid, CancellationToken cancellationToken)
+        public async Task<PublicChatRoom> GetByIdAsync(ChatRoomId guid, CancellationToken cancellationToken = default)
          => await _dbContext.PublicChatRooms
             .Include(pcr => pcr._Participants)
             .Include(pcr => pcr._Messages)
             .FirstOrDefaultAsync(pcr => pcr.Id == guid, cancellationToken) ?? throw new PublicChatRoomNotFoundException(guid);
 
-        public async Task AddAsync(PublicChatRoom chatRoom)
-        {
-            await _dbContext.PublicChatRooms.AddAsync(chatRoom);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task AddAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken)
+        public async Task AddAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken = default)
         {
             await _dbContext.PublicChatRooms.AddAsync(chatRoom, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(PublicChatRoom PublicChatRoom)
-        {
-            _dbContext.PublicChatRooms.Remove(PublicChatRoom);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(PublicChatRoom PublicChatRoom, CancellationToken cancellationToken)
+        public async Task DeleteAsync(PublicChatRoom PublicChatRoom, CancellationToken cancellationToken = default)
         {
             _dbContext.PublicChatRooms.Remove(PublicChatRoom);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(PublicChatRoom chatRoom)
-        {
-            _dbContext.PublicChatRooms.Update(chatRoom);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken)
+        public async Task UpdateAsync(PublicChatRoom chatRoom, CancellationToken cancellationToken = default)
         {
             _dbContext.PublicChatRooms.Update(chatRoom);
             await _dbContext.SaveChangesAsync(cancellationToken);
