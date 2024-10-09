@@ -40,5 +40,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpPatch("Update/{id}/Schedule")]
+        public async Task UpdateCalendarEventSchedule(Guid id, DateTime startDate, DateTime endDate)
+        {
+            var command = new RescheduleCalendarEvent(id, startDate, endDate);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

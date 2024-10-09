@@ -22,7 +22,7 @@ namespace VirtualOffice.Application.DomainEventHandlers
 
         public async Task Handle(CalendarEventRescheduled notification, CancellationToken cancellationToken)
         {
-            CalendarEventCreatedEvent integrationEvent = new CalendarEventCreatedEvent
+            CalendarEventRescheduledIntegrationEvent integrationEvent = new CalendarEventRescheduledIntegrationEvent
             {
                 Id = notification.CalendarEvent.Id.Value.ToString(),
                 Title = notification.CalendarEvent._Title,

@@ -15,12 +15,11 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 
-        public RescheduleCalendarEventHandler(ICalendarEventRepository repository, ICalendarEventReadService readService, IMediator mediator, int retryCount)
+        public RescheduleCalendarEventHandler(ICalendarEventRepository repository, ICalendarEventReadService readService, IMediator mediator)
         {
             _repository = repository;
             _readService = readService;
             _mediator = mediator;
-            _retryCount = retryCount;
         }
 
         public async Task Handle(RescheduleCalendarEvent request, CancellationToken cancellationToken)
@@ -41,6 +40,8 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                     foreach (var domainEvent in calEv.Events)
                         await _mediator.Publish(domainEvent, cancellationToken);
                     calEv.ClearEvents();
+
+                    break;
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -52,6 +53,8 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                     await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
                 }
             }
+
+            // throw exception if failed
         }
     }
 }
