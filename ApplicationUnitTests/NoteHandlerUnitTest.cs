@@ -38,7 +38,7 @@ namespace ApplicationUnitTests
             // Act
             await _createNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Note>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Note>(), default), Times.Once);
         }
 
         [Fact]
@@ -58,11 +58,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteNote(guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_Note);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_Note);
             // Act
             await _deleteNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_Note), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_Note, default), Times.Once);
         }
 
         [Fact]
@@ -82,11 +82,11 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new UpdateNote(guid, "Title", "Content");
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_Note);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_Note);
             // Act
             await _updateNoteHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_Note), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_Note, default), Times.Once);
         }
     }
 }

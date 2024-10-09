@@ -15,45 +15,23 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Note> GetByIdAsync(NoteId guid)
-            => await _dbContext.Notes
-            .FirstOrDefaultAsync(n => n.Id == guid) ?? throw new NoteNotFoundException(guid);
-
-        public async Task<Note> GetByIdAsync(NoteId guid, CancellationToken cancellationToken)
+        public async Task<Note> GetByIdAsync(NoteId guid, CancellationToken cancellationToken = default)
             => await _dbContext.Notes
             .FirstOrDefaultAsync(n => n.Id == guid, cancellationToken) ?? throw new NoteNotFoundException(guid);
 
-        public async Task AddAsync(Note note)
-        {
-            await _dbContext.Notes.AddAsync(note);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task AddAsync(Note note, CancellationToken cancellationToken)
+        public async Task AddAsync(Note note, CancellationToken cancellationToken = default)
         {
             await _dbContext.Notes.AddAsync(note, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(Note note)
-        {
-            _dbContext.Notes.Remove(note);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Note note, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Note note, CancellationToken cancellationToken = default)
         {
             _dbContext.Notes.Remove(note);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(Note note)
-        {
-            _dbContext.Notes.Update(note);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Note note, CancellationToken cancellationToken)
+        public async Task UpdateAsync(Note note, CancellationToken cancellationToken = default)
         {
             _dbContext.Notes.Update(note);
             await _dbContext.SaveChangesAsync(cancellationToken);
