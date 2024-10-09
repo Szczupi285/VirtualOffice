@@ -145,7 +145,7 @@ namespace ApplicationUnitTests
         public async Task UpdateCalendarEventHandler_ShouldThrowCalendarEventDoesNotExistException()
         {
             // Arrange
-            var request = new UpdateCalendarEvent(guid, "Title", "Description", DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
+            var request = new UpdateCalendarEventDate(guid, "Title", "Description", DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
             // Act & Assert
@@ -156,7 +156,7 @@ namespace ApplicationUnitTests
         public async Task UpdateCalendarEventHandler_ShouldCallUpdateAndSave()
         {
             // Arrange
-            var request = new UpdateCalendarEvent(guid, "Title", "Description",
+            var request = new UpdateCalendarEventDate(guid, "Title", "Description",
                 DateTime.UtcNow.AddDays(1), DateTime.UtcNow.AddDays(2));
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 

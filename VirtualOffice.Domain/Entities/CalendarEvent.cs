@@ -25,5 +25,16 @@ namespace VirtualOffice.Domain.Entities
             _StartDate = startDate;
             AddEvent(new CalendarEventStartDateUpdated(this, startDate));
         }
+
+        // test this
+        public void RescheduleCalendarEvent(DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+                throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
+
+            _EndDate = endDate;
+            _StartDate = startDate;
+            AddEvent(new CalendarEventRescheduled(this));
+        }
     }
 }
