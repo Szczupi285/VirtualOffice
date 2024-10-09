@@ -15,50 +15,27 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid)
+        public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken = default)
            => await _dbContext.CalendarEvents.
            Include(c => c._AssignedEmployees)
            .FirstOrDefaultAsync(c => c.Id == guid) ?? throw new CalendarEventNotFoundException(guid);
 
-        public async Task<CalendarEvent> GetByIdAsync(ScheduleItemId guid, CancellationToken cancellationToken)
-            => await _dbContext.CalendarEvents.
-            Include(c => c._AssignedEmployees)
-            .FirstOrDefaultAsync(c => c.Id == guid, cancellationToken) ?? throw new CalendarEventNotFoundException(guid);
-
-        public async Task AddAsync(CalendarEvent calendarEvent)
+        public async Task AddAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
             await _dbContext.CalendarEvents.AddAsync(calendarEvent);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task AddAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
-        {
-            await _dbContext.CalendarEvents.AddAsync(calendarEvent, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task DeleteAsync(CalendarEvent calendarEvent)
+        public async Task DeleteAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
             _dbContext.CalendarEvents.Remove(calendarEvent);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
-        {
-            _dbContext.CalendarEvents.Remove(calendarEvent);
-            await _dbContext.SaveChangesAsync(cancellationToken);
-        }
-
-        public async Task UpdateAsync(CalendarEvent calendarEvent)
+        public async Task UpdateAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken = default)
         {
             _dbContext.CalendarEvents.Update(calendarEvent);
             await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(CalendarEvent calendarEvent, CancellationToken cancellationToken)
-        {
-            _dbContext.CalendarEvents.Update(calendarEvent);
-            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }
