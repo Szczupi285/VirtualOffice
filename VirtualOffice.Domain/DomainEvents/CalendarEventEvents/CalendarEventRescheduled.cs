@@ -2,5 +2,5 @@
 
 namespace VirtualOffice.Domain.DomainEvents.CalendarEventEvents
 {
-    public class CalendarEventRescheduled(CalendarEvent calendarEvent) : IDomainEvent;
+    public record CalendarEventRescheduled(CalendarEvent CalendarEvent) : IDomainEvent;
 }
