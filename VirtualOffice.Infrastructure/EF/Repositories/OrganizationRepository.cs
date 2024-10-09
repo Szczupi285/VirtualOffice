@@ -15,51 +15,26 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<Organization> GetByIdAsync(OrganizationId guid)
-            => await _dbContext.Organizations
-            .Include(o => o._organizationUsers)
-            .Include(o => o._offices)
-            .ThenInclude(oo => oo._members)
-            .FirstOrDefaultAsync(o => o.Id == guid) ?? throw new OrganizationNotFoundException(guid);
-
-        public async Task<Organization> GetByIdAsync(OrganizationId guid, CancellationToken cancellationToken)
+        public async Task<Organization> GetByIdAsync(OrganizationId guid, CancellationToken cancellationToken = default)
              => await _dbContext.Organizations
             .Include(o => o._organizationUsers)
             .Include(o => o._offices)
             .ThenInclude(oo => oo._members)
             .FirstOrDefaultAsync(o => o.Id == guid, cancellationToken) ?? throw new OrganizationNotFoundException(guid);
 
-        public async Task AddAsync(Organization organization)
-        {
-            await _dbContext.Organizations.AddAsync(organization);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task AddAsync(Organization organization, CancellationToken cancellationToken)
+        public async Task AddAsync(Organization organization, CancellationToken cancellationToken = default)
         {
             await _dbContext.Organizations.AddAsync(organization, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(Organization organization)
-        {
-            _dbContext.Organizations.Remove(organization);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(Organization organization, CancellationToken cancellationToken)
+        public async Task DeleteAsync(Organization organization, CancellationToken cancellationToken = default)
         {
             _dbContext.Organizations.Remove(organization);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(Organization organization)
-        {
-            _dbContext.Organizations.Update(organization);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(Organization organization, CancellationToken cancellationToken)
+        public async Task UpdateAsync(Organization organization, CancellationToken cancellationToken = default)
         {
             _dbContext.Organizations.Update(organization);
             await _dbContext.SaveChangesAsync(cancellationToken);
