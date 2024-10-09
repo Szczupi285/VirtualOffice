@@ -15,51 +15,26 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<PublicDocument> GetByIdAsync(DocumentId guid)
+        public async Task<PublicDocument> GetByIdAsync(DocumentId guid, CancellationToken cancellationToken = default)
             => await _dbContext.PublicDocuments
             .Include(pd => pd._attachmentFilePaths)
             .Include(pd => pd._eligibleForRead)
             .Include(pd => pd._eligibleForWrite)
             .FirstOrDefaultAsync(pd => pd.Id == guid) ?? throw new PublicDocumentNotFoundException(guid);
 
-        public async Task<PublicDocument> GetByIdAsync(DocumentId guid, CancellationToken cancellationToken)
-            => await _dbContext.PublicDocuments
-            .Include(pd => pd._attachmentFilePaths)
-            .Include(pd => pd._eligibleForRead)
-            .Include(pd => pd._eligibleForWrite)
-            .FirstOrDefaultAsync(pd => pd.Id == guid) ?? throw new PublicDocumentNotFoundException(guid);
-
-        public async Task AddAsync(PublicDocument publicDocument)
-        {
-            await _dbContext.PublicDocuments.AddAsync(publicDocument);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task AddAsync(PublicDocument publicDocument, CancellationToken cancellationToken)
+        public async Task AddAsync(PublicDocument publicDocument, CancellationToken cancellationToken = default)
         {
             await _dbContext.PublicDocuments.AddAsync(publicDocument, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task DeleteAsync(PublicDocument publicDocument)
-        {
-            _dbContext.PublicDocuments.Remove(publicDocument);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(PublicDocument publicDocument, CancellationToken cancellationToken)
+        public async Task DeleteAsync(PublicDocument publicDocument, CancellationToken cancellationToken = default)
         {
             _dbContext.PublicDocuments.Remove(publicDocument);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task UpdateAsync(PublicDocument publicDocument)
-        {
-            _dbContext.PublicDocuments.Update(publicDocument);
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task UpdateAsync(PublicDocument publicDocument, CancellationToken cancellationToken)
+        public async Task UpdateAsync(PublicDocument publicDocument, CancellationToken cancellationToken = default)
         {
             _dbContext.PublicDocuments.Update(publicDocument);
             await _dbContext.SaveChangesAsync(cancellationToken);
