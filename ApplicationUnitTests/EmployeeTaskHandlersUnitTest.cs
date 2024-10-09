@@ -64,14 +64,14 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id))
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default))
                            .ReturnsAsync(_empTask);
 
             // Act
             await _AddAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_empTask), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_empTask, default), Times.Once);
         }
 
         [Fact]
@@ -94,14 +94,14 @@ namespace ApplicationUnitTests
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id))
                            .ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id))
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default))
                            .ReturnsAsync(_empTask);
 
             // Act
             await _RemAssgEmpHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_empTask), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_empTask, default), Times.Once);
         }
 
         [Fact]
@@ -113,7 +113,7 @@ namespace ApplicationUnitTests
             // Act
             await _CreEmpTaskHandler.Handle(request, CancellationToken.None);
             // Assert
-            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<EmployeeTask>()), Times.Once);
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<EmployeeTask>(), default), Times.Once);
         }
 
         [Fact]
@@ -133,13 +133,13 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteEmployeeTask(guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_empTask);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_empTask);
 
             // Act
             await _DelEmpTaskHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_empTask), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_empTask, default), Times.Once);
         }
 
         [Fact]
@@ -163,13 +163,13 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_empTask);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_empTask);
 
             // Act
             await _UpdEmpTaskHandler.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_empTask), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_empTask, default), Times.Once);
         }
     }
 }
