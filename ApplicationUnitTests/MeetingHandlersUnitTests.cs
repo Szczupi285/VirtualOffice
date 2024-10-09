@@ -44,7 +44,7 @@ namespace ApplicationUnitTests
             await _CreMettHan.Handle(request, CancellationToken.None);
 
             //Assert
-            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Meeting>()), Times.Once());
+            _repositoryMock.Verify(r => r.AddAsync(It.IsAny<Meeting>(), default), Times.Once());
         }
 
         [Fact]
@@ -64,12 +64,12 @@ namespace ApplicationUnitTests
             // Arrange
             var request = new DeleteMeeting(guid);
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_meet);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_meet);
             // Act
             await _DelMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.DeleteAsync(_meet), Times.Once);
+            _repositoryMock.Verify(r => r.DeleteAsync(_meet, default), Times.Once);
         }
 
         [Fact]
@@ -92,13 +92,13 @@ namespace ApplicationUnitTests
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id)).ReturnsAsync(true);
 
-            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id)).ReturnsAsync(_meet);
+            _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default)).ReturnsAsync(_meet);
 
             // Act
             await _UpdMettHan.Handle(request, CancellationToken.None);
 
             // Assert
-            _repositoryMock.Verify(r => r.UpdateAsync(_meet), Times.Once);
+            _repositoryMock.Verify(r => r.UpdateAsync(_meet, default), Times.Once);
         }
     }
 }
