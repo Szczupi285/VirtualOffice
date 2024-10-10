@@ -48,5 +48,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpDelete("Delete/CalendarEvent/{id}")]
+        public async Task DeleteCalendarEvent(Guid id)
+        {
+            var command = new DeleteCalendarEvent(id);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

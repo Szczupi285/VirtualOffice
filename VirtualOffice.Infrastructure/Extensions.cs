@@ -114,7 +114,7 @@ namespace VirtualOffice.Infrastructure
 
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventUpdated");
                     });
-                    configurator.ReceiveEndpoint("caledar-event-deleted", e =>
+                    configurator.ReceiveEndpoint("calendar-event-deleted", e =>
                     {
                         e.ConfigureConsumer<CalendarEventDeletedConsumer>(context);
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventDeleted");
