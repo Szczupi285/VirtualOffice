@@ -36,5 +36,9 @@ namespace VirtualOffice.Domain.Entities
             _StartDate = startDate;
             AddEvent(new CalendarEventRescheduled(this));
         }
+
+        // temp method for raising an event. Think of a way to update/change this
+        public void Disable()
+           => AddEvent(new CalendarEventDisabled(Id));
     }
 }
