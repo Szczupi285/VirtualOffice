@@ -25,7 +25,7 @@ namespace VirtualOffice.Api
             Created();
         }
 
-        [HttpPatch("Update/{id}/Title")]
+        [HttpPatch("{id}/title")]
         public async Task UpdateCalendarEventTitle(Guid id, string title)
         {
             var command = new UpdateCalendarEventTitle(id, title);
@@ -33,7 +33,7 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPatch("Update/{id}/Description")]
+        [HttpPatch("{id}/description")]
         public async Task UpdateCalendarEventDescription(Guid id, string description)
         {
             var command = new UpdateCalendarEventDescription(id, description);
@@ -41,7 +41,7 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPatch("Update/{id}/Schedule")]
+        [HttpPatch("{id}/schedule")]
         public async Task UpdateCalendarEventSchedule(Guid id, DateTime startDate, DateTime endDate)
         {
             var command = new RescheduleCalendarEvent(id, startDate, endDate);
@@ -49,7 +49,7 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpDelete("Delete/CalendarEvent/{id}")]
+        [HttpDelete("{id}")]
         public async Task DeleteCalendarEvent(Guid id)
         {
             var command = new DeleteCalendarEvent(id);
@@ -57,18 +57,18 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPost("{calendarEventId}/Employees")]
-        public async Task AddCalendarEventAssignedEmployees(Guid calendarEventId, HashSet<Guid> employeesToAdd)
+        [HttpPost("{Id}/employees")]
+        public async Task AddCalendarEventAssignedEmployees(Guid Id, HashSet<Guid> employeesToAdd)
         {
-            var command = new AddCalendarEventAssignedEmployees(calendarEventId, employeesToAdd);
+            var command = new AddCalendarEventAssignedEmployees(Id, employeesToAdd);
             await _mediator.Send(command);
             Ok();
         }
 
-        [HttpDelete("{calendarEventId}/Employees")]
-        public async Task RemoveCalendarEventAssignedEmployees(Guid calendarEventId, HashSet<Guid> employeesToRemove)
+        [HttpDelete("{Id}/employees")]
+        public async Task RemoveCalendarEventAssignedEmployees(Guid Id, HashSet<Guid> employeesToRemove)
         {
-            var command = new RemoveCalendarEventAssignedEmployees(calendarEventId, employeesToRemove);
+            var command = new RemoveCalendarEventAssignedEmployees(Id, employeesToRemove);
             await _mediator.Send(command);
             Ok();
         }
