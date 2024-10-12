@@ -24,14 +24,14 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             if (!await _readService.ExistsByIdAsync(request.Id))
                 throw new CalendarEventDoesNotExistException(request.Id);
 
-            var entity = await _repository.GetByIdAsync(request.Id);
+            var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);
             entity.Disable();
+
+            await _repository.DeleteAsync(entity, cancellationToken);
 
             foreach (var domainEvent in entity.Events)
                 await _mediator.Publish(domainEvent, cancellationToken);
             entity.ClearEvents();
-
-            await _repository.DeleteAsync(entity);
         }
     }
 }

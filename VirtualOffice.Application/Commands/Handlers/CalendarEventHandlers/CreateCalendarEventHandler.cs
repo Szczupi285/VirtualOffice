@@ -23,7 +23,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
             CalendarEvent calEv = new CalendarEvent(guid, Title, EventDescription, AssignedEmployees, StartDate, EndDate);
 
-            await _repository.AddAsync(calEv);
+            await _repository.AddAsync(calEv, cancellationToken);
 
             foreach (var domainEvent in calEv.Events)
                 await _mediator.Publish(domainEvent, cancellationToken);

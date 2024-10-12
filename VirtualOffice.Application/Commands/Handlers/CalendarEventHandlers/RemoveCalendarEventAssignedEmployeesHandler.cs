@@ -28,21 +28,21 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
         public async Task Handle(RemoveCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.CalendarId))
+            if (!await _readService.ExistsByIdAsync(request.CalendarId, cancellationToken))
                 throw new CalendarEventDoesNotExistException(request.CalendarId);
             HashSet<ApplicationUser> employees = new();
 
             // retrive all employees by Id and assign them to employees
             foreach (var userId in request.EmployeesToRemove)
             {
-                if (!await _userReadService.ExistsByIdAsync(userId))
+                if (!await _userReadService.ExistsByIdAsync(userId, cancellationToken))
                     throw new EmployeeNotFoundException(userId);
-                employees.Add(await _userRepository.GetByIdAsync(userId));
+                employees.Add(await _userRepository.GetByIdAsync(userId, cancellationToken));
             }
 
-            var calEv = await _repository.GetByIdAsync(request.CalendarId);
+            var calEv = await _repository.GetByIdAsync(request.CalendarId, cancellationToken);
             calEv.RemoveEmployeesRange(employees);
-            await _repository.UpdateAsync(calEv);
+            await _repository.UpdateAsync(calEv, cancellationToken);
 
             foreach (var domainEvent in calEv.Events)
                 await _mediator.Publish(domainEvent, cancellationToken);

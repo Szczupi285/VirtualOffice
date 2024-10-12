@@ -31,12 +31,12 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                     if (!await _readService.ExistsByIdAsync(request.Id))
                         throw new CalendarEventDoesNotExistException(request.Id);
 
-                    var calEv = await _repository.GetByIdAsync(request.Id);
+                    var calEv = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
                     if (calEv._Description != request.Description)
                         calEv.SetDescription(request.Description);
 
-                    await _repository.UpdateAsync(calEv);
+                    await _repository.UpdateAsync(calEv, cancellationToken);
 
                     foreach (var domainEvent in calEv.Events)
                         await _mediator.Publish(domainEvent, cancellationToken);
