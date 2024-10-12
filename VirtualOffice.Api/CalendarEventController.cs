@@ -57,7 +57,7 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPost("Add/CalendarEvent/Users/{id}")]
+        [HttpPost("Add/Users/{id}")]
         public async Task AddCalendarEventAssignedEmployees(Guid id, HashSet<Guid> employeesToAdd)
         {
             var command = new AddCalendarEventAssignedEmployees(id, employeesToAdd);
