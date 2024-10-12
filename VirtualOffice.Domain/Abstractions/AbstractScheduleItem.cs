@@ -71,19 +71,33 @@ namespace VirtualOffice.Domain.Abstractions
                 AddEvent(new BulkEmployeesAddedToScheduleItem(this, addedEmployees, GetType()));
         }
 
-        public void RemoveEmployee(ApplicationUser user)
+        public bool RemoveEmployee(ApplicationUser user)
         {
             if (!_AssignedEmployees.Contains(user))
                 throw new UserIsNotAssignedToThisScheduleItemException(user.Id);
 
-            _AssignedEmployees.Remove(user);
-            AddEvent(new EmployeeRemovedFromScheduleItem(this, user));
+            bool IsRemoved = _AssignedEmployees.Remove(user);
+            if (IsRemoved)
+                AddEvent(new EmployeeRemovedFromScheduleItem(this, user));
+
+            return IsRemoved;
         }
 
         public void RemoveEmployeesRange(ICollection<ApplicationUser> users)
         {
+            var removedEmployees = new HashSet<ApplicationUser>();
+
             foreach (var user in users)
-                RemoveEmployee(user);
+            {
+                bool isRemoved = RemoveEmployee(user);
+                if (isRemoved)
+                    removedEmployees.Add(user);
+            }
+
+            if (removedEmployees.Any())
+                // we use bulk event to handle database synchronization so we can update the read db just once.
+                // more granular operations like SendEmail will be resolved in EmployeeAddedToScheduleItem EventHandler
+                AddEvent(new BulkEmployeesRemovedFromScheduleItem(this, removedEmployees, GetType()));
         }
 
         public void UpdateEndDate(DateTime endDate)
