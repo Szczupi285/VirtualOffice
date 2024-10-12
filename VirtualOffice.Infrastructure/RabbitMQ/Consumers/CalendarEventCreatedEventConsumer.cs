@@ -1,10 +1,10 @@
 ﻿using MassTransit;
-using VirtualOffice.Application.Events;
+using VirtualOffice.Application.IntegrationEvents;
 using VirtualOffice.Infrastructure.MongoDb.Services;
 
 namespace VirtualOffice.Infrastructure.RabbitMQ.Consumers
 {
-    public sealed class CalendarEventCreatedEventConsumer : IConsumer<CalendarEventCreatedEvent>
+    public sealed class CalendarEventCreatedEventConsumer : IConsumer<CalendarEventCreatedIntegrationEvent>
     {
         private readonly CalendarEventsService _calendarEventsService;
 
@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.RabbitMQ.Consumers
             _calendarEventsService = calendarEventsService;
         }
 
-        public async Task Consume(ConsumeContext<CalendarEventCreatedEvent> context)
+        public async Task Consume(ConsumeContext<CalendarEventCreatedIntegrationEvent> context)
         {
             await _calendarEventsService.CreateAsync(context.Message);
         }

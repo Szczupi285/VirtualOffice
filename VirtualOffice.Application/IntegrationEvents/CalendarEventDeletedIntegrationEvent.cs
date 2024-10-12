@@ -1,8 +1,8 @@
 ﻿using VirtualOffice.Application.Interfaces;
 
-namespace VirtualOffice.Application.Events
+namespace VirtualOffice.Application.IntegrationEvents
 {
-    public class CalendarEventDeletedIntegrationEvent : IEvent
+    public class CalendarEventDeletedIntegrationEvent : IIntegrationEvent
     {
         public Guid Id { get; set; }
 

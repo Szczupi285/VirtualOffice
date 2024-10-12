@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task AddOutboxMessageAsync(IEvent integrationEvent, CancellationToken cancellationToken = default)
+        public async Task AddOutboxMessageAsync(IIntegrationEvent integrationEvent, CancellationToken cancellationToken = default)
         {
             DateTime dateTime = DateTime.UtcNow;
             await _dbContext.OutboxMessages.AddAsync(

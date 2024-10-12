@@ -2,6 +2,6 @@
 {
     public interface IOutboxMessageRepository
     {
-        public Task AddOutboxMessageAsync(IEvent IntegrationEvent, CancellationToken cancellationToken = default);
+        public Task AddOutboxMessageAsync(IIntegrationEvent IntegrationEvent, CancellationToken cancellationToken = default);
     }
 }

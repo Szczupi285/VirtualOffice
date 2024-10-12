@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using VirtualOffice.Application.Events;
+using VirtualOffice.Application.IntegrationEvents;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
@@ -22,7 +22,7 @@ namespace VirtualOffice.Application.DomainEventHandlers
 
         public async Task Handle(CalendarEventCreated notification, CancellationToken cancellationToken)
         {
-            CalendarEventCreatedEvent integrationEvent = new CalendarEventCreatedEvent
+            CalendarEventCreatedIntegrationEvent integrationEvent = new CalendarEventCreatedIntegrationEvent
             {
                 Id = notification.Id.ToString(),
                 Title = notification.Title,
@@ -33,16 +33,6 @@ namespace VirtualOffice.Application.DomainEventHandlers
             };
 
             await _outboxMessageRepository.AddOutboxMessageAsync(integrationEvent);
-            // await _eventBus.PublishAsync(new CalendarEventCreatedEvent
-            // {
-            //     Id = notification.CalendarEvent.Id.Value.ToString(),
-            //     Title = notification.CalendarEvent._Title.Value,
-            //     Description = notification.CalendarEvent._Description.Value,
-            //     AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.CalendarEvent._AssignedEmployees),
-            //     StartDate = notification.CalendarEvent._StartDate.Value,
-            //     EndDate = notification.CalendarEvent._EndDate.Value,
-            // }
-            //, cancellationToken);
         }
     }
 }

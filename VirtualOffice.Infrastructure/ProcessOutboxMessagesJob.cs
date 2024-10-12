@@ -30,7 +30,7 @@ namespace VirtualOffice.Infrastructure
                 try
                 {
                     // handle debugging
-                    IEvent? IntegrationEvent = JsonConvert.DeserializeObject<IEvent>(msg.Content, new JsonSerializerSettings
+                    IIntegrationEvent? IntegrationEvent = JsonConvert.DeserializeObject<IIntegrationEvent>(msg.Content, new JsonSerializerSettings
                     {
                         TypeNameHandling = TypeNameHandling.All
                     });

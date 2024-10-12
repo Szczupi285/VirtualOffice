@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
-using VirtualOffice.Application.Events;
+using VirtualOffice.Application.IntegrationEvents;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;

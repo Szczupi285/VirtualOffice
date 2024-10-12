@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.RabbitMQ
         }
 
         public Task PublishAsync<T>(T message, CancellationToken cancellationToken = default)
-            where T : class, IEvent
+            where T : class, IIntegrationEvent
             => _publishEndpoint.Publish(message, x =>
             {
                 x.SetRoutingKey(message.GetRoutingKey());

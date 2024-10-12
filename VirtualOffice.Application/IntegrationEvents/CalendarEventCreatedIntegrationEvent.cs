@@ -1,9 +1,9 @@
 ﻿using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Models;
 
-namespace VirtualOffice.Application.Events
+namespace VirtualOffice.Application.IntegrationEvents
 {
-    public class CalendarEventCreatedEvent : CalendarEventReadModel, IEvent
+    public class CalendarEventCreatedIntegrationEvent : CalendarEventReadModel, IIntegrationEvent
     {
         public string GetRoutingKey()
             => "CalendarEventCreated";
