@@ -56,5 +56,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpPost("Add/CalendarEvent/Users/{id}")]
+        public async Task AddCalendarEventAssignedEmployees(Guid id, HashSet<Guid> employeesToAdd)
+        {
+            var command = new AddCalendarEventAssignedEmployees(id, employeesToAdd);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

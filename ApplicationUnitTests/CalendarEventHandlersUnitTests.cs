@@ -15,6 +15,8 @@ namespace ApplicationUnitTests
         private readonly CalendarEvent _calEv;
         private readonly Mock<ICalendarEventRepository> _repositoryMock;
         private readonly Mock<ICalendarEventReadService> _readServiceMock;
+        private readonly Mock<IUserRepository> _userRepositoryMock;
+        private readonly Mock<IUserReadService> _userReadServiceMock;
         private readonly AddCalendarEventAssignedEmployeesHandler _AddCalEvHandler;
         private readonly RemoveCalendarEventAssignedEmployeesHandler _RemCalEvHandler;
         private readonly DeleteCalendarEventHandler _DelCalEvHandler;
@@ -28,8 +30,11 @@ namespace ApplicationUnitTests
         {
             _repositoryMock = new Mock<ICalendarEventRepository>();
             _readServiceMock = new Mock<ICalendarEventReadService>();
-            _AddCalEvHandler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
-            _DelCalEvHandler = new DeleteCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object);
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _userReadServiceMock = new Mock<IUserReadService>();
+            _AddCalEvHandler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object, new Mock<IMediator>().Object,
+                 _userRepositoryMock.Object, _userReadServiceMock.Object);
+            _DelCalEvHandler = new DeleteCalendarEventHandler(_repositoryMock.Object, _readServiceMock.Object, new Mock<IMediator>().Object);
             _RemCalEvHandler = new RemoveCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
             _UpdCalEvHandler = new UpdateCalendarEventTitleHandler(_repositoryMock.Object, _readServiceMock.Object, new Mock<IMediator>().Object);
             _user1 = new ApplicationUser(Guid.NewGuid(), "John", "Doe");
@@ -43,7 +48,7 @@ namespace ApplicationUnitTests
         public async Task AddCalendarEventAssignedEmployeesHandler_ShouldThrowCalendarEventDoesNotExistsException()
         {
             // Arrange
-            var request = new AddCalendarEventAssignedEmployees(guid, new HashSet<ApplicationUser> { _user1, _user2 });
+            var request = new AddCalendarEventAssignedEmployees(guid, new HashSet<Guid> { _user1.Id, _user2.Id });
             _readServiceMock.Setup(s => s.ExistsByIdAsync(It.IsAny<Guid>())).ReturnsAsync(false);
 
             // Act & Assert
@@ -54,15 +59,20 @@ namespace ApplicationUnitTests
         public async Task AddCalendarEventAssignedEmployeesHandler_ShouldAddEmployees_WhenCalendarEventExists()
         {
             // Arrange
-            var request = new AddCalendarEventAssignedEmployees(guid, new HashSet<ApplicationUser> { _user2 });
+            var request = new AddCalendarEventAssignedEmployees(guid, new HashSet<Guid> { _user2.Id });
 
             _readServiceMock.Setup(s => s.ExistsByIdAsync(request.Id))
                            .ReturnsAsync(true);
 
             _repositoryMock.Setup(r => r.GetByIdAsync(request.Id, default))
                            .ReturnsAsync(_calEv);
+            _userReadServiceMock.Setup(r => r.ExistsByIdAsync(_user2.Id))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(r => r.GetByIdAsync(_user2.Id, default))
+                .ReturnsAsync(_user2);
 
-            var handler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object);
+            var handler = new AddCalendarEventAssignedEmployeesHandler(_repositoryMock.Object, _readServiceMock.Object,
+                new Mock<IMediator>().Object, _userRepositoryMock.Object, _userReadServiceMock.Object);
 
             // Act
             await handler.Handle(request, CancellationToken.None);

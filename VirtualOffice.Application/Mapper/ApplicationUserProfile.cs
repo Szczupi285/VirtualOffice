@@ -11,9 +11,9 @@ namespace VirtualOffice.Application.Mapper
         public ApplicationUserProfile()
         {
             CreateMap<ApplicationUser, EmployeeReadModel>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.ToString()))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src._Name))
-                .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src._Surname))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id.Value.ToString()))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src._Name.Value))
+                .ForMember(dest => dest.Surname, opt => opt.MapFrom(src => src._Surname.Value))
                 .ForMember(dest => dest.Permissions, opt => opt.MapFrom(src => src._Permissions));
 
             CreateMap<EmployeeReadModel, ApplicationUser>()

@@ -91,6 +91,7 @@ namespace VirtualOffice.Infrastructure
                 c.AddConsumer<CalendarEventDescriptionUpdatedConsumer>();
                 c.AddConsumer<CalendarEventRescheduledConsumer>();
                 c.AddConsumer<CalendarEventDeletedConsumer>();
+                c.AddConsumer<CalendarEventEmployeesAddedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -111,6 +112,7 @@ namespace VirtualOffice.Infrastructure
                         e.ConfigureConsumer<CalendarEventTitleUpdatedConsumer>(context);
                         e.ConfigureConsumer<CalendarEventDescriptionUpdatedConsumer>(context);
                         e.ConfigureConsumer<CalendarEventRescheduledConsumer>(context);
+                        e.ConfigureConsumer<CalendarEventEmployeesAddedConsumer>(context);
 
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventUpdated");
                     });

@@ -46,18 +46,29 @@ namespace VirtualOffice.Domain.Abstractions
             AddEvent(new ScheduleItemDescriptionSetted(this, description, GetType()));
         }
 
-        public void AddEmployee(ApplicationUser user)
+        public bool AddEmployee(ApplicationUser user)
         {
             bool HasBeenAdded = _AssignedEmployees.Add(user);
 
             if (HasBeenAdded)
                 AddEvent(new EmployeeAddedToScheduleItem(this, user));
+
+            return HasBeenAdded;
         }
 
         public void AddEmployeesRange(ICollection<ApplicationUser> users)
         {
+            var addedEmployees = new HashSet<ApplicationUser>();
             foreach (var user in users)
-                AddEmployee(user);
+            {
+                bool hasBeenAdded = AddEmployee(user);
+                if (hasBeenAdded)
+                    addedEmployees.Add(user);
+            }
+            if (addedEmployees.Any())
+                // we use bulk event to handle database synchronization so we can update the read db just once.
+                // more granular operations like SendEmail will be resolved in EmployeeAddedToScheduleItem EventHandler
+                AddEvent(new BulkEmployeesAddedToScheduleItem(this, addedEmployees, GetType()));
         }
 
         public void RemoveEmployee(ApplicationUser user)

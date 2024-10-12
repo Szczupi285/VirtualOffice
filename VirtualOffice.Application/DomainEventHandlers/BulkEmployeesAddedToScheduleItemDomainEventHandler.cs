@@ -1,0 +1,24 @@
+﻿using MediatR;
+using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies;
+using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
+
+namespace VirtualOffice.Application.DomainEventHandlers
+{
+    public class BulkEmployeesAddedToScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesAddedToScheduleItem>
+    {
+        private readonly ScheduleItemEmployeesAddedStrategyFactory _factory;
+
+        public BulkEmployeesAddedToScheduleItemDomainEventHandler(ScheduleItemEmployeesAddedStrategyFactory factory)
+        {
+            _factory = factory;
+        }
+
+        public Task Handle(BulkEmployeesAddedToScheduleItem notification, CancellationToken cancellationToken)
+        {
+            // Since we have many classes inheriting from ScheduleItem
+            // We use strategy to determine which base class has been updated and handle the changes accordingly
+            var strategy = _factory.GetStrategy(notification.RaisingEntityType);
+            return strategy.Handle(notification, cancellationToken);
+        }
+    }
+}

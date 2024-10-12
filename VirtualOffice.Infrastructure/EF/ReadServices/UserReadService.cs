@@ -14,7 +14,7 @@ namespace VirtualOffice.Infrastructure.EF.ReadServices
 
         public async Task<bool> ExistsByIdAsync(Guid id)
         {
-            return await _dbContext.Users.AnyAsync(e => e.Id == id);
+            return await _dbContext.Employees.AnyAsync(e => e.Id.Equals(id));
         }
     }
 }
