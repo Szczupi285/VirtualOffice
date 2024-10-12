@@ -96,7 +96,7 @@ namespace VirtualOffice.Domain.Abstractions
 
             if (removedEmployees.Any())
                 // we use bulk event to handle database synchronization so we can update the read db just once.
-                // more granular operations like SendEmail will be resolved in EmployeeAddedToScheduleItem EventHandler
+                // more granular operations like SendEmail will be resolved in EmployeeRemovedFromScheduleItem EventHandler
                 AddEvent(new BulkEmployeesRemovedFromScheduleItem(this, removedEmployees, GetType()));
         }
 

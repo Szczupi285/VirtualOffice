@@ -4,14 +4,14 @@ using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Remove
 {
-    public class CalendarEventEmployeesRemovedStrategy
+    public class ScheduleItemEmployeesRemovedStrategyFactory
     {
         private readonly IOutboxMessageRepository _outboxMessagesRepository;
         private readonly IMapper _mapper;
 
         private readonly Dictionary<Type, Func<IScheduleItemEmployeesRemovedStrategy>> _strategies;
 
-        public CalendarEventEmployeesRemovedStrategy(IOutboxMessageRepository outboxMessagesRepository, IMapper mapper)
+        public ScheduleItemEmployeesRemovedStrategyFactory(IOutboxMessageRepository outboxMessagesRepository, IMapper mapper)
         {
             _outboxMessagesRepository = outboxMessagesRepository;
             _mapper = mapper;

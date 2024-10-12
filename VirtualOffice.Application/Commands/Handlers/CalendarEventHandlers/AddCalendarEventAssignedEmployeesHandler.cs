@@ -28,8 +28,8 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
         public async Task Handle(AddCalendarEventAssignedEmployees request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.Id))
-                throw new CalendarEventDoesNotExistException(request.Id);
+            if (!await _readService.ExistsByIdAsync(request.CalendarId))
+                throw new CalendarEventDoesNotExistException(request.CalendarId);
             HashSet<ApplicationUser> employees = new();
             foreach (var userId in request.EmployeesToAdd)
             {
@@ -39,7 +39,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                 employees.Add(await _userRepository.GetByIdAsync(userId));
             }
 
-            var calEv = await _repository.GetByIdAsync(request.Id);
+            var calEv = await _repository.GetByIdAsync(request.CalendarId);
             calEv.AddEmployeesRange(employees);
             await _repository.UpdateAsync(calEv);
 

@@ -6,9 +6,9 @@ namespace VirtualOffice.Application.DomainEventHandlers
 {
     public class BulkEmployeesRemovedFromScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesRemovedFromScheduleItem>
     {
-        private readonly IScheduleItemEmployeesRemovedStrategyFactory _factory;
+        private readonly ScheduleItemEmployeesRemovedStrategyFactory _factory;
 
-        public BulkEmployeesRemovedFromScheduleItemDomainEventHandler(IScheduleItemEmployeesRemovedStrategyFactory factory)
+        public BulkEmployeesRemovedFromScheduleItemDomainEventHandler(ScheduleItemEmployeesRemovedStrategyFactory factory)
         {
             _factory = factory;
         }

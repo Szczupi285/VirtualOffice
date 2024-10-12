@@ -2,5 +2,5 @@
 
 namespace VirtualOffice.Application.Commands.CalendarEventCommands
 {
-    public record AddCalendarEventAssignedEmployees(Guid Id, HashSet<Guid> EmployeesToAdd) : IRequest;
+    public record AddCalendarEventAssignedEmployees(Guid CalendarId, HashSet<Guid> EmployeesToAdd) : IRequest;
 }
