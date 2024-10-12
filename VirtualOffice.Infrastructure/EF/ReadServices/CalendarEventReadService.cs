@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.EF.ReadServices
             _dbContext = dbContext;
         }
 
-        public async Task<bool> ExistsByIdAsync(Guid id)
+        public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             // temporary? implementing IEquatable also requires to impelement IConvertible.
             return await _dbContext.CalendarEvents.AnyAsync(e => e.Id == new ScheduleItemId(id));

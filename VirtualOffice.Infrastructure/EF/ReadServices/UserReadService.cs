@@ -12,7 +12,7 @@ namespace VirtualOffice.Infrastructure.EF.ReadServices
             _dbContext = dbContext;
         }
 
-        public async Task<bool> ExistsByIdAsync(Guid id)
+        public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _dbContext.Employees.AnyAsync(e => e.Id.Equals(id));
         }
