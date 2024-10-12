@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies;
-using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies;
+using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add;
 using VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies;
 
 namespace VirtualOffice.Application

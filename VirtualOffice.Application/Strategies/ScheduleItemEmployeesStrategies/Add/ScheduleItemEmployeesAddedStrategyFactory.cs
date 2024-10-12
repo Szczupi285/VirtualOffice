@@ -2,7 +2,7 @@
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Domain.Entities;
 
-namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies
+namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add
 {
     public class ScheduleItemEmployeesAddedStrategyFactory
     {

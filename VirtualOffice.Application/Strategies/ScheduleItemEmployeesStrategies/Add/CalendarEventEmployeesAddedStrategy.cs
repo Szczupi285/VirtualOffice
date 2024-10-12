@@ -4,7 +4,7 @@ using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
-namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies
+namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add
 {
     public class CalendarEventEmployeesAddedStrategy : IScheduleItemEmployeesAddedStrategy
     {

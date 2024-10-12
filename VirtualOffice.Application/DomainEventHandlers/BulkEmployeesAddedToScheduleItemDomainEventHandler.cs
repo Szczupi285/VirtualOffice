@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies;
+using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers
