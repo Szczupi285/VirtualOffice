@@ -57,10 +57,18 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPost("Add/Users/{id}")]
-        public async Task AddCalendarEventAssignedEmployees(Guid id, HashSet<Guid> employeesToAdd)
+        [HttpPost("{calendarEventId}/Employees")]
+        public async Task AddCalendarEventAssignedEmployees(Guid calendarEventId, HashSet<Guid> employeesToAdd)
         {
-            var command = new AddCalendarEventAssignedEmployees(id, employeesToAdd);
+            var command = new AddCalendarEventAssignedEmployees(calendarEventId, employeesToAdd);
+            await _mediator.Send(command);
+            Ok();
+        }
+
+        [HttpDelete("{calendarEventId}/Employees")]
+        public async Task RemoveCalendarEventAssignedEmployees(Guid calendarEventId, HashSet<Guid> employeesToRemove)
+        {
+            var command = new RemoveCalendarEventAssignedEmployees(calendarEventId, employeesToRemove);
             await _mediator.Send(command);
             Ok();
         }
