@@ -15,7 +15,7 @@ namespace VirtualOffice.Infrastructure.RabbitMQ.Consumers.EmployeeTaskConsumers
 
         public async Task Consume(ConsumeContext<EmployeeTaskEmployeesAddedIntegrationEvent> context)
         {
-            await _employeeTasksService.AddAssignedEmployees(context.Message.Id, context.Message.AssignedEmployees);
+            await _employeeTasksService.AddAssignedEmployeesAsync(context.Message.Id, context.Message.AssignedEmployees);
         }
     }
 }

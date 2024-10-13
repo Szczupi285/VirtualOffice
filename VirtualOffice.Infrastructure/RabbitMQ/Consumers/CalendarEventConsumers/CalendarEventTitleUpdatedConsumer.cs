@@ -15,7 +15,7 @@ namespace VirtualOffice.Infrastructure.RabbitMQ.Consumers.CalendarEventConsumers
 
         public async Task Consume(ConsumeContext<CalendarEventTitleUpdatedIntegrationEvent> context)
         {
-            await _calendarEventsService.UpdateTitle(context.Message.Id, context.Message.Title);
+            await _calendarEventsService.UpdateTitleAsync(context.Message.Id, context.Message.Title);
         }
     }
 }
