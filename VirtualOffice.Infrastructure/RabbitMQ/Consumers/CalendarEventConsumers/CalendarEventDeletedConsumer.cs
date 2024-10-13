@@ -1,5 +1,5 @@
 ﻿using MassTransit;
-using VirtualOffice.Application.IntegrationEvents;
+using VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents;
 using VirtualOffice.Infrastructure.MongoDb.Services;
 
 namespace VirtualOffice.Infrastructure.RabbitMQ.Consumers

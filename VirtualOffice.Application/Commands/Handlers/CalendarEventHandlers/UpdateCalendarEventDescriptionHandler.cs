@@ -28,7 +28,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
             {
                 try
                 {
-                    if (!await _readService.ExistsByIdAsync(request.Id))
+                    if (!await _readService.ExistsByIdAsync(request.Id, cancellationToken))
                         throw new CalendarEventDoesNotExistException(request.Id);
 
                     var calEv = await _repository.GetByIdAsync(request.Id, cancellationToken);
@@ -52,8 +52,8 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
                     if (_retryCount >= _maxRetryAttempts)
                         throw;
 
-                    // wait for certain ammount of time between entries;
-                    await Task.Delay(TimeSpan.FromMilliseconds(100), cancellationToken);
+                    // each retry takes place 2x later than previous one e.g. 200ms => 400ms => 800ms
+                    await Task.Delay(TimeSpan.FromMilliseconds(Math.Pow(2, _retryCount) * 100), cancellationToken);
                 }
             }
         }

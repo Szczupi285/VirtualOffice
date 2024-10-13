@@ -2,7 +2,7 @@
 using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
-namespace VirtualOffice.Application.DomainEventHandlers
+namespace VirtualOffice.Application.DomainEventHandlers.ScheduleItemDomainEventHandlers
 {
     public class BulkEmployeesAddedToScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesAddedToScheduleItem>
     {

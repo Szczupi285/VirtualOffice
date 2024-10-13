@@ -6,7 +6,6 @@ namespace VirtualOffice.Application.Models
     public class EmployeeTaskReadModel : EntityId
     {
         public string Id { get; set; }
-        public int Version { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public List<EmployeeReadModel> AssignedEmployees { get; set; }

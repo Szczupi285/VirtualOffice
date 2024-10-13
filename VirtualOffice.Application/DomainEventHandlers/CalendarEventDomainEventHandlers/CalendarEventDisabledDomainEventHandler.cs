@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
-using VirtualOffice.Application.IntegrationEvents;
+using VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 
-namespace VirtualOffice.Application.DomainEventHandlers
+namespace VirtualOffice.Application.DomainEventHandlers.CalendarEventDomainEventHandlers
 {
     public class CalendarEventDisabledDomainEventHandler : INotificationHandler<CalendarEventDisabled>
     {

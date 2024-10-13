@@ -1,6 +1,6 @@
 ﻿using VirtualOffice.Application.Interfaces;
 
-namespace VirtualOffice.Application.IntegrationEvents
+namespace VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents
 {
     public class CalendarEventDeletedIntegrationEvent : IIntegrationEvent
     {

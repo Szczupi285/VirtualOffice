@@ -12,6 +12,8 @@ using VirtualOffice.Infrastructure.EF.Repositories;
 using VirtualOffice.Infrastructure.MongoDb.Services;
 using VirtualOffice.Infrastructure.RabbitMQ;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers;
+using VirtualOffice.Infrastructure.RabbitMQ.Consumers.CalendarEventConsumers;
+using VirtualOffice.Infrastructure.RabbitMQ.Consumers.EmployeeTaskConsumers;
 
 namespace VirtualOffice.Infrastructure
 {
@@ -85,7 +87,7 @@ namespace VirtualOffice.Infrastructure
             services.AddMassTransit(c =>
             {
                 c.SetKebabCaseEndpointNameFormatter();
-
+                // refactor
                 c.AddConsumer<CalendarEventCreatedEventConsumer>();
                 c.AddConsumer<CalendarEventTitleUpdatedConsumer>();
                 c.AddConsumer<CalendarEventDescriptionUpdatedConsumer>();
@@ -93,6 +95,7 @@ namespace VirtualOffice.Infrastructure
                 c.AddConsumer<CalendarEventDeletedConsumer>();
                 c.AddConsumer<CalendarEventEmployeesAddedConsumer>();
                 c.AddConsumer<CalendarEventEmployeesRemovedConsumer>();
+                c.AddConsumer<EmployeeTaskCreatedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -122,6 +125,12 @@ namespace VirtualOffice.Infrastructure
                     {
                         e.ConfigureConsumer<CalendarEventDeletedConsumer>(context);
                         e.Bind("calendar-events", x => x.RoutingKey = "CalendarEventDeleted");
+                    });
+
+                    configurator.ReceiveEndpoint("employee-task-created", e =>
+                    {
+                        e.ConfigureConsumer<EmployeeTaskCreatedConsumer>(context);
+                        e.Bind("employee-tasks", x => x.RoutingKey = "EmployeeTaskCreated");
                     });
                 });
             });

@@ -51,7 +51,7 @@ namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
                     if (_retryCount >= _maxRetryAttempts)
                         throw;
 
-                    // each retry takes place 2x later than previous one e.g. 200ms => 400ms => 800ms
+                    /// each retry takes place 2x later than previous one e.g. 200ms => 400ms => 800ms
                     await Task.Delay(TimeSpan.FromMilliseconds(Math.Pow(2, _retryCount) * 100), cancellationToken);
                 }
             }

@@ -2,7 +2,7 @@
 using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Remove;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
-namespace VirtualOffice.Application.DomainEventHandlers
+namespace VirtualOffice.Application.DomainEventHandlers.ScheduleItemDomainEventHandlers
 {
     public class BulkEmployeesRemovedFromScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesRemovedFromScheduleItem>
     {

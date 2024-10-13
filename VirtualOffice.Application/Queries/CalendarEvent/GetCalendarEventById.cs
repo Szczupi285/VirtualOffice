@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using VirtualOffice.Application.DTO.CalendarEvent;
+using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Application.Queries.CalendarEvent
 {
-    public record GetCalendarEventById(Guid CalendarEventId) : IRequest<CalendarEventDTO>;
+    public record GetCalendarEventById(Guid CalendarEventId) : IRequest<CalendarEventReadModel>;
 }

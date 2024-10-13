@@ -16,6 +16,7 @@ namespace VirtualOffice.Domain.Entities
             : base(id, title, description, assignedEmployees, startDate, endDate)
         {
             _Priority = priority;
+            AddEvent(new EmployeeTaskCreated(Id, _Title, _Description, _AssignedEmployees, _StartDate, _EndDate, _Priority, _TaskStatus));
         }
 
         private EmployeeTask()

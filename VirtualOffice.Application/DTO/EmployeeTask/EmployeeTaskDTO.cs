@@ -1,15 +1,14 @@
 ﻿using VirtualOffice.Application.DTO.ApplicationUser;
+using VirtualOffice.Domain.Consts;
 
 namespace VirtualOffice.Application.DTO.EmployeeTask
 {
     public class EmployeeTaskDTO
     {
-        Guid Id { get; init; }
         public string _Title { get; init; }
         public string _Description { get; init; }
-        public List<ApplicationUserDTO> _AssignedEmployees { get; init; }
-        public string _Priority { get; init; }
-        public string _Status { get; init; }
+        public HashSet<ApplicationUserDTO> _AssignedEmployees { get; init; }
+        public EmployeeTaskPriorityEnum _Priority { get; init; }
         public DateTime _StartDate { get; init; }
         public DateTime _EndDate { get; init; }
     }

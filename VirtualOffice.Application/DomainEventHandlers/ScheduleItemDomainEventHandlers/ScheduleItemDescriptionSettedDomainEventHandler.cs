@@ -2,7 +2,7 @@
 using VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
-namespace VirtualOffice.Application.DomainEventHandlers
+namespace VirtualOffice.Application.DomainEventHandlers.ScheduleItemDomainEventHandlers
 {
     public class ScheduleItemDescriptionSettedDomainEventHandler : INotificationHandler<ScheduleItemDescriptionSetted>
     {

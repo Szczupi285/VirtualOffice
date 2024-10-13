@@ -21,7 +21,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
         public async Task Handle(DeleteCalendarEvent request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.Id))
+            if (!await _readService.ExistsByIdAsync(request.Id, cancellationToken))
                 throw new CalendarEventDoesNotExistException(request.Id);
 
             var entity = await _repository.GetByIdAsync(request.Id, cancellationToken);

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using VirtualOffice.Application.IntegrationEvents;
+using VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
