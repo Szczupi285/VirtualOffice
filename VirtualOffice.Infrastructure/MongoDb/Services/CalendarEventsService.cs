@@ -13,7 +13,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
         {
         }
 
-        public async Task AddAssignedEmployees(string id, List<EmployeeReadModel> employeeReadModels)
+        public async Task AddAssignedEmployeesAsync(string id, List<EmployeeReadModel> employeeReadModels)
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
@@ -23,7 +23,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task RemoveAssignedEmployees(string id, List<EmployeeReadModel> employeeReadModels)
+        public async Task RemoveAssignedEmployeesAsync(string id, List<EmployeeReadModel> employeeReadModels)
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
@@ -33,7 +33,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task UpdateTitle(string id, string title)
+        public async Task UpdateTitleAsync(string id, string title)
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
@@ -43,7 +43,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task UpdateDescription(string id, string description)
+        public async Task UpdateDescriptionAsync(string id, string description)
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
@@ -53,7 +53,7 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.UpdateOneAsync(filter, update);
         }
 
-        public async Task UpdateSchedule(string id, DateTime startDate, DateTime endDate)
+        public async Task UpdateScheduleAsync(string id, DateTime startDate, DateTime endDate)
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
