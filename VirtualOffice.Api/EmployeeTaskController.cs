@@ -32,5 +32,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpPost("{Id}/employees")]
+        public async Task AddEmployeeTaskAssignedEmployees(Guid Id, HashSet<Guid> employeesToAdd)
+        {
+            var command = new AddAssignedEmployeesToEmployeeTask(Id, employeesToAdd);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

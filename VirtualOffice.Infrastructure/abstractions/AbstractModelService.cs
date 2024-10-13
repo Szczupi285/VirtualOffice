@@ -7,7 +7,7 @@ namespace VirtualOffice.Infrastructure.abstractions
 {
     public abstract class AbstractModelService<T> where T : class, EntityId
     {
-        private readonly IMongoCollection<T> _Collection;
+        protected readonly IMongoCollection<T> _Collection;
 
         public AbstractModelService(
             IOptions<ReadDatabaseSettings> ReadDatabaseSettings,
