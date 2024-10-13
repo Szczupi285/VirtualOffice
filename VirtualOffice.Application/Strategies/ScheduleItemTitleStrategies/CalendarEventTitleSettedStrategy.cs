@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents;
 using VirtualOffice.Application.Interfaces;
-using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies
@@ -23,10 +22,6 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies
             {
                 Id = notification.abstractScheduleItem.Id.Value.ToString(),
                 Title = notification.abstractScheduleItem._Title,
-                Description = notification.abstractScheduleItem._Description,
-                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.abstractScheduleItem._AssignedEmployees),
-                StartDate = notification.abstractScheduleItem._StartDate,
-                EndDate = notification.abstractScheduleItem._EndDate,
             };
             await _outboxMessageRepository.AddOutboxMessageAsync(integrationEvent);
         }

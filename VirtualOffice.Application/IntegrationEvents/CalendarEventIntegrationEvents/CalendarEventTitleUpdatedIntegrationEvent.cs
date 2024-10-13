@@ -1,10 +1,11 @@
 ﻿using VirtualOffice.Application.Interfaces;
-using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents
 {
-    public class CalendarEventTitleUpdatedIntegrationEvent : CalendarEventReadModel, IIntegrationEvent
+    public class CalendarEventTitleUpdatedIntegrationEvent : IIntegrationEvent
     {
+        public string Id { get; set; }
+        public string Title { get; set; }
         public string GetRoutingKey()
             => "CalendarEventUpdated";
     }
