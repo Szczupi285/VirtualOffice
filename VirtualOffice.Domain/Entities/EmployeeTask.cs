@@ -40,5 +40,9 @@ namespace VirtualOffice.Domain.Entities
                 throw new ArgumentNullException();
             return other._Priority.CompareTo(_Priority);
         }
+
+        // temp method for raising an event. Think of a way to update/change this
+        public void Disable()
+           => AddEvent(new EmployeeTaskDisabled(Id));
     }
 }

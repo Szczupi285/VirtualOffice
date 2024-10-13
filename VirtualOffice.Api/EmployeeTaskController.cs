@@ -24,5 +24,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpDelete]
+        public async Task DeleteEmployeeTask(Guid id)
+        {
+            var command = new DeleteEmployeeTask(id);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }
