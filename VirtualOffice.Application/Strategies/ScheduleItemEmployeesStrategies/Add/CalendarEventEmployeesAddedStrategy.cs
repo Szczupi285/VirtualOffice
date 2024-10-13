@@ -22,11 +22,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.A
             CalendarEventEmployeesAddedIntegrationEvent integrationEvent = new CalendarEventEmployeesAddedIntegrationEvent
             {
                 Id = notification.AbstractScheduleItem.Id.Value.ToString(),
-                Title = notification.AbstractScheduleItem._Title,
-                Description = notification.AbstractScheduleItem._Description,
                 AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.AbstractScheduleItem._AssignedEmployees),
-                StartDate = notification.AbstractScheduleItem._StartDate,
-                EndDate = notification.AbstractScheduleItem._EndDate,
             };
             await _outboxMessageRepository.AddOutboxMessageAsync(integrationEvent);
         }

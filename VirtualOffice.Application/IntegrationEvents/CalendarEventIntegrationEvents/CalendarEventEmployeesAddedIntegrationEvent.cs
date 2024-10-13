@@ -3,8 +3,11 @@ using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Application.IntegrationEvents.CalendarEventIntegrationEvents
 {
-    public class CalendarEventEmployeesAddedIntegrationEvent : CalendarEventReadModel, IIntegrationEvent
+    public class CalendarEventEmployeesAddedIntegrationEvent : IIntegrationEvent
     {
+        public string Id { get; set; }
+        public List<EmployeeReadModel> AssignedEmployees { get; set; }
+
         public string GetRoutingKey()
             => "CalendarEventUpdated";
     }
