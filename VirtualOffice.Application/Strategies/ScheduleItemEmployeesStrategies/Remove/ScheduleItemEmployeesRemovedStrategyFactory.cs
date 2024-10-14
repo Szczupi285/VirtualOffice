@@ -18,6 +18,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.R
             _strategies = new Dictionary<Type, Func<IScheduleItemEmployeesRemovedStrategy>>
             {
                 { typeof(CalendarEvent), () => new CalendarEventEmployeesRemovedStrategy(_mapper, _outboxMessagesRepository) },
+                { typeof(EmployeeTask), () => new EmployeeTaskEmployeesRemovedStrategy (_mapper, _outboxMessagesRepository) },
             };
         }
 

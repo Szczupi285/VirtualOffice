@@ -40,5 +40,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpDelete("{Id}/employees")]
+        public async Task RemoveEmployeeTaskAssignedEmployees(Guid Id, HashSet<Guid> employeesToRemove)
+        {
+            var command = new RemoveAssignedEmployeesFromEmployeeTask(Id, employeesToRemove);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

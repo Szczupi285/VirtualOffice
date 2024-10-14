@@ -98,6 +98,7 @@ namespace VirtualOffice.Infrastructure
                 c.AddConsumer<EmployeeTaskCreatedConsumer>();
                 c.AddConsumer<EmployeeTaskDeletedConsumer>();
                 c.AddConsumer<EmployeeTaskEmployeesAddedConsumer>();
+                c.AddConsumer<EmployeeTaskEmployeesRemovedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -142,6 +143,7 @@ namespace VirtualOffice.Infrastructure
                     configurator.ReceiveEndpoint("employee-task-updated", e =>
                     {
                         e.ConfigureConsumer<EmployeeTaskEmployeesAddedConsumer>(context);
+                        e.ConfigureConsumer<EmployeeTaskEmployeesRemovedConsumer>(context);
                         e.Bind("employee-tasks", x => x.RoutingKey = "EmployeeTaskUpdated");
                     });
                 });
