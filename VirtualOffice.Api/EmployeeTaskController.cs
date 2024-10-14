@@ -48,5 +48,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpPatch("{Id}/title")]
+        public async Task EmployeeTaskUpdateTitle(Guid Id, string Title)
+        {
+            var command = new UpdateEmployeeTaskTitle(Id, Title);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }
