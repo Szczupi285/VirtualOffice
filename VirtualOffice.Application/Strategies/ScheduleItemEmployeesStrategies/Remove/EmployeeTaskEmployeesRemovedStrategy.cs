@@ -22,7 +22,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.R
             EmployeeTaskEmployeesRemovedIntegrationEvent integrationEvent = new EmployeeTaskEmployeesRemovedIntegrationEvent
             {
                 Id = notification.AbstractScheduleItem.Id.Value.ToString(),
-                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.AbstractScheduleItem._AssignedEmployees),
+                AssignedEmployees = _mapper.Map<List<EmployeeReadModel>>(notification.RemovedEmployees),
             };
             await _outboxMessageRepository.AddOutboxMessageAsync(integrationEvent);
         }
