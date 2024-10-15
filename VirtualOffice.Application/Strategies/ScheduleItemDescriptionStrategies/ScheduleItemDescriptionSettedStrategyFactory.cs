@@ -19,6 +19,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies
             _strategies = new Dictionary<Type, Func<IScheduleItemDescriptionSettedStrategy>>
             {
                 {typeof(CalendarEvent), () => new CalendarEventDescriptionSettedStrategy(_mapper, _outboxMessagesRepository)},
+                {typeof(EmployeeTask), () => new EmployeeTaskDescriptionSetterStrategy(_outboxMessagesRepository)},
             };
         }
 
