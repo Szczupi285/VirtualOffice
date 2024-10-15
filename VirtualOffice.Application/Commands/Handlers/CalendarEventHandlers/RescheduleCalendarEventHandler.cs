@@ -33,7 +33,7 @@ namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 
                     var calEv = await _repository.GetByIdAsync(request.Id, cancellationToken);
 
-                    calEv.RescheduleCalendarEvent(request.StartDate, request.EndDate);
+                    calEv.RescheduleScheduleItem(request.StartDate, request.EndDate);
 
                     await _repository.UpdateAsync(calEv, cancellationToken);
 

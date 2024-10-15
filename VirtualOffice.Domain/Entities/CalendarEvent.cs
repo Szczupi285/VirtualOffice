@@ -26,17 +26,6 @@ namespace VirtualOffice.Domain.Entities
             AddEvent(new CalendarEventStartDateUpdated(this, startDate));
         }
 
-        // test this
-        public void RescheduleCalendarEvent(DateTime startDate, DateTime endDate)
-        {
-            if (startDate > endDate)
-                throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
-
-            _EndDate = endDate;
-            _StartDate = startDate;
-            AddEvent(new CalendarEventRescheduled(this));
-        }
-
         // temp method for raising an event. Think of a way to update/change this
         public void Disable()
            => AddEvent(new CalendarEventDisabled(Id));
