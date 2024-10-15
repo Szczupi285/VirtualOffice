@@ -57,6 +57,9 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
         {
             var filter = Builders<CalendarEventReadModel>.Filter.Eq(x => x.Id, id);
 
+            var startDateUtc = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+            var endDateUtc = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+
             var update = Builders<CalendarEventReadModel>.Update
                 .Set(x => x.StartDate, startDate)
                 .Set(x => x.EndDate, endDate);
