@@ -100,6 +100,15 @@ namespace VirtualOffice.Domain.Abstractions
                 AddEvent(new BulkEmployeesRemovedFromScheduleItem(this, removedEmployees, GetType()));
         }
 
+        public void RescheduleScheduleItem(DateTime startDate, DateTime endDate)
+        {
+            if (startDate > endDate)
+                throw new EndDateCannotBeBeforeStartDate(endDate, startDate);
+
+            _EndDate = endDate;
+            _StartDate = startDate;
+            AddEvent(new ScheduleItemRescheduled(this, startDate, endDate, GetType()));
+        }
         public void UpdateEndDate(DateTime endDate)
         {
             if (endDate <= _StartDate)

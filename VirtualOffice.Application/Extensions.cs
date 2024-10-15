@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies;
 using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add;
 using VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Remove;
+using VirtualOffice.Application.Strategies.ScheduleItemRescheduledStrategies;
 using VirtualOffice.Application.Strategies.ScheduleItemTitleStrategies;
 
 namespace VirtualOffice.Application
@@ -23,6 +24,7 @@ namespace VirtualOffice.Application
             services.AddScoped<ScheduleItemDescriptionSettedStrategyFactory>();
             services.AddScoped<ScheduleItemEmployeesAddedStrategyFactory>();
             services.AddScoped<ScheduleItemEmployeesRemovedStrategyFactory>();
+            services.AddScoped<ScheduleItemRescheduledStrategyFactory>();
 
             return services;
         }
