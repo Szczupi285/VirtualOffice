@@ -54,6 +54,16 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
             await _Collection.UpdateOneAsync(filter, update);
         }
 
+        public async Task UpdatePriorityAsync(string id, EmployeeTaskPriorityEnum priority)
+        {
+            var filter = Builders<EmployeeTaskReadModel>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<EmployeeTaskReadModel>.Update
+                .Set(x => x.Priority, priority);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
+
         public async Task UpdateDescriptionAsync(string id, string description)
         {
             var filter = Builders<EmployeeTaskReadModel>.Filter.Eq(x => x.Id, id);

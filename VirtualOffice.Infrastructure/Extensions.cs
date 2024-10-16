@@ -103,6 +103,7 @@ namespace VirtualOffice.Infrastructure
                 c.AddConsumer<EmployeeTaskDescriptionUpdatedConsumer>();
                 c.AddConsumer<EmployeeTaskRescheduledConsumer>();
                 c.AddConsumer<EmployeeTaskStatusUpdatedConsumer>();
+                c.AddConsumer<EmployeeTaskPriorityUpdatedConsumer>();
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
@@ -152,6 +153,7 @@ namespace VirtualOffice.Infrastructure
                         e.ConfigureConsumer<EmployeeTaskDescriptionUpdatedConsumer>(context);
                         e.ConfigureConsumer<EmployeeTaskRescheduledConsumer>(context);
                         e.ConfigureConsumer<EmployeeTaskStatusUpdatedConsumer>(context);
+                        e.ConfigureConsumer<EmployeeTaskPriorityUpdatedConsumer>(context);
 
                         e.Bind("employee-tasks", x => x.RoutingKey = "EmployeeTaskUpdated");
                     });

@@ -74,10 +74,18 @@ namespace VirtualOffice.Api
             Ok();
         }
 
-        [HttpPatch("{Id}/Status")]
+        [HttpPatch("{Id}/status")]
         public async Task EmployeeTaskStatusUpdated(Guid Id, EmployeeTaskStatusEnum status)
         {
             var command = new UpdateEmployeeTaskStatus(Id, status);
+            await _mediator.Send(command);
+            Ok();
+        }
+
+        [HttpPatch("{Id}/priority")]
+        public async Task EmployeeTaskPriorityUpdated(Guid Id, EmployeeTaskPriorityEnum priority)
+        {
+            var command = new UpdateEmployeeTaskPriority(Id, priority);
             await _mediator.Send(command);
             Ok();
         }
