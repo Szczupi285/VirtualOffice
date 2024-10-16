@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
 {
-    public class AddChatParticipantsHandler : IRequestHandler<AddChatParticipants>
+    internal sealed class AddChatParticipantsHandler : IRequestHandler<AddChatParticipants>
     {
-        public IPublicChatRoomRepository _repository;
-        public IPublicChatRoomReadService _readService;
+        private readonly IPublicChatRoomRepository _repository;
+        private readonly IPublicChatRoomReadService _readService;
 
         public AddChatParticipantsHandler(IPublicChatRoomRepository repository, IPublicChatRoomReadService readService)
         {

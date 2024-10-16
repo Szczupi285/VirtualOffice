@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicChatRoomHandlers
 {
-    public class UpdatePublicChatRoomNameHandler : IRequestHandler<UpdatePublicChatRoomName>
+    internal sealed class UpdatePublicChatRoomNameHandler : IRequestHandler<UpdatePublicChatRoomName>
     {
-        public IPublicChatRoomRepository _repository;
-        public IPublicChatRoomReadService _readService;
+        private readonly IPublicChatRoomRepository _repository;
+        private readonly IPublicChatRoomReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 
