@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
 {
-    public class UpdateUserHandler : IRequestHandler<UpdateUser>
+    internal sealed class UpdateUserHandler : IRequestHandler<UpdateUser>
     {
-        public IUserRepository _repository;
-        public IUserReadService _readService;
+        private readonly IUserRepository _repository;
+        private readonly IUserReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 

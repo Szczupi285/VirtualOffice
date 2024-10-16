@@ -5,9 +5,9 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.UserHandlers
 {
-    public class CreateUserHandler : IRequestHandler<CreateUser>
+    internal sealed class CreateUserHandler : IRequestHandler<CreateUser>
     {
-        public IUserRepository _repository;
+        private readonly IUserRepository _repository;
 
         public CreateUserHandler(IUserRepository repository)
         {
