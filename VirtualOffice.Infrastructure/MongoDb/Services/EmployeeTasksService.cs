@@ -2,6 +2,7 @@
 using MongoDB.Driver;
 using VirtualOffice.Application.Models;
 using VirtualOffice.Application.Models.ReadDatabaseSettings;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
@@ -39,6 +40,16 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
 
             var update = Builders<EmployeeTaskReadModel>.Update
                 .Set(x => x.Title, title);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task UpdateStatusAsync(string id, EmployeeTaskStatusEnum status)
+        {
+            var filter = Builders<EmployeeTaskReadModel>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<EmployeeTaskReadModel>.Update
+                .Set(x => x.Status, status);
 
             await _Collection.UpdateOneAsync(filter, update);
         }

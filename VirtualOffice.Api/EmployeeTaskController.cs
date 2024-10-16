@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.DTO.EmployeeTask;
+using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Api
@@ -69,6 +70,14 @@ namespace VirtualOffice.Api
         public async Task EmployeeTaskRescheduled(Guid Id, DateTime startDate, DateTime endDate)
         {
             var command = new RescheduleEmployeeTask(Id, startDate, endDate);
+            await _mediator.Send(command);
+            Ok();
+        }
+
+        [HttpPatch("{Id}/Status")]
+        public async Task EmployeeTaskStatusUpdated(Guid Id, EmployeeTaskStatusEnum status)
+        {
+            var command = new UpdateEmployeeTaskStatus(Id, status);
             await _mediator.Send(command);
             Ok();
         }
