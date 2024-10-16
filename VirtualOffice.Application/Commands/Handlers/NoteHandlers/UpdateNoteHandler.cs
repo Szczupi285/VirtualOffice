@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 {
-    public class UpdateNoteHandler : IRequestHandler<UpdateNote>
+    internal sealed class UpdateNoteHandler : IRequestHandler<UpdateNote>
     {
-        public INoteRepository _repository;
-        public INoteReadService _readService;
+        private readonly INoteRepository _repository;
+        private readonly INoteReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 

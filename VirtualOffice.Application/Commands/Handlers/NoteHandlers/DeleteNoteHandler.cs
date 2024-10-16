@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 {
-    public class DeleteNoteHandler : IRequestHandler<DeleteNote>
+    internal sealed class DeleteNoteHandler : IRequestHandler<DeleteNote>
     {
-        public INoteRepository _repository;
-        public INoteReadService _readService;
+        private readonly INoteRepository _repository;
+        private readonly INoteReadService _readService;
 
         public DeleteNoteHandler(INoteRepository repository, INoteReadService noteReadService)
         {

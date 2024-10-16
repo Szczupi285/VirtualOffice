@@ -5,9 +5,9 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 {
-    public class CreateNoteHandler : IRequestHandler<CreateNote>
+    internal sealed class CreateNoteHandler : IRequestHandler<CreateNote>
     {
-        public INoteRepository _repository;
+        private readonly INoteRepository _repository;
 
         public CreateNoteHandler(INoteRepository repository)
         {
