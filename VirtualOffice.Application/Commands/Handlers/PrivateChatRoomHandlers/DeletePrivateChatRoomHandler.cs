@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
-    public class DeletePrivateChatRoomHandler : IRequestHandler<DeletePrivateChatRoom>
+    internal sealed class DeletePrivateChatRoomHandler : IRequestHandler<DeletePrivateChatRoom>
     {
-        public IPrivateChatRoomRepository _repository;
-        public IPrivateChatRoomReadService _readService;
+        private readonly IPrivateChatRoomRepository _repository;
+        private readonly IPrivateChatRoomReadService _readService;
 
         public DeletePrivateChatRoomHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService noteReadService)
         {

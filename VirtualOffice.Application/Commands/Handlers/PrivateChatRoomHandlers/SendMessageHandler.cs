@@ -7,12 +7,12 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
-    public class SendMessageHandler : IRequestHandler<SendMessage>
+    internal sealed class SendMessageHandler : IRequestHandler<SendMessage>
     {
-        public IPrivateChatRoomRepository _repository;
-        public IPrivateChatRoomReadService _readService;
-        public IUserReadService _userReadService;
-        public IUserRepository _userRepository;
+        private readonly IPrivateChatRoomRepository _repository;
+        private readonly IPrivateChatRoomReadService _readService;
+        private readonly IUserReadService _userReadService;
+        private readonly IUserRepository _userRepository;
 
         public SendMessageHandler(IPrivateChatRoomRepository repository, IPrivateChatRoomReadService readService, IUserRepository userRepository, IUserReadService userReadService)
         {

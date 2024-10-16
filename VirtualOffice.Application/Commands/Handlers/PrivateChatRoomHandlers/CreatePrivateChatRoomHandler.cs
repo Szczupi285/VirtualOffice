@@ -5,9 +5,9 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PrivateChatRoomHandlers
 {
-    public class CreatePrivateChatRoomHandler : IRequestHandler<CreatePrivateChatRoom>
+    internal sealed class CreatePrivateChatRoomHandler : IRequestHandler<CreatePrivateChatRoom>
     {
-        public IPrivateChatRoomRepository _repository;
+        private readonly IPrivateChatRoomRepository _repository;
 
         public CreatePrivateChatRoomHandler(IPrivateChatRoomRepository repository)
         {
