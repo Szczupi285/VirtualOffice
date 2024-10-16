@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
-    public class AddPublicDocumentAttachmentHandler : IRequestHandler<AddPublicDocumentAttachment>
+    internal sealed class AddPublicDocumentAttachmentHandler : IRequestHandler<AddPublicDocumentAttachment>
     {
-        private IPublicDocumentRepository _repository;
-        private IPublicDocumentReadService _readService;
+        private readonly IPublicDocumentRepository _repository;
+        private readonly IPublicDocumentReadService _readService;
 
         public AddPublicDocumentAttachmentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {

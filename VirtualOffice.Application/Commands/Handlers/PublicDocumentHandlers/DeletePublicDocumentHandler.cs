@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
-    public class DeletePublicDocumentHandler : IRequestHandler<DeletePublicDocument>
+    internal sealed class DeletePublicDocumentHandler : IRequestHandler<DeletePublicDocument>
     {
-        private IPublicDocumentRepository _repository;
-        private IPublicDocumentReadService _readService;
+        private readonly IPublicDocumentRepository _repository;
+        private readonly IPublicDocumentReadService _readService;
 
         public DeletePublicDocumentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {

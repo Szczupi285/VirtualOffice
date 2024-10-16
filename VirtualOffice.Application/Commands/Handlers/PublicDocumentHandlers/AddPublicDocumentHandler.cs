@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
-    public class AddPublicDocumentHandler : IRequestHandler<AddPublicDocument>
+    internal sealed class AddPublicDocumentHandler : IRequestHandler<AddPublicDocument>
     {
-        public IPublicDocumentRepository _repository;
-        public IPublicDocumentReadService _readService;
+        private readonly IPublicDocumentRepository _repository;
+        private readonly IPublicDocumentReadService _readService;
 
         public AddPublicDocumentHandler(IPublicDocumentRepository repository, IPublicDocumentReadService readService)
         {

@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.PublicDocumentHandlers
 {
-    public class UpdatePublicDocumentTitleHandler : IRequestHandler<UpdatePublicDocumentTitle>
+    internal sealed class UpdatePublicDocumentTitleHandler : IRequestHandler<UpdatePublicDocumentTitle>
     {
-        private IPublicDocumentRepository _repository;
-        private IPublicDocumentReadService _readService;
+        private readonly IPublicDocumentRepository _repository;
+        private readonly IPublicDocumentReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 
