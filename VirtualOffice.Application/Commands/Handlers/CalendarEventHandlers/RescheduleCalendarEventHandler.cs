@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class RescheduleCalendarEventHandler : IRequestHandler<RescheduleCalendarEvent>
+    internal class RescheduleCalendarEventHandler : IRequestHandler<RescheduleCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

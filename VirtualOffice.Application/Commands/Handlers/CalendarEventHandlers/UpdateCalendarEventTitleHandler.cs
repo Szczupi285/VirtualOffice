@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class UpdateCalendarEventTitleHandler : IRequestHandler<UpdateCalendarEventTitle>
+    internal sealed class UpdateCalendarEventTitleHandler : IRequestHandler<UpdateCalendarEventTitle>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

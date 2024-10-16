@@ -6,7 +6,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class DeleteCalendarEventHandler : IRequestHandler<DeleteCalendarEvent>
+    internal sealed class DeleteCalendarEventHandler : IRequestHandler<DeleteCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly ICalendarEventReadService _readService;

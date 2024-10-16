@@ -5,7 +5,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.CalendarEventHandlers
 {
-    public class CreateCalendarEventHandler : IRequestHandler<CreateCalendarEvent>
+    internal sealed class CreateCalendarEventHandler : IRequestHandler<CreateCalendarEvent>
     {
         private readonly ICalendarEventRepository _repository;
         private readonly IMediator _mediator;
