@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class DeleteOrganizationOfficeUsersHandler : IRequestHandler<DeleteOrganizationOfficeUsers>
+    internal sealed class DeleteOrganizationOfficeUsersHandler : IRequestHandler<DeleteOrganizationOfficeUsers>
     {
-        public IOrganizationRepository _repository;
-        public IOrganizationReadService _OrgReadService;
+        private readonly IOrganizationRepository _repository;
+        private readonly IOrganizationReadService _OrgReadService;
 
         public DeleteOrganizationOfficeUsersHandler(IOrganizationRepository repository, IOrganizationReadService orgReadService)
         {

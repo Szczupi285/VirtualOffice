@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class AddOrganizationUsersHandler : IRequestHandler<AddOrganizationUsers>
+    internal sealed class AddOrganizationUsersHandler : IRequestHandler<AddOrganizationUsers>
     {
-        public IOrganizationRepository _repository;
-        public IOrganizationReadService _readService;
+        private readonly IOrganizationRepository _repository;
+        private readonly IOrganizationReadService _readService;
 
         public AddOrganizationUsersHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {

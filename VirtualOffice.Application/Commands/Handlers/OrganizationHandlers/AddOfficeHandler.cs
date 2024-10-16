@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class AddOfficeHandler : IRequestHandler<AddOffice>
+    internal sealed class AddOfficeHandler : IRequestHandler<AddOffice>
     {
-        public IOrganizationRepository _repository;
-        public IOrganizationReadService _readService;
+        private readonly IOrganizationRepository _repository;
+        private readonly IOrganizationReadService _readService;
 
         public AddOfficeHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {

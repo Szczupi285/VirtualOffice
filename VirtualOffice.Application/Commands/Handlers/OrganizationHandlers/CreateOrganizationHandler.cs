@@ -5,9 +5,9 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class CreateOrganizationHandler : IRequestHandler<CreateOrganization>
+    internal sealed class CreateOrganizationHandler : IRequestHandler<CreateOrganization>
     {
-        public IOrganizationRepository _repository;
+        private readonly IOrganizationRepository _repository;
 
         public CreateOrganizationHandler(IOrganizationRepository repository)
         {

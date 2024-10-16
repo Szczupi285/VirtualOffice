@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class DeleteOfficeHandler : IRequest<DeleteOffice>
+    internal sealed class DeleteOfficeHandler : IRequest<DeleteOffice>
     {
-        public IOrganizationRepository _repository;
-        public IOrganizationReadService _readService;
+        private readonly IOrganizationRepository _repository;
+        private readonly IOrganizationReadService _readService;
 
         public DeleteOfficeHandler(IOrganizationRepository repository, IOrganizationReadService readService)
         {

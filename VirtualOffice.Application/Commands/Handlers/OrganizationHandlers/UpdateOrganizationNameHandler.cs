@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 {
-    public class UpdateOrganizationNameHandler : IRequestHandler<UpdateOrganizationName>
+    internal sealed class UpdateOrganizationNameHandler : IRequestHandler<UpdateOrganizationName>
     {
-        public IOrganizationRepository _repository;
-        public IOrganizationReadService _readService;
+        private readonly IOrganizationRepository _repository;
+        private readonly IOrganizationReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 
