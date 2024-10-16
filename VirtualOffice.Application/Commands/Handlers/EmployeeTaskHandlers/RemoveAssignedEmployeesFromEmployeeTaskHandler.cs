@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class RemoveAssignedEmployeesFromEmployeeTaskHandler : IRequestHandler<RemoveAssignedEmployeesFromEmployeeTask>
+    internal sealed class RemoveAssignedEmployeesFromEmployeeTaskHandler : IRequestHandler<RemoveAssignedEmployeesFromEmployeeTask>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;

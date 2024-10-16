@@ -5,7 +5,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class CreateEmployeeTaskHandler : IRequestHandler<CreateEmployeeTask>
+    internal sealed class CreateEmployeeTaskHandler : IRequestHandler<CreateEmployeeTask>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IMediator _mediator;

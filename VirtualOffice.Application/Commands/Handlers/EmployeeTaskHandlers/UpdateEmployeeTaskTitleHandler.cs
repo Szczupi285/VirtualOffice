@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    public class UpdateEmployeeTaskTitleHandler : IRequestHandler<UpdateEmployeeTaskTitle>
+    internal sealed class UpdateEmployeeTaskTitleHandler : IRequestHandler<UpdateEmployeeTaskTitle>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;

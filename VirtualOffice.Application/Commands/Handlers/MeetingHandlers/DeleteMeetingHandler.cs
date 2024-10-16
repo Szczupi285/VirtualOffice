@@ -6,10 +6,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    public class DeleteMeetingHandler : IRequestHandler<DeleteMeeting>
+    internal sealed class DeleteMeetingHandler : IRequestHandler<DeleteMeeting>
     {
-        public IMeetingRepository _repository;
-        public IMeetingReadService _readService;
+        private readonly IMeetingRepository _repository;
+        private readonly IMeetingReadService _readService;
 
         public DeleteMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService)
         {

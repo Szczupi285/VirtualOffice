@@ -7,10 +7,10 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    public class UpdateMeetingHandler : IRequestHandler<UpdateMeeting>
+    internal sealed class UpdateMeetingHandler : IRequestHandler<UpdateMeeting>
     {
-        public IMeetingRepository _repository;
-        public IMeetingReadService _readService;
+        private readonly IMeetingRepository _repository;
+        private readonly IMeetingReadService _readService;
         private const int _maxRetryAttempts = 3;
         private int _retryCount = 0;
 

@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.EmployeeTaskHandlers
 {
-    internal class UpdateEmployeeTaskPriorityHandler : IRequestHandler<UpdateEmployeeTaskPriority>
+    internal sealed class UpdateEmployeeTaskPriorityHandler : IRequestHandler<UpdateEmployeeTaskPriority>
     {
         private readonly IEmployeeTaskRepository _repository;
         private readonly IEmployeeTaskReadService _readService;

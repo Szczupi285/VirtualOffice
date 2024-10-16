@@ -5,9 +5,9 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingEventHandlers
 {
-    public class CreateMeetingHandler : IRequestHandler<CreateMeeting>
+    internal sealed class CreateMeetingHandler : IRequestHandler<CreateMeeting>
     {
-        public IMeetingRepository _repository;
+        private readonly IMeetingRepository _repository;
 
         public CreateMeetingHandler(IMeetingRepository repository)
         {
