@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Quartz;
+using System.Reflection;
 using VirtualOffice.Application.Interfaces;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Repositories;
@@ -88,22 +89,9 @@ namespace VirtualOffice.Infrastructure
             {
                 c.SetKebabCaseEndpointNameFormatter();
                 // refactor
-                c.AddConsumer<CalendarEventCreatedEventConsumer>();
-                c.AddConsumer<CalendarEventTitleUpdatedConsumer>();
-                c.AddConsumer<CalendarEventDescriptionUpdatedConsumer>();
-                c.AddConsumer<CalendarEventRescheduledConsumer>();
-                c.AddConsumer<CalendarEventDeletedConsumer>();
-                c.AddConsumer<CalendarEventEmployeesAddedConsumer>();
-                c.AddConsumer<CalendarEventEmployeesRemovedConsumer>();
-                c.AddConsumer<EmployeeTaskCreatedConsumer>();
-                c.AddConsumer<EmployeeTaskDeletedConsumer>();
-                c.AddConsumer<EmployeeTaskEmployeesAddedConsumer>();
-                c.AddConsumer<EmployeeTaskEmployeesRemovedConsumer>();
-                c.AddConsumer<EmployeeTaskTitleUpdatedConsumer>();
-                c.AddConsumer<EmployeeTaskDescriptionUpdatedConsumer>();
-                c.AddConsumer<EmployeeTaskRescheduledConsumer>();
-                c.AddConsumer<EmployeeTaskStatusUpdatedConsumer>();
-                c.AddConsumer<EmployeeTaskPriorityUpdatedConsumer>();
+
+                // register all consumers in current assembly
+                c.AddConsumers(Assembly.GetExecutingAssembly());
 
                 c.UsingRabbitMq((context, configurator) =>
                 {
