@@ -33,5 +33,8 @@ namespace VirtualOffice.Domain.Entities
             _StartDate = newStartDate;
             AddEvent(new MeetingRescheduled(this, newStartDate, newEndDate));
         }
+
+        public void Disable()
+            => AddEvent(new MeetingDisabled(Id));
     }
 }

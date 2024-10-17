@@ -146,9 +146,15 @@ namespace VirtualOffice.Infrastructure
 
                         e.Bind("employee-tasks", x => x.RoutingKey = "EmployeeTaskUpdated");
                     });
-                    configurator.ReceiveEndpoint("meeting-deleted", e =>
+                    configurator.ReceiveEndpoint("meeting-created", e =>
                     {
                         e.ConfigureConsumer<MeetingCreatedConsumer>(context);
+
+                        e.Bind("meetings", x => x.RoutingKey = "MeetingCreated");
+                    });
+                    configurator.ReceiveEndpoint("meeting-deleted", e =>
+                    {
+                        e.ConfigureConsumer<MeetingDeletedConsumer>(context);
 
                         e.Bind("meetings", x => x.RoutingKey = "MeetingDeleted");
                     });

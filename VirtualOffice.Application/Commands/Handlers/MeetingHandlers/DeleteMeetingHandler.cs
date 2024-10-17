@@ -10,11 +10,13 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
     {
         private readonly IMeetingRepository _repository;
         private readonly IMeetingReadService _readService;
+        private readonly IMediator _mediator;
 
-        public DeleteMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService)
+        public DeleteMeetingHandler(IMeetingRepository repository, IMeetingReadService eventReadService, IMediator mediator)
         {
             _repository = repository;
             _readService = eventReadService;
+            _mediator = mediator;
         }
 
         public async Task Handle(DeleteMeeting request, CancellationToken cancellationToken)
@@ -24,6 +26,11 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 
             var entity = await _repository.GetByIdAsync(request.Id);
             await _repository.DeleteAsync(entity);
+            entity.Disable();
+
+            foreach (var domainEvent in entity.Events)
+                await _mediator.Publish(domainEvent, cancellationToken);
+            entity.ClearEvents();
         }
     }
 }
