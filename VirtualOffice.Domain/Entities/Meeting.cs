@@ -11,6 +11,7 @@ namespace VirtualOffice.Domain.Entities
             HashSet<ApplicationUser> assignedEmployees, ScheduleItemStartDate startDate, ScheduleItemEndDate endDate)
             : base(id, title, description, assignedEmployees, startDate, endDate)
         {
+            AddEvent(new MeetingCreatedEvent(this));
         }
 
         private Meeting()

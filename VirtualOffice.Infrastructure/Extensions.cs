@@ -15,6 +15,7 @@ using VirtualOffice.Infrastructure.RabbitMQ;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers.CalendarEventConsumers;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers.EmployeeTaskConsumers;
+using VirtualOffice.Infrastructure.RabbitMQ.Consumers.MeetingConsumers;
 
 namespace VirtualOffice.Infrastructure
 {
@@ -144,6 +145,12 @@ namespace VirtualOffice.Infrastructure
                         e.ConfigureConsumer<EmployeeTaskPriorityUpdatedConsumer>(context);
 
                         e.Bind("employee-tasks", x => x.RoutingKey = "EmployeeTaskUpdated");
+                    });
+                    configurator.ReceiveEndpoint("meeting-deleted", e =>
+                    {
+                        e.ConfigureConsumer<MeetingCreatedConsumer>(context);
+
+                        e.Bind("meetings", x => x.RoutingKey = "MeetingDeleted");
                     });
                 });
             });
