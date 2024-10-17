@@ -4,7 +4,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers.ScheduleItemDomainEventHandlers
 {
-    public class BulkEmployeesRemovedFromScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesRemovedFromScheduleItem>
+    internal sealed class BulkEmployeesRemovedFromScheduleItemDomainEventHandler : INotificationHandler<BulkEmployeesRemovedFromScheduleItem>
     {
         private readonly ScheduleItemEmployeesRemovedStrategyFactory _factory;
 
