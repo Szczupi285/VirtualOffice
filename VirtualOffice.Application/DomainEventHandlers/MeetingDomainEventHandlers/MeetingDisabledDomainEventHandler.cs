@@ -5,7 +5,7 @@ using VirtualOffice.Domain.DomainEvents.MeetingEvent;
 
 namespace VirtualOffice.Application.DomainEventHandlers.MeetingDomainEventHandlers
 {
-    internal class MeetingDisabledDomainEventHandler : INotificationHandler<MeetingDisabled>
+    internal sealed class MeetingDisabledDomainEventHandler : INotificationHandler<MeetingDisabled>
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 

@@ -4,7 +4,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers
 {
-    internal class ScheduleItemTitleSettedDomainEventHandler : INotificationHandler<ScheduleItemTitleSetted>
+    internal sealed class ScheduleItemTitleSettedDomainEventHandler : INotificationHandler<ScheduleItemTitleSetted>
     {
         private readonly ScheduleItemTitleSettedStrategyFactory _factory;
 
