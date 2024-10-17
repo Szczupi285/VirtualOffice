@@ -7,7 +7,7 @@ using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers.CalendarEventDomainEventHandlers
 {
-    public class CalendarEventCreatedDomainEventHandler : INotificationHandler<CalendarEventCreated>
+    internal sealed class CalendarEventCreatedDomainEventHandler : INotificationHandler<CalendarEventCreated>
     {
         private readonly IEventBus _eventBus;
         private readonly IMapper _mapper;

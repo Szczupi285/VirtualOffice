@@ -6,7 +6,7 @@ using VirtualOffice.Domain.DomainEvents.CalendarEventEvents;
 
 namespace VirtualOffice.Application.DomainEventHandlers.CalendarEventDomainEventHandlers
 {
-    public class RescheduleCalendarEventDomainEventHandler : INotificationHandler<CalendarEventRescheduled>
+    internal sealed class RescheduleCalendarEventDomainEventHandler : INotificationHandler<CalendarEventRescheduled>
     {
         private readonly IEventBus _eventBus;
         private readonly IMapper _mapper;
