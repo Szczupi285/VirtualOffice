@@ -6,7 +6,7 @@ using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
 namespace VirtualOffice.Application.DomainEventHandlers.EmployeeTaskDomainEventHandlers
 {
-    public class EmployeeTaskDisabledDomainEventHandler : INotificationHandler<EmployeeTaskDisabled>
+    internal sealed class EmployeeTaskDisabledDomainEventHandler : INotificationHandler<EmployeeTaskDisabled>
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 

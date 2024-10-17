@@ -5,7 +5,7 @@ using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
 namespace VirtualOffice.Application.DomainEventHandlers.EmployeeTaskDomainEventHandlers
 {
-    public class PrioritySettedDomainEventHandler : INotificationHandler<PrioritySetted>
+    internal sealed class PrioritySettedDomainEventHandler : INotificationHandler<PrioritySetted>
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 

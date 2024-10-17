@@ -7,7 +7,7 @@ using VirtualOffice.Domain.DomainEvents.EmployeeTask;
 
 namespace VirtualOffice.Application.DomainEventHandlers.EmployeeTaskDomainEventHandlers
 {
-    public class EmployeeTaskCreatedDomainEventHandler : INotificationHandler<EmployeeTaskCreated>
+    internal sealed class EmployeeTaskCreatedDomainEventHandler : INotificationHandler<EmployeeTaskCreated>
     {
         private readonly IMapper _mapper;
         private readonly IOutboxMessageRepository _outboxMessageRepository;
