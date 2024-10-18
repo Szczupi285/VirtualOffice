@@ -7,7 +7,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    public class RescheduleMeetingHandler : IRequestHandler<RescheduleMeeting>
+    internal sealed class RescheduleMeetingHandler : IRequestHandler<RescheduleMeeting>
     {
         private readonly IMeetingRepository _repository;
         private readonly IMeetingReadService _readService;
