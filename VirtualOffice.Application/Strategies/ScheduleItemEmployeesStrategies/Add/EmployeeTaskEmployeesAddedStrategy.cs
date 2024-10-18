@@ -6,7 +6,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Add
 {
-    public class EmployeeTaskEmployeesAddedStrategy : IScheduleItemEmployeesAddedStrategy
+    internal class EmployeeTaskEmployeesAddedStrategy : IScheduleItemEmployeesAddedStrategy
     {
         private readonly IMapper _mapper;
         private readonly IOutboxMessageRepository _outboxMessageRepository;

@@ -4,7 +4,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemRescheduledStrategies
 {
-    internal sealed class MeetingRescheduledStrategy : IScheduleItemRescheduledStrategy
+    internal class MeetingRescheduledStrategy : IScheduleItemRescheduledStrategy
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 

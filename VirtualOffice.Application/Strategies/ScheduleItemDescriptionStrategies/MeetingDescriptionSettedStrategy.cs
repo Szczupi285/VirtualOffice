@@ -4,7 +4,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies
 {
-    public class MeetingDescriptionSettedStrategy : IScheduleItemDescriptionSettedStrategy
+    internal class MeetingDescriptionSettedStrategy : IScheduleItemDescriptionSettedStrategy
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 

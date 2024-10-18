@@ -5,7 +5,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies
 {
-    public class CalendarEventDescriptionSettedStrategy : IScheduleItemDescriptionSettedStrategy
+    internal class CalendarEventDescriptionSettedStrategy : IScheduleItemDescriptionSettedStrategy
     {
         private readonly IMapper _mapper;
         private readonly IOutboxMessageRepository _outboxMessageRepository;

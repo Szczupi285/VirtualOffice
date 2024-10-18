@@ -4,7 +4,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemRescheduledStrategies
 {
-    public class EmployeeTaskRescheduledStrategy : IScheduleItemRescheduledStrategy
+    internal class EmployeeTaskRescheduledStrategy : IScheduleItemRescheduledStrategy
     {
         private readonly IOutboxMessageRepository _outboxMessageRepository;
 
