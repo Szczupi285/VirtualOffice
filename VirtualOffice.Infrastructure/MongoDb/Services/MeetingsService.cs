@@ -13,6 +13,26 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
         {
         }
 
+        public async Task AddAssignedEmployeesAsync(string id, List<EmployeeReadModel> employeeReadModels)
+        {
+            var filter = Builders<MeetingReadModel>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<MeetingReadModel>.Update
+                .AddToSetEach(x => x.AssignedEmployees, employeeReadModels);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
+
+        public async Task RemoveAssignedEmployeesAsync(string id, List<EmployeeReadModel> employeeReadModels)
+        {
+            var filter = Builders<MeetingReadModel>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<MeetingReadModel>.Update
+                .PullAll(x => x.AssignedEmployees, employeeReadModels);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
+
         public async Task UpdateTitleAsync(string id, string title)
         {
             var filter = Builders<MeetingReadModel>.Filter.Eq(x => x.Id, id);
