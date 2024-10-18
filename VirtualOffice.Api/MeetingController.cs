@@ -32,5 +32,21 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Created();
         }
+
+        [HttpPatch("{Id}/title")]
+        public async Task UpdateMeetingTitle(Guid Id, string newTitle)
+        {
+            var command = new UpdateMeetingTitle(Id, newTitle);
+            await _mediator.Send(command);
+            Created();
+        }
+
+        [HttpPatch("{Id}/description")]
+        public async Task UpdateMeetingDescription(Guid Id, string newDescription)
+        {
+            var command = new UpdateMeetingDescription(Id, newDescription);
+            await _mediator.Send(command);
+            Created();
+        }
     }
 }

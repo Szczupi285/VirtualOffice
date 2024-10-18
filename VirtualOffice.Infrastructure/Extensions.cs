@@ -158,6 +158,13 @@ namespace VirtualOffice.Infrastructure
 
                         e.Bind("meetings", x => x.RoutingKey = "MeetingDeleted");
                     });
+                    configurator.ReceiveEndpoint("meeting-updated", e =>
+                    {
+                        e.ConfigureConsumer<MeetingTitleUpdatedConsumer>(context);
+                        e.ConfigureConsumer<MeetingDescriptionUpdatedConsumer>(context);
+
+                        e.Bind("meetings", x => x.RoutingKey = "MeetingUpdated");
+                    });
                 });
             });
             services.AddTransient<IEventBus, EventBus>();

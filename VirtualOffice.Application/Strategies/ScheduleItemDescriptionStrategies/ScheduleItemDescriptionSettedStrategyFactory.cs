@@ -20,6 +20,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemDescriptionStrategies
             {
                 {typeof(CalendarEvent), () => new CalendarEventDescriptionSettedStrategy(_mapper, _outboxMessagesRepository)},
                 {typeof(EmployeeTask), () => new EmployeeTaskDescriptionSetterStrategy(_outboxMessagesRepository)},
+                {typeof(Meeting), () => new MeetingDescriptionSettedStrategy(_outboxMessagesRepository)},
             };
         }
 
