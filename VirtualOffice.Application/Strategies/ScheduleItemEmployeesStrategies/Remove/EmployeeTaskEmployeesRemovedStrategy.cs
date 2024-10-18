@@ -6,7 +6,7 @@ using VirtualOffice.Domain.DomainEvents.ScheduleItemEvents;
 
 namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.Remove
 {
-    public class EmployeeTaskEmployeesRemovedStrategy : IScheduleItemEmployeesRemovedStrategy
+    internal class EmployeeTaskEmployeesRemovedStrategy : IScheduleItemEmployeesRemovedStrategy
     {
         private readonly IMapper _mapper;
         private readonly IOutboxMessageRepository _outboxMessageRepository;
