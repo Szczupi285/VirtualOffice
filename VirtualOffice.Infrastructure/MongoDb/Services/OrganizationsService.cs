@@ -5,7 +5,7 @@ using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    public class OrganizationsService : AbstractModelService<OrganizationReadModel>
+    internal class OrganizationsService : AbstractModelService<OrganizationReadModel>
     {
         public OrganizationsService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.OrganizationsCollectionName)

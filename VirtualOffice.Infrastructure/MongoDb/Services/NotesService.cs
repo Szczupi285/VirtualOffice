@@ -5,7 +5,7 @@ using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    public class NotesService : AbstractModelService<NoteReadModel>
+    internal class NotesService : AbstractModelService<NoteReadModel>
     {
         public NotesService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.NotesCollectionName)

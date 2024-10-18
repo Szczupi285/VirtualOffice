@@ -7,7 +7,7 @@ using VirtualOffice.Infrastructure.EF;
 
 namespace VirtualOffice.Infrastructure
 {
-    public class ProcessOutboxMessagesJob : IJob
+    internal sealed class ProcessOutboxMessagesJob : IJob
     {
         private readonly WriteDbContext _dbContext;
         private readonly IEventBus _eventBus;
