@@ -162,6 +162,7 @@ namespace VirtualOffice.Infrastructure
                     {
                         e.ConfigureConsumer<MeetingTitleUpdatedConsumer>(context);
                         e.ConfigureConsumer<MeetingDescriptionUpdatedConsumer>(context);
+                        e.ConfigureConsumer<MeetingRescheduledConsumer>(context);
 
                         e.Bind("meetings", x => x.RoutingKey = "MeetingUpdated");
                     });

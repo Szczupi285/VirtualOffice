@@ -48,5 +48,13 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Ok();
         }
+
+        [HttpPatch("{Id}/schedule")]
+        public async Task MeetingRescheduled(Guid Id, DateTime startDate, DateTime endDate)
+        {
+            var command = new RescheduleMeeting(Id, startDate, endDate);
+            await _mediator.Send(command);
+            Ok();
+        }
     }
 }

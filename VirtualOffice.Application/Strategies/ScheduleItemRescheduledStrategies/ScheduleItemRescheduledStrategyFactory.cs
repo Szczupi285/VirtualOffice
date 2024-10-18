@@ -19,7 +19,8 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemRescheduledStrategies
             _strategies = new Dictionary<Type, Func<IScheduleItemRescheduledStrategy>>
             {
                 {typeof(CalendarEvent), () => new CalendarEventRescheduledStrategy(_outboxMessagesRepository)},
-                {typeof(EmployeeTask), () => new EmployeeTaskRescheduledStrategy(_outboxMessagesRepository)}
+                {typeof(EmployeeTask), () => new EmployeeTaskRescheduledStrategy(_outboxMessagesRepository)},
+                {typeof(Meeting), () => new MeetingRescheduledStrategy(_outboxMessagesRepository)}
             };
         }
 

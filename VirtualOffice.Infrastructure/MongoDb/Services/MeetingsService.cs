@@ -32,5 +32,19 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
 
             await _Collection.UpdateOneAsync(filter, update);
         }
+
+        public async Task UpdateScheduleAsync(string id, DateTime startDate, DateTime endDate)
+        {
+            var filter = Builders<MeetingReadModel>.Filter.Eq(x => x.Id, id);
+
+            var startDateUtc = DateTime.SpecifyKind(startDate, DateTimeKind.Utc);
+            var endDateUtc = DateTime.SpecifyKind(endDate, DateTimeKind.Utc);
+
+            var update = Builders<MeetingReadModel>.Update
+                .Set(x => x.StartDate, startDate)
+                .Set(x => x.EndDate, endDate);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
     }
 }
