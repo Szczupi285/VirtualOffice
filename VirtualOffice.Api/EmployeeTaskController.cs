@@ -23,7 +23,7 @@ namespace VirtualOffice.Api
         {
             var command = new CreateEmployeeTask(request._Title, request._Description, new HashSet<ApplicationUser>(), request._StartDate, request._EndDate, request._Priority);
             await _mediator.Send(command);
-            Ok();
+            Created();
         }
 
         [HttpDelete]

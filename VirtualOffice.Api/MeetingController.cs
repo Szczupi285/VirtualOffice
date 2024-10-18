@@ -30,7 +30,7 @@ namespace VirtualOffice.Api
         {
             var command = new DeleteMeeting(id);
             await _mediator.Send(command);
-            Created();
+            Ok();
         }
 
         [HttpPatch("{Id}/title")]
@@ -38,7 +38,7 @@ namespace VirtualOffice.Api
         {
             var command = new UpdateMeetingTitle(Id, newTitle);
             await _mediator.Send(command);
-            Created();
+            Ok();
         }
 
         [HttpPatch("{Id}/description")]
@@ -46,7 +46,7 @@ namespace VirtualOffice.Api
         {
             var command = new UpdateMeetingDescription(Id, newDescription);
             await _mediator.Send(command);
-            Created();
+            Ok();
         }
     }
 }
