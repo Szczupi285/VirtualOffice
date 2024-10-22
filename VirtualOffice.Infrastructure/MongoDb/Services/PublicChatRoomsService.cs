@@ -5,7 +5,7 @@ using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    internal class PublicChatRoomsService : AbstractModelService<PublicChatRoomReadModel>
+    public class PublicChatRoomsService : AbstractModelService<PublicChatRoomReadModel>
     {
         public PublicChatRoomsService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.PublicChatRoomsCollectionName)

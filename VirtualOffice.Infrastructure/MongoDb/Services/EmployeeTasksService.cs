@@ -7,7 +7,7 @@ using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    internal class EmployeeTasksService : AbstractModelService<EmployeeTaskReadModel>
+    public class EmployeeTasksService : AbstractModelService<EmployeeTaskReadModel>
     {
         public EmployeeTasksService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.EmployeeTasksCollectionName)
