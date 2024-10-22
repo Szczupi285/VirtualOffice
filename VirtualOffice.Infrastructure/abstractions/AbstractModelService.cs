@@ -5,7 +5,7 @@ using VirtualOffice.Application.Models.ReadDatabaseSettings;
 
 namespace VirtualOffice.Infrastructure.abstractions
 {
-    internal abstract class AbstractModelService<T> where T : class, EntityId
+    public abstract class AbstractModelService<T> where T : class, EntityId
     {
         protected readonly IMongoCollection<T> _Collection;
 

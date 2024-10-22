@@ -6,7 +6,7 @@ using VirtualOffice.Infrastructure.abstractions;
 
 namespace VirtualOffice.Infrastructure.MongoDb.Services
 {
-    internal class MeetingsService : AbstractModelService<MeetingReadModel>
+    public class MeetingsService : AbstractModelService<MeetingReadModel>
     {
         public MeetingsService(IOptions<ReadDatabaseSettings> ReadDatabaseSettings)
             : base(ReadDatabaseSettings, ReadDatabaseSettings.Value.MeetingsCollectionName)
