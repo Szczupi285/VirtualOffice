@@ -2,10 +2,8 @@
 {
     public class NoteDTO
     {
-        public Guid Id { get; init; }
-        public Guid _UserId { get; init; }
-        public string _Title { get; init; }
-        public string _Content { get; init; }
-
+        public string Title { get; init; }
+        public string Content { get; init; }
+        public Guid UserId { get; init; }
     }
 }

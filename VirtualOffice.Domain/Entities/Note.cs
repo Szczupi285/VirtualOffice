@@ -1,6 +1,6 @@
 ﻿using VirtualOffice.Domain.Abstractions;
 using VirtualOffice.Domain.DomainEvents.NoteEvent;
-using VirtualOffice.Domain.ValueObjects.ApplicationUser;
+using VirtualOffice.Domain.DomainEvents.NoteEvents;
 using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Domain.Entities
@@ -11,14 +11,15 @@ namespace VirtualOffice.Domain.Entities
 
         public NoteContent _content { get; private set; }
 
-        public ApplicationUserId _createdBy { get; }
+        public ApplicationUser _createdBy { get; }
 
-        public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUserId userId)
+        public Note(NoteId id, NoteTitle title, NoteContent content, ApplicationUser user)
         {
             Id = id;
             _title = title;
             _content = content;
-            _createdBy = userId;
+            _createdBy = user;
+            AddEvent(new NoteCreated(id, title, content, user));
         }
 
         private Note()

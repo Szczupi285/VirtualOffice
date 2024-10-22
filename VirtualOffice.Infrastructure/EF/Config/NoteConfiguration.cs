@@ -26,9 +26,8 @@ namespace VirtualOffice.Infrastructure.EF.Config
             builder.Property(e => e.Version)
             .IsConcurrencyToken();
 
-            builder.HasOne<ApplicationUser>()
+            builder.HasOne(e => e._createdBy)
             .WithMany()
-            .HasForeignKey(e => e._createdBy)
             .IsRequired();
         }
     }

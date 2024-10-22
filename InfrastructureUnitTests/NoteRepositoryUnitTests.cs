@@ -35,9 +35,9 @@ namespace InfrastructureUnitTests
 
             _data = new List<Note>
             {
-                new(_noteGuid1, "title", "description", _guid1),
-                new(_noteGuid2, "title", "description", _guid2),
-                new(_noteGuid3, "title", "description", _guid3),
+                new(_noteGuid1, "title", "description", _user1),
+                new(_noteGuid2, "title", "description", _user2),
+                new(_noteGuid3, "title", "description", _user3),
             };
 
             // setup in memory db
@@ -74,7 +74,7 @@ namespace InfrastructureUnitTests
         {
             //Assert
             Guid testGuid = Guid.NewGuid();
-            Note note = new(testGuid, "NewTitle", "NewContent", _guid1);
+            Note note = new(testGuid, "NewTitle", "NewContent", _user1);
             // Act
             await _repository.AddAsync(note);
             // Assert
