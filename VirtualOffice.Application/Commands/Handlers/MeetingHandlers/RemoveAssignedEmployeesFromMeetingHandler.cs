@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using VirtualOffice.Application.Commands.MeetingCommands;
-using VirtualOffice.Application.Exceptions.Meeting;
+using VirtualOffice.Application.Exceptions.CalendarEvent;
 using VirtualOffice.Application.Services;
 using VirtualOffice.Domain.Entities;
 using VirtualOffice.Domain.Exceptions.Repositories;
@@ -8,7 +8,7 @@ using VirtualOffice.Domain.Repositories;
 
 namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
 {
-    internal sealed class AddAssignedEmployeeToMeetingHandler : IRequestHandler<AddAssignedEmployeesToMeeting>
+    internal sealed class RemoveAssignedEmployeesFromMeetingHandler : IRequestHandler<RemoveAssignedEmployeesFromMeeting>
     {
         private readonly IMeetingRepository _repository;
         private readonly IMeetingReadService _readService;
@@ -16,7 +16,7 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
         private readonly IUserReadService _userReadService;
         private readonly IMediator _mediator;
 
-        public AddAssignedEmployeeToMeetingHandler(IMeetingRepository repository, IMeetingReadService readService,
+        public RemoveAssignedEmployeesFromMeetingHandler(IMeetingRepository repository, IMeetingReadService readService,
             IMediator mediator, IUserRepository userRepository, IUserReadService userReadService)
         {
             _repository = repository;
@@ -26,21 +26,22 @@ namespace VirtualOffice.Application.Commands.Handlers.MeetingHandlers
             _userReadService = userReadService;
         }
 
-        public async Task Handle(AddAssignedEmployeesToMeeting request, CancellationToken cancellationToken)
+        public async Task Handle(RemoveAssignedEmployeesFromMeeting request, CancellationToken cancellationToken)
         {
             if (!await _readService.ExistsByIdAsync(request.Id, cancellationToken))
-                throw new MeetingDoesNotExistException(request.Id);
+                throw new CalendarEventDoesNotExistException(request.Id);
             HashSet<ApplicationUser> employees = new();
-            foreach (var userId in request.EmployeesToAdd)
+
+            // retrive all employees by Id and assign them to employees
+            foreach (var userId in request.EmployeesToRemove)
             {
-                // check if employee with given id Exists if so, retrive it from db and add to hashset for future use
                 if (!await _userReadService.ExistsByIdAsync(userId, cancellationToken))
                     throw new EmployeeNotFoundException(userId);
                 employees.Add(await _userRepository.GetByIdAsync(userId, cancellationToken));
             }
 
             var meeting = await _repository.GetByIdAsync(request.Id, cancellationToken);
-            meeting.AddEmployeesRange(employees);
+            meeting.RemoveEmployeesRange(employees);
             await _repository.UpdateAsync(meeting, cancellationToken);
 
             foreach (var domainEvent in meeting.Events)

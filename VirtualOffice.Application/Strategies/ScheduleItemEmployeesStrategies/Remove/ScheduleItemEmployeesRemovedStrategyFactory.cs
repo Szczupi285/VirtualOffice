@@ -19,6 +19,7 @@ namespace VirtualOffice.Application.Strategies.ScheduleItemEmployeesStrategies.R
             {
                 { typeof(CalendarEvent), () => new CalendarEventEmployeesRemovedStrategy(_mapper, _outboxMessagesRepository) },
                 { typeof(EmployeeTask), () => new EmployeeTaskEmployeesRemovedStrategy (_mapper, _outboxMessagesRepository) },
+                { typeof(Meeting), () => new MeetingEmployeesRemovedStrategy (_mapper, _outboxMessagesRepository) },
             };
         }
 
