@@ -16,7 +16,7 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost]
-        public IActionResult CreatePublicChatRoom(HashSet<ApplicationUser> Participants, SortedSet<Message> Messages, string Name)
+        public IActionResult CreatePublicChatRoom(HashSet<Guid> Participants, SortedSet<Message> Messages, string Name)
         {
             return Created();
         }
@@ -34,13 +34,13 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost("{Id}/employees")]
-        public IActionResult AddChatParticipants(Guid Id, HashSet<ApplicationUser> Participants)
+        public IActionResult AddChatParticipants(Guid Id, HashSet<Guid> Participants)
         {
             return Ok();
         }
 
         [HttpDelete("{Id}/employees")]
-        public IActionResult RemoveChatParticipants(Guid Id, HashSet<ApplicationUser> Participants)
+        public IActionResult RemoveChatParticipants(Guid Id, HashSet<Guid> Participants)
         {
             return Ok();
         }
