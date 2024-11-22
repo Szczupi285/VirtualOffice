@@ -31,13 +31,13 @@ namespace VirtualOffice.Api
         }
 
         [HttpPatch("{Id}/Title")]
-        public IActionResult UpdateNoteTitle(Guid Id, string Title)
+        public IActionResult UpdateNoteTitle([FromBody] Guid Id, string Title)
         {
             return Ok();
         }
 
         [HttpPatch("{Id}/Description")]
-        public IActionResult UpdateNoteDescription(Guid Id, string Description)
+        public IActionResult UpdateNoteDescription([FromBody] Guid Id, string Title)
         {
             return Ok();
         }

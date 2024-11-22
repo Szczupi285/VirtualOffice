@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using VirtualOffice.Application.Commands.OrganizationCommands;
 using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Api
@@ -16,13 +17,13 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost]
-        public IActionResult CreateOrganization(string OrganizationName, Subscription Subscription, ApplicationUser User)
+        public IActionResult CreateOrganization([FromBody] CreateOrganization request)
         {
             return Created();
         }
 
         [HttpDelete]
-        public IActionResult DeleteOrganization([FromBody] Guid Id)
+        public IActionResult DeleteOrganization(Guid Id)
         {
             return Ok();
         }
