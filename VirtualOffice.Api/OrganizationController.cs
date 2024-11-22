@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.OrganizationCommands;
-using VirtualOffice.Domain.Entities;
 
 namespace VirtualOffice.Api
 {
@@ -35,37 +34,37 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost("{Id}/Employees")]
-        public IActionResult AddOrganizationEmployees(Guid Id, ICollection<ApplicationUser> Users)
+        public IActionResult AddOrganizationEmployees(Guid Id, ICollection<Guid> Users)
         {
             return Ok();
         }
 
         [HttpDelete("{Id}/Employees")]
-        public IActionResult RemoveOrganizationEmployees(Guid Id, ICollection<ApplicationUser> Users)
+        public IActionResult RemoveOrganizationEmployees(Guid Id, ICollection<Guid> Users)
         {
             return Ok();
         }
 
         [HttpPost("{OrganizationId}/{OfficeId}/Employees")]
-        public IActionResult AddOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<ApplicationUser> Users)
+        public IActionResult AddOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<Guid> Users)
         {
             return Ok();
         }
 
         [HttpDelete("{OrganizationId}/{OfficeId}/Employees")]
-        public IActionResult RemoveOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<ApplicationUser> Users)
+        public IActionResult RemoveOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<Guid> Users)
         {
             return Ok();
         }
 
         [HttpPost("{Id}/Office")]
-        public IActionResult AddOffice(Guid Id, string Name, string Description, HashSet<ApplicationUser> Members)
+        public IActionResult AddOffice(Guid Id, string Name, string Description, HashSet<Guid> Members)
         {
             return Ok();
         }
 
         [HttpDelete("{Id}/Office")]
-        public IActionResult RemoveOffice(Guid Id, string Name, string Description, HashSet<ApplicationUser> Members)
+        public IActionResult RemoveOffice(Guid Id, string Name, string Description, HashSet<Guid> Members)
         {
             return Ok();
         }
