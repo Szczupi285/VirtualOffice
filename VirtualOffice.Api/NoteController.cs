@@ -23,5 +23,23 @@ namespace VirtualOffice.Api
             await _mediator.Send(command);
             Created();
         }
+
+        [HttpDelete]
+        public IActionResult DeleteNote([FromBody] Guid Id)
+        {
+            return Ok();
+        }
+
+        [HttpPatch("{Id}/Title")]
+        public IActionResult UpdateNoteTitle(Guid Id, string Title)
+        {
+            return Ok();
+        }
+
+        [HttpPatch("{Id}/Description")]
+        public IActionResult UpdateNoteDescription(Guid Id, string Description)
+        {
+            return Ok();
+        }
     }
 }
