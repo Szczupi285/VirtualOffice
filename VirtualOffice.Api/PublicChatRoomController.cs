@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using VirtualOffice.Domain.Entities;
+using VirtualOffice.Application.Commands.PublicChatRoomCommands;
 
 namespace VirtualOffice.Api
 {
@@ -16,7 +16,7 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost]
-        public IActionResult CreatePublicChatRoom(HashSet<Guid> Participants, SortedSet<Message> Messages, string Name)
+        public IActionResult CreatePublicChatRoom([FromBody] CreatePublicChatRoom request)
         {
             return Created();
         }
@@ -27,7 +27,7 @@ namespace VirtualOffice.Api
             return Ok();
         }
 
-        [HttpPost("{ChatRoomId}")]
+        [HttpPost("{ChatRoomId}/Message")]
         public IActionResult SendPublicMessage(Guid ChatRoomId, Guid UserId, string Content)
         {
             return Ok();

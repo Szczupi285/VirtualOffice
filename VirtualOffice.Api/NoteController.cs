@@ -25,9 +25,11 @@ namespace VirtualOffice.Api
         }
 
         [HttpDelete]
-        public IActionResult DeleteNote([FromBody] Guid Id)
+        public async Task DeleteNote([FromBody] Guid Id)
         {
-            return Ok();
+            var command = new DeleteNote(Id);
+            await _mediator.Send(command);
+            Ok();
         }
 
         [HttpPatch("{Id}/Title")]

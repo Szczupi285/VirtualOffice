@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VirtualOffice.Application.Services;
+using VirtualOffice.Domain.ValueObjects.Note;
 
 namespace VirtualOffice.Infrastructure.EF.ReadServices
 {
@@ -14,7 +15,7 @@ namespace VirtualOffice.Infrastructure.EF.ReadServices
 
         public async Task<bool> ExistsByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
-            return await _dbContext.Notes.AnyAsync(e => e.Id.Value == id);
+            return await _dbContext.Notes.AnyAsync(e => e.Id == new NoteId(id));
         }
     }
 }

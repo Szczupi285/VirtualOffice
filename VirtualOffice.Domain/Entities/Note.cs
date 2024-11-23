@@ -36,5 +36,8 @@ namespace VirtualOffice.Domain.Entities
             _title = title;
             AddEvent(new NoteTitleChanged(this, title));
         }
+
+        public void Disable()
+           => AddEvent(new NoteDisabled(Id));
     }
 }

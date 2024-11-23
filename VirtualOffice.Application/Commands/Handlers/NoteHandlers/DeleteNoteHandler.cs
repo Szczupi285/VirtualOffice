@@ -10,11 +10,13 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
     {
         private readonly INoteRepository _repository;
         private readonly INoteReadService _readService;
+        private readonly IMediator _mediator;
 
-        public DeleteNoteHandler(INoteRepository repository, INoteReadService noteReadService)
+        public DeleteNoteHandler(INoteRepository repository, INoteReadService noteReadService, IMediator mediator)
         {
             _repository = repository;
             _readService = noteReadService;
+            _mediator = mediator;
         }
 
         public async Task Handle(DeleteNote request, CancellationToken cancellationToken)
@@ -24,6 +26,11 @@ namespace VirtualOffice.Application.Commands.Handlers.NoteHandlers
 
             var entity = await _repository.GetByIdAsync(request.Id);
             await _repository.DeleteAsync(entity);
+            entity.Disable();
+
+            foreach (var domainEvent in entity.Events)
+                await _mediator.Publish(domainEvent, cancellationToken);
+            entity.ClearEvents();
         }
     }
 }

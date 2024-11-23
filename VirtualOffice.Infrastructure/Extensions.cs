@@ -175,6 +175,12 @@ namespace VirtualOffice.Infrastructure
 
                         e.Bind("notes", x => x.RoutingKey = "NoteCreated");
                     });
+                    configurator.ReceiveEndpoint("note-deleted", e =>
+                    {
+                        e.ConfigureConsumer<NoteDisabledConsumer>(context);
+
+                        e.Bind("notes", x => x.RoutingKey = "NoteDisabled");
+                    });
                 });
             });
             services.AddTransient<IEventBus, EventBus>();
