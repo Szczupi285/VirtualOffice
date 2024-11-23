@@ -33,9 +33,11 @@ namespace VirtualOffice.Api
         }
 
         [HttpPatch("{Id}/Title")]
-        public IActionResult UpdateNoteTitle([FromBody] Guid Id, string Title)
+        public async Task UpdateNoteTitle(Guid Id, string Title)
         {
-            return Ok();
+            var command = new UpdateNote(Id, Title, null);
+            await _mediator.Send(command);
+            Ok();
         }
 
         [HttpPatch("{Id}/Description")]

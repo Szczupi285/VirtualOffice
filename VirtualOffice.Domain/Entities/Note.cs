@@ -34,7 +34,7 @@ namespace VirtualOffice.Domain.Entities
         public void EditTitle(string title)
         {
             _title = title;
-            AddEvent(new NoteTitleChanged(this, title));
+            AddEvent(new NoteTitleChanged(this));
         }
 
         public void Disable()

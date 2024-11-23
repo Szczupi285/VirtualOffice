@@ -181,6 +181,12 @@ namespace VirtualOffice.Infrastructure
 
                         e.Bind("notes", x => x.RoutingKey = "NoteDisabled");
                     });
+                    configurator.ReceiveEndpoint("note-updated", e =>
+                    {
+                        e.ConfigureConsumer<NoteTitleUpdatedConsumer>(context);
+
+                        e.Bind("notes", x => x.RoutingKey = "NoteUpdated");
+                    });
                 });
             });
             services.AddTransient<IEventBus, EventBus>();
