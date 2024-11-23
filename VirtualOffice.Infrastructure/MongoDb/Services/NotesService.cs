@@ -21,5 +21,15 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
 
             await _Collection.UpdateOneAsync(filter, update);
         }
+
+        public async Task UpdateContentAsync(string id, string content)
+        {
+            var filter = Builders<NoteReadModel>.Filter.Eq(x => x.Id, id);
+
+            var update = Builders<NoteReadModel>.Update
+                .Set(x => x.Content, content);
+
+            await _Collection.UpdateOneAsync(filter, update);
+        }
     }
 }

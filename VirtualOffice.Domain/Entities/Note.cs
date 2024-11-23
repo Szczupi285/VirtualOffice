@@ -28,7 +28,7 @@ namespace VirtualOffice.Domain.Entities
         public void EditContent(string content)
         {
             _content = content;
-            AddEvent(new NoteContentChanged(this, content));
+            AddEvent(new NoteContentChanged(this));
         }
 
         public void EditTitle(string title)

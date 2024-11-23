@@ -184,6 +184,7 @@ namespace VirtualOffice.Infrastructure
                     configurator.ReceiveEndpoint("note-updated", e =>
                     {
                         e.ConfigureConsumer<NoteTitleUpdatedConsumer>(context);
+                        e.ConfigureConsumer<NoteContentUpdatedConsumer>(context);
 
                         e.Bind("notes", x => x.RoutingKey = "NoteUpdated");
                     });
