@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.EmployeeTaskCommands;
 using VirtualOffice.Application.DTO.EmployeeTask;
+using VirtualOffice.Application.Models;
 using VirtualOffice.Domain.Consts;
 using VirtualOffice.Domain.Entities;
 
@@ -88,6 +89,169 @@ namespace VirtualOffice.Api
             var command = new UpdateEmployeeTaskPriority(Id, priority);
             await _mediator.Send(command);
             Ok();
+        }
+
+        [HttpGet("{Id}")]
+        public ActionResult<EmployeeTaskReadModel> GetEmployeeTaskById(Guid id)
+        {
+            var EmpTask = new EmployeeTaskReadModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = "Team Meeting",
+                Description = "Discuss project updates and timelines.",
+                AssignedEmployees = new List<EmployeeReadModel>
+                {
+                    new EmployeeReadModel { Id = Guid.NewGuid().ToString(), Name = "Alice Johnson" },
+                    new EmployeeReadModel { Id = Guid.NewGuid().ToString(), Name = "Bob Smith" }
+                },
+                StartDate = DateTime.Now.AddDays(1),
+                EndDate = DateTime.Now.AddDays(1).AddHours(1)
+            };
+
+            return Ok(EmpTask);
+        }
+
+        [HttpGet("/user/{Id}")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUser(Guid userId)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/by-date")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUserByDate(Guid userId, DateTime startDate, DateTime endDate)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/by-priority")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUserByPriority(Guid userId, EmployeeTaskPriorityEnum priority)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/by-priority-and-date")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUserByPriorityAndDate(Guid userId,
+            EmployeeTaskPriorityEnum priority, DateTime startDate, DateTime endDate)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/by-status")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUserByStatusAndDate(Guid userId,
+            EmployeeTaskStatusEnum status)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/by-status-and-date")]
+        public ActionResult<EmployeeTaskTitleDTO> GetEmployeeTaskForUserByStatusAndDate(Guid userId,
+         EmployeeTaskStatusEnum status, DateTime startDate, DateTime endDate)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/future")]
+        public ActionResult<EmployeeTaskTitleDTO> GetFutureEmployeeTaskForUser(Guid userId)
+        {
+            var list = new List<EmployeeTaskTitleDTO>()
+            {
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                 },
+                 new EmployeeTaskTitleDTO
+                 {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                 },
+            };
+
+            return Ok(list);
         }
     }
 }

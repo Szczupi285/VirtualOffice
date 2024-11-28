@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.NoteCommands;
 using VirtualOffice.Application.DTO.Note;
+using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Api
 {
@@ -46,6 +47,57 @@ namespace VirtualOffice.Api
             var command = new UpdateNote(Id, null, Description);
             await _mediator.Send(command);
             Ok();
+        }
+
+        [HttpGet("{Id}")]
+        public ActionResult<NoteReadModel> GetNoteById(Guid Id)
+        {
+            var note = new NoteReadModel
+            {
+                Id = Guid.NewGuid().ToString(),
+                Title = "mock",
+                Content = "MockContent",
+                CreatedBy = new EmployeeReadModel { Id = Guid.NewGuid().ToString(), Name = "Alice Johnson" }
+            };
+            return Ok(note);
+        }
+
+        [HttpGet("/user/{Id}")]
+        public ActionResult<NoteTitleDTO> GetNotesForUser(Guid Id)
+        {
+            var list = new List<NoteTitleDTO>()
+            {
+                new NoteTitleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                },
+                 new NoteTitleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                },
+            };
+            return Ok(list);
+        }
+
+        [HttpGet("/user/{Id}/title")]
+        public ActionResult<NoteTitleDTO> GetNotesForUser(Guid Id, string title)
+        {
+            var list = new List<NoteTitleDTO>()
+            {
+                new NoteTitleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock1"
+                },
+                 new NoteTitleDTO
+                {
+                    Id = Guid.NewGuid(),
+                    _Title = "mock2"
+                },
+            };
+            return Ok(list);
         }
     }
 }
