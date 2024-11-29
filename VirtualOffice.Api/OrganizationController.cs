@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.OrganizationCommands;
+using VirtualOffice.Application.DTO.ApplicationUser;
+using VirtualOffice.Application.DTO.Office;
 
 namespace VirtualOffice.Api
 {
@@ -67,6 +69,47 @@ namespace VirtualOffice.Api
         public IActionResult RemoveOffice(Guid Id, string Name, string Description, HashSet<Guid> Members)
         {
             return Ok();
+        }
+
+        [HttpGet("{Id}/Offices")]
+        public ActionResult<OfficeIdAndNameDTO> GetOrganizationOffices(Guid Id)
+        {
+            var list = new List<OfficeIdAndNameDTO>()
+            {
+                new OfficeIdAndNameDTO()
+                {
+                    Id = Guid.NewGuid(),
+                    _Name = "name1"
+                },
+                new OfficeIdAndNameDTO()
+                {
+                    Id = Guid.NewGuid(),
+                    _Name = "name2"
+                }
+            };
+
+            return Ok(list);
+        }
+
+        [HttpGet("{Id}/Users")]
+        public ActionResult<ApplicationUserDTO> GetOrganizationUsers(Guid Id)
+        {
+            var list = new List<ApplicationUserDTO>()
+            {
+                new ApplicationUserDTO()
+                {
+                    Id = Guid.NewGuid(),
+                    _Name = "name",
+                    _Surname = "surname"
+                },
+                new ApplicationUserDTO()
+                {
+                    Id = Guid.NewGuid(),
+                    _Name = "name1",
+                    _Surname = "surname1"
+                }
+            };
+            return Ok(list);
         }
     }
 }
