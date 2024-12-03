@@ -17,6 +17,7 @@ using VirtualOffice.Infrastructure.RabbitMQ.Consumers.CalendarEventConsumers;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers.EmployeeTaskConsumers;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers.MeetingConsumers;
 using VirtualOffice.Infrastructure.RabbitMQ.Consumers.NoteConsumers;
+using VirtualOffice.Infrastructure.RabbitMQ.Consumers.OrganizationConsumers;
 
 namespace VirtualOffice.Infrastructure
 {
@@ -187,6 +188,11 @@ namespace VirtualOffice.Infrastructure
                         e.ConfigureConsumer<NoteContentUpdatedConsumer>(context);
 
                         e.Bind("notes", x => x.RoutingKey = "NoteUpdated");
+                    });
+                    configurator.ReceiveEndpoint("organizationAdded", e =>
+                    {
+                        e.ConfigureConsumer<OrganizationCreatedConsumer>(context);
+                        e.Bind("organizations", x => x.RoutingKey = "OrganizationAdded");
                     });
                 });
             });

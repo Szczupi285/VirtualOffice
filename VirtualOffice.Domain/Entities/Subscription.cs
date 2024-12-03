@@ -49,6 +49,21 @@ namespace VirtualOffice.Domain.Entities
             _isPayed = isPayed;
         }
 
+        private Subscription(SubscriptionId id, SubscriptionStartDate subStartDate, SubscriptionEndDate subEndDate, SubscriptionTypeEnum subType, SubscriptionFee subscriptionFee, bool isPayed)
+        {
+            Id = id;
+            _subStartDate = subStartDate;
+            _subEndDate = subEndDate;
+            _subType = subType;
+            _subscriptionFee = subscriptionFee;
+            _isPayed = isPayed;
+        }
+
+        public static Subscription CreateDefaultSubscription()
+        {
+            return new Subscription(Guid.NewGuid(), DateTime.UtcNow, DateTime.UtcNow.AddYears(100), SubscriptionTypeEnum.None, 0, true);
+        }
+
         private Subscription()
         { }
 

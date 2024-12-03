@@ -11,11 +11,14 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
     {
         private readonly IOrganizationRepository _repository;
         private readonly IOrganizationReadService _readService;
+        private readonly IMediator _mediator;
 
-        public AddOfficeHandler(IOrganizationRepository repository, IOrganizationReadService readService)
+        public AddOfficeHandler(IOrganizationRepository repository, IOrganizationReadService readService
+            , IMediator mediator)
         {
             _repository = repository;
             _readService = readService;
+            _mediator = mediator;
         }
 
         public async Task Handle(AddOffice request, CancellationToken cancellationToken)
@@ -29,6 +32,10 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
             org.AddOffice(office);
 
             await _repository.UpdateAsync(org);
+
+            foreach (var domainEvent in org.Events)
+                await _mediator.Publish(domainEvent, cancellationToken);
+            org.ClearEvents();
         }
     }
 }

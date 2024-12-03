@@ -62,8 +62,8 @@ namespace VirtualOffice.Api
             return Ok(note);
         }
 
-        [HttpGet("/user/{Id}")]
-        public ActionResult<NoteTitleDTO> GetNotesForUser(Guid Id)
+        [HttpGet("/user/")]
+        public ActionResult<IEnumerable<NoteTitleDTO>> GetNotesForUser([FromQuery] Guid Id)
         {
             var list = new List<NoteTitleDTO>()
             {
@@ -81,8 +81,8 @@ namespace VirtualOffice.Api
             return Ok(list);
         }
 
-        [HttpGet("/user/{Id}/title")]
-        public ActionResult<NoteTitleDTO> GetNotesForUser(Guid Id, string title)
+        [HttpGet("/title/user/{Id}")]
+        public ActionResult<IEnumerable<NoteTitleDTO>> GetNotesForUserByTitle(Guid Id, string title)
         {
             var list = new List<NoteTitleDTO>()
             {

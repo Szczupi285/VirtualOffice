@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using VirtualOffice.Application.Commands.OrganizationCommands;
 using VirtualOffice.Application.DTO.ApplicationUser;
 using VirtualOffice.Application.DTO.Office;
+using VirtualOffice.Application.DTO.Organization;
 
 namespace VirtualOffice.Api
 {
@@ -18,9 +19,15 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost]
-        public IActionResult CreateOrganization([FromBody] CreateOrganization request)
+        public async Task CreateOrganization([FromBody] CreateOrganizationRequest request)
         {
-            return Created();
+            var command = new CreateOrganization
+                (
+                    request.organizationName,
+                    request.userId
+                );
+            await _mediator.Send(command);
+            Created();
         }
 
         [HttpDelete]

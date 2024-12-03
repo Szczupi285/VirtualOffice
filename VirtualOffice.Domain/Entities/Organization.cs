@@ -72,6 +72,7 @@ namespace VirtualOffice.Domain.Entities
             _offices = offices;
             _organizationUsers = organizationUsers;
             _subscription = subscription;
+            AddEvent(new OrganizationCreated(id, name, organizationUsers, subscription));
         }
 
         private Organization()
