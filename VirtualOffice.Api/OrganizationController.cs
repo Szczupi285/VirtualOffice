@@ -24,7 +24,8 @@ namespace VirtualOffice.Api
             var command = new CreateOrganization
                 (
                     request.organizationName,
-                    request.userId
+                    request.name,
+                    request.surname
                 );
             await _mediator.Send(command);
             Created();

@@ -20,8 +20,14 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
 
         public async Task Handle(CreateOrganization request, CancellationToken cancellationToken)
         {
-            var (OrganizationName, UserId) = request;
-            var user = await _userRepository.GetByIdAsync(UserId, cancellationToken);
+            var (OrganizationName, name, surname) = request;
+
+            // while creating organization we also have to create superadmin
+            // TODO: remember to update this part of code after we add IdentityUser that we will use for login
+            // IdentityUser will share Guid with ApplicationUser
+            ApplicationUser user = new(Guid.NewGuid(), name, surname);
+            user.SetAsMainAdministrator();
+            await _userRepository.AddAsync(user);
 
             Organization org = new(Guid.NewGuid(), OrganizationName, new HashSet<Office>(), new HashSet<ApplicationUser> { user },
                 Subscription.CreateDefaultSubscription());
