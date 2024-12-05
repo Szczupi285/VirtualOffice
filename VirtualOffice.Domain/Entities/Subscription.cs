@@ -58,7 +58,6 @@ namespace VirtualOffice.Domain.Entities
             _subscriptionFee = subscriptionFee;
             _isPayed = isPayed;
         }
-
         public static Subscription CreateDefaultSubscription()
         {
             return new Subscription(Guid.NewGuid(), DateTime.UtcNow, DateTime.UtcNow.AddYears(100), SubscriptionTypeEnum.None, 0, true);

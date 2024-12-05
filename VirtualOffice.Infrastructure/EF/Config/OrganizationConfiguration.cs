@@ -43,11 +43,11 @@ namespace VirtualOffice.Infrastructure.EF.Config
 
                 a.Property(e => e._subStartDate).HasConversion(
                     p => p.Value,
-                    p => new SubscriptionStartDate(p));
+                    p => SubscriptionStartDate.CreateWithoutValidation(p));
 
                 a.Property(e => e._subEndDate).HasConversion(
                     p => p.Value,
-                    p => new SubscriptionEndDate(p));
+                    p => SubscriptionEndDate.CreateWithoutValidation(p));
 
                 a.Property(e => e._subscriptionFee).HasConversion(
                     p => p.Value,

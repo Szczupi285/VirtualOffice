@@ -3,9 +3,11 @@ using VirtualOffice.Application.Models;
 
 namespace VirtualOffice.Application.IntegrationEvents.OrganizationIntegrationEvent
 {
-    public class OfficeAddedIntegrationEvent : OfficeReadModel, IIntegrationEvent
+    public class OfficeAddedIntegrationEvent : IIntegrationEvent
     {
-        public string OrganizationId;
+        public string OrganizationId { get; set; }
+
+        public OfficeReadModel Office { get; set; }
 
         public string GetRoutingKey()
             => "OrganizationUpdated";

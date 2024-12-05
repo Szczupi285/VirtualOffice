@@ -68,9 +68,11 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost("{Id}/Office")]
-        public IActionResult AddOffice(Guid Id, string Name, string Description, HashSet<Guid> Members)
+        public async Task AddOffice(Guid Id, string Name, string Description, HashSet<Guid> Members)
         {
-            return Ok();
+            var command = new AddOffice(Id, Name, Description, Members);
+            await _mediator.Send(command);
+            Ok();
         }
 
         [HttpDelete("{Id}/Office")]

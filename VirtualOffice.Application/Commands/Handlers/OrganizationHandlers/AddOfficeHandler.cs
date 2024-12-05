@@ -11,24 +11,32 @@ namespace VirtualOffice.Application.Commands.Handlers.OrganizationHandlers
     {
         private readonly IOrganizationRepository _repository;
         private readonly IOrganizationReadService _readService;
+        private readonly IUserRepository _userRepository;
         private readonly IMediator _mediator;
 
         public AddOfficeHandler(IOrganizationRepository repository, IOrganizationReadService readService
-            , IMediator mediator)
+            , IMediator mediator, IUserRepository userRepository)
         {
             _repository = repository;
             _readService = readService;
             _mediator = mediator;
+            _userRepository = userRepository;
         }
 
         public async Task Handle(AddOffice request, CancellationToken cancellationToken)
         {
-            if (!await _readService.ExistsByIdAsync(request.OrganizationId))
+            if (!await _readService.ExistsByIdAsync(request.OrganizationId, cancellationToken))
                 throw new OrganizationDoesNotExistsException(request.OrganizationId);
 
             var org = await _repository.GetByIdAsync(request.OrganizationId);
+            HashSet<ApplicationUser> users = new HashSet<ApplicationUser>();
 
-            Office office = new(Guid.NewGuid(), request.Name, request.Description, request.Members);
+            foreach (var guid in request.Members)
+            {
+                users.Add(await _userRepository.GetByIdAsync(guid));
+            }
+
+            Office office = new(Guid.NewGuid(), request.Name, request.Description, users);
             org.AddOffice(office);
 
             await _repository.UpdateAsync(org);

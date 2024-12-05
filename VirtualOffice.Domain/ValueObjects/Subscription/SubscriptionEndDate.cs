@@ -1,4 +1,5 @@
 ﻿using VirtualOffice.Domain.Exceptions.Subscription;
+using VIrtualOffice.Domain.Exceptions.ScheduleItem;
 
 namespace VirtualOffice.Domain.ValueObjects.Subscription
 {
@@ -14,6 +15,23 @@ namespace VirtualOffice.Domain.ValueObjects.Subscription
                 throw new SubscriptionEndDateInvalidException(value);
 
             Value = value;
+        }
+
+        private SubscriptionEndDate(DateTime value, bool validate)
+        {
+            if (!validate)
+                Value = value;
+            else
+            {
+                if (value < DateTime.UtcNow.AddMinutes(-1))
+                    throw new ScheduleItemStartDateCannotBePastException(value);
+
+                Value = value;
+            }
+        }
+        public static SubscriptionEndDate CreateWithoutValidation(DateTime value)
+        {
+            return new SubscriptionEndDate(value, false);
         }
 
         public static implicit operator DateTime(SubscriptionEndDate endDate)

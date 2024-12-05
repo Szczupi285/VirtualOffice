@@ -75,7 +75,7 @@ namespace VirtualOffice.Domain.Entities
             AddEvent(new OrganizationCreated(id, name, organizationUsers, subscription));
         }
 
-        private Organization()
+        public Organization()
         { }
 
         public Office GetOfficeById(OfficeId id)
