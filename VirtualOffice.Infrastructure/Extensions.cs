@@ -197,6 +197,8 @@ namespace VirtualOffice.Infrastructure
                     configurator.ReceiveEndpoint("OrganizationUpdated", e =>
                     {
                         e.ConfigureConsumer<OfficeAddedConsumer>(context);
+                        e.ConfigureConsumer<UserAddedToOfficeConsumer>(context);
+
                         e.Bind("organizations", x => x.RoutingKey = "OrganizationUpdated");
                     });
                 });

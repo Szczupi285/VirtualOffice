@@ -21,5 +21,19 @@ namespace VirtualOffice.Infrastructure.MongoDb.Services
 
             await _Collection.UpdateOneAsync(filter, update);
         }
+
+        public async Task AddEmployeeToOffice(string orgId, string offId, EmployeeReadModel employee)
+        {
+            var filter = Builders<OrganizationReadModel>.Filter.And(
+                Builders<OrganizationReadModel>.Filter.Eq(x => x.Id, orgId),
+                Builders<OrganizationReadModel>.Filter.ElemMatch(
+                    x => x.Offices, office => office.Id == offId));
+
+            var update = Builders<OrganizationReadModel>.Update.Push(
+                x => x.Offices[-1].Employees, employee);
+
+            // Step 3: Perform the update operation
+            var result = await _Collection.UpdateOneAsync(filter, update);
+        }
     }
 }

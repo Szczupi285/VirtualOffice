@@ -56,9 +56,11 @@ namespace VirtualOffice.Api
         }
 
         [HttpPost("{OrganizationId}/{OfficeId}/Employees")]
-        public IActionResult AddOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<Guid> Users)
+        public async Task AddOfficeEmployees(Guid OrganizationId, Guid OfficeId, ICollection<Guid> Users)
         {
-            return Ok();
+            var command = new AddOrganizationOfficeUsers(OrganizationId, OfficeId, Users);
+            await _mediator.Send(command);
+            Ok();
         }
 
         [HttpDelete("{OrganizationId}/{OfficeId}/Employees")]
